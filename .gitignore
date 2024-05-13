@@ -93,4 +93,19 @@ local.properties
 hs_err_pid*
 replay_pid*
 
+#web.xml 직접파일
+/Semi_Watch/src/main/webapp/WEB-INF/web.xml
+
+#classpath
+.classpath
+.gitignore
+
+/Semi_Watch/src/main/webapp/bootstrap-4.6.2-dist
+/Semi_Watch/src/main/webapp/jquery-ui-1.13.1.custom
+/Semi_Watch/src/main/webapp/js/jquery-3.7.1.min.js
+
+/Semi_Watch/src/main/webapp/js/jquery-3.7.1.js
+
+/Semi_Watch/src/main/webapp/WEB-INF/Command.properties
+
 # End of https://www.toptal.com/developers/gitignore/api/eclipse,java
