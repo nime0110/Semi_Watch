@@ -22,7 +22,7 @@ import java.util.Properties;
 		description = "사용자가 웹에서 *.flex 을 했을 경우 이 서블릿이 응답을 해주도록 한다."
 		, urlPatterns = {"*.flex"}
 		, initParams = { 
-	            @WebInitParam(name = "propertyConfig", value = "C:/git/Semi_Watch3/Semi_Watch3/src/main/webapp/WEB-INF/Command.properties", description = "*.flex 에 대한 클래스의 매핑파일") 
+	            @WebInitParam(name = "propertyConfig", value = "C:/git/Semi_Watch/Semi_Watch/src/main/webapp/WEB-INF/Command.properties", description = "*.flex 에 대한 클래스의 매핑파일") 
 	      }
 		)
 
