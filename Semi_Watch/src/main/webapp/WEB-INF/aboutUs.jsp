@@ -87,7 +87,7 @@
         <!-- Row -->
         <div class="row">
           <div class="col-md-12">
-            <img src="https://www.wrappixel.com/demos/ui-kit/wrapkit/assets/images/team/t1.jpg" alt="wrapkit" class="img-fluid" />
+            <img src="../images/furyo_shounen.png" alt="wrapkit" class="img-fluid" />
           </div>
           <div class="col-md-12">
             <div class="pt-2">
@@ -111,7 +111,7 @@
         <!-- Row -->
         <div class="row">
           <div class="col-md-12 pro-pic">
-            <img src="https://www.wrappixel.com/demos/ui-kit/wrapkit/assets/images/team/t2.jpg" alt="wrapkit" class="img-fluid" />
+            <img src="../images/furyou_sukeban.png" alt="wrapkit" class="img-fluid" />
           </div>
           <div class="col-md-12">
             <div class="pt-2">
@@ -135,7 +135,7 @@
         <!-- Row -->
         <div class="row">
           <div class="col-md-12 pro-pic">
-            <img src="https://www.wrappixel.com/demos/ui-kit/wrapkit/assets/images/team/t3.jpg" alt="wrapkit" class="img-fluid" />
+            <img src="../images/job_mizusyoubai_host.png" alt="wrapkit" class="img-fluid" />
           </div>
           <div class="col-md-12">
             <div class="pt-2">
@@ -159,7 +159,7 @@
         <!-- Row -->
         <div class="row">
           <div class="col-md-12 pro-pic">
-            <img src="https://www.wrappixel.com/demos/ui-kit/wrapkit/assets/images/team/t3.jpg" alt="wrapkit" class="img-fluid" />
+            <img src="../images/kids_chuunibyou_boy.png" alt="wrapkit" class="img-fluid" />
           </div>
           <div class="col-md-12">
             <div class="pt-2">
@@ -183,7 +183,7 @@
         <!-- Row -->
         <div class="row">
           <div class="col-md-12 pro-pic">
-            <img src="https://www.wrappixel.com/demos/ui-kit/wrapkit/assets/images/team/t3.jpg" alt="wrapkit" class="img-fluid" />
+            <img src="../images/kids_chuunibyou_girl.png" alt="wrapkit" class="img-fluid" />
           </div>
           <div class="col-md-12">
             <div class="pt-2">
