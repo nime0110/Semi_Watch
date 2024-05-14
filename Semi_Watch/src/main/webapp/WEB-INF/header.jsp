@@ -23,11 +23,11 @@
 
 
 <!-- Bootstrap CSS -->
-<link href="css/reset.css" rel="stylesheet">
-<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="<%= ctxPath%>/css/reset.css" rel="stylesheet">
+<link href="<%= ctxPath%>/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-<link href="css/tiny-slider.css" rel="stylesheet">
-<link href="css/style.css" rel="stylesheet">
+<link href="<%= ctxPath%>/css/tiny-slider.css" rel="stylesheet">
+<link href="<%= ctxPath%>/css/style.css" rel="stylesheet">
 		
 		<title>Wathch Shoping Mall 임시</title>
 <style>
@@ -47,6 +47,8 @@ ul.find_wrap li {
 	margin-right: 2%;
 
 }
+
+
 
 </style>		
 		

@@ -70,6 +70,12 @@
   font-size: 13px;
 }
 
+#our_character {
+	weigh : 500px;
+	height : 400px;
+
+}
+
 </style>
 
 
@@ -87,12 +93,12 @@
         <!-- Row -->
         <div class="row">
           <div class="col-md-12">
-            <img src="../images/furyo_shounen.png" alt="wrapkit" class="img-fluid" />
+            <img src="../images/mental_yandere_woman.png" alt="wrapkit" class="img-fluid" id="our_character" />
           </div>
           <div class="col-md-12">
             <div class="pt-2">
-              <h5 class="mt-4 font-weight-medium mb-0">Michael Doe</h5>
-              <h6 class="subtitle">Property Specialist</h6>
+              <h5 class="mt-4 font-weight-medium mb-0">강지훈</h5>
+              <h6 class="subtitle">우리의 빛나는 팀원</h6>
               <p>You can relay on our amazing features list and also our customer services will be great experience.</p>
               <ul class="list-inline">
                 <li class="list-inline-item"><a href="#" class="text-decoration-none d-block px-1"><i class="icon-social-facebook"></i></a></li>
@@ -111,12 +117,12 @@
         <!-- Row -->
         <div class="row">
           <div class="col-md-12 pro-pic">
-            <img src="../images/furyou_sukeban.png" alt="wrapkit" class="img-fluid" />
+            <img src="../images/furyou_sukeban.png" alt="wrapkit" class="img-fluid" id="our_character" />
           </div>
           <div class="col-md-12">
             <div class="pt-2">
-              <h5 class="mt-4 font-weight-medium mb-0">Michael Doe</h5>
-              <h6 class="subtitle">Property Specialist</h6>
+              <h5 class="mt-4 font-weight-medium mb-0">허성심</h5>
+              <h6 class="subtitle">우리의 빛나는 팀원</h6>
               <p>You can relay on our amazing features list and also our customer services will be great experience.</p>
               <ul class="list-inline">
                 <li class="list-inline-item"><a href="#" class="text-decoration-none d-block px-1"><i class="icon-social-facebook"></i></a></li>
@@ -135,12 +141,12 @@
         <!-- Row -->
         <div class="row">
           <div class="col-md-12 pro-pic">
-            <img src="../images/job_mizusyoubai_host.png" alt="wrapkit" class="img-fluid" />
+            <img src="../images/job_mizusyoubai_host.png" alt="wrapkit" class="img-fluid" id="our_character" />
           </div>
           <div class="col-md-12">
             <div class="pt-2">
-              <h5 class="mt-4 font-weight-medium mb-0">Michael Doe</h5>
-              <h6 class="subtitle">Property Specialist</h6>
+              <h5 class="mt-4 font-weight-medium mb-0">이정수</h5>
+              <h6 class="subtitle">우리의 빛나는 팀원</h6>
               <p>You can relay on our amazing features list and also our customer services will be great experience.</p>
               <ul class="list-inline">
                 <li class="list-inline-item"><a href="#" class="text-decoration-none d-block px-1"><i class="icon-social-facebook"></i></a></li>
@@ -159,12 +165,12 @@
         <!-- Row -->
         <div class="row">
           <div class="col-md-12 pro-pic">
-            <img src="../images/kids_chuunibyou_boy.png" alt="wrapkit" class="img-fluid" />
+            <img src="../images/kids_chuunibyou_boy.png" alt="wrapkit" class="img-fluid" id="our_character" />
           </div>
           <div class="col-md-12">
             <div class="pt-2">
-              <h5 class="mt-4 font-weight-medium mb-0">Michael Doe</h5>
-              <h6 class="subtitle">Property Specialist</h6>
+              <h5 class="mt-4 font-weight-medium mb-0">김경현</h5>
+              <h6 class="subtitle">우리의 빛나는 팀원</h6>
               <p>You can relay on our amazing features list and also our customer services will be great experience.</p>
               <ul class="list-inline">
                 <li class="list-inline-item"><a href="#" class="text-decoration-none d-block px-1"><i class="icon-social-facebook"></i></a></li>
@@ -183,12 +189,12 @@
         <!-- Row -->
         <div class="row">
           <div class="col-md-12 pro-pic">
-            <img src="../images/kids_chuunibyou_girl.png" alt="wrapkit" class="img-fluid" />
+            <img src="../images/kids_chuunibyou_girl.png" alt="wrapkit" class="img-fluid" id="our_character" />
           </div>
           <div class="col-md-12">
             <div class="pt-2">
-              <h5 class="mt-4 font-weight-medium mb-0">Michael Doe</h5>
-              <h6 class="subtitle">Property Specialist</h6>
+              <h5 class="mt-4 font-weight-medium mb-0">유선우</h5>
+              <h6 class="subtitle">우리의 빛나는 팀원</h6>
               <p>You can relay on our amazing features list and also our customer services will be great experience.</p>
               <ul class="list-inline">
                 <li class="list-inline-item"><a href="#" class="text-decoration-none d-block px-1"><i class="icon-social-facebook"></i></a></li>
