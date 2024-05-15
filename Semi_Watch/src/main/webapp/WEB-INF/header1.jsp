@@ -21,9 +21,8 @@
 
 <%-- 헤더용 JS <수정금지> --%>
 <script type="text/javascript" src="<%= ctxPath%>/js/header/cart.js"></script>
-<script type="text/javascript" src="<%= ctxPath%>/js/header/main.js"></script>
 <script type="text/javascript" src="<%= ctxPath%>/js/header/products.js"></script>
-
+<script type="text/javascript" src="<%= ctxPath%>/js/header/main.js"></script>
 
 </head>
 <body>
