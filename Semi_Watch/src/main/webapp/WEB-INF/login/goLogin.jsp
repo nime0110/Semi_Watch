@@ -47,7 +47,7 @@ input.form-check-input{
 
 </style>
     
-<jsp:include page="header1.jsp"></jsp:include>
+<jsp:include page="../header1.jsp"></jsp:include>
 
 
 
@@ -117,4 +117,4 @@ input.form-check-input{
 </section>
 
 
-<jsp:include page="footer.jsp"></jsp:include>
+<jsp:include page="../footer.jsp"></jsp:include>
