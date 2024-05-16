@@ -100,12 +100,6 @@
               <h5 class="mt-4 font-weight-medium mb-0">강지훈</h5>
               <h6 class="subtitle">우리의 빛나는 팀원</h6>
               <p>You can relay on our amazing features list and also our customer services will be great experience.</p>
-              <ul class="list-inline">
-                <li class="list-inline-item"><a href="#" class="text-decoration-none d-block px-1"><i class="icon-social-facebook"></i></a></li>
-                <li class="list-inline-item"><a href="#" class="text-decoration-none d-block px-1"><i class="icon-social-twitter"></i></a></li>
-                <li class="list-inline-item"><a href="#" class="text-decoration-none d-block px-1"><i class="icon-social-instagram"></i></a></li>
-                <li class="list-inline-item"><a href="#" class="text-decoration-none d-block px-1"><i class="icon-social-behance"></i></a></li>
-              </ul>
             </div>
           </div>
         </div>
@@ -124,12 +118,6 @@
               <h5 class="mt-4 font-weight-medium mb-0">허성심</h5>
               <h6 class="subtitle">우리의 빛나는 팀원</h6>
               <p>You can relay on our amazing features list and also our customer services will be great experience.</p>
-              <ul class="list-inline">
-                <li class="list-inline-item"><a href="#" class="text-decoration-none d-block px-1"><i class="icon-social-facebook"></i></a></li>
-                <li class="list-inline-item"><a href="#" class="text-decoration-none d-block px-1"><i class="icon-social-twitter"></i></a></li>
-                <li class="list-inline-item"><a href="#" class="text-decoration-none d-block px-1"><i class="icon-social-instagram"></i></a></li>
-                <li class="list-inline-item"><a href="#" class="text-decoration-none d-block px-1"><i class="icon-social-behance"></i></a></li>
-              </ul>
             </div>
           </div>
         </div>
@@ -148,12 +136,6 @@
               <h5 class="mt-4 font-weight-medium mb-0">이정수</h5>
               <h6 class="subtitle">우리의 빛나는 팀원</h6>
               <p>You can relay on our amazing features list and also our customer services will be great experience.</p>
-              <ul class="list-inline">
-                <li class="list-inline-item"><a href="#" class="text-decoration-none d-block px-1"><i class="icon-social-facebook"></i></a></li>
-                <li class="list-inline-item"><a href="#" class="text-decoration-none d-block px-1"><i class="icon-social-twitter"></i></a></li>
-                <li class="list-inline-item"><a href="#" class="text-decoration-none d-block px-1"><i class="icon-social-instagram"></i></a></li>
-                <li class="list-inline-item"><a href="#" class="text-decoration-none d-block px-1"><i class="icon-social-behance"></i></a></li>
-              </ul>
             </div>
           </div>
         </div>
@@ -172,12 +154,6 @@
               <h5 class="mt-4 font-weight-medium mb-0">김경현</h5>
               <h6 class="subtitle">우리의 빛나는 팀원</h6>
               <p>You can relay on our amazing features list and also our customer services will be great experience.</p>
-              <ul class="list-inline">
-                <li class="list-inline-item"><a href="#" class="text-decoration-none d-block px-1"><i class="icon-social-facebook"></i></a></li>
-                <li class="list-inline-item"><a href="#" class="text-decoration-none d-block px-1"><i class="icon-social-twitter"></i></a></li>
-                <li class="list-inline-item"><a href="#" class="text-decoration-none d-block px-1"><i class="icon-social-instagram"></i></a></li>
-                <li class="list-inline-item"><a href="#" class="text-decoration-none d-block px-1"><i class="icon-social-behance"></i></a></li>
-              </ul>
             </div>
           </div>
         </div>
@@ -196,12 +172,6 @@
               <h5 class="mt-4 font-weight-medium mb-0">유선우</h5>
               <h6 class="subtitle">우리의 빛나는 팀원</h6>
               <p>You can relay on our amazing features list and also our customer services will be great experience.</p>
-              <ul class="list-inline">
-                <li class="list-inline-item"><a href="#" class="text-decoration-none d-block px-1"><i class="icon-social-facebook"></i></a></li>
-                <li class="list-inline-item"><a href="#" class="text-decoration-none d-block px-1"><i class="icon-social-twitter"></i></a></li>
-                <li class="list-inline-item"><a href="#" class="text-decoration-none d-block px-1"><i class="icon-social-instagram"></i></a></li>
-                <li class="list-inline-item"><a href="#" class="text-decoration-none d-block px-1"><i class="icon-social-behance"></i></a></li>
-              </ul>
             </div>
           </div>
         </div>

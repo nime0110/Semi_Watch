@@ -81,8 +81,8 @@ input.form-check-input{
                   </div>         
 
                   <div class="form-check d-flex justify-content-center mb-5" id="rememberiddiv">
-                    <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
-                    <label class="form-check-label" for="form2Example3c">
+                    <input class="form-check-input me-2" type="checkbox" value="" id="saveid" />
+                    <label class="form-check-label" for="saveid">
                       Remember ID 
                     </label>
                   </div>
@@ -92,11 +92,11 @@ input.form-check-input{
                     </div>
                   <div> 
 	            	  <ul class="find_wrap" id="find_wrap" style="display:flex;">
-	                	<li><a target="_blank" href=""
-	                       class="find_passwd">비밀번호 찾기</a> ㅣ</li>
-	                	<li><a target="_blank" href=""
-	                       class="find_id">아이디 찾기</a> ㅣ</li>
-	                	<li><a target="_blank" href="" class="member_register">회원가입</a>
+	                	<li><a style="cursor : pointer" target="_blank" class="find_passwd" data-toggle="modal" 
+	                	data-target="#userIdfind" data-dismiss="modal">아이디찾기</a> ㅣ</li>
+	                	<li><a style="cursor : pointer" target="_blank" class="find_id" data-toggle="modal" 
+	                	data-target="#passwdFind" data-dismiss="modal" data-backdrop="static">비밀번호찾기</a> ㅣ</li>
+	                	<li><a style="cursor : pointer" class="member_register" href="<%= ctxPath %>/member/memberRegister.flex">회원가입</a>
 	                	</li>
 	           		  </ul>
 				  </div> 
@@ -115,6 +115,70 @@ input.form-check-input{
     </div>
   </div>
 </section>
+
+
+<%-- ****** 아이디 찾기 Modal 시작 ****** --%>
+	  <%--<div class="modal fade" id="userIdfind"> 만약에 모달이 안보이거나 뒤로 가버릴 경우에는 모달의 class 에서 fade 를 뺀 class="modal" 로 하고서 해당 모달의 css 에서 zindex 값을 1050; 으로 주면 된다.    --%>
+	   <div class="modal fade" id="userIdfind" data-backdrop="static"> <%-- 데이터 백드롭을 통해 버튼 입력 외 창이 닫히지 않게 한다. --%>
+	    <div class="modal-dialog">
+	      <div class="modal-content">
+	      
+	        <!-- Modal header -->
+	        <div class="modal-header">
+	          <h4 class="modal-title">아이디 찾기</h4>
+	          <button type="button" class="close idFindClose" data-dismiss="modal">&times;</button>
+	        </div>
+	        
+	        <!-- Modal body -->
+	        <div class="modal-body">
+	          <div id="idFind">
+	             <iframe id="iframe_idFind" style="border: none; width: 100%; height: 350px;" src="<%= ctxPath%>/login/idFind.flex">
+	             </iframe>
+	          </div>
+	        </div>
+	        
+	        <!-- Modal footer -->
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-danger idFindClose" data-dismiss="modal">Close</button>
+	        </div>
+	      </div>
+	      
+	    </div>
+	  </div>
+<%-- ****** 아이디 찾기 Modal 끝 ****** --%>
+	
+	
+<%-- ****** 비밀번호 찾기 Modal 시작 ****** --%>
+	  <div class="modal fade" id="passwdFind"> <%-- 만약에 모달이 안보이거나 뒤로 가버릴 경우에는 모달의 class 에서 fade 를 뺀 class="modal" 로 하고서 해당 모달의 css 에서 zindex 값을 1050; 으로 주면 된다. --%>
+	    <div class="modal-dialog">
+	      <div class="modal-content">
+	      
+	        <!-- Modal header -->
+	        <div class="modal-header">
+	          <h4 class="modal-title">비밀번호 찾기</h4>
+	          <button type="button" class="close passwdFindClose" data-dismiss="modal">&times;</button>
+	        </div>
+	        
+	        <!-- Modal body -->
+	        <div class="modal-body">
+	          <div id="pwFind">
+	             <iframe style="border: none; width: 100%; height: 350px;" src="<%= ctxPath%>/login/pwdFind.flex">  
+	             </iframe>
+	          </div>
+	        </div>
+	        
+	        <!-- Modal footer -->
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-danger passwdFindClose" data-dismiss="modal">Close</button>
+	        </div>
+	      </div>
+	      
+	    </div>
+	  </div> 
+	
+<%-- ****** 비밀번호 찾기 Modal 끝 ****** --%>
+
+
 
 
 <jsp:include page="../footer.jsp"></jsp:include>
