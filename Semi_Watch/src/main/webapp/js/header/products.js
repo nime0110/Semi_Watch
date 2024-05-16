@@ -1,4 +1,4 @@
-const products = new Map()
+const products = new Map();
 products.set('item-cart-1', [
   {
     full_img_url: 'images/image-product-1.jpg',

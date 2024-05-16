@@ -1,27 +1,29 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%
 	String ctxPath = request.getContextPath();
 %>
 <!DOCTYPE html>
 <html>
 <head>
-<title>2¡∂ »®∆‰¿Ã¡ˆ</title>
+<title>2Ï°∞ ÌôàÌéòÏù¥ÏßÄ</title>
 
-<%-- ∞¯øÎ ∫Œ∆ÆΩ∫∆Æ∑¶ --%>
+<%-- Í≥µÏö© Î∂ÄÌä∏Ïä§Ìä∏Îû© --%>
 <link href="<%= ctxPath%>/bootstrap-4.6.2-dist/css/bootstrap.min.css" rel="stylesheet">
 
-<%-- ∞¯øÎ ¡¶¿Ãƒı∏Æ/∫Œ∆ÆΩ∫∆Æ∑¶ --%>
+<%-- Í≥µÏö© Ï†úÏù¥ÏøºÎ¶¨/Î∂ÄÌä∏Ïä§Ìä∏Îû© --%>
 <script src="<%= ctxPath%>/js/jquery-3.7.1.min.js" type="text/javascript"></script>
 <script src="<%= ctxPath%>/bootstrap-4.6.2-dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
 
-<%-- «Ï¥ıøÎ CSS <ºˆ¡§±›¡ˆ> --%>
+<%-- Ìó§ÎçîÏö© CSS <ÏàòÏ†ïÍ∏àÏßÄ> --%>
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/normalize.css" />
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/main.css" />
 
-<%-- «Ï¥ıøÎ JS <ºˆ¡§±›¡ˆ> --%>
-<script type="text/javascript" src="<%= ctxPath%>/js/header/cart.js"></script>
+<%-- Ìó§ÎçîÏö© JS <ÏàòÏ†ïÍ∏àÏßÄ> --%>
+
 <script type="text/javascript" src="<%= ctxPath%>/js/header/products.js"></script>
+<script type="text/javascript" src="<%= ctxPath%>/js/header/cart.js"></script>
+<script type="text/javascript" src="<%= ctxPath%>/js/header/focusable-lightbox.js"></script>
 <script type="text/javascript" src="<%= ctxPath%>/js/header/main.js"></script>
 
 </head>
@@ -42,7 +44,7 @@
               <span class="sr-only">Close menu</span>
               <span class="icon icon-close" aria-hidden="true"></span>
             </button>
-            <ul class="main-nav__links">
+            <ul class="main-nav__links" style="z-index:9999">
               <li>
                 <a href="#" class="nav-item">Home</a>
               </li>
@@ -53,7 +55,7 @@
                 <a href="#" class="nav-item">About us</a>
               </li>
               <li>
-                <a href="#" class="nav-item">¿”Ω√ ∏ﬁ¥∫</a>
+                <a href="#" class="nav-item">ÏûÑÏãú Î©îÎâ¥</a>
               </li>
               <li>
                 <a href="#" class="nav-item">Contact Us</a>

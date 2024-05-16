@@ -1,5 +1,4 @@
-$(document).ready(function() {
-	console.log("ㅈㅂㅈㅂㅈㅂㅈ");
+
   const cart = (function() {
     // 장바구니에 새로운 상품 항목을 만드는 함수
     function createItemToCart(productId, quantity, thumbImageURL, productName, discountPrice, totalPrice) {
@@ -64,4 +63,3 @@ $(document).ready(function() {
       deleteItem
     };
 })
-});
