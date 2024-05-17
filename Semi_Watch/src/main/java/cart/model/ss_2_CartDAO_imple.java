@@ -14,7 +14,7 @@ import javax.sql.DataSource;
 
 import shop.domain.ImageVO;
 
-public class js_5_OrderDAO_imple implements ky_1_OrderDAO {
+public class ss_2_CartDAO_imple implements ss_2_CartDAO {
 
 	// DB에 사용되는 객체
 	private DataSource ds; // DataSource ds 는 아파치톰캣이 제공하는 DBCP(DB Connection Pool)이다.
@@ -27,7 +27,7 @@ public class js_5_OrderDAO_imple implements ky_1_OrderDAO {
 	
 	// DB Connection Pool.txt 파일내용을 복붙한 내용
 	// 생성자
-	public js_5_OrderDAO_imple() {
+	public ss_2_CartDAO_imple() {
 		
 		try {
 		Context initContext = new InitialContext();

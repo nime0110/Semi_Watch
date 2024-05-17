@@ -5,7 +5,7 @@ import java.util.List;
 
 import shop.domain.ImageVO;
 
-public interface jh_3_OrderDAO {
+public interface js_5_CartDAO {
 	
 	
 	

@@ -2,26 +2,33 @@ package shop.domain;
 
 public class ProductVO {
 
-	private int 	pnum;       // 제품번호
-	private String 	pname;      // 제품명
 	
-	private String  pcompany;   // 제조회사명
+	private String 	pdno;       // 제품번호
+	private String 	pdname;      // 제품명
+	private String  brand;		// 브랜드
 	private String  pimage1;    // 제품이미지1   이미지파일명
-	private String  pimage2;    // 제품이미지2   이미지파일명 
-	
-	private int 	pqty;       // 제품 재고량
 	private int 	price;      // 제품 정가
 	private int 	saleprice;  // 제품 판매가(할인해서 팔 것이므로)
-	
-	private String 	pcontent;   // 제품설명 
-	private int 	point;      // 포인트 점수                                         
-	private String 	pinputdate; // 제품입고일자	
+	private String  category;	// 제품 카테고리(남성용,여성용,악세사리)
+	private String 	pd_content; // 제품설명 
+	private int 	point;      // 제품구매시 적립되는 포인트(마일리지)    
+	private int     pdstatus;	// 제품상태(등록중, 비등록중)
+	private String 	pdinputdate; // 제품등록일자	
 	
 	////////////////////////// 여기까지 insert 용도 /////////////////////////////
 	
 	
+	private Product_DetailVO pdvo; // tbl_pd_detail 조인 select 용도
 	
 	
+	public Product_DetailVO getPdvo() {
+		return pdvo;
+	}
+
+	public void setPdvo(Product_DetailVO pdvo) {
+		this.pdvo = pdvo;
+	}
+
 	/*
 	    제품판매가와 포인트점수 컬럼의 값은 관리자에 의해서 변경(update)될 수 있으므로
 	    해당 제품의 판매총액과 포인트부여 총액은 판매당시의 제품판매가와 포인트 점수로 구해와야 한다.  
@@ -32,53 +39,61 @@ public class ProductVO {
 	
 	public ProductVO() { }
 	
-	public ProductVO(int pnum, String pname, int fk_cnum, String pcompany, 
-			         String pimage1, String pimage2, 
-			         String prdmanual_systemFileName, String prdmanual_orginFileName,
-			         int pqty, int price, int saleprice, int fk_snum, 
-			         String pcontent, int point, String pinputdate) {
+	public ProductVO( 	String pdno ,
+						String pdname,
+						String brand,
+						String pimage1,
+						int price,
+						int	saleprice,
+						String category,
+						String pd_content, 
+						int point,    
+						int pdstatus,
+						String pdinputdate) {
 	
-		this.pnum = pnum;
-		this.pname = pname;
-		
-		this.pcompany = pcompany;
+		this.pdno = pdno;
+		this.pdname = pdname;
+		this.brand = brand;
 		this.pimage1 = pimage1;
-		
-
-		this.pqty = pqty;
 		this.price = price;
 		this.saleprice = saleprice;
-		
-		this.pcontent = pcontent;
+		this.category = category;
 		this.point = point;
-		this.pinputdate = pinputdate;
+		this.pdstatus = pdstatus;
+		this.pdinputdate = pdinputdate;
+		
 	}
 
 	
-	public int getPnum() {
-		return pnum;
+	
+
+
+
+	
+
+	
+	public String getPdno() {
+		return pdno;
 	}
 
-	public void setPnum(int pnum) {
-		this.pnum = pnum;
+	public void setPdno(String pdno) {
+		this.pdno = pdno;
 	}
 
-	public String getPname() {
-		return pname;
+	public String getPdname() {
+		return pdname;
 	}
 
-	public void setPname(String pname) {
-		this.pname = pname;
+	public void setPdname(String pdname) {
+		this.pdname = pdname;
 	}
 
-
-
-	public String getPcompany() {
-		return pcompany;
+	public String getBrand() {
+		return brand;
 	}
 
-	public void setPcompany(String pcompany) {
-		this.pcompany = pcompany;
+	public void setBrand(String brand) {
+		this.brand = brand;
 	}
 
 	public String getPimage1() {
@@ -87,24 +102,6 @@ public class ProductVO {
 
 	public void setPimage1(String pimage1) {
 		this.pimage1 = pimage1;
-	}
-
-	public String getPimage2() {
-		return pimage2;
-	}
-
-	public void setPimage2(String pimage2) {
-		this.pimage2 = pimage2;
-	}
-
-
-	
-	public int getPqty() {
-		return pqty;
-	}
-
-	public void setPqty(int pqty) {
-		this.pqty = pqty;
 	}
 
 	public int getPrice() {
@@ -123,14 +120,20 @@ public class ProductVO {
 		this.saleprice = saleprice;
 	}
 
-
-
-	public String getPcontent() {
-		return pcontent;
+	public String getCategory() {
+		return category;
 	}
 
-	public void setPcontent(String pcontent) {
-		this.pcontent = pcontent;
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public String getPd_content() {
+		return pd_content;
+	}
+
+	public void setPd_content(String pd_content) {
+		this.pd_content = pd_content;
 	}
 
 	public int getPoint() {
@@ -141,16 +144,30 @@ public class ProductVO {
 		this.point = point;
 	}
 
-	public String getPinputdate() {
-		return pinputdate;
+	public int getPdstatus() {
+		return pdstatus;
 	}
 
-	public void setPinputdate(String pinputdate) {
-		this.pinputdate = pinputdate;
+	public void setPdstatus(int pdstatus) {
+		this.pdstatus = pdstatus;
 	}
 
+	public String getPdinputdate() {
+		return pdinputdate;
+	}
 
-	
+	public void setPdinputdate(String pdinputdate) {
+		this.pdinputdate = pdinputdate;
+	}
+
+	public void setTotalPrice(int totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
+	public void setTotalPoint(int totalPoint) {
+		this.totalPoint = totalPoint;
+	}
+
 	///////////////////////////////////////////////
 	// *** 제품의 할인률 ***
 	public int getDiscountPercent() {
