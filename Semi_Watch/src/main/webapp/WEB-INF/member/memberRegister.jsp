@@ -177,7 +177,7 @@ body > div.container {
   <label class="col-md-4 control-label">성명</label>  
   <div class="col-md-4 inputGroupContainer">
   	<div class="input-group">
-	  <input name="name" class="form-control" id="name" type="text"/>
+	  <input name="name" class="form-control requiredInfo" id="name" type="text"/>
     </div>
     <span class="error">성명은 필수입력 사항입니다.</span>
   </div>
@@ -189,7 +189,7 @@ body > div.container {
   <label class="col-md-4 control-label" >아이디</label> 
     <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
-	  <input name="userid" class="form-control" id="userid" type="text"/>
+	  <input name="userid" class="form-control requiredInfo" id="userid" type="text"/>
 	  <span type="button" id="idcheck">아이디중복확인</span>
 	  <span id="idCheckResult"></span>
     </div>
@@ -203,7 +203,7 @@ body > div.container {
   <label class="col-md-4 control-label" >비밀번호</label> 
     <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
-  <input name="pwd" class="form-control" id="pwd" maxlength="15" type="password"/>
+  <input name="pwd" class="form-control requiredInfo" id="pwd" maxlength="15" type="password"/>
     </div>
     <span class="error">암호는 영문자,숫자,특수기호가 혼합된 8~15 글자로 입력하세요.</span>
   </div>
@@ -215,7 +215,7 @@ body > div.container {
   <label class="col-md-4 control-label" >비밀번호확인</label> 
     <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
-  <input class="form-control" id="pwdcheck" maxlength="15"  type="password"/>
+  <input class="form-control requiredInfo" id="pwdcheck" maxlength="15"  type="password"/>
     </div>
     <span class="error">암호가 일치하지 않습니다.</span>
   </div>
@@ -226,10 +226,10 @@ body > div.container {
   <label class="col-md-4 control-label">이메일</label>  
     <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
-  <input name="email" class="form-control" id="email" maxlength="60" type="text"/>
+  <input name="email" class="form-control requiredInfo" id="email" maxlength="60" type="text"/>
   
   <%-- 이메일중복체크 --%>
-  <span id="emailcheck">이메일중복확인</span>
+  <span type="button" id="emailcheck">이메일중복확인</span>
   <span id="emailCheckResult"></span>
     </div>
     <span class="error">이메일 형식에 맞지 않습니다.</span>
