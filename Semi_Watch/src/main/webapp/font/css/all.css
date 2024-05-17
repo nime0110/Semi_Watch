@@ -1,0 +1,73 @@
+@charset "utf-8";
+@font-face {
+  font-family: 'AppleSDGothicNeoB_0';
+  src:url('../AppleSDGothicNeoB_0.woff') format('woff');
+}
+@font-face {
+  font-family: 'AppleSDGothicNeoEB_0';
+  src:url('../AppleSDGothicNeoEB_0.woff') format('woff');
+}
+@font-face {
+  font-family: 'AppleSDGothicNeoH_0';
+  src:url('../AppleSDGothicNeoH_0.woff') format('woff');
+}
+@font-face {
+  font-family: 'AppleSDGothicNeoL_0';
+  src:url('../AppleSDGothicNeoL_0.woff') format('woff');
+}
+@font-face {
+  font-family: 'AppleSDGothicNeoM_0';
+  src:url('../AppleSDGothicNeoM_0.woff') format('woff');
+}
+@font-face {
+  font-family: 'AppleSDGothicNeoR';
+  src:url('../AppleSDGothicNeoR.woff') format('woff');
+}
+@font-face {
+  font-family: 'AppleSDGothicNeoSB';
+  src:url('../AppleSDGothicNeoSB.woff') format('woff');
+}
+@font-face {
+  font-family: 'AppleSDGothicNeoT';
+  src:url('../AppleSDGothicNeoT.woff') format('woff');
+}
+@font-face {
+  font-family: 'AppleSDGothicNeoUL';
+  src:url('../AppleSDGothicNeoUL.woff') format('woff');
+}
+@font-face {
+  font-family: 'NanumBarunGothic';
+  src:url('../NanumBarunGothic.woff') format('woff');
+}
+@font-face {
+  font-family: 'NanumBarunGothicBold';
+  src:url('../NanumBarunGothicBold.woff') format('woff');
+}
+@font-face {
+  font-family: 'NanumBarunGothicLight';
+  src:url('../NanumBarunGothicLight.woff') format('woff');
+}
+@font-face {
+  font-family: 'NanumBarunGothicUltraLight';
+  src:url('../NanumBarunGothicUltraLight.woff') format('woff');
+}
+@font-face {
+  font-family: 'NotoSansKR-Black';
+  src:url('../NotoSansKR-Black.woff') format('woff');
+}
+@font-face {
+  font-family: 'NotoSansKR-Bold';
+  src:url('../NotoSansKR-Bold.woff') format('woff');
+}
+@font-face {
+  font-family: 'NotoSansKR-Light';
+  src:url('../NotoSansKR-Light.woff') format('woff');
+}
+@font-face {
+  font-family: 'NotoSansKR-Medium';
+  src:url('../NotoSansKR-Medium.woff') format('woff');
+}
+@font-face {
+  font-family: 'NotoSansKR-Regular';
+  src:url('../NotoSansKR-Regular.woff') format('woff');
+}
