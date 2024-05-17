@@ -3,6 +3,7 @@
 <%
 	String ctx_Path = request.getContextPath();
 %>
+<%-- 허성심 제작 페이지 --%>
 <jsp:include page="header1.jsp" />
 <link rel="stylesheet" href="font/css/all.css">
 <link rel="stylesheet" type="text/css" href="<%= ctx_Path%>/css/itemDetail.css" />

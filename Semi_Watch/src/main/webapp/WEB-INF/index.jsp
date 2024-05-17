@@ -74,7 +74,6 @@
 							<img src="${pageContext.request.contextPath}/images/index/omega04.png" class="img-fluid product-thumbnail" style="width: 80%;">
 							<h3 class="product-title">~~시계</h3>
 							<strong class="product-price">$43.00</strong>
-
 							<span class="icon-cross">
 								<img src="${pageContext.request.contextPath}/images/index/cross.svg" class="img-fluid">
 							</span>
@@ -130,8 +129,6 @@
 			</div>
 		</div>
 		<!-- End Why Choose Us Section -->
-
-
 		<!-- Start Blog Section -->
 		<div class="blog-section">
 			<div class="container">
@@ -180,7 +177,6 @@
 							</div>
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</div>

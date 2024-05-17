@@ -1,85 +1,158 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="EUC-KR">
-<title>Insert title here</title>
-</head>
-<body>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<jsp:include page="../../header1.jsp" />
+
+<style type="text/css">
+   
+   table#memberTbl {
+      width: 80%;
+      margin: 0 auto;
+   }
+   
+   table#memberTbl th {
+      text-align: center;
+      font-size: 14pt;
+   }
+   
+   table#memberTbl tr.memberInfo:hover {
+      background-color: #e6ffe6;
+      cursor: pointer;
+   }
+   
+   form[name="member_search_frm"] {
+      border: solid 0px red;
+      width: 80%;
+      margin: 0 auto 3% auto;
+   }
+   
+   form[name="member_search_frm"] button.btn-secondary {
+      margin-left: 2%;
+      margin-right: 32%;
+   }
+   
+   div#pageBar {
+      border: solid 0px red;
+      width: 80%;
+      margin: 3% auto 0 auto;
+      display: flex;
+   }
+   
+   div#pageBar > nav {
+      margin: auto;
+   }
+   
+</style>
+
+<script type="text/javascript">
+
+	$(document).ready(function(){
+
+		if("${requestScope.searchType}" != "" && "${requestScope.searchWord}" != "") {
+			$("select[name='searchType']").val("${requestScope.searchType}"); //ê°’ ì„¤ì •
+			$("input:text[name='searchWord']").val("${requestScope.searchWord}");
+		}
+				  
+		if("${requestScope.sizePerPage}" != "") {
+			$("select[name='sizePerPage']").val("${requestScope.sizePerPage}");		
+		}
+
+		$("input:text[name='searchWord']").bind("keydown", function(e){
+			if(e.keyCode == 13) {
+				goSearch();
+			}
+		});
+		// **** select íƒœê·¸ì— ëŒ€í•œ ì´ë²¤íŠ¸ëŠ” click ì´ ì•„ë‹ˆë¼ change ì´ë‹¤. **** //
+		$("select[name='sizePerPage']").bind("change", function() {
+			const frm = document.member_search_frm;
+			frm.submit();
+		})
+		
+		
+		// **** íŠ¹ì • íšŒì›ì„ í´ë¦­í•˜ë©´ ê·¸ íšŒì›ì˜ ìƒì„¸ì •ë³´ë¥¼ ë³´ì—¬ì£¼ë„ë¡ í•œë‹¤. **** //
+		$("table#memberTbl tr.memberInfo").click( e => {
+		
+			const userid = $(e.target).parent().children(".userid").text();
+			// alert(userid);
+			
+			const frm = document.memberOneDetail_frm;
+			frm.userid.value = userid;
+			frm.action = "${pageContext.request.contextPath}/member/memberOneDetail.up"; 
+			frm.method = "post";
+			frm.submit();
+		})
+				
+		
+	}); // end of jqready ------------------- 
+	function goSearch() {
+		//ìœ íš¨ì„± ê²€ì‚¬
+		const searchType = $("select[name='searchType']").val();
+		if(searchType == "") {
+			alert("ê²€ìƒ‰ëŒ€ìƒì„ ì„ íƒí•˜ì„¸ìš”!!");
+			return;// goSearch() í•¨ìˆ˜ë¥¼ ì¢…ë£Œí•œë‹¤
+		}
+
+		
+		const frm = document.member_search_frm;
+		frm.submit();
+	} // end of goSearch()--------------
+	
+
+	
+	
+</script>
 
 <div class="container" style="padding: 3% 0; border: solid 1px red;">
-   <h2 class="text-center mb-5"> È¸¿ø ÀüÃ¼ ¸ñ·Ï</h2>
+   <h2 class="text-center mb-5"> íšŒì›ì „ì²´ ëª©ë¡ </h2>
    
    <form name="member_search_frm">
       <select name="searchType">
-         <option value="">°Ë»ö´ë»ó</option>
-         <option value="name">È¸¿ø¸í</option>
-         <option value="userid">¾ÆÀÌµğ</option>
-         <option value="email">ÀÌ¸ŞÀÏ</option>
+         <option value="">ê²€ìƒ‰ëŒ€ìƒ</option>
+         <option value="name">íšŒì›ëª…</option>
+         <option value="userid">ì•„ì´ë””</option>
+         <option value="email">ì´ë©”ì¼</option>
       </select>
       &nbsp;
       <input type="text" name="searchWord" /> 
        <input type="text" style="display: none;" /> 
-      <button type="button" class="btn btn-secondary" onclick="goSearch()">°Ë»ö</button>
       
-      <span style="font-size: 12pt; font-weight: bold;">ÆäÀÌÁö´ç È¸¿ø¸í¼ö&nbsp;-&nbsp;</span>
+      <button type="button" class="btn btn-secondary" onclick="goSearch()">ê²€ìƒ‰</button>
+      
+      <span style="font-size: 12pt; font-weight: bold;">í˜ì´ì§€ë‹¹ íšŒì›ëª…ìˆ˜&nbsp;-&nbsp;</span>
       <select name="sizePerPage">
-         <option value="20">20¸í</option>
-         <option value="10">10¸í</option>   
-         <option value="5">5¸í</option>   
+         <option value="10">10ëª…</option>
+         <option value="5">5ëª…</option>
+         <option value="3">3ëª…</option>      
       </select>
    </form>
+   
    <table class="table table-bordered" id="memberTbl">
       <thead>
           <tr>
-             <th>¹øÈ£</th>
-             <th>¾ÆÀÌµğ</th>
-             <th>È¸¿ø¸í</th>
-             <th>ÀÌ¸ŞÀÏ</th>
-             <th>¼ºº°</th>	
+             <th>ë²ˆí˜¸</th>
+             <th>ì•„ì´ë””</th>
+             <th>íšŒì›ëª…</th>
+             <th>ì´ë©”ì¼</th>
+             <th>ì„±ë³„</th>	
           </tr>
       </thead>
       <tbody>
 	      <c:if test="${not empty requestScope.memberList}">      
 	          <c:forEach var="membervo" items="${requestScope.memberList}" varStatus="status">
 	          	<tr class="memberInfo">
-	          		<%-- >>> ÆäÀÌÂ¡ Ã³¸®½Ã º¸¿©ÁÖ´Â ¼ø¹ø °ø½Ä <<<
-                     µ¥ÀÌÅÍ°³¼ö - (ÆäÀÌÁö¹øÈ£ - 1) * 1ÆäÀÌÁö´çº¸¿©ÁÙ°³¼ö - ÀÎµ¦½º¹øÈ£ => ¼ø¹ø 
-                     <¿¹Á¦>
-                     µ¥ÀÌÅÍ°³¼ö : 12
-                     1ÆäÀÌÁö´çº¸¿©ÁÙ°³¼ö : 5
-                  
-                     ==> 1 ÆäÀÌÁö       
-                     12 - (1-1) * 5 - 0  => 12
-                     12 - (1-1) * 5 - 1  => 11
-                     12 - (1-1) * 5 - 2  => 10
-                     12 - (1-1) * 5 - 3  =>  9
-                     12 - (1-1) * 5 - 4  =>  8
-                  
-                     ==> 2 ÆäÀÌÁö
-                     12 - (2-1) * 5 - 0  =>  7
-                     12 - (2-1) * 5 - 1  =>  6
-                     12 - (2-1) * 5 - 2  =>  5
-                     12 - (2-1) * 5 - 3  =>  4
-                     12 - (2-1) * 5 - 4  =>  3
-                  
-                     ==> 3 ÆäÀÌÁö
-                     12 - (3-1) * 5 - 0  =>  2
-                     12 - (3-1) * 5 - 1  =>  1 
-                 --%>
                  	<fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" />
                  	<fmt:parseNumber var="sizePerPage" value="${requestScope.sizePerPage}" />
-                 	<%-- fmt:parseNumber Àº ¹®ÀÚ¿­À» ¼ıÀÚÇü½ÄÀ¸·Î Çüº¯È¯ ½ÃÅ°´Â °ÍÀÌ´Ù. --%>
-                 	<%-- µ¥ÀÌÅÍ°³¼ö - (ÆäÀÌÁö¹øÈ£ - 1) * 1ÆäÀÌÁö´çº¸¿©ÁÙ°³¼ö - ÀÎµ¦½º¹øÈ£ => ¼ø¹ø --%>
+                 	<%-- fmt:parseNumber ì€ ë¬¸ìì—´ì„ ìˆ«ìí˜•ì‹ìœ¼ë¡œ í˜•ë³€í™˜ ì‹œí‚¤ëŠ” ê²ƒì´ë‹¤. --%>
+                 	<%-- ë°ì´í„°ê°œìˆ˜ - (í˜ì´ì§€ë²ˆí˜¸ - 1) * 1í˜ì´ì§€ë‹¹ë³´ì—¬ì¤„ê°œìˆ˜ - ì¸ë±ìŠ¤ë²ˆí˜¸ => ìˆœë²ˆ --%>
 	          		<td>${(requestScope.totalMemberCount) - (currentShowPageNo -1) * sizePerPage - (status.index)}</td>
 	          		<td class="userid">${membervo.userid}</td>
 	          		<td>${membervo.name}</td>
 	          		<td>${membervo.email}</td>
 	          		<td>
 	          			<c:choose>
-	          				<c:when test="${membervo.gender == '1'}">³²</c:when>
-	          				<c:otherwise>¿©</c:otherwise>
+	          				<c:when test="${membervo.gender == '1'}">ë‚¨</c:when>
+	          				<c:otherwise>ì—¬</c:otherwise>
 	          			</c:choose>
 	          		</td>
 	          	</tr>
@@ -87,7 +160,7 @@
 	      </c:if>
 	      <c:if test="${empty requestScope.memberList}">      
 	          <tr>
-	          	 <td colspan="5">µ¥ÀÌÅÍ°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.</td>
+	          	 <td colspan="5">ë°ì´í„°ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.</td>
 	          </tr>
 	      </c:if>
       </tbody>
@@ -105,8 +178,6 @@
 <form name="memberOneDetail_frm">
 	<input type="hidden" name="userid"/>
 	<input type="hidden" name="goBackURL" value="${requestScope.currentURL}"/>
-	<%-- Æû Àü¼ÛÀ» ÅëÇØ URL À» º¸³½´Ù. --%>
+	<%-- í¼ ì „ì†¡ì„ í†µí•´ URL ì„ ë³´ë‚¸ë‹¤. --%>
 </form>
-
-</body>
-</html>
+<jsp:include page="../../footer.jsp" />
