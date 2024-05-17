@@ -341,8 +341,8 @@ body > div.container {
 <!-- Button -->
 <div class="form-group" id="selectbuttondiv">
   <div class="col-md-4" id="selectbutton">
-    <button type="submit" class="btn btn-warning">가입하기</button>
-    <button type="submit" class="btn btn-warning">취소하기</button>
+    <button type="button" class="btn btn-warning" onclick="goRegister()">가입하기</button>
+    <button type="reset" class="btn btn-warning" onclick="goReset()">취소하기</button>
   </div>
 </div>
 
