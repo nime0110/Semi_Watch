@@ -51,10 +51,10 @@
                 <a href="#" class="nav-item">Shop</a>
               </li>
               <li>
-                <a href="#" class="nav-item"></a>
+                <a href="#" class="nav-item">About us</a>
               </li>
               <li>
-               <!-- <a href="<%= ctxPath%>/about/aboutus.flex" class="nav-item">About us</a>  -->
+                <a href="#" class="nav-item">A/S center</a>  
               </li>
               <li>
                 <a href="#" class="nav-item">임시 메뉴</a>
