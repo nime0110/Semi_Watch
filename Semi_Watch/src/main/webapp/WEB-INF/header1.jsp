@@ -73,16 +73,16 @@
           </div>
         </nav>
     </div>
-    <%-- cart start --%>
+    <%-- wishList start --%>
     <div class="top-header__right">
       <button class="top-header__btn-cart" type="button" aria-controls="cart-section" aria-expanded="false">
-        <span class="sr-only">Button cart</span>
+        <span class="sr-only">Button wishlist</span>
         <span class="icon icon-cart" aria-hidden="true"></span>
         <span class="items-quantity">
           <span class="value">0</span><span class="sr-only">items</span>
         </span>
       </button>
-      <a href="<%= ctxPath %>/login/login.flex">
+      <a href="<%= ctxPath %>/item/itemCart.flex">
         <img src="<%= ctxPath%>/images/header/icon-cart.svg" style="margin-right:30px;" role="presentation">
       </a>
     <%-- user start --%>
