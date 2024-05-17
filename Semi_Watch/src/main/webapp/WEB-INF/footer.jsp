@@ -25,8 +25,8 @@
 
 </style>    
     
-		<footer class="footer-section">
-    	<div class="container">
+      <footer class="footer-section">
+       <div class="container">
 
         <div class="border-top copyright">
             <div class="row pt-4">
@@ -49,9 +49,9 @@
 
     </div>
 </footer>
-		<!-- End Footer Section -->	
-		
-		
+      <!-- End Footer Section -->   
+      
+      
 
 </body>
 </html>
