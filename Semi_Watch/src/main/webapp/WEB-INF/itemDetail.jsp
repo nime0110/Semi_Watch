@@ -49,28 +49,28 @@
             <span class="sr-only">Next Image</span>
             <span class="icon icon-next" aria-hidden="true"></span>
           </button>
-          <img src="images/image-product-1.jpg" alt="Brown and white sneaker" class="image-box__src" data-product-id="item-cart-1" tabindex="0" aria-controls="lightbox" aria-expanded="false">
+          <img src="${pageContext.request.contextPath}/images/itemDetail/image-product-1.jpg" alt="Brown and white sneaker" class="image-box__src" data-product-id="item-cart-1" tabindex="0" aria-controls="lightbox" aria-expanded="false">
         </div>
         
         <ul class="product__thumbs default-container" id="choice" aria-label="Product thumbnails">
           <li class="thumb-item">
             <button type="button" class="thumb-item__btn" aria-label="change to image 1">
-              <img src="images/image-product-1-thumbnail.jpg" alt="" data-thumb-index="0" role="presentation">
+              <img src="${pageContext.request.contextPath}/images/itemDetail/image-product-1-thumbnail.jpg" alt="" data-thumb-index="0" role="presentation">
             </button>
           </li>
           <li class="thumb-item">
             <button type="button" class="thumb-item__btn" aria-label="change to image 2">
-              <img src="images/image-product-2-thumbnail.jpg" alt="" data-thumb-index="1" role="presentation">
+              <img src="${pageContext.request.contextPath}/images/itemDetail/image-product-2-thumbnail.jpg" alt="" data-thumb-index="1" role="presentation">
             </button>
           </li>
           <li class="thumb-item">
             <button type="button" class="thumb-item__btn" aria-label="change to image 3">
-              <img src="images/image-product-3-thumbnail.jpg" alt="" data-thumb-index="2" role="presentation">
+              <img src="${pageContext.request.contextPath}/images/itemDetail/image-product-3-thumbnail.jpg" alt="" data-thumb-index="2" role="presentation">
             </button>
           </li>
           <li class="thumb-item">
             <button type="button" class="thumb-item__btn" aria-label="change to image 4">
-              <img src="images/image-product-4-thumbnail.jpg" alt="" data-thumb-index="3" role="presentation">
+              <img src="${pageContext.request.contextPath}/images/itemDetail/image-product-4-thumbnail.jpg" alt="" data-thumb-index="3" role="presentation">
             </button>
           </li>
         </ul>
@@ -128,7 +128,7 @@
   
    <!-- minibanner  -->
   <div id="minibanner" class="container">
-  	<a href="#"><img src="images/mini_banner.jpg" alt=""></a>
+  	<img src="${pageContext.request.contextPath}/images/itemDetail/mini_banner.jpg" alt=""></a>
   </div>
    <div id="content" class="container">
    <div id="itemcate" class="categori">
@@ -143,8 +143,8 @@
      <h2>GA-2100-2A2DR</h2>
 
      <div class="mainImg">
-       <img src="images/image-product-2.jpg" alt="상세이미지1" />
-       <img src="images/image-product-3.jpg" alt="상세이미지2" />
+       <img src="${pageContext.request.contextPath}/images/itemDetail/image-product-2.jpg" alt="상세이미지1" />
+       <img src="${pageContext.request.contextPath}/images/itemDetail/image-product-3.jpg" alt="상세이미지2" />
      </div>
    </div>
  </div>
@@ -270,7 +270,7 @@
         </div>
         <div id="rpageNumber">
           <a href="#">
-            <img src="images/12345allowleft.png" 
+            <img src="${pageContext.request.contextPath}/images/itemDetail/12345allowleft.png" 
             alt="왼쪽 화살표">
           </a>
           <span>
@@ -286,7 +286,7 @@
             <a href="#">10</a>
           </span>
           <a href="#">
-            <img src="images/12345allowright.png" 
+            <img src="${pageContext.request.contextPath}/images/itemDetail/12345allowright.png" 
             alt="오른쪽 화살표">
           </a>
         </div>

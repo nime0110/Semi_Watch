@@ -675,7 +675,7 @@ document.addEventListener('DOMContentLoaded', function() {
           <div class="shop__thumb">     
               <div class="position-relative overflow-hidden">
             	<div class="shop-thumb__img">
-                   <a href=""><img class="img-fluid" src="images\watchTest.png" alt=""></a>
+                   <a href=""><img class="img-fluid" src="<%= ctxPath %>/images/watchTest.png" alt=""></a>
                  </div>  
                    <div class="bg-primary rounded text-white position-absolute start-0 top-0 py-1 px-3">SALE</div>
                </div>

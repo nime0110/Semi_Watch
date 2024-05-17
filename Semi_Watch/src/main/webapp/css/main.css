@@ -67,24 +67,24 @@ img{
     background-color: #69707D;
 }
 .icon-cart{
-    mask-image: url(../images/icon-cart.svg);
-        -webkit-mask-image: url(../images/icon-cart.svg);
+    mask-image: url(../images/header/icon-cart.svg);
+        -webkit-mask-image: url(../images/header/icon-cart.svg);
     min-width: 22px;
     min-height: 22px;
 }
 .icon-close{
-    mask-image: url(../images/icon-close.svg);
-        -webkit-mask-image: url(../images/icon-close.svg);
+    mask-image: url(../images/header/icon-close.svg);
+        -webkit-mask-image: url(../images/header/icon-close.svg);
     min-width: 17px;
     min-height: 17px;
 }
 .icon-previous{ 
-    mask-image: url(../images/icon-previous.svg); 
-        -webkit-mask-image: url(../images/icon-previous.svg); 
+    mask-image: url(../images/itemDetail/icon-previous.svg); 
+        -webkit-mask-image: url(../images/itemDetail/icon-previous.svg); 
 }
 .icon-next{ 
-    mask-image: url(../images/icon-next.svg); 
-        -webkit-mask-image: url(../images/icon-next.svg); 
+    mask-image: url(../images/itemDetail/icon-next.svg); 
+        -webkit-mask-image: url(../images/itemDetail/icon-next.svg); 
 }
 .icon-previous,
 .icon-next{
@@ -92,20 +92,7 @@ img{
     min-width: 15px;
     min-height: 15px;
 }
-.icon-minus{ 
-    mask-image: url(../images/icon-minus.svg); 
-        -webkit-mask-image: url(../images/icon-minus.svg); 
-}
-.icon-plus{ 
-    mask-image: url(../images/icon-plus.svg);
-        -webkit-mask-image: url(../images/icon-plus.svg);
-}
-.icon-minus,
-.icon-plus{
-    min-width: 12px;
-    min-height: 12px;
-    background-color: var(--orange-clr);
-}
+
 .lightbox .icon-close{
     min-width: 22px;
     min-height: 22px;
@@ -121,7 +108,7 @@ img{
     background-color: black;
     position:sticky;
     top:0;
-    z-index: 1;
+    z-index: 2;
 }
 
 .layer-popup {
@@ -147,7 +134,8 @@ img{
     position: relative;
     display: inline-block;
     padding: .1em;
-    background: url(../images/logo.svg) no-repeat; 
+    /* 
+    background: url(../images/) no-repeat; 추후 결정되면 */
     background-size: contain;
     background-position: left 35%;
 }
@@ -468,11 +456,9 @@ img{
     .default-container{ margin: 0; }
     body{ --max-width: 85%; }
     .top-header{
-        margin: 0 auto 3.5em;
         padding: 1.5em 0 2em;
         padding-left: 2%;
         padding-right: 2%;
-        border-bottom: solid 1px rgba(241, 241, 241, 0.945);
     }
     .top-header__left,
     .top-header__right{ 
@@ -567,4 +553,10 @@ img{
 @media screen and (min-width: 1900px){ 
     body{ --max-width: 85%; } 
     .product__slider.--lightbox-active{ max-width: 625px; }
+}
+.dropdown-item {
+	text-decoration: none;
+}
+#navbarDropdown {
+	color:white;
 }

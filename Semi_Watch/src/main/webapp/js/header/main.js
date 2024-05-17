@@ -14,7 +14,7 @@ $(document).ready(function() {
 
     // 새로운 상품을 장바구니에 추가하는 함수
     function addNewItem(productId, quantity, thumbImageURL, productName, discountPrice, totalPrice) {
-      let item = JSON.parse(sessionStorage.getItem(productId));
+      let item = JSON.parse(localStorage.getItem(productId));
       let flagAlreadyExisted = false;
 
       if (item !== null) {
@@ -23,19 +23,19 @@ $(document).ready(function() {
       }
 
       let newItem = createItemToCart(productId, quantity, thumbImageURL, productName, discountPrice, totalPrice);
-      sessionStorage.setItem(newItem.item_id, JSON.stringify(newItem));
+      localStorage.setItem(newItem.item_id, JSON.stringify(newItem));
       newItem.existsInDOM = flagAlreadyExisted;
 
       return newItem;
     }
 
-    // sessionStorage에서 모든 상품 항목을 로드하는 함수
+    // localStorage에서 모든 상품 항목을 로드하는 함수
     function loadAllItems() {
       const items = [];
-      for (let i = 0; i < sessionStorage.length; i++) {
-        let key = sessionStorage.key(i);
+      for (let i = 0; i < localStorage.length; i++) {
+        let key = localStorage.key(i);
         if (key.startsWith('item-cart-')) {
-          let item = sessionStorage.getItem(key);
+          let item = localStorage.getItem(key);
           if (item !== null) {
             items.push(JSON.parse(item));
           }
@@ -52,7 +52,7 @@ $(document).ready(function() {
 
     // 장바구니에서 특정 상품을 삭제하는 함수
     function deleteItem(productId) {
-      sessionStorage.removeItem(productId);
+      localStorage.removeItem(productId);
     }
 
     // 모듈의 공개 인터페이스 정의
@@ -186,7 +186,7 @@ $(document).ready(function() {
               $inputProductQuantity.val(0);
             } else {
               const productId = $originalProductSlider.find('.image-box__src').data('product-id');
-              const thumbImageURL = `images/image-product-${productId.split('-')[2]}-thumbnail.jpg`;
+              const thumbImageURL = `images/itemDetail/image-product-${productId.split('-')[2]}-thumbnail.jpg`;
               const productName = $('.product__name').text().trim();
               let discountPrice = parseInt($('.discount-price__value').text().replace(/,/g, ''));
               let totalPrice = parseInt($('.full-price').text().replace(/,/g, ''));
@@ -326,7 +326,7 @@ $(document).ready(function() {
           </div>
           <button type="button" class="btn-del-product">
             <span class="sr-only">Delete this product</span>
-            <img src="images/icon-delete.svg" alt="" role="presentation">
+            <img src="images/header/icon-delete.svg" alt="" role="presentation">
           </button>
         </a>
       `);
