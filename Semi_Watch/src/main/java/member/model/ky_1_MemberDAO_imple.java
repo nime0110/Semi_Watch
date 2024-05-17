@@ -68,4 +68,20 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
 
 	
 	
+	
+	@Override
+	public int registerMember(MemberVO member) throws SQLException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public boolean idDuplicateCheck(String userid) throws SQLException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	
+	
 }

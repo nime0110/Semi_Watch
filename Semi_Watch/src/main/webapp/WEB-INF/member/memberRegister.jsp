@@ -10,26 +10,14 @@
 
 <link href="<%= ctx_Path%>/css/gologin.css" rel="stylesheet">
 
+<%-- 외부 JS --%>>
+<script type="text/javascript" src="<%= ctx_Path%>/js/member/memberRegister.js"></script> 
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script> 
 
-<script type="text/javascript">
+<%-- jQuaryUI CSS 및 JS --%>
+<link rel="stylesheet" type="text/css" href="<%= ctx_Path%>/jquery-ui-1.13.1.custom/jquery-ui.min.css" />
+<script type="text/javascript" src="<%= ctx_Path%>/jquery-ui-1.13.1.custom/jquery-ui.min.js"></script>
 
-$(document).ready(function(){
-	
-	$("span.error").hide();
-	
-	
-	$('input#datepicker').keyup( (e) => {
-
-        $(e.target).val("").next().show();
-
-
-   });// end of $('input#datepicker').keyup( (e)
-
-	
-	
-});
-
-</script> 
 
 <style>
 
@@ -189,7 +177,7 @@ body > div.container {
   <label class="col-md-4 control-label">성명</label>  
   <div class="col-md-4 inputGroupContainer">
   	<div class="input-group">
-	  <input name="first_name" placeholder="홍길동" class="form-control"  type="text"/>
+	  <input name="name" class="form-control" id="name" type="text"/>
     </div>
     <span class="error">성명은 필수입력 사항입니다.</span>
   </div>
@@ -201,8 +189,8 @@ body > div.container {
   <label class="col-md-4 control-label" >아이디</label> 
     <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
-	  <input name="last_name" placeholder="honggd" class="form-control"  type="text"/>
-	  <span id="idcheck">아이디중복확인</span>
+	  <input name="userid" class="form-control" id="userid" type="text"/>
+	  <span type="button" id="idcheck">아이디중복확인</span>
 	  <span id="idCheckResult"></span>
     </div>
     <span class="error">아이디는 필수입력 사항입니다.</span>
@@ -215,7 +203,7 @@ body > div.container {
   <label class="col-md-4 control-label" >비밀번호</label> 
     <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
-  <input name="last_name" placeholder="honggd" class="form-control"  type="text"/>
+  <input name="pwd" class="form-control" id="pwd" maxlength="15" type="password"/>
     </div>
     <span class="error">암호는 영문자,숫자,특수기호가 혼합된 8~15 글자로 입력하세요.</span>
   </div>
@@ -227,7 +215,7 @@ body > div.container {
   <label class="col-md-4 control-label" >비밀번호확인</label> 
     <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
-  <input name="last_name" placeholder="honggd" class="form-control"  type="text"/>
+  <input class="form-control" id="pwdcheck" maxlength="15"  type="password"/>
     </div>
     <span class="error">암호가 일치하지 않습니다.</span>
   </div>
@@ -238,7 +226,7 @@ body > div.container {
   <label class="col-md-4 control-label">이메일</label>  
     <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
-  <input name="email" placeholder="honggd@gmail.com" class="form-control"  type="text"/>
+  <input name="email" class="form-control" id="email" maxlength="60" type="text"/>
   
   <%-- 이메일중복체크 --%>
   <span id="emailcheck">이메일중복확인</span>
@@ -252,10 +240,12 @@ body > div.container {
 <!-- Text input-->
        
 <div class="form-group">
-  <label class="col-md-4 control-label">휴대전화</label>  
+  <label class="col-md-4 control-label">연락처</label>  
     <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
-  <input name="phone" placeholder="010-1234-1234" class="form-control" type="text"/>
+  <input name="hp1" class="form-control" id="hp1" size="6" mexlength="3" value="010" readonly type="text"/>&nbsp;-&nbsp;
+  <input name="hp2" class="form-control" id="hp2" size="6" mexlength="4" type="text"/>&nbsp;-&nbsp;
+  <input name="hp3" class="form-control" id="hp3" size="6" mexlength="4" type="text"/>
     </div>
     <span class="error">휴대폰 형식이 아닙니다.</span>
   </div>
@@ -267,9 +257,9 @@ body > div.container {
   <label class="col-md-4 control-label">우편번호</label>  
     <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
-  <input name="postcode" placeholder="12345" class="form-control" type="text"/>
+  <input name="postcode" class="form-control" id="postcode" size="6" type="text"/>
   <%-- 우편번호 찾기 --%>
-  <span id="zipcodeSearch">우편번호 찾기</span>
+  <span type="button" id="zipcodeSearch">우편번호 찾기</span>
     </div>
     <span class="error">우편번호 형식에 맞지 않습니다.</span>
   </div>
@@ -281,7 +271,8 @@ body > div.container {
   <label class="col-md-4 control-label">주소</label>  
     <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
-  <input name="address" placeholder="주소" class="form-control" type="text"/>
+  <input name="address" class="form-control" id="address"
+  size="40" maxlength="200" type="text"/>
     </div>
     <span class="error">주소를 입력하세요.</span>
   </div>
@@ -293,7 +284,8 @@ body > div.container {
   <label class="col-md-4 control-label">상세주소</label>  
     <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
-  <input name="detailaddress" placeholder="상세주소" class="form-control"  type="text"/>
+  <input name="detailAddress" class="form-control" id="detailAddress"
+  size="40" maxlength="200" type="text"/>
     </div>
   </div>
 </div>
@@ -304,7 +296,8 @@ body > div.container {
   <label class="col-md-4 control-label">참고항목</label>
     <div class="col-md-4 selectContainer">
     <div class="input-group">
-    <input name="extraaddress" placeholder="참고항목" class="form-control" type="text"/>
+    <input name="extraAddress" class="form-control" id="extraAddress"
+    size="40" maxlength="200" type="text"/>
   </div>
 </div>
 </div>
@@ -325,16 +318,23 @@ body > div.container {
  	<label class="col-md-4 control-label">성별</label>
     <div class="col-md-4">
         <div class="radio">
-            <label>
-                <input type="radio" name="gender" value="man"/> 남자
-            </label>
+            <input type="radio" name="gender" id="male" value="1"/><label for="male" style="margin-left: 1.5%;">남자</label>
         </div>
         <div class="radio">
-            <label>
-                <input type="radio" name="gender" value="woman"/> 여자
-            </label>
+            <input type="radio" name="gender" id="female" value="2"/><label for="female" style="margin-left: 1.5%;">여자</label>
         </div>
     </div>
+</div>
+
+<!-- 약관동의 -->
+<div class="form-group">
+	<label for="agree">이용약관에 동의합니다.</label>&nbsp;&nbsp;<input type="checkbox" id="agree"/>
+</div>
+
+<!-- 약관 html -->
+<div class="form-group">
+	<iframe src="<%= ctx_Path%>/iframe_agree/agree.html" width="80%" height="150px"
+	style="border: solid 1px navy;"></iframe>
 </div>  
 
 
