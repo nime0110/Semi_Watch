@@ -15,6 +15,25 @@
 <%-- 회원정보수정 관련 css --%>
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/member/memberInfoChange.css" />
 
+<script type="text/javascript">
+$(document).ready(function() {
+    // 비밀번호 표시 버튼을 클릭했을 때의 동작을 정의합니다.
+    $('img#viewEye').click(function(e) {
+        // 버튼의 부모
+        const parent = $(e.target).parent();
+        const passwordInput = parent.find('input#confirmPassword');
+        
+        if (passwordInput.attr('type') == 'password') {
+            $(e.target).attr("src","<%=ctxPath%>/images/eye-show.png");
+        } else {
+            $(e.target).attr("src","<%=ctxPath%>/images/eye-hide.png");
+        }
+    });
+      
+    
+});// end of $(document).ready(function() ----------
+		
+</script>
 
 <%-- 회원정보 내용 시작 --%>
 <body>
@@ -99,7 +118,7 @@
 				<div class="mb-3">
 	            	<span class="h4" style="font-weight: bold;">기본회원정보</span>&nbsp;&nbsp;<span class="h5" style="font-weight: bold; color: #69707a;">필수</span>
 	            </div>
-				<table class="table" style="width: 100%;">
+				<table class="table" id="userinfo" style="width: 100%;">
 					<colgroup>
 						<col style="width: 15%;">
 						<col style="width: 40%;">
@@ -121,7 +140,7 @@
                         </td>
                     </tr>
                     <%--사진 수정 할 경우 기본 숨김--%>
-                    <tr id="change-profile-image-area">
+                    <tr id="change_profile_image_area">
                         <th scope="row">사진2 변경 시 보여지게 함</th>
                         <td>
                             <div>
@@ -148,15 +167,15 @@
                     </tr>
 
 					<%-- 비밀번호 파트 --%>
-					<tr id="password-area">
+					<tr id="password_area">
                         <th scope="row">비밀번호</th>
-                        <td>Qwer1234@ 이값은 ******** 표시로해야함</td>
+                        <td id="cpwdview"><input id="currentpwd" type="hidden" value="1232132"/></td>
                         <td>
-                            <button class="btn btn-sm btn-outline-dark" type="button" id="change_btn">비밀번호 변경</button>
+                            <button class="btn btn-sm btn-outline-dark" type="button" id="change_btn" onclick="change_password()">비밀번호 변경</button>
                         </td>
                     </tr>
 					<%-- 비밀번호 변경 누를 경우 기본 숨김 --%>
-					<tr id="change-password-area">
+					<tr id="change_password_area">
                         <th scope="row">비밀번호 변경 시 보여지게 함</th>
                         <td colspan="2">
 							<div>
@@ -164,7 +183,6 @@
 									<label for="password" style="width: 18%;">현재 비밀번호</label>
 									<div id="password_div" style="display: flex;">
 										<input id="password" type="password">
-										<button class="btn btn-sm btn-outline-secondary" type="button" id="">비밀번호 표시</button>
 									</div>
 									&nbsp;&nbsp;<span>양식에 맞게 입력했는지 확인 멘트</span>
 								</div>
@@ -172,16 +190,14 @@
 									<label for="newPassword" style="width: 18%;">신규 비밀번호</label>
 									<div id="newPassword_div" style="display: flex;">
 										<input id="newPassword" maxlength="30" type="password">
-										<button class="btn btn-sm btn-outline-secondary" type="button">비밀번호 표시</button>
 									</div>
 									&nbsp;&nbsp;<span id="newpwd_check">양식에 맞게 입력했는지 확인 멘트</span>
 								</div>
-								<div class="input mb-2" style="display: flex;">
+								<div class="mb-2" style="display: flex;">
 									<label for="confirmPassword" style="width: 18%;">신규 비밀번호 재 입력</label>
 									<div id="confirmPassword_div" style="display: flex;">
 										<input class="n-input" id="confirmPassword" maxlength="30" type="password">
-										<button class="btn btn-sm btn-outline-secondary" type="button">비밀번호 표시</button>
-										
+										<img type="button" src="<%=ctxPath %>/images/eye-show.png" id="viewEye"/>
 									</div>
 									&nbsp;&nbsp;<span id="newpwd_check2">비밀번호가 맞지않습니다. 확인멘트</span>
 									
@@ -202,21 +218,21 @@
                     </tr>
 
 					<%-- 이메일 파트 --%>
-					<tr id="email-area">
+					<tr id="email_area">
                         <th scope="row">이메일</th>
                         <td>
                             <span id="currentEmail">example@naver.com</span>
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-outline-dark" type="button" id="change_btn">이메일 변경</button>
+                            <button class="btn btn-sm btn-outline-dark" type="button" id="change_btn" onclick="change_email()">이메일 변경</button>
                         </td>
                     </tr>
                     <%--이메일 인증 기본 숨김 --%>
-                    <tr id="change-email-area">
+                    <tr id="change_email_area">
                         <th scope="row">이메일 변경 시 보여지게 함</th>
                         <td colspan="2">
                             <div class="my-info-modify">
-                                <p>메일주소 입력 후 인증하기 버튼을 누르시면, 회원님의 이메일로 이메일 인증 번호가 적힌메일이 발송됩니다.<br>
+                                <p class="mb-2">메일주소 입력 후 인증하기 버튼을 누르시면, 회원님의 이메일로 이메일 인증 번호가 적힌메일이 발송됩니다.<br>
 									아래에 인증 번호를 입력하시면 인증이 완료됩니다.
 								</p>
                                 <div class="input mb-1" style="display: flex;">
