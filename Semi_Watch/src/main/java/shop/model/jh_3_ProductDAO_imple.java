@@ -14,7 +14,7 @@ import javax.sql.DataSource;
 
 import shop.domain.ImageVO;
 
-public class jh_3_ProductDAO_imple implements ky_1_ProductDAO {
+public class jh_3_ProductDAO_imple implements jh_3_ProductDAO {
 
 	// DB에 사용되는 객체
 	private DataSource ds; // DataSource ds 는 아파치톰캣이 제공하는 DBCP(DB Connection Pool)이다.
