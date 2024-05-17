@@ -253,7 +253,7 @@ ul.pagination li {
 
 
 
-
+			
 			<!-- Filter -->
 			<form class="shop_filter">
 

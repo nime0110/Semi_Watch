@@ -5,21 +5,21 @@ public class MemberVO {
 	// < insert 용도 시작>
 	
 	private String userid;             // 회원아이디
-	private String pwd;                // 비밀번호 (SHA-256 암호화 대상) 즉, 암호화해서 DB에 넣는다
-	private String name;               // 회원명
+	private String pw;                 // 비밀번호 (SHA-256 암호화 대상) 즉, 암호화해서 DB에 넣는다
+	private String username;           // 회원명
 	private String email;              // 이메일 (AES-256 암호화/(<>반대말)복호화 대상) 즉, 암호화해서 DB에 넣는다
 	private String mobile;             // 연락처 (AES-256 암호화/(<>반대말)복호화 대상) 즉, 암호화해서 DB에 넣는다
 	private String postcode;           // 우편번호
 	private String address;            // 주소
-	private String detailaddress;      // 상세주소
-	private String extraaddress;       // 참고항목
+	private String detail_address;      // 상세주소
+	private String extra_address;       // 참고항목
 	private String gender;             // 성별   남자:1  / 여자:2
 	private String birthday;           // 생년월일
 	// SHA-256 은 단방향 암호화 ==> 즉, 복호화(암호화 해제)를 할수없다! 
 	// AES-256 은 양방향 암호화 ==> 즉, 암호화, 복호화(암호화 해제) 둘다 가능하다.
 	
-	private int coin;                  // 코인액
-	private int point;                 // 포인트 
+	
+	private int mileage;               // 마일리지
 	private String registerday;        // 가입일자 
 	private String lastpwdchangedate;  // 마지막으로 암호를 변경한 날짜  
 	private int status;                // 회원탈퇴유무   1: 사용가능(가입중) / 0:사용불능(탈퇴) 
@@ -44,26 +44,52 @@ public class MemberVO {
 		return userid;
 	}
 	
+	public String getPw() {
+		return pw;
+	}
+
+	public void setPw(String pw) {
+		this.pw = pw;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getDetail_address() {
+		return detail_address;
+	}
+
+	public void setDetail_address(String detail_address) {
+		this.detail_address = detail_address;
+	}
+
+	public String getExtra_address() {
+		return extra_address;
+	}
+
+	public void setExtra_address(String extra_address) {
+		this.extra_address = extra_address;
+	}
+
+	public int getMileage() {
+		return mileage;
+	}
+
+	public void setMileage(int mileage) {
+		this.mileage = mileage;
+	}
+
 	public void setUserid(String userid) {
 		this.userid = userid;
 	}
 	
-	public String getPwd() {
-		return pwd;
-	}
 	
-	public void setPwd(String pwd) {
-		this.pwd = pwd;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
+
 	public String getEmail() {
 		return email;
 	}
@@ -96,22 +122,7 @@ public class MemberVO {
 		this.address = address;
 	}
 	
-	public String getDetailaddress() {
-		return detailaddress;
-	}
-	
-	public void setDetailaddress(String detailaddress) {
-		this.detailaddress = detailaddress;
-	}
-	
-	public String getExtraaddress() {
-		return extraaddress;
-	}
-	
-	public void setExtraaddress(String extraaddress) {
-		this.extraaddress = extraaddress;
-	}
-	
+
 	public String getGender() {
 		return gender;
 	}
@@ -128,22 +139,6 @@ public class MemberVO {
 		this.birthday = birthday;
 	}
 	//////////////////////////////////////////////////////////////////////////////////////////
-
-	public int getCoin() {
-		return coin;
-	}
-
-	public void setCoin(int coin) {
-		this.coin = coin;
-	}
-
-	public int getPoint() {
-		return point;
-	}
-
-	public void setPoint(int point) {
-		this.point = point;
-	}
 
 	public String getRegisterday() {
 		return registerday;
