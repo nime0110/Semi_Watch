@@ -48,16 +48,16 @@
             </button>
             <ul class="main-nav__links" style="z-index:9999">
               <li>
-                <a href="#" class="nav-item">Shop</a>
+                <a href="<%= ctxPath %>/index.flex" class="nav-item">HOME</a>
               </li>
               <li>
-                <a href="#" class="nav-item">About us</a>
+                <a href="<%= ctxPath %>/item/itemList.flex" class="nav-item">Shop</a>
               </li>
               <li>
-                <a href="#" class="nav-item">A/S center</a>  
+                <a href="<%= ctxPath %>/about/aboutus.flex" class="nav-item">About us</a>
               </li>
               <li>
-                <a href="#" class="nav-item">임시 메뉴</a>
+                <a href="<%= ctxPath %>" class="nav-item">A/S center</a>  
               </li>
               <li>
                 <a href="#" style="color:white !important; text-decoration: none !important; margin-top:3px;" class="nav-link dropdown-toggle menufont_size text-primary" id="navbarDropdown" data-toggle="dropdown">

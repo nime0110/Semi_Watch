@@ -1,0 +1,29 @@
+@charset "UTF-8";
+
+
+div#userInfo{
+	
+	padding: 3%;
+	border-radius: 20px;
+}
+
+div#edit {
+	border: solid 1px red;
+	margin-left: auto;
+}
+
+
+
+div#shouldmsg{
+	font-size: 10pt;
+	color: red;
+}
+
+ul#advantage li {
+	list-style: none;
+}
+
+div#productInfo {
+	padding-top: 20px important;
+	border: solid 2px black;
+}
