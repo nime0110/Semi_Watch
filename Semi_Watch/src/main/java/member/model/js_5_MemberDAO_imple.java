@@ -20,7 +20,7 @@ import util.security.AES256;
 import util.security.SecrectMyKey;
 import util.security.Sha256;
 
-public class js_5_MemberDAO_imple implements ky_1_MemberDAO {
+public class js_5_MemberDAO_imple implements js_5_MemberDAO {
 	
 	// DB에 사용되는 객체
 	private DataSource ds; // DataSource ds 는 아파치톰캣이 제공하는 DBCP(DB Connection Pool)이다.

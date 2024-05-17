@@ -1,29 +1,29 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%
 	String ctxPath = request.getContextPath();
 %>
 <!DOCTYPE html>
 <html>
 <head>
-<title>2Á¶ È¨ÆäÀÌÁö</title>
+<title>2ì¡° í™ˆí˜ì´ì§€</title>
 
-<%-- °ø¿ë ºÎÆ®½ºÆ®·¦ --%>
+<%-- ê³µìš© ë¶€íŠ¸ìŠ¤íŠ¸ë© --%>
 <link href="<%= ctxPath%>/bootstrap-4.6.2-dist/css/bootstrap.min.css" rel="stylesheet">
 
-<%-- °ø¿ë Á¦ÀÌÄõ¸®/ºÎÆ®½ºÆ®·¦ --%>
+<%-- ê³µìš© ì œì´ì¿¼ë¦¬/ë¶€íŠ¸ìŠ¤íŠ¸ë© --%>
 <script src="<%= ctxPath%>/js/jquery-3.7.1.min.js" type="text/javascript"></script>
 <script src="<%= ctxPath%>/bootstrap-4.6.2-dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
 
-<%-- Çì´õ¿ë CSS <¼öÁ¤±İÁö> --%>
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/normalize.css" />
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/main.css" />
+<%-- í—¤ë”ìš© CSS <ìˆ˜ì •ê¸ˆì§€> --%>
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/normalize.css" class="headerCss" />
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/main.css"  class="headerCss"/>
 
-<%-- Çì´õ¿ë JS <¼öÁ¤±İÁö> --%>
-<script type="text/javascript" src="<%= ctxPath%>/js/header/cart.js"></script>
-<script type="text/javascript" src="<%= ctxPath%>/js/header/main.js"></script>
+<%-- í—¤ë”ìš© JS <ìˆ˜ì •ê¸ˆì§€> --%>
 <script type="text/javascript" src="<%= ctxPath%>/js/header/products.js"></script>
-
+<script type="text/javascript" src="<%= ctxPath%>/js/header/cart.js"></script>
+<script type="text/javascript" src="<%= ctxPath%>/js/header/focusable-lightbox.js"></script>
+<script type="text/javascript" src="<%= ctxPath%>/js/header/main.js"></script>
 
 </head>
 <body>
@@ -32,10 +32,12 @@
     <div class="top-header__left">
       <button class="nav-btn" type="button" aria-controls="main-nav" aria-expanded="false">
         <span class="sr-only">Menu button</span>
-        <img src="images/icon-menu.svg" alt="" role="presentation">
+        <img src="<%= ctxPath%>/images/header/icon-menu.svg" alt="" role="presentation">
       </button>
       <h1 class="logo">
-        <a href="index.html" class="invisible" tabindex="0" >sneakers</a>
+        <a href="index.html" class="invisible" tabindex="0">
+        <img src="<%= ctxPath%>/images/header/watch.svg">
+        </a>
       </h1>
         <nav class="main-nav" id="main-nav" aria-label="Main menu">
           <div class="main-nav__content-container">
@@ -43,45 +45,64 @@
               <span class="sr-only">Close menu</span>
               <span class="icon icon-close" aria-hidden="true"></span>
             </button>
-            <ul class="main-nav__links">
+            <ul class="main-nav__links" style="z-index:9999">
               <li>
-                <a href="#" class="nav-item">Home</a>
+                <a href="<%= ctxPath %>/index.flex" class="nav-item">HOME</a>
               </li>
               <li>
-                <a href="#" class="nav-item">Shop</a>
+                <a href="<%= ctxPath %>/item/itemList.flex" class="nav-item">Shop</a>
               </li>
               <li>
-                <a href="#" class="nav-item">About us</a>
+                <a href="<%= ctxPath %>/about/aboutus.flex" class="nav-item">About us</a>
               </li>
               <li>
-                <a href="#" class="nav-item">ÀÓ½Ã ¸Ş´º</a>
+                <a href="<%= ctxPath %>/serviceCenter.flex" class="nav-item">A/S center</a>  
               </li>
               <li>
-                <a href="#" class="nav-item">Contact Us</a>
+                <a href="#" style="color:white !important; text-decoration: none !important; margin-top:3px;" class="nav-link dropdown-toggle menufont_size text-primary" id="navbarDropdown" data-toggle="dropdown">
+                	ê´€ë¦¬ìì „ìš©
+                </a>
+                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+	                 <a class="dropdown-item text-primary" href="<%=ctxPath%>/member/memberList.flex">íšŒì›ëª©ë¡</a>
+	                 <a class="dropdown-item text-primary" href="#">ì œí’ˆë“±ë¡</a>
+	                 <div class="dropdown-divider"></div>
+	                 <a class="dropdown-item text-primary" href="#">ì „ì²´ì£¼ë¬¸ë‚´ì—­</a>
+              	 </div>
               </li>
             </ul>
           </div>
         </nav>
     </div>
-    <%-- cart start --%>
+    <%-- wishList start --%>
     <div class="top-header__right">
       <button class="top-header__btn-cart" type="button" aria-controls="cart-section" aria-expanded="false">
-        <span class="sr-only">Button cart</span>
+        <span class="sr-only">Button wishlist</span>
         <span class="icon icon-cart" aria-hidden="true"></span>
         <span class="items-quantity">
           <span class="value">0</span><span class="sr-only">items</span>
         </span>
       </button>
+      <a href="<%= ctxPath %>/item/itemCart.flex">
+        <img src="<%= ctxPath%>/images/header/icon-cart.svg" style="margin-right:30px;" role="presentation">
+      </a>
+    <%-- user start --%>
+      <a href="<%= ctxPath %>/login/login.flex">
+        <img src="<%= ctxPath%>/images/header/user.svg" style="margin-right:30px;" role="presentation">
+      </a>
       <button class="user-container" type="button" aria-label="User section">
-        <img src="images/image-avatar.png" alt="" class="user-container__img" role="presentation">
+        <img src="<%= ctxPath%>/images/member/usernormal.jpg" alt="" class="user-container__img" role="presentation">
       </button>
+    <%-- user end --%>
     </div>
     <section class="cart-section" id="cart-section" aria-live="polite">
-      <h3 class="cart-section__title">Cart</h3>
+      <h3 class="cart-section__title">ìœ„ì‹œë¦¬ìŠ¤íŠ¸</h3>
       <div class="cart-section__body">
-        <p class="empty-msg">Your cart is empty.</p>
+        <p class="empty-msg">ìœ„ì‹œë¦¬ìŠ¤íŠ¸ê°€ ë¹„ì–´ìˆìŠµë‹ˆë‹¤. <br>ì¢‹ì•„í•˜ëŠ” ìƒí’ˆì„ ì°œí•´ë³´ì„¸ìš”!</p>
         <ul class="cart-section__products"></ul>
         <button type="button" class="cart-section__btn-checkout">Checkout</button>
+      </div>
+      <div style="display:flex; flex-direction: column; border-radius:0px !important;">  
+	    <button class="btn btn-dark">ì¥ë°”êµ¬ë‹ˆë¡œ ì´ë™í•˜ê¸°</button>
       </div>
     </section>
     <%-- cart end  --%>

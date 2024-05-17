@@ -37,6 +37,7 @@ CREATE TABLE tbl_member (
 	status NUMBER(1) DEFAULT 1 NOT NULL, /* 회원탈퇴유무 */
 	idle NUMBER(1) DEFAULT 0 NOT NULL, /* 휴면유무 */
 	mileage NUMBER(10) DEFAULT 0, /* 마일리지 */
+    userimg varchar2(200) default 'usernomal.jpg',
     CONSTRAINT PK_TBL_MEMBER_USERID PRIMARY KEY (USERID), -- userid 기본키 설정
     CONSTRAINT UQ_TBL_MEMBER_MOBILE UNIQUE(MOBILE),         -- mobile 유니크키 설정
     CONSTRAINT UQ_TBL_MEMBER_EMAIL UNIQUE(EMAIL),           -- email 유니크키 설정
@@ -47,8 +48,6 @@ CREATE TABLE tbl_member (
 -- Table TBL_MEMBER이(가) 생성되었습니다.
 
 
-    
-    
 
 /* 상품 */
 CREATE TABLE tbl_product (
