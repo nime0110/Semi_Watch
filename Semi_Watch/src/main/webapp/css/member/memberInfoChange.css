@@ -1,0 +1,48 @@
+@charset "UTF-8";
+
+nav#header {
+	position:sticky;
+	top:0;
+    z-index: 9999;
+}
+
+
+div#topBar{
+	background-color: black;
+	color: white;		
+}
+
+h2#myPage {
+	font-weight:  bold;
+	margin-left: 2%;
+}
+
+ul#menu>li>a{
+	color: black;
+}
+
+span#menu_first{
+	font-weight: bold;
+}
+
+label#selectPicture{
+	margin-right: 12px; 
+	margin-bottom: 0;
+}
+
+button#change_btn{
+	width: 150px;
+}
+
+button#twobtn {
+	width: 60px;
+	margin-right: 10px;
+}
+
+
+
+
+
+
+
+
