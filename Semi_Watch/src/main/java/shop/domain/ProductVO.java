@@ -9,7 +9,6 @@ public class ProductVO {
 	private String  pimage1;    // 제품이미지1   이미지파일명
 	private int 	price;      // 제품 정가
 	private int 	saleprice;  // 제품 판매가(할인해서 팔 것이므로)
-	private String  category;	// 제품 카테고리(남성용,여성용,악세사리)
 	private String 	pd_content; // 제품설명 
 	private int 	point;      // 제품구매시 적립되는 포인트(마일리지)    
 	private int     pdstatus;	// 제품상태(등록중, 비등록중)
@@ -57,7 +56,6 @@ public class ProductVO {
 		this.pimage1 = pimage1;
 		this.price = price;
 		this.saleprice = saleprice;
-		this.category = category;
 		this.point = point;
 		this.pdstatus = pdstatus;
 		this.pdinputdate = pdinputdate;
@@ -118,14 +116,6 @@ public class ProductVO {
 
 	public void setSaleprice(int saleprice) {
 		this.saleprice = saleprice;
-	}
-
-	public String getCategory() {
-		return category;
-	}
-
-	public void setCategory(String category) {
-		this.category = category;
 	}
 
 	public String getPd_content() {

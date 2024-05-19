@@ -10,7 +10,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-public class ky_1_ReviewDAO_imple implements ky_1_ReviewDAO {
+public class sw_4_ReviewDAO_imple implements sw_4_ReviewDAO {
 	
 	// DB에 사용되는 객체
 		private DataSource ds; // DataSource ds 는 아파치톰캣이 제공하는 DBCP(DB Connection Pool)이다.
@@ -23,7 +23,7 @@ public class ky_1_ReviewDAO_imple implements ky_1_ReviewDAO {
 		
 		// DB Connection Pool.txt 파일내용을 복붙한 내용
 		// 생성자
-		public ky_1_ReviewDAO_imple() {
+		public sw_4_ReviewDAO_imple() {
 			
 			try {
 			Context initContext = new InitialContext();
