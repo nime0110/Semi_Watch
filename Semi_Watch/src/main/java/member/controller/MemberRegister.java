@@ -30,7 +30,7 @@ public class MemberRegister extends AbstractController {
 		}
 		
 		else {
-			String name = request.getParameter("username");
+			String username = request.getParameter("username");
 			String userid = request.getParameter("userid");
 			String pw = request.getParameter("pw");
 			String email = request.getParameter("email");
@@ -39,8 +39,8 @@ public class MemberRegister extends AbstractController {
 			String hp3 = request.getParameter("hp3");
 			String postcode = request.getParameter("postcode");
 			String address = request.getParameter("address");
-			String detailaddress = request.getParameter("detail_address");
-			String extraaddress = request.getParameter("extra_address");
+			String detailaddress = request.getParameter("detailAddress");
+			String extraaddress = request.getParameter("extraAddress");
 			String gender = request.getParameter("gender");
 			String birthday = request.getParameter("birthday");
 			
@@ -49,7 +49,7 @@ public class MemberRegister extends AbstractController {
 			MemberVO member = new MemberVO();
 			member.setUserid(userid);
 			member.setPw(pw);
-			member.setUsername(name);
+			member.setUsername(username);
 			member.setEmail(email);
 			member.setMobile(mobile);
 			member.setPostcode(postcode);
@@ -69,7 +69,7 @@ public class MemberRegister extends AbstractController {
 				
 				if(n == 1) {
 					message = "회원가입 성공";
-					loc = request.getContextPath()+"/index.up"; // 시작페이지로 이동한다.
+					loc = request.getContextPath()+"/index.flex"; // 시작페이지로 이동한다.
 				}
 				
 			} catch (SQLException e) {
@@ -95,7 +95,7 @@ public class MemberRegister extends AbstractController {
 					request.setAttribute("pw", pw);
 					
 					super.setRedirect(false);
-					super.setViewPage("/WEB-INF/login/memberRegister_after_autoLogin.jsp");
+					super.setViewPage("/WEB-INF/login/goLogin.jsp");
 				}
 				
 			} catch (SQLException e) {	

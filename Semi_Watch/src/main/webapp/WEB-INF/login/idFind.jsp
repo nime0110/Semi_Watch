@@ -75,7 +75,7 @@ $(document).ready(function(){
 		}
 		
 		const frm = document.idFindFrm;
-		frm.action = "<%=ctxPath%>/login/idFind.up";
+		frm.action = "<%=ctxPath%>/login/idFind.flex";
 		frm.method = "post";
 		frm.submit();
 	

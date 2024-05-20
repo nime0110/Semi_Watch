@@ -78,7 +78,7 @@
 			
 			const frm = document.memberOneDetail_frm;
 			frm.userid.value = userid;
-			frm.action = "${pageContext.request.contextPath}/member/memberOneDetail.up"; 
+			frm.action = "${pageContext.request.contextPath}/member/memberOneDetail.flex"; 
 			frm.method = "post";
 			frm.submit();
 		})

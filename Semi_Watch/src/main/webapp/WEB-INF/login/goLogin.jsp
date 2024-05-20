@@ -75,13 +75,13 @@ input.form-check-input{
                   <div class="d-flex flex-row align-items-center mb-4">
                     <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                     <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                      <input type="email" id="form3Example3c" class="form-control" placeholder="PASSWORD"/>
+                      <input type="password" id="form3Example3c" class="form-control" placeholder="PASSWORD"/>
                       <label class="form-label" for="form3Example3c" style="display:none">Your PASSWORD</label>
                     </div>
                   </div>         
 
                   <div class="form-check d-flex justify-content-center mb-5" id="rememberiddiv">
-                    <input class="form-check-input me-2" type="checkbox" value="" id="saveid" />
+                    <input class="form-check-input me-2" type="checkbox" id="saveid" />
                     <label class="form-check-label" for="saveid">
                       Remember ID 
                     </label>

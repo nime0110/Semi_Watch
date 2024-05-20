@@ -57,3 +57,12 @@ insert into tbl_member (userid, username, email, pw, mobile, address, detail_add
 birthday, gender)
 values ('kimkh', '김경현', 'sgRjKPj1rNWRP1IWRFtg4A==', '9695b88a59a1610320897fa84cb7e144cc51f2984520efb77111d94b402a8382',
 'aJ3vlstFXDdjq0SvwGkNYQ==', '경기 군포시 오금로 15-17', '101동 102호', ' (금정동)', '15864', '2001-10-11', '1');
+
+select *
+from tbl_loginhistory;
+
+select *
+from tbl_member
+where userid = 'kimkh2';
+
+commit;

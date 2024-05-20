@@ -165,7 +165,7 @@ body > div.container {
 
 <div class="container" id="registerdiv">
 
-    <form class="well form-horizontal" action=" " method="post"  id="contact_form">
+    <form class="well form-horizontal" name="registerFrm" id="contact_form">
 <fieldset>
 
 <!-- Form Name -->
@@ -177,7 +177,7 @@ body > div.container {
   <label class="col-md-4 control-label">성명</label>  
   <div class="col-md-4 inputGroupContainer">
   	<div class="input-group">
-	  <input name="name" class="form-control requiredInfo" id="name" type="text"/>
+	  <input name="username" class="form-control requiredInfo" id="name" type="text"/>
     </div>
     <span class="error">성명은 필수입력 사항입니다.</span>
   </div>
@@ -187,13 +187,15 @@ body > div.container {
 
 <div class="form-group">
   <label class="col-md-4 control-label" >아이디</label> 
-    <div class="col-md-4 inputGroupContainer">
+  <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
 	  <input name="userid" class="form-control requiredInfo" id="userid" type="text"/>
-	  <span type="button" id="idcheck">아이디중복확인</span>
-	  <span id="idCheckResult"></span>
+	  
+	  <%-- 아이디중복체크 --%>	  
+	  <span id="idcheck">아이디중복확인</span>
     </div>
     <span class="error">아이디는 필수입력 사항입니다.</span>
+    <span id="idCheckResult"></span>
   </div>
 </div>
 
@@ -203,7 +205,7 @@ body > div.container {
   <label class="col-md-4 control-label" >비밀번호</label> 
     <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
-  <input name="pwd" class="form-control requiredInfo" id="pwd" maxlength="15" type="password"/>
+  <input name="pw" class="form-control requiredInfo" id="pwd" maxlength="15" type="password"/>
     </div>
     <span class="error">암호는 영문자,숫자,특수기호가 혼합된 8~15 글자로 입력하세요.</span>
   </div>
@@ -229,10 +231,10 @@ body > div.container {
   <input name="email" class="form-control requiredInfo" id="email" maxlength="60" type="text"/>
   
   <%-- 이메일중복체크 --%>
-  <span type="button" id="emailcheck">이메일중복확인</span>
-  <span id="emailCheckResult"></span>
+  <span id="emailcheck">이메일중복확인</span>
     </div>
     <span class="error">이메일 형식에 맞지 않습니다.</span>
+    <span id="emailCheckResult"></span>
   </div>
 </div>
 
@@ -243,9 +245,9 @@ body > div.container {
   <label class="col-md-4 control-label">연락처</label>  
     <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
-  <input name="hp1" class="form-control" id="hp1" size="6" mexlength="3" value="010" readonly type="text"/>&nbsp;-&nbsp;
-  <input name="hp2" class="form-control" id="hp2" size="6" mexlength="4" type="text"/>&nbsp;-&nbsp;
-  <input name="hp3" class="form-control" id="hp3" size="6" mexlength="4" type="text"/>
+  <input name="hp1" class="form-control" id="hp1" size="6" maxlength="3" value="010" readonly type="text"/>&nbsp;-&nbsp;
+  <input name="hp2" class="form-control" id="hp2" size="6" maxlength="4" type="text"/>&nbsp;-&nbsp;
+  <input name="hp3" class="form-control" id="hp3" size="6" maxlength="4" type="text"/>
     </div>
     <span class="error">휴대폰 형식이 아닙니다.</span>
   </div>
@@ -259,7 +261,7 @@ body > div.container {
     <div class="input-group">
   <input name="postcode" class="form-control" id="postcode" size="6" type="text"/>
   <%-- 우편번호 찾기 --%>
-  <span type="button" id="zipcodeSearch">우편번호 찾기</span>
+  <span id="zipcodeSearch">우편번호 찾기</span>
     </div>
     <span class="error">우편번호 형식에 맞지 않습니다.</span>
   </div>

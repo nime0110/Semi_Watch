@@ -14,7 +14,7 @@ $(document).ready(function(){
 	$("input#name").focus();
 	
 	// 성명
-	$("input#name").blur( (e) =>{
+	$("input#name").blur( (e) => {
 		
 		const name = $(e.target).val().trim();
 		if(name == ""){
@@ -32,22 +32,22 @@ $(document).ready(function(){
 	
 	
 	// 아이디
-	$("input#userid").blur( (e) =>{
-		
-		const userid = $(e.target).val().trim();
-		if(name == ""){
-			// 입력하지 않거나 공백일 떄
-			$(e.target).parent().parent().find("span.error").show();
-			
-		}
-		else{
-			// 공백이 아닌 글자를 입력했을 때
-			$(e.target).parent().parent().find("span.error").hide();
-		}
-		
-		
-	});// 아이디 포커스를 잃었을 경우 이벤트
-	
+	$("input#userid").blur( (e) => {
+
+        const userid = $(e.target).val().trim();
+
+        if(userid == ""){
+            // 입력하지 않거나 공백일 때 
+            $(e.target).parent().parent().find("span.error").show();
+
+        } 
+        else{
+            // 공백이 아닌 글자를 입력했을 때
+            $(e.target).parent().parent().find("span.error").hide();
+        }
+
+    });// 아이디 포커스를 잃었을 경우 이벤트
+    
 	
 	// 비밀번호
 	$("input#pwd").blur( (e) => { 
@@ -111,7 +111,6 @@ $(document).ready(function(){
             // 이메일이 정규표현식에 부합하는 경우
             $(e.target).parent().parent().find("span.error").hide();
         }
-
 
     }); // 이메일 포커스를 잃었을 경우 이벤트
     
@@ -397,7 +396,7 @@ $(document).ready(function(){
                 // text =>  {"isExists":true}
                 // text =>  {"isExists":false}
 
-                // text 는 idDuplicateCheck.up 을 통해 가져온 결과물인 "{"isExists":true}" 또는 "{"isExists":false}" 로 되어지는 string 타입의 결과물이다.
+                // text 는 idDuplicateCheck.flex 을 통해 가져온 결과물인 "{"isExists":true}" 또는 "{"isExists":false}" 로 되어지는 string 타입의 결과물이다.
                 
                 console.log("~~~ text의 데이터타입 : ", typeof text);
                 // ~~~ text의 데이터타입 :  string
@@ -450,13 +449,22 @@ $(document).ready(function(){
                 
                 if(json.isExists){
                     // 입력한 userid 가 이미 데이터베이스에 저장되어 있다면
-                    $("span#idcheckResult").html( $("input#userid").val() + " 은 이미 사용중 이므로 다른 아이디를 입력하세요").css({"color":"red"});
+                    $("span#idCheckResult").html( $("input#userid").val() + " 은 이미 사용중 이므로 다른 아이디를 입력하세요").css({"color":"red"});
                     $("input#userid").val("");
                 }
                 else{
-                    // 입력한 userid 가 이미 데이터베이스에 없다면
-                    $("span#idcheckResult").html( $("input#userid").val() + " 은 사용가능합니다.").css({"color":"navy"});
 
+                    const userid = $("input#userid").val().trim();
+
+                    if( userid == ""){
+                        $("span#idCheckResult").html("아이디 값이 존재하지 않습니다!!").css({"color":"red"});
+                    }
+
+                    else{
+                        // 입력한 userid 가 이미 데이터베이스에 없다면
+                        $("span#idCheckResult").html( $("input#userid").val() + " 은 사용가능합니다.").css({"color":"navy"});
+                    }
+                    
                 }
 
 
@@ -508,7 +516,7 @@ $(document).ready(function(){
                 // text =>  {"isExists":true}
                 // text =>  {"isExists":false}
 
-                // text 는 emailDuplicateCheck.up 을 통해 가져온 결과물인 "{"isExists":true}" 또는 "{"isExists":false}" 로 되어지는 string 타입의 결과물이다.
+                // text 는 emailDuplicateCheck.flex 을 통해 가져온 결과물인 "{"isExists":true}" 또는 "{"isExists":false}" 로 되어지는 string 타입의 결과물이다.
                 
                 console.log("~~~ text의 데이터타입 : ", typeof text);
                 // ~~~ text의 데이터타입 :  string
@@ -527,9 +535,17 @@ $(document).ready(function(){
                     $("input#email").val("");
                 }
                 else{
-                    // 입력한 email 가 이미 데이터베이스에 없다면
-                    $("span#emailCheckResult").html( $("input#email").val() + " 은 사용가능합니다.").css({"color":"navy"});
 
+                    const email = $("input#email").val().trim();
+
+                    if( email == ""){
+                        $("span#emailCheckResult").html("이메일 값이 존재하지 않습니다!!").css({"color":"red"});
+                    }
+
+                    else{
+                        // 입력한 email 가 이미 데이터베이스에 없다면
+                        $("span#emailCheckResult").html( $("input#email").val() + " 은 사용가능합니다.").css({"color":"navy"});
+                    }
                 }
 
 
@@ -539,6 +555,8 @@ $(document).ready(function(){
             }
 
         });
+
+        
 
 
     });
@@ -588,7 +606,7 @@ function goRegister() {
     for(let i=0; i<requiredInfo_list.length; i++){
         const val = requiredInfo_list[i].value.trim();
         if(val == ""){
-            alert("* 표시된 필수입력사항은 모두 입력하셔야 합니다.");
+            alert("성명, 아이디, 비밀번호, 이메일 필수입력사항들은 모두 입력하셔야 합니다.");
             b_requiredinfo = false;
             break; // break; 반복문 빠져나가기 
         } 
