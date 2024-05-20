@@ -107,7 +107,7 @@ alter table tbl_loginhistory modify clientip default '127.0.0.1';
 
 /* 상품추가이미지 */
 CREATE TABLE tbl_product_img (
-	img_no NUMBER NOT NULL, /* 이미지번호 */
+	img_no varchar2 (20) NOT NULL, /* 이미지번호 */
 	fk_pdno VARCHAR2(30), /* 상품코드 */
 	pd_extraimg VARCHAR2(50), /* 상품추가이미지 */
     CONSTRAINT PK_TBL_PRODUCT_IMG_IMG_NO PRIMARY KEY (IMG_NO), -- 상품설명페이지 들어가는 추가이미지 기본키
@@ -196,12 +196,26 @@ CREATE TABLE tbl_review (
 	pdimg1 VARCHAR2(50) DEFAULT 'noimg.png', /* 상품이미지 */
 	pd_content NVARCHAR2(1000), /* 상품상세내용 */
 	pdinputdate DATE DEFAULT sysdate NOT NULL, /* 상품등록일자 */
-	pdstatus NUMBER(1) DEFAULT 1, /* 상품상태 */
-    point
+	pdstatus NUMBER(1) DEFAULT 1, /* 상품상태 1은 신상품, 2는 일반상품, 3은 인기상품*/
+    point /* 상품 구매시 적립포인트 */
     
-    select pdno, pdname,brand,price,saleprice,pdimg1
-    from tbl_product
-    where pdstatus = 1;
+    
+    select rno , pdno, pdname,brand,price,saleprice,pdimg1
+    from 
+    ( 
+        select rownum as rno, pdno, pdname,brand,price,saleprice,pdimg1
+        from 
+        ( 
+            select rownum,pdno, pdname,brand,price,saleprice,pdimg1
+            from tbl_product 
+            where pdstatus = 1 
+            order by pdno desc 
+        ) v 
+    ) T 
+    where T.rno between ? and ? ;
+    
+    select * from tbl_product where * = 'p';
+   
     
     insert into tbl_product(pdno, pdname, brand, price,saleprice, pdimg1, pd_content , category, point)
     values(seq_tbl_product_pdno.nextval, 'EFV-C120D-1ADF', 'G-SHOCK', 165000, 145000, seq_tbl_product_pdno.nextval || '_thum.png',
@@ -236,7 +250,7 @@ CREATE TABLE tbl_review (
 
     insert into tbl_product(pdno, pdname, brand, price,saleprice, pdimg1, pd_content ,  point)
     values(seq_tbl_product_pdno.nextval, 'GMT-MASTER II', '롤렉스', 23080000 , 2308000, seq_tbl_product_pdno.nextval || '_thum.png',
-    '이 모델은 블랙 다이얼과 두 가지 색상이 어우러진 그레이 및 블랙 세라믹 소재의 세라크롬 베젤 인서트를 장착하고 있습니다. GMT-마스터 II는 12시간을 기준으로 하는 일반적인 시, 분, 초침 외에도 24시간용 시침 및 24시간이 음각으로 표시된 양방향 회전 베젤을 장착하고 있습니다. 눈에 띄는 컬러로 표시된 24시간용 시침이 가리키는 베젤의 눈금을 통해 제1시간대의 “본국 시각”을 확인할 수 있습니다. 여행지 현지 시각은 와인딩 크라운의 독창적인 메커니즘을 통해 매우 간편하게 조정됩니다. 시침은 분침과 초침에 영향을 주지 않고 독립적으로 움직이기 때문에 정밀한 타임키핑에 영향을 미치지 않고 새로운 시간대를 적용할 수 있습니다.'
+    '이 모델은 블랙 다이얼과 두 가지 색상이 어우러진 그레이 및 블랙 세라믹 소재의 세라크롬 베젤 인서트를 장착하고 있습니다. GMT-마스터 II는 12시간을 기준으로 하는 일반적인 시, 분, 초침 외에도 24시간용 시침 및 24시간이 음각으로 표시된 양방향 회전 베젤을 장착하고 있습니다. 눈에 띄는 컬러로 표시된 24시간용 시침이 가리키는 베젤의 눈금을 통해 제1시간대의 “본국 시각”을 확인할 수 있습니다. 시침은 분침과 초침에 영향을 주지 않고 독립적으로 움직이기 때문에 정밀한 타임키핑에 영향을 미치지 않고 새로운 시간대를 적용할 수 있습니다.' 
      , 23080);
      commit; 
      
@@ -545,12 +559,43 @@ CREATE TABLE tbl_review (
     , 1800);
     commit;
     
+   -- test 상품상세코드
+   
+   create sequence seq_test_pdno
+    start with 1
+    increment by 1
+    nomaxvalue
+    nominvalue
+    nocycle
+    nocache;
+   
+   insert into tbl_pd_detail (pd_detailno, fk_pdno, color, pd_qty) values('d' || seq_test_pdno.nextval , 3, '블랙',20); 
+    commit;
+    insert into tbl_pd_detail (pd_detailno, fk_pdno, color, pd_qty) values('d' || seq_test_pdno.nextval , 3, '화이트',25); 
+    commit;
+    insert into tbl_pd_detail (pd_detailno, fk_pdno, color, pd_qty) values('d' || seq_test_pdno.nextval , 3, '핑크',15); 
+    commit;
+    
+    select pdno, pdname, pd_content, price, saleprice, pd_qty, color
+    from tbl_product P join tbl_pd_detail D
+    on P.pdno = D.fk_pdno;
+    
+
+    select * from tbl_product_img;
+    insert into tbl_product_img (img_no, fk_pdno, pd_extraimg) values ('e' || seq_test_pdno.nextval , 3 , '3_extra_1.png');
+    commit;
+     insert into tbl_product_img (img_no, fk_pdno, pd_extraimg) values ('e' || seq_test_pdno.nextval , 3 , '3_extra_2.png');
+    commit;
+     insert into tbl_product_img (img_no, fk_pdno, pd_extraimg) values ('e' || seq_test_pdno.nextval , 3 , '3_extra_3.png');
+    commit;
+    
+    select pd_extraimg
+    from tbl_product_img
+    where fk_pdno = 3
     
     
     
     
-    
-     
      
      
      

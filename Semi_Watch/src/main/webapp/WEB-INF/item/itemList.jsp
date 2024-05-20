@@ -150,6 +150,14 @@ String ctxPath = request.getContextPath();
 	margin: 3% 10% 3% 0;
 }
 
+.shop-thumb_sale {
+	
+	color: red;
+	font-size: 11pt;
+	font-weight: bolder;
+	text-align: right;
+	margin: 3% 10% 3% 0;
+}
 
 
 ul.pagination li {
@@ -222,52 +230,67 @@ ul.pagination li {
 <script>
 	$(document).ready(function(){
 	
-	    
-
-
+		// 브랜드 탭을 클릭했을때 폼태그에 담아서 전송하기
 		$("div.sidebar a").click(function(e){
 			
 			e.preventDefault();
 			
 			$("div.sidebar a").removeClass("active");
 	        
-		
 			// console.log($(e.target).text());
 			
 			const brand = $(e.target).text();
 			
+			// 세션스토리지에 setItem('brand', brand);
+			sessionStorage.setItem('brand', brand);
+			
+			$("input:hidden[name='sort']").val("신상품순");
+			
 			$("input:hidden[name='brand']").val(brand);
-	
+			
 			const frm = document.hiddensend;
 			
-			frm.action = "itemList.flex"
+			frm.action = "itemList.flex";
+			
 			frm.submit();
-			$(e.target).addClass("active");
 			
 		}); // end of $("div.sidebar a").click(function(e){})
 		
+		
+		// 정렬 탭을 클릭했을때 폼태그에 담아서 전송하기
 		$("ul.shop_sorting li a").click(function(e){
 		
 			e.preventDefault();
 
 			$("ul.shop_sorting li a").removeClass("active");
+			
 	        $(e.target).addClass("active");
 			
 			// console.log($(e.target).text());
+			
+			// 세션스토리지에 const brand = .getItem('brand');
+			const brand = sessionStorage.getItem('brand');
+			
+			$("input:hidden[name='brand']").val(brand);
 			
 			const sort = $(e.target).text();
 			
 			$("input:hidden[name='sort']").val(sort);
 
+			
 			const frm = document.hiddensend;
 			
-			frm.action = "itemList.flex"
+			// console.log("brand", frm.brand.value);
+			// console.log("sort", frm.sort.value);
+			
+			frm.action = "itemList.flex";
+			
 			frm.submit();
 			
-		});
+		}); // end of $("ul.shop_sorting li a").click(function(e){})
 		
 		
-	});
+	}); // end of $(document).ready(function(){})
 		
 </script>
 
@@ -275,11 +298,6 @@ ul.pagination li {
 	<div class="row">
 		<div class="col-sm-4 col-md-3">
 
-			
-			<!-- Filter -->
-			
-			
-			
 			<div class="well">
 				<div class="row">
 					<div class="col-sm-12">
@@ -294,16 +312,31 @@ ul.pagination li {
 				</div>
 			</div>
 			
+			<!-- Filter -->
 			<form class="shop_filter col-sm-8 col-md-9">
 			    <div class="sidebar">
 			        <h2 class="py-3">브랜드</h2>
 			        <c:set var="brand" value="${requestScope.brand}" />
 			        
-			        <a href="?brand=전체보기" class="<c:choose><c:when test='${brand == "전체보기"}'>active</c:when><c:otherwise></c:otherwise></c:choose>">전체보기</a>
-			        <a href="?brand=G-SHOCK" class="<c:choose><c:when test='${brand == "G-SHOCK"}'>active</c:when><c:otherwise></c:otherwise></c:choose>">G-SHOCK</a>
-			        <a href="?brand=카시오" class="<c:choose><c:when test='${brand == "카시오"}'>active</c:when><c:otherwise></c:otherwise></c:choose>">카시오</a>
-			        <a href="?brand=롤렉스" class="<c:choose><c:when test='${brand == "롤렉스"}'>active</c:when><c:otherwise></c:otherwise></c:choose>">롤렉스</a>
-			        <a href="?brand=세이코" class="<c:choose><c:when test='${brand == "세이코"}'>active</c:when><c:otherwise></c:otherwise></c:choose>">세이코</a>
+			        <a href="?brand=전체보기" class="<c:choose>
+			        	<c:when test='${brand == "전체보기"}'>active</c:when>
+			        	</c:choose>">전체보기</a>
+			        	
+			        <a href="?brand=G-SHOCK" class="<c:choose>
+				        <c:when test='${brand == "G-SHOCK"}'>active</c:when>
+				        </c:choose>">G-SHOCK</a>
+				        
+			        <a href="?brand=카시오" class="<c:choose>
+				        <c:when test='${brand == "카시오"}'>active</c:when>
+				        </c:choose>">카시오</a>
+				        
+			        <a href="?brand=롤렉스" class="<c:choose>
+				        <c:when test='${brand == "롤렉스"}'>active</c:when>
+				        </c:choose>">롤렉스</a>
+				        
+			        <a href="?brand=세이코" class="<c:choose>
+				        <c:when test='${brand == "세이코"}'>active</c:when>
+				        </c:choose>">세이코</a>
 			    </div>
 			</form>
 
@@ -314,10 +347,19 @@ ul.pagination li {
 			<!-- Filters -->
 			<form>
 			<ul class="shop_sorting d-flex justify-content-end">
-				<li><a href="#">신상품순</a></li>
-				<li><a href="#">인기상품순</a></li>
-				<li><a href="#">높은가격순</a></li>
-				<li><a href="#">낮은가격순</a></li>
+			<c:set var="sort" value="${requestScope.sort}" />
+				<li><a href="#" class="<c:choose>
+				        <c:when test='${sort == "신상품순"}'>active</c:when>
+				        </c:choose>">신상품순</a></li>
+				<li><a href="#" class="<c:choose>
+				        <c:when test='${sort == "인기상품순"}'>active</c:when>
+				        </c:choose>">인기상품순</a></li>
+				<li><a href="#" class="<c:choose>
+				        <c:when test='${sort == "높은가격순"}'>active</c:when>
+				        </c:choose>">높은가격순</a></li>
+				<li><a href="#" class="<c:choose>
+				        <c:when test='${sort == "낮은가격순"}'>active</c:when>
+				        </c:choose>">낮은가격순</a></li>
 			</ul>
 
 			</form>
@@ -334,8 +376,12 @@ ul.pagination li {
 				<c:if test="${not empty requestScope.productList}"> 
 				
 				
-				<c:forEach var="pvo" items="${requestScope.productList}">
+				<c:forEach var="pvo" items="${requestScope.productList}" varStatus="status">
 				
+				          <fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" />
+				          
+				          <fmt:parseNumber var="sizePerPage" value="${requestScope.sizePerPage}" />
+	
 				<div class="col-sm-6 col-md-4">
 					<div class="shop_thumb">
 						<div class="position-relative overflow-hidden">
@@ -350,6 +396,7 @@ ul.pagination li {
 						</a>
 						<div class="shop-thumb_price">정가 : <fmt:formatNumber value="${pvo.price}" type="number" groupingUsed="true"/>원</div>
 						<div class="shop-thumb_saleprice">판매가 : <fmt:formatNumber value="${pvo.saleprice}" type="number" groupingUsed="true"/>원</div>
+						<div class="shop-thumb_sale">${pvo.discountPercent}% 할인</div>
 						<div>
 						
 							<button type="button" class="button btn-Light">
@@ -357,6 +404,9 @@ ul.pagination li {
 							</button>
 							<button type="button" class="button btn-dark">
 								<span>Cart</span>
+							</button>
+							<button type="button" class="btn btn-danger">
+								<i class="fa-solid fa-heart"></i>
 							</button>
 						</div>
 					</div>
@@ -373,16 +423,16 @@ ul.pagination li {
 
 			<!-- Pagination -->
 
-			<div class="row justify-content-center">
-				<div class="text-center">
-					<ul class="pagination">
-						<li><a href="#">«</a></li>
-						<li><a class="page-link" href="#">1</a></li>
-						<li><a class="page-link" href="#">2</a></li>
-						<li><a class="page-link" href="#">3</a></li>
-						<li><a href="#">»</a></li>
-					</ul>
-				</div>
+			<div class="row justify-content-center pt-3">
+				
+				<div id="pageBar">
+			       <nav>
+			          <ul class="pagination">
+			          	<li>${requestScope.pageBar}</li>
+			          </ul>
+			       </nav>
+			    </div>
+				
 			</div>
 			<!-- / .row -->
 
@@ -394,7 +444,7 @@ ul.pagination li {
 	<form name="hiddensend">	
 		<input type="hidden" name="brand" value="">
     	<input type="hidden" name="sort" value=""/>
-	
+		<%-- <input type="hidden" name="searchword" value=""/> --%>
 	</form>
 			
 
