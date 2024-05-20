@@ -1,5 +1,9 @@
 package member.domain;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class MemberVO {
 
 	// < insert 용도 시작>
@@ -17,6 +21,7 @@ public class MemberVO {
 	private String birthday;           // 생년월일
 	// SHA-256 은 단방향 암호화 ==> 즉, 복호화(암호화 해제)를 할수없다! 
 	// AES-256 은 양방향 암호화 ==> 즉, 암호화, 복호화(암호화 해제) 둘다 가능하다.
+	private int age;                    // 나이
 	
 	
 	private int mileage;               // 마일리지
@@ -183,5 +188,62 @@ public class MemberVO {
 		this.requirePwdChange = requirePwdChange;
 	}
 
+	//////////////////////////////////////////////////////////////////////////////////////////
+	//만나이
+
+    public int getAge() { // 만나이 구하기
+    
+    int age = 0;
+    
+    // 회원의 올해생일이 현재날짜 보다 이전이라면 
+    // 만나이 = 현재년도 - 회원의 태어난년도 
+    
+    // 회원의 올해생일이 현재날짜 보다 이후이라면
+    // 만나이 = 현재년도 - 회원의 태어난년도 - 1
+    
+    Date now = new Date(); // 현재시각
+    SimpleDateFormat sdfmt = new SimpleDateFormat("yyyyMMdd");
+    String str_now = sdfmt.format(now); // "20231018"
+    
+    // 회원의 올해생일(문자열 타입)
+    String str_now_birthday = str_now.substring(0, 4) + birthday.substring(5,7) + birthday.substring(8); 
+    //   System.out.println("회원의 올해생일(문자열 타입) : " + str_now_birthday);
+    // 회원의 올해생일(문자열 타입) : 20231020
+    
+    // 회원의 태어난년도
+    int birth_year = Integer.parseInt(birthday.substring(0, 4));
+    
+    // 현재년도
+    int now_year = Integer.parseInt(str_now.substring(0, 4)); 
+    
+    try {
+    Date now_birthday = sdfmt.parse(str_now_birthday); // 회원의 올해생일(연월일) 날짜 타입 
+    now = sdfmt.parse(str_now); // 오늘날짜(연월일) 날짜타입
+    
+    if(now_birthday.before(now)) {
+    // 회원의 올해생일이 현재날짜 보다 이전이라면
+    //   System.out.println("~~~~ 생일 지남");
+    age = now_year - birth_year; 
+    // 나이 = 현재년도 - 회원의 태어난년도
+    }
+    else {
+    // 회원의 올해생일이 현재날짜 보다 이후이라면
+    //   System.out.println("~~~~ 생일 아직 지나지 않음");
+    age = now_year - birth_year - 1;
+    // 나이 = 현재년도 - 회원의 태어난년도 - 1
+    }
+    
+    } catch (ParseException e) {
+    
+    }
+    
+    return age;
+    }
+	
+	
+	
+	
+	
+	
 	
 }
