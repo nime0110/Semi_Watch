@@ -11,6 +11,7 @@
 
 <%-- 회원정보수정 관련 js --%>
 <script type="text/javascript" src="<%= ctxPath%>/js/member/memberInfoChange.js"></script>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <%-- 회원정보수정 관련 css --%>
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/member/memberInfoChange.css" />
@@ -24,9 +25,11 @@ $(document).ready(function() {
         const passwordInput = parent.find('input#confirmPassword');
         
         if (passwordInput.attr('type') == 'password') {
+        	passwordInput.attr('type','text');
             $(e.target).attr("src","<%=ctxPath%>/images/eye-show.png");
         } else {
-            $(e.target).attr("src","<%=ctxPath%>/images/eye-hide.png");
+        	passwordInput.attr('type','password');
+        	$(e.target).attr("src","<%=ctxPath%>/images/eye-hide.png");
         }
     });
       
@@ -79,9 +82,9 @@ $(document).ready(function() {
 	<div class="container-fluid">
 		<div class="row">
 			<%-- 왼쪽 사이드 메뉴 시작--%>
-	        <div class="col-xl-2" id="subject" style="border: solid 1px red" >
+	        <div class="col-xl-2" id="subject" >
 	            <nav class="navbar sticky-top">
-	            	<div style="border: solid 1px red">
+	            	<div>
 				    	<ul class="navbar-nav mt-3" id="menu">
 				    		<li class="mb-1">
 				      			<span class="h5" id="menu_first">나의 쇼핑정보</span>
@@ -121,10 +124,12 @@ $(document).ready(function() {
 				<table class="table" id="userinfo" style="width: 100%;">
 					<colgroup>
 						<col style="width: 15%;">
-						<col style="width: 40%;">
-						<col style="width: 45%;">
+						<col style="width: 55%;">
+						<col style="width: 30%;">
 					</colgroup>
-
+					<%-- 기존 로그인 정보 --%>
+					<input name="currentPwd" type="hidden" value="Qwer1234@"/>
+					
 					<%-- 사진 파트--%>
 					<tr >
 						<th scope="row">사진</th>
@@ -155,59 +160,61 @@ $(document).ready(function() {
                             </div>
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-outline-secondary " type="button" id="twobtn">취소</button>
-							<button class="btn btn-sm btn-outline-dark" type="button" id="twobtn">완료</button>
+                            <button class="btn btn-sm btn-outline-secondary twobtn" type="button" >취소</button>
+							<button class="btn btn-sm btn-outline-dark twobtn" type="button" >완료</button>
                         </td>
                     </tr>
 
 					<%-- 아이디 파트 --%>
-					<tr id="userid">
+					<tr id="userid_area">
                         <th scope="row">아이디</th>
-                        <td colspan="2">example</td>
+                        <td colspan="2" id="userid">example</td>
                     </tr>
 
 					<%-- 비밀번호 파트 --%>
 					<tr id="password_area">
                         <th scope="row">비밀번호</th>
-                        <td id="cpwdview"><input id="currentpwd" type="hidden" value="1232132"/></td>
+                        <td id="cpwdview"></td>
                         <td>
-                            <button class="btn btn-sm btn-outline-dark" type="button" id="change_btn" onclick="change_password()">비밀번호 변경</button>
+                            <button class="btn btn-sm btn-outline-dark" type="button" id="change_pwd">비밀번호 변경</button>
                         </td>
                     </tr>
 					<%-- 비밀번호 변경 누를 경우 기본 숨김 --%>
 					<tr id="change_password_area">
-                        <th scope="row">비밀번호 변경 시 보여지게 함</th>
+                        <th scope="row">비밀번호 변경</th>
                         <td colspan="2">
-							<div>
-								<div class="input mb-2" style="display: flex;">
+							<form id="pwdForm">
+								<div class="mb-2" style="display: flex;">
 									<label for="password" style="width: 18%;">현재 비밀번호</label>
 									<div id="password_div" style="display: flex;">
 										<input id="password" type="password">
 									</div>
-									&nbsp;&nbsp;<span>양식에 맞게 입력했는지 확인 멘트</span>
+									&nbsp;&nbsp;<span id="pwd_wrong"></span>
 								</div>
 								<div class="input mb-2" style="display: flex;">
 									<label for="newPassword" style="width: 18%;">신규 비밀번호</label>
 									<div id="newPassword_div" style="display: flex;">
-										<input id="newPassword" maxlength="30" type="password">
+										<input name="newPassword" id="newPassword" maxlength="20" type="password" />
 									</div>
-									&nbsp;&nbsp;<span id="newpwd_check">양식에 맞게 입력했는지 확인 멘트</span>
+									&nbsp;&nbsp;<span id="pwd_check"></span>
 								</div>
 								<div class="mb-2" style="display: flex;">
 									<label for="confirmPassword" style="width: 18%;">신규 비밀번호 재 입력</label>
 									<div id="confirmPassword_div" style="display: flex;">
-										<input class="n-input" id="confirmPassword" maxlength="30" type="password">
+										<input class="n-input" id="confirmPassword" maxlength="20" type="password">
 										<img type="button" src="<%=ctxPath %>/images/eye-show.png" id="viewEye"/>
 									</div>
-									&nbsp;&nbsp;<span id="newpwd_check2">비밀번호가 맞지않습니다. 확인멘트</span>
+									&nbsp;&nbsp;<span id="pwd_check2"></span>
 									
 								</div>
 								<%-- 올바르게 입력했을 때만 완료 버튼 활성화 --%>
 								<div class="mb-3">
-									<button class="btn btn-sm btn-outline-secondary" type="button" id="twobtn">취소</button>
-									<button class="btn btn-sm btn-outline-dark" type="button" id="twobtn">완료</button>
+									<button class="btn btn-sm btn-outline-secondary twobtn" type="reset" id="pwdcancle">취소</button>
+									<button class="btn btn-sm btn-outline-dark twobtn" type="button" id="pwdUpdate" onclick="pwdUP()">완료</button>
 								</div>
-							</div>
+								<input name="infoUpdate" value="pwd" type="hidden"/>
+								<input name="login_userid" value="${requestScope.userid}" type="hidden" />
+							</form>
                         </td>
                     </tr>
 
@@ -224,29 +231,31 @@ $(document).ready(function() {
                             <span id="currentEmail">example@naver.com</span>
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-outline-dark" type="button" id="change_btn" onclick="change_email()">이메일 변경</button>
+                            <button class="btn btn-sm btn-outline-dark" type="button" id="change_email">이메일 변경</button>
                         </td>
                     </tr>
                     <%--이메일 인증 기본 숨김 --%>
                     <tr id="change_email_area">
-                        <th scope="row">이메일 변경 시 보여지게 함</th>
+                        <th scope="row">이메일 변경</th>
                         <td colspan="2">
-                            <div class="my-info-modify">
+                            <form id="emailForm">
                                 <p class="mb-2">메일주소 입력 후 인증하기 버튼을 누르시면, 회원님의 이메일로 이메일 인증 번호가 적힌메일이 발송됩니다.<br>
 									아래에 인증 번호를 입력하시면 인증이 완료됩니다.
 								</p>
                                 <div class="input mb-1" style="display: flex;">
-                                    <input id="email" maxlength="50" placeholder="이메일 주소 입력" type="text" style="margin-right: 10px;">
+                                    <input name="newemail" id="newemail" maxlength="50" placeholder="이메일 주소 입력" type="text" style="margin-right: 10px;">
                                     <button class="btn btn-sm btn-outline-dark" id="send-authentication-email" type="button">인증번호 발송</button>
                                 </div>
                                 <div class="input mb-2">
                                     <input id="email-authTempKey" placeholder="인증번호 입력" type="text">
                                 </div>
                                 <div class="mb-3">
-                                    <button class="btn btn-sm btn-outline-secondary" type="button" id="twobtn">취소</button>
-                                    <button class="btn btn-sm btn-outline-dark" type="button" id="twobtn">완료</button>
+                                    <button class="btn btn-sm btn-outline-secondary twobtn" type="button" >취소</button>
+                                    <button class="btn btn-sm btn-outline-dark twobtn" type="button" >완료</button>
                                 </div>
-                            </div>
+                                <input name="infoUpdate" value="email" type="hidden"/>
+								<input name="login_userid" value="${requestScope.userid}" type="hidden" />
+                            </form>
                         </td>
                     </tr>
 
@@ -266,15 +275,15 @@ $(document).ready(function() {
                         <th scope="row">주소</th>
                         <td>
 							<div class="mb-2" style="display: flex;">
-								<div style="width: 15%;">우편번호</div>
+								<div style="width: 18%;">우편번호</div>
 								<div >16688</div>
 							</div>
 							<div class="mb-2" style="display: flex;">
-								<div style="width: 15%;">주소명</div>
+								<div style="width: 18%;">주소명</div>
 								<div >경기도 어쩌구 저쩌구</div>
 							</div>
 							<div class="mb-2" style="display: flex;">
-								<div style="width: 15%;">상세주소</div>
+								<div style="width: 18%;">상세주소</div>
 								<div >아무개 아파트 495동 2903호</div>
 							</div>
 							
@@ -285,26 +294,31 @@ $(document).ready(function() {
                     </tr>
 
 					<%-- 주소 변경 클릭 시 기본 숨김 --%>
-					<tr id="post-area">
-                        <th scope="row">주소 변경 시 보여지게 함</th>
+					<tr id="post_area">
+                        <th scope="row">주소 변경</th>
                         <td colspan="2">
-							<div class="mb-2" style="display: flex;">
-								<div style="width: 7%;">우편번호</div>
-								<input type="text" id="postcode" size="6" maxlength="5" disabled style="margin-right: 10px;"/>
-								<button class="btn btn-sm btn-outline-secondary" type="button">우편번호 찾기</button>
-							</div>
-							<div class="mb-2" style="display: flex;">
-								<div style="width: 7%;">주소명</div>
-								<input type="text" size="40" maxlength="200" placeholder="주소명" disabled />
-							</div>
-							<div class="mb-3" style="display: flex;">
-								<div style="width: 7%;">상세주소</div>
-								<input type="text" size="40" maxlength="200" placeholder="상세주소를 입력하세요" />
-							</div>
-							<div class="mb-3">
-								<button class="btn btn-sm btn-outline-secondary" type="button" id="twobtn">취소</button>
-								<button class="btn btn-sm btn-outline-dark" type="button" id="twobtn">완료</button>
-							</div>
+	                        <form>
+								<div class="mb-2" style="display: flex;">
+									<div class="postname">우편번호</div>
+									<input readonly type="text" name="postcode" id="postcode" size="10" maxlength="10" style="margin-right: 15px;" value=""/>
+									<button class="btn btn-sm btn-outline-secondary" type="button" id="findpost">우편번호 찾기</button>
+								</div>
+								<div class="mb-2" style="display: flex;">
+									<div class="postname">주소명</div>
+									<input readonly type="text" name="address" id="address" size="40" maxlength="250" placeholder="주소명" value="" />
+									
+								</div>
+								<div class="mb-3" style="display: flex;">
+									<div class="postname">상세주소</div>
+									<input type="text" name="addressDetail" id="addressDetail" size="40" maxlength="200" placeholder="상세주소를 입력하세요" value=""/>
+								</div>
+								<div class="mb-3">
+									<button class="btn btn-sm btn-outline-secondary twobtn" type="button">취소</button>
+									<button class="btn btn-sm btn-outline-dark twobtn" type="button">완료</button>
+								</div>
+								<input name="infoUpdate" value="post" type="hidden"/>
+								<input name="login_userid" value="${requestScope.userid}" type="hidden" />
+							</form>
                         </td>
 
                     </tr>

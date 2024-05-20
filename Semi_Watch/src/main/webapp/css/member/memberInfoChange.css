@@ -34,7 +34,7 @@ button#change_btn{
 	width: 150px;
 }
 
-button#twobtn {
+button.twobtn {
 	width: 60px;
 	margin-right: 10px;
 }
@@ -44,7 +44,21 @@ img#viewEye{
 	width: 30px;
 }
 
+.sticky-top {
+   top: 100px;
+   z-index: 0;
+}
 
+div.postname{
+	width: 11%;
+	height: 35px;
+	padding-top: 0.5%; 
+	
+}
+
+span#pwd_wrong, span#pwd_check, span#pwd_check2 {
+	color: red;
+}
 
 
 
