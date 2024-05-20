@@ -89,7 +89,8 @@ $(document).ready(function() {
     updateCartItems();
     adjustAriaAttributesOnBtnMenu();
     initProductSliders();
-
+	
+	//네비게이션 버튼 클릭 이벤트 
     $navBtn.click(toggleMenu);
     $mainNavCloseBtn.click(toggleMenu);
     $btnCart.click(toggleCart);

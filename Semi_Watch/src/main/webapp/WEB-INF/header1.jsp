@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 	String ctxPath = request.getContextPath();
 %>
@@ -8,6 +9,12 @@
 <head>
 <title>2조 홈페이지</title>
 
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+
 <%-- 공용 부트스트랩 --%>
 <link href="<%= ctxPath%>/bootstrap-4.6.2-dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -15,8 +22,12 @@
 <script src="<%= ctxPath%>/js/jquery-3.7.1.min.js" type="text/javascript"></script>
 <script src="<%= ctxPath%>/bootstrap-4.6.2-dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
 
+<%-- jQueryUI CSS 및 JS --%>
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/jquery-ui-1.13.1.custom/jquery-ui.min.css" />
+<script type="text/javascript" src="<%= ctxPath%>/jquery-ui-1.13.1.custom/jquery-ui.min.js" ></script>
+
 <%-- 헤더용 CSS <수정금지> --%>
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/normalize.css" class="headerCss" />
+<%-- <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/normalize.css" class="headerCss" /> --%>
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/main.css"  class="headerCss"/>
 
 <%-- 헤더용 JS <수정금지> --%>
@@ -58,6 +69,8 @@
               <li>
                 <a href="<%= ctxPath %>/serviceCenter.flex" class="nav-item">A/S center</a>  
               </li>
+            <%-- admin start --%>
+            <c:if test="${not empty sessionScope.loginuser and sessionScope.loginuser.userid == 'admin'}"> 
               <li>
                 <a href="#" style="color:white !important; text-decoration: none !important; margin-top:3px;" class="nav-link dropdown-toggle menufont_size text-primary" id="navbarDropdown" data-toggle="dropdown">
                 	관리자전용
@@ -69,6 +82,8 @@
 	                 <a class="dropdown-item text-primary" href="#">전체주문내역</a>
               	 </div>
               </li>
+             </c:if>
+            <%-- admin end --%>  
             </ul>
           </div>
         </nav>
@@ -86,12 +101,16 @@
         <img src="<%= ctxPath%>/images/header/icon-cart.svg" style="margin-right:30px;" role="presentation">
       </a>
     <%-- user start --%>
+     <c:if test="${empty sessionScope.loginuser}"> 
       <a href="<%= ctxPath %>/login/login.flex">
         <img src="<%= ctxPath%>/images/header/user.svg" style="margin-right:30px;" role="presentation">
       </a>
-      <button class="user-container" type="button" aria-label="User section">
-        <img src="<%= ctxPath%>/images/member/usernormal.jpg" alt="" class="user-container__img" role="presentation">
-      </button>
+      </c:if>
+      <c:if test="${not empty sessionScope.loginuser}"> 
+	      <a class="user-container" aria-label="User section" href="<%= ctxPath %>/member/memberInfoChange.flex">
+	        <img src="<%= ctxPath%>/images/member/usernormal.jpg" alt="" class="user-container__img" role="presentation">
+	      </a>
+      </c:if>
     <%-- user end --%>
     </div>
     <section class="cart-section" id="cart-section" aria-live="polite">
