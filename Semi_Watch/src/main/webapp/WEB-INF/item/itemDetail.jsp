@@ -45,18 +45,8 @@
 	        var currentValue = parseInt(quantityInput.val());
 	        quantityInput.val(currentValue + 1);
 	      });
-	      
-	    
-	      
-	      
-	      
-	      
-	      
-	      
-	      
-	      
-	      
-	      
+
+
 	});
 
 </script>
