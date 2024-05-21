@@ -6,10 +6,9 @@ public class ProductVO {
 	private String 	pdno;       // 제품번호
 	private String 	pdname;      // 제품명
 	private String  brand;		// 브랜드
-	private String  pimage1;    // 제품이미지1   이미지파일명
-	private int 	price;      // 제품 정가
-	private int 	saleprice;  // 제품 판매가(할인해서 팔 것이므로)
-	private String  category;	// 제품 카테고리(남성용,여성용,악세사리)
+	private String  pdimg1;    // 제품이미지1   이미지파일명
+	private long 	price;      // 제품 정가
+	private long 	saleprice;  // 제품 판매가(할인해서 팔 것이므로)
 	private String 	pd_content; // 제품설명 
 	private int 	point;      // 제품구매시 적립되는 포인트(마일리지)    
 	private int     pdstatus;	// 제품상태(등록중, 비등록중)
@@ -33,8 +32,8 @@ public class ProductVO {
 	    제품판매가와 포인트점수 컬럼의 값은 관리자에 의해서 변경(update)될 수 있으므로
 	    해당 제품의 판매총액과 포인트부여 총액은 판매당시의 제품판매가와 포인트 점수로 구해와야 한다.  
 	*/
-	private int totalPrice;         // 판매당시의 제품판매가 * 주문량
-	private int totalPoint;         // 판매당시의 포인트점수 * 주문량 
+	private long totalPrice;         // 판매당시의 제품판매가 * 주문량
+	private int  totalPoint;         // 판매당시의 포인트점수 * 주문량 
 		
 	
 	public ProductVO() { }
@@ -42,9 +41,9 @@ public class ProductVO {
 	public ProductVO( 	String pdno ,
 						String pdname,
 						String brand,
-						String pimage1,
-						int price,
-						int	saleprice,
+						String pdimg1,
+						long price,
+						long saleprice,
 						String category,
 						String pd_content, 
 						int point,    
@@ -54,10 +53,9 @@ public class ProductVO {
 		this.pdno = pdno;
 		this.pdname = pdname;
 		this.brand = brand;
-		this.pimage1 = pimage1;
+		this.pdimg1 = pdimg1;
 		this.price = price;
 		this.saleprice = saleprice;
-		this.category = category;
 		this.point = point;
 		this.pdstatus = pdstatus;
 		this.pdinputdate = pdinputdate;
@@ -96,36 +94,29 @@ public class ProductVO {
 		this.brand = brand;
 	}
 
-	public String getPimage1() {
-		return pimage1;
+
+	public String getPdimg1() {
+		return pdimg1;
 	}
 
-	public void setPimage1(String pimage1) {
-		this.pimage1 = pimage1;
+	public void setPdimg1(String pdimg1) {
+		this.pdimg1 = pdimg1;
 	}
 
-	public int getPrice() {
+	public long getPrice() {
 		return price;
 	}
 
-	public void setPrice(int price) {
+	public void setPrice(long price) {
 		this.price = price;
 	}
 
-	public int getSaleprice() {
+	public long getSaleprice() {
 		return saleprice;
 	}
 
-	public void setSaleprice(int saleprice) {
+	public void setSaleprice(long saleprice) {
 		this.saleprice = saleprice;
-	}
-
-	public String getCategory() {
-		return category;
-	}
-
-	public void setCategory(String category) {
-		this.category = category;
 	}
 
 	public String getPd_content() {
@@ -160,7 +151,7 @@ public class ProductVO {
 		this.pdinputdate = pdinputdate;
 	}
 
-	public void setTotalPrice(int totalPrice) {
+	public void setTotalPrice(long totalPrice) {
 		this.totalPrice = totalPrice;
 	}
 
@@ -179,7 +170,8 @@ public class ProductVO {
 		// 100 - 76 ==> 24% 할인
 		
 		// 할인률 = 100 - (판매가 * 100) / 정가
-		return 100 - (saleprice * 100)/price;
+		return (int) (100 - (saleprice * 100)/price);
+		
 	}
 	
 	
@@ -192,7 +184,7 @@ public class ProductVO {
 		totalPoint = point * oqty;     // 판매당시의 포인트점수 * 주문량 
 	}
 	
-	public int getTotalPrice() {
+	public long getTotalPrice() {
 		return totalPrice;
 	}
 	

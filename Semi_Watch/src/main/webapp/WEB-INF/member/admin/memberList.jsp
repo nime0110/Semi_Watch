@@ -78,7 +78,7 @@
 			
 			const frm = document.memberOneDetail_frm;
 			frm.userid.value = userid;
-			frm.action = "${pageContext.request.contextPath}/member/memberOneDetail.up"; 
+			frm.action = "${pageContext.request.contextPath}/member/memberOneDetail.flex"; 
 			frm.method = "post";
 			frm.submit();
 		})
@@ -109,7 +109,7 @@
    <form name="member_search_frm">
       <select name="searchType">
          <option value="">검색대상</option>
-         <option value="name">회원명</option>
+         <option value="username">회원명</option>
          <option value="userid">아이디</option>
          <option value="email">이메일</option>
       </select>
@@ -147,7 +147,7 @@
                  	<%-- 데이터개수 - (페이지번호 - 1) * 1페이지당보여줄개수 - 인덱스번호 => 순번 --%>
 	          		<td>${(requestScope.totalMemberCount) - (currentShowPageNo -1) * sizePerPage - (status.index)}</td>
 	          		<td class="userid">${membervo.userid}</td>
-	          		<td>${membervo.name}</td>
+	          		<td>${membervo.username}</td>
 	          		<td>${membervo.email}</td>
 	          		<td>
 	          			<c:choose>
@@ -163,7 +163,7 @@
 	          	 <td colspan="5">데이터가 존재하지 않습니다.</td>
 	          </tr>
 	      </c:if>
-      </tbody>
+      </tbody> 
    </table>     
 
     <div id="pageBar">
