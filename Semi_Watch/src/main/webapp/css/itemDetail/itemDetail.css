@@ -1,11 +1,11 @@
 
 .icon-minus{ 
-    mask-image: url(../images/itemDetail/icon-minus.svg); 
-        -webkit-mask-image: url(../images/itemDetail/icon-minus.svg); 
+    mask-image: url(../../images/itemDetail/icon-minus.svg); 
+        -webkit-mask-image: url(../../images/itemDetail/icon-minus.svg); 
 }
 .icon-plus{ 
-    mask-image: url(../images/itemDetail/icon-plus.svg);
-        -webkit-mask-image: url(../images/itemDetail/icon-plus.svg);
+    mask-image: url(../../images/itemDetail/icon-plus.svg);
+        -webkit-mask-image: url(../../images/itemDetail/icon-plus.svg);
 }
 .icon-minus,
 .icon-plus{
@@ -433,7 +433,7 @@ li {
   margin-top: 12px;
   box-sizing: border-box;
   border: 1px solid black;
-  background: url(../images/itemDetail/reviewicon.png) no-repeat;
+  background: url(../../images/itemDetail/reviewicon.png) no-repeat;
   background-position: 25px;
   font: 17px/41px 'AppleSDGothicNeoL_0'; color:rgb(104,104,104);
   background-color: white;
