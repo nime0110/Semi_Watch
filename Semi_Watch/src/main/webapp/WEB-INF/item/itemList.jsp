@@ -8,6 +8,8 @@
 String ctxPath = request.getContextPath();
 %>
 
+<jsp:include page="../header1.jsp" />
+
 <style>
 
 /** Shop: Sorting **/
@@ -225,72 +227,88 @@ ul.pagination li {
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-<jsp:include page="../header1.jsp" />
+
 
 <script>
-	$(document).ready(function(){
-	
-		// 브랜드 탭을 클릭했을때 폼태그에 담아서 전송하기
-		$("div.sidebar a").click(function(e){
-			
-			e.preventDefault();
-			
-			$("div.sidebar a").removeClass("active");
-	        
-			// console.log($(e.target).text());
-			
-			const brand = $(e.target).text();
-			
-			// 세션스토리지에 setItem('brand', brand);
-			sessionStorage.setItem('brand', brand);
-			
-			$("input:hidden[name='sort']").val("신상품순");
-			
-			$("input:hidden[name='brand']").val(brand);
-			
-			const frm = document.hiddensend;
-			
-			frm.action = "itemList.flex";
-			
-			frm.submit();
-			
-		}); // end of $("div.sidebar a").click(function(e){})
-		
-		
-		// 정렬 탭을 클릭했을때 폼태그에 담아서 전송하기
-		$("ul.shop_sorting li a").click(function(e){
-		
-			e.preventDefault();
 
-			$("ul.shop_sorting li a").removeClass("active");
-			
-	        $(e.target).addClass("active");
-			
-			// console.log($(e.target).text());
-			
-			// 세션스토리지에 const brand = .getItem('brand');
-			const brand = sessionStorage.getItem('brand');
-			
-			$("input:hidden[name='brand']").val(brand);
-			
-			const sort = $(e.target).text();
-			
-			$("input:hidden[name='sort']").val(sort);
+$(document).ready(function(){
+    // 브랜드 탭을 클릭했을 때 폼태그에 담아서 전송하기
+    $("div.sidebar a").click(function(e){
+        e.preventDefault();
 
-			
-			const frm = document.hiddensend;
-			
-			// console.log("brand", frm.brand.value);
-			// console.log("sort", frm.sort.value);
-			
-			frm.action = "itemList.flex";
-			
-			frm.submit();
-			
-		}); // end of $("ul.shop_sorting li a").click(function(e){})
-		
-		
-	}); // end of $(document).ready(function(){})
+        $("div.sidebar a").removeClass("active");
+        $(e.target).addClass("active");
+
+        const brand = $(e.target).text();
+        sessionStorage.setItem('brand', brand);
+
+        $("input:hidden[name='sort']").val("신상품순");
+        $("input:hidden[name='brand']").val(brand);
+
+        sessionStorage.removeItem('searchWord');
+        
+        const frm = document.hiddensend;
+        frm.action = "itemList.flex";
+        frm.submit();
+        
+    }); // end of $("div.sidebar a").click(function(e){}
+    
+
+    // 정렬 탭을 클릭했을 때 폼태그에 담아서 전송하기
+    $("ul.shop_sorting li a").click(function(e){
+        e.preventDefault();
+
+        $("ul.shop_sorting li a").removeClass("active");
+        $(e.target).addClass("active");
+
+        const sort = $(e.target).text();
+        $("input:hidden[name='sort']").val(sort);
+
+        const brand = sessionStorage.getItem('brand');
+      
+        $("input:hidden[name='brand']").val(brand);
+     
+        const searchWord = sessionStorage.getItem('searchWord');
+        
+        $("input:hidden[name='searchWord']").val(searchWord);
+      
+        const frm = document.hiddensend;
+        frm.action = "itemList.flex";
+        frm.submit();
+        
+    }); // end of $("ul.shop_sorting li a").click(function(e){ 정렬탭 클릭시
+    	
+
+    // 검색 버튼 클릭과 엔터 키 입력 이벤트 처리
+    $("button:button[name='search']").click(gosearch);
+
+    
+    $("input:text[class='form-control']").keydown(function (e) {
+        if (e.keyCode === 13) {
+        	gosearch(e);
+        }
+    }); // end of $("input:text[class='form-control']").keydown(function (e) {
+    	
+
+    function gosearch(e) {
+        e.preventDefault();
+
+        const searchWord = $("input:text[class='form-control']").val();
+        $("input:hidden[name='searchWord']").val(searchWord);
+        sessionStorage.setItem('searchWord', searchWord);
+
+        sessionStorage.removeItem('brand');
+        
+        const frm = document.hiddensend;
+        frm.action = "itemList.flex";
+        frm.submit();
+        
+    } // end of function gosearch
+    
+
+        
+    
+});
 		
 </script>
 
@@ -302,9 +320,10 @@ ul.pagination li {
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="input-group">
-							<input type="text" class="form-control"
-								placeholder="Search products...">
-							<button class="btn btn-light" type="button">
+							<input type="text" name="searchWord" class="form-control"
+								placeholder="Search products..." value="${requestScope.searchWord}">
+							<input type="text" style="display: none;" />
+							<button name="search" class="btn btn-light" type="button">
 								<i class="fa fa-search"></i>
 							</button>
 						</div>
@@ -318,23 +337,23 @@ ul.pagination li {
 			        <h2 class="py-3">브랜드</h2>
 			        <c:set var="brand" value="${requestScope.brand}" />
 			        
-			        <a href="?brand=전체보기" class="<c:choose>
+			        <a href="#" class="<c:choose>
 			        	<c:when test='${brand == "전체보기"}'>active</c:when>
 			        	</c:choose>">전체보기</a>
 			        	
-			        <a href="?brand=G-SHOCK" class="<c:choose>
+			        <a href="#" class="<c:choose>
 				        <c:when test='${brand == "G-SHOCK"}'>active</c:when>
 				        </c:choose>">G-SHOCK</a>
 				        
-			        <a href="?brand=카시오" class="<c:choose>
+			        <a href="#" class="<c:choose>
 				        <c:when test='${brand == "카시오"}'>active</c:when>
 				        </c:choose>">카시오</a>
 				        
-			        <a href="?brand=롤렉스" class="<c:choose>
+			        <a href="#" class="<c:choose>
 				        <c:when test='${brand == "롤렉스"}'>active</c:when>
 				        </c:choose>">롤렉스</a>
 				        
-			        <a href="?brand=세이코" class="<c:choose>
+			        <a href="#" class="<c:choose>
 				        <c:when test='${brand == "세이코"}'>active</c:when>
 				        </c:choose>">세이코</a>
 			    </div>
@@ -347,9 +366,11 @@ ul.pagination li {
 			<!-- Filters -->
 			<form>
 			<ul class="shop_sorting d-flex justify-content-end">
+			
 			<c:set var="sort" value="${requestScope.sort}" />
-				<li><a href="#" class="<c:choose>
-				        <c:when test='${sort == "신상품순"}'>active</c:when>
+			
+				<li><a id="default" href="#" class="<c:choose>
+				        <c:when test='${sort == "신상품순" or sort == "" }'>active</c:when>
 				        </c:choose>">신상품순</a></li>
 				<li><a href="#" class="<c:choose>
 				        <c:when test='${sort == "인기상품순"}'>active</c:when>
@@ -368,9 +389,9 @@ ul.pagination li {
 			<div class="row">
 				
 				<c:if test="${empty requestScope.productList}">
-				
+					<div style="height:500px;">
 					<span>상품이 없습니다</span>
-				
+					</div>
 				</c:if>
 				
 				<c:if test="${not empty requestScope.productList}"> 
@@ -382,37 +403,39 @@ ul.pagination li {
 				          
 				          <fmt:parseNumber var="sizePerPage" value="${requestScope.sizePerPage}" />
 	
-				<div class="col-sm-6 col-md-4">
-					<div class="shop_thumb">
-						<div class="position-relative overflow-hidden">
-							<div class="shop-thumb_img">
-								<a href=""><img class="img-fluid"
-									src="<%= ctxPath%>/images/product/product_thum/${pvo.pimage1}" alt=""></a>
+					<div class="col-sm-6 col-md-4">
+						<div class="shop_thumb">
+							<div class="position-relative overflow-hidden">
+								<div class="shop-thumb_img">
+									<a href=""><img class="img-fluid"
+										src="<%= ctxPath%>/images/product/product_thum/${pvo.pdimg1}" alt=""></a>
+								</div>
+							
 							</div>
-						
-						</div>
-						<span class="shop-thumb_brand">${pvo.brand}</span> <br>
-						<a href="#"> <span class="shop-thumb_title">${pvo.pdname}</span>
-						</a>
-						<div class="shop-thumb_price">정가 : <fmt:formatNumber value="${pvo.price}" type="number" groupingUsed="true"/>원</div>
-						<div class="shop-thumb_saleprice">판매가 : <fmt:formatNumber value="${pvo.saleprice}" type="number" groupingUsed="true"/>원</div>
-						<div class="shop-thumb_sale">${pvo.discountPercent}% 할인</div>
-						<div>
-						
-							<button type="button" class="button btn-Light">
-								<span>Buy</span>
-							</button>
-							<button type="button" class="button btn-dark">
-								<span>Cart</span>
-							</button>
-							<button type="button" class="btn btn-danger">
-								<i class="fa-solid fa-heart"></i>
-							</button>
+							<span class="shop-thumb_brand">${pvo.brand}</span> <br>
+							<a href="#"> <span class="shop-thumb_title">${pvo.pdname}</span>
+							</a>
+							<div class="shop-thumb_price">정가 : <fmt:formatNumber value="${pvo.price}" type="number" groupingUsed="true"/>원</div>
+							<div class="shop-thumb_saleprice">판매가 : <fmt:formatNumber value="${pvo.saleprice}" type="number" groupingUsed="true"/>원</div>
+							<div class="shop-thumb_sale">${pvo.discountPercent}% 할인</div>
+							<div>
+							
+								<button type="button" class="button btn-Light">
+									<span>Buy</span>
+								</button>
+								<button type="button" class="button btn-dark">
+									<span>Cart</span>
+								</button>
+								<button type="button" class="btn btn-danger">
+									<i class="fa-solid fa-heart"></i>
+								</button>
+							</div>
 						</div>
 					</div>
-				</div>
 				
 				</c:forEach>
+				
+				
 				
 			
 				</c:if>
@@ -444,7 +467,7 @@ ul.pagination li {
 	<form name="hiddensend">	
 		<input type="hidden" name="brand" value="">
     	<input type="hidden" name="sort" value=""/>
-		<%-- <input type="hidden" name="searchword" value=""/> --%>
+		<input type="hidden" name="searchWord" value=""/>
 	</form>
 			
 

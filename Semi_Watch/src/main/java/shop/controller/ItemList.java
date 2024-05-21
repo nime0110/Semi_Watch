@@ -2,6 +2,7 @@ package shop.controller;
 
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,22 +31,40 @@ public class ItemList extends AbstractController {
 		// hidden 폼태그에서 보내진 brand, sort 읽어오기
 		String brand = request.getParameter("brand");
 		String sort = request.getParameter("sort");
+		String searchWord = request.getParameter("searchWord");
 		
+		String colname = "pdno";
 		 // System.out.println(brand);
 		 // System.out.println(sort);
 		
+		String sort2 = request.getParameter("sort");
+		
 		if(sort == null ||  "신상품순".equals(sort) ) {
 			// sort 가 읽어온 값이 없거나 신상품순과 일치하다면
-			
 			sort = "desc"; // 상품번호 내림차순인데 일단 임시
 			
 		}
 		else if("인기상품순".equals(sort) ) {
 			// 아닌경우도 일단 임시로 오름차순
+			colname = "pdstatus";
+			
+			sort = "desc";
+		}
+		else if("낮은가격순".equals(sort)) {
+			
+			colname = "saleprice";
+			
 			sort = "asc";
+			
+		}else if("높은가격순".equals(sort)) {
+			
+			colname = "saleprice";
+		
+			sort = "desc";
+			
 		}
 		
-		/*
+
 		if(searchWord == null || 
 		   ( searchWord != null && searchWord.trim().isEmpty() ) ) {
 			// .isBlank ==> 내용이 없거나, 공백도 포함 == .trim().isEmpty()
@@ -53,15 +72,12 @@ public class ItemList extends AbstractController {
 			searchWord = "";
 			
 		}
-		*/
 		
 		String sizePerPage = request.getParameter("sizePerPage");
 		// 폼태그에서 읽어온 한페이지당 보여줄 행의 갯수
 		
 		String currentShowPageNo = request.getParameter("currentShowPageNo");
 		// 조회할 페이지 번호
-		
-		Map<String, String> paraMap = new HashMap<>();
 		
 		if(sizePerPage == null || 
 		  !"6".equals(sizePerPage)  ) {
@@ -76,6 +92,8 @@ public class ItemList extends AbstractController {
 			currentShowPageNo = "1";
 			
 		}
+
+		Map<String, String> paraMap = new HashMap<>();
 		
 		paraMap.put("currentShowPageNo", currentShowPageNo); // 조회할 페이지 번호
 		
@@ -93,7 +111,14 @@ public class ItemList extends AbstractController {
 		
 		// 위의 if문을 제외한 g-shock, 세이코, 롤렉스, 카시오일때 해주는 setAttribute
 		request.setAttribute("brand", brand);
-		request.setAttribute("sort", sort); // sort는 미완성
+		
+		if(sort2 == null || "신상품순".equals(sort2) || (!"인기상품순".equals(sort2) &&
+			!"낮은가격순".equals(sort2) && !"높은가격순".equals(sort2) ) ) {
+			
+			sort2 = "신상품순";
+			request.setAttribute("sort", sort2); 
+		}
+		request.setAttribute("sort", sort2); 
 		
 		if(brand == null ||  "전체보기".equals(brand) || (!"G-SHOCK".equals(brand) &&
 		!"세이코".equals(brand) && !"롤렉스".equals(brand) && !"카시오".equals(brand) ) ) {
@@ -105,9 +130,25 @@ public class ItemList extends AbstractController {
 				
 		paraMap.put("brand", brand); // 위의 if문을 제외한 g-shock, 세이코, 롤렉스, 카시오일때 해주는 put		
 		paraMap.put("sort", sort); // 임시로 desc , asc만 들어가는중
+		paraMap.put("colname", colname);
+		paraMap.put("searchWord", searchWord);
 		
-		int totalPage = pdao.getTotalPage(paraMap);
-		// 특정 조회조건에서 페이지갯수가 몇개인지 읽어오는 메소드
+		int totalPage = 0;
+		
+		if(searchWord == null || searchWord.trim() == "") {
+			
+			totalPage = pdao.getTotalPage(paraMap);
+			// 특정 조회조건에서 페이지갯수가 몇개인지 읽어오는 메소드
+			
+		}
+		else {
+			
+			totalPage = pdao.search_brand_TotalPage(paraMap);
+			
+			
+			totalPage += pdao.search_pdname_TotalPage(paraMap);
+		}
+		
 		
 		// System.out.println("totalPage : " + totalPage);
 		
@@ -148,14 +189,14 @@ public class ItemList extends AbstractController {
 		
 		// 맨처음 버튼 구성하기
 		pageBar += "<li class='page-item'><a class='page-link' href='itemList.flex?brand="
-				+ brand + "&sort=" + sort + "&sizePerPage=" + sizePerPage + 
+				+ brand + "&sort=" + sort2 + "&sizePerPage=" + sizePerPage + "&searchWord=" + searchWord +
 				"&currentShowPageNo=1'>[맨처음]</a></li>";
 		
 		if(pageNo != 1) { // 가장 처음부분이 1이 아니라면 [이전] 페이지 버튼을 보여준다.
 			
 			// [이전] 구성하기
 			pageBar += "<li class='page-item'><a class='page-link' href='itemList.flex?brand="
-					+ brand + "&sort=" + sort + "&sizePerPage=" + sizePerPage + 
+					+ brand + "&sort=" + sort2 + "&sizePerPage=" + sizePerPage + "&searchWord=" + searchWord +
 					"&currentShowPageNo=" + (pageNo - 1) + "'>[이전]</a></li>";
 			
 		}
@@ -175,7 +216,7 @@ public class ItemList extends AbstractController {
 			else {
 				
 				pageBar += "<li class='page-item'><a class='page-link' href='itemList.flex?brand="
-						+ brand + "&sort=" + sort + "&sizePerPage=" + sizePerPage + 
+						+ brand + "&sort=" + sort2 + "&sizePerPage=" + sizePerPage + "&searchWord=" + searchWord +
 						"&currentShowPageNo=" + pageNo + "'>" + pageNo + "</a></li>";
 				//  1 + 2 + ... 10 , 11 + 12 ... 20
 				
@@ -196,7 +237,7 @@ public class ItemList extends AbstractController {
 			
 			// [다음] 구성하기
 			pageBar += "<li class='page-item'><a class='page-link' href='itemList.flex?brand="
-					+ brand + "&sort=" + sort + "&sizePerPage=" + sizePerPage + 
+					+ brand + "&sort=" + sort2 + "&sizePerPage=" + sizePerPage + "&searchWord=" + searchWord +
 					"&currentShowPageNo=" + pageNo + "'>[다음]</a></li>";
 			// pageNo가 되는이유는 while문을 다돌고 나오면 PageNO 는 11 , 21 이런식으로 된다!!!
 			
@@ -205,7 +246,7 @@ public class ItemList extends AbstractController {
 		
 		// [마지막] 구성하기
 		pageBar += "<li class='page-item'><a class='page-link' href='itemList.flex?brand="
-				+ brand + "&sort=" + sort + "&sizePerPage=" + sizePerPage + 
+				+ brand + "&sort=" + sort2 + "&sizePerPage=" + sizePerPage + "&searchWord=" + searchWord +
 				"&currentShowPageNo=" + totalPage + "'>[마지막]</a></li>";
 		
 		// *** ======== 페이지바 만들기 끝 ======= *** //
@@ -216,7 +257,7 @@ public class ItemList extends AbstractController {
 		String currentURL = MyUtil.getCurrentURL(request);
 	
 		
-		/*
+		
 		if(searchWord == null || 
 		    !searchWord.trim().isEmpty() ) {
 			// .isBlank ==> 내용이 없거나, 공백도 포함 == .trim().isEmpty()
@@ -224,7 +265,7 @@ public class ItemList extends AbstractController {
 			request.setAttribute("searchWord", searchWord);
 			
 		}
-		*/
+		
 		request.setAttribute("sizePerPage", sizePerPage); // 페이지당 보여줄 상품 갯수 (6) 넘겨주기
 		
 		request.setAttribute("pageBar", pageBar); // 페이지바 구해서 넘겨주기
@@ -232,10 +273,24 @@ public class ItemList extends AbstractController {
 		request.setAttribute("currentURL", currentURL); // 상품목록[검색된결과가 저장되있고 데이터가 반영되는]으로 돌아가기위해서 뷰단에 넘겨준다
 		
 		request.setAttribute("currentShowPageNo", currentShowPageNo); // 현재 페이지번호 
-
-		List<ProductVO> productList = pdao.select_product_pagin(paraMap);
-		// 페이지바와 브랜드 선택까지적용된 상품목록 select해오기
 		
+	
+		List<ProductVO> productList = new ArrayList<>();
+		
+		if(searchWord.trim() == "" || searchWord == null) {
+			
+			productList = pdao.select_product_pagin(paraMap);
+			// 페이지바와 브랜드 선택까지적용된 상품목록 select해오기
+			
+		}
+		else {
+			
+			productList = pdao.search_product_pagin_brand(paraMap); // 브랜드명을 조회하는
+			
+			productList.addAll(pdao.search_product_pagin_pdname(paraMap)); // 상품명을 조회하는
+				
+			
+		}
 		
 		request.setAttribute("productList", productList);
 		

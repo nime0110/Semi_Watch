@@ -3,9 +3,6 @@ package shop.model;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
-
-import member.domain.MemberVO;
-import shop.domain.ImageVO;
 import shop.domain.ProductVO;
 
 public interface js_5_ProductDAO {
@@ -19,6 +16,22 @@ public interface js_5_ProductDAO {
 	/* >>> 뷰단(memberList.jsp)에서 "페이징 처리시 보여주는 순번 공식" 에서 사용하기 위해 
     검색이 있는 또는 검색이 없는 회원의 총개수 알아오기 시작 <<< */
 	int getTotalProductCount(Map<String, String> paraMap) throws SQLException;
+
+	// 브랜드명을 조회하는 검색메소드
+	List<ProductVO> search_product_pagin_brand(Map<String, String> paraMap) throws SQLException;
+
+	// 상품명을 조회하는 검색메소드
+	List<ProductVO> search_product_pagin_pdname(Map<String, String> paraMap) throws SQLException;
+
+	// 브랜드명을 검색해서 나오는 토탈페이지구하기
+	int search_brand_TotalPage(Map<String, String> paraMap) throws SQLException;
+
+	// 상품명을 조회해서 나오는 토탈페이지구하기
+	int search_pdname_TotalPage(Map<String, String> paraMap) throws SQLException;
+
+
+
+	
 
 
 	

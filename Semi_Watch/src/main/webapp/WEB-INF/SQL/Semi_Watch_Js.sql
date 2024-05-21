@@ -584,24 +584,38 @@ CREATE TABLE tbl_review (
     select * from tbl_product_img;
     insert into tbl_product_img (img_no, fk_pdno, pd_extraimg) values ('e' || seq_test_pdno.nextval , 3 , '3_extra_1.png');
     commit;
-     insert into tbl_product_img (img_no, fk_pdno, pd_extraimg) values ('e' || seq_test_pdno.nextval , 3 , '3_extra_2.png');
+    insert into tbl_product_img (img_no, fk_pdno, pd_extraimg) values ('e' || seq_test_pdno.nextval , 3 , '3_extra_2.png');
     commit;
-     insert into tbl_product_img (img_no, fk_pdno, pd_extraimg) values ('e' || seq_test_pdno.nextval , 3 , '3_extra_3.png');
+    insert into tbl_product_img (img_no, fk_pdno, pd_extraimg) values ('e' || seq_test_pdno.nextval , 3 , '3_extra_3.png');
     commit;
+    
+    select pdno, pdname, pd_content, price, saleprice, pd_qty, color
+    from tbl_product P join tbl_pd_detail D
+    on P.pdno = D.fk_pdno;
+    -- 상품의 정보과 재고, 컬러까지 조인해서 결과를 내는 sql문
     
     select pd_extraimg
     from tbl_product_img
-    where fk_pdno = 3
+    where fk_pdno = 3; 
+    -- 상품번호 3번의 추가이미지를 갖고오는 sql문 (3을 ?위치홀더로 쓰면될듯)
     
+    select * from tbl_product where brand like '%'||'브' ||'%'
     
+    select * from tbl_product;
     
-    
+  
+    select * from tbl_product where pdno = 16;
+    update tbl_product set saleprice = 75000000 where pdno = 16;
+    update tbl_product set price = 81000000 where pdno = 16;
+    commit;
+
+    select * from tbl_product where pdno = 6;                                    
+    update tbl_product set saleprice = 100000000 where pdno = 6;
+    update tbl_product set price = 105710000 where pdno = 6;
+    commit;
+
      
-     
-     
-     
-     
-     
+    select distinct brand from tbl_product; 
      
      
      

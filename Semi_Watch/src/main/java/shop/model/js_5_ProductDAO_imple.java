@@ -1,7 +1,6 @@
 package shop.model;
 
-import java.io.UnsupportedEncodingException;
-import java.security.GeneralSecurityException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -80,12 +79,12 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 	         
 	         String brand = paraMap.get("brand");
 	         String sort = paraMap.get("sort");
+	         String colname = paraMap.get("colname");
+	       
 	         
 	         	sql += " and brand like '%'|| ? ||'%' ";
 				
-				
-				
-	            sql += " order by pdno desc "
+	            sql += " order by " +  colname + " " + sort
 	            		+ " ) v "
 	            		+ " ) T "
 	            		+ "	where T.rno between ? and ? ";
@@ -97,9 +96,9 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 	         int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo") );
 				// 조회할 페이지 번호
 				
-			int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage") );
+	         int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage") );
 				// 한페이지당 보여줄 행 갯수
-	         
+			
 	         pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage - 1) ); // 공식
 			 pstmt.setInt(3, (currentShowPageNo * sizePerPage) ); 
 	         
@@ -115,7 +114,7 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 	            
 	            
 	            pvo.setBrand(rs.getString("brand"));  // 브랜드명
-	            pvo.setPimage1(rs.getString("pdimg1"));   // 제품이미지1   이미지파일명
+	            pvo.setPdimg1(rs.getString("pdimg1"));   // 제품이미지1   이미지파일명
 	            pvo.setPrice(rs.getInt("price"));        // 제품 정가
 	            pvo.setSaleprice(rs.getInt("saleprice"));    // 제품 판매가(할인해서 팔 것이므로)
 	            
@@ -145,29 +144,16 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
          
 			String sql = " select ceil(count(*)/?) as pagecnt "
 					   + " from tbl_product "
-					   + " where pdstatus = 1 ";
+					   + " where pdstatus = 1 "
+					   + " and brand like '%'|| ? ||'%' ";
 			
 			String brand = paraMap.get("brand");
-			String searchWord = paraMap.get("searchWord");
-			
-			
-	
-				
-					sql += " and brand like '%'|| ? ||'%' ";
-					// 컬럼명과 테이블명은 위치홀더(?)로 사용하면 꽝!!! 이다.
-		            // 위치홀더(?)로 들어오는 것은 컬럼명과 테이블명이 아닌 오로지 데이터값만 들어온다.!!!!
-					
-		
 			
 			pstmt = conn.prepareStatement(sql); 
 			
 			pstmt.setInt(1, Integer.parseInt(paraMap.get("sizePerPage") ) );
 			
-			
-			
-				
-				pstmt.setString(2, brand);
-				
+			pstmt.setString(2, brand);
 			
 			rs = pstmt.executeQuery();
          	
@@ -185,7 +171,8 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 
 
 	
-	
+	/* >>> 뷰단(memberList.jsp)에서 "페이징 처리시 보여주는 순번 공식" 에서 사용하기 위해 
+    검색이 있는 또는 검색이 없는 회원의 총개수 알아오기 시작 <<< */
 	@Override
 	public int getTotalProductCount(Map<String, String> paraMap) throws SQLException {
 		
@@ -199,16 +186,19 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 					+ " where pdstatus = 1  ";
 			
 			String brand = paraMap.get("brand");
-			String searchWord = paraMap.get("searchWord");
-			
+						
 			if( (brand != null && !brand.trim().isEmpty() )  ) {
 				// if(colname != null && searchWord != null) { // 단일로 되는데...?
 					
-						sql += " and brand like '%'|| ? ||'%' ";
-						// 컬럼명과 테이블명은 위치홀더(?)로 사용하면 꽝!!! 이다.
-			            // 위치홀더(?)로 들어오는 것은 컬럼명과 테이블명이 아닌 오로지 데이터값만 들어온다.!!!!
+				sql += " and brand like '%'|| ? ||'%' ";
+				// 컬럼명과 테이블명은 위치홀더(?)로 사용하면 꽝!!! 이다.
+	            // 위치홀더(?)로 들어오는 것은 컬럼명과 테이블명이 아닌 오로지 데이터값만 들어온다.!!!!
 						
 			}
+			String sort = paraMap.get("sort");
+	        String colname = paraMap.get("colname");
+			
+			sql += " order by " +  colname + " " + sort;
 			
 			pstmt = conn.prepareStatement(sql); 
 			
@@ -231,7 +221,233 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 		}
 		
 		return getTotalProductCount;
+		
+	}// end of public int getTotalProductCount(Map<String, String> paraMap) throws SQLException {}
+
+	// 
+	@Override
+	public List<ProductVO> search_product_pagin_brand(Map<String, String> paraMap) throws SQLException {
+		
+		List<ProductVO> productList = new ArrayList<>();
+		
+		try {
+	         conn = ds.getConnection();
+	         
+	         String sql = " select rno , pdno, pdname, brand, price, saleprice, pdimg1 "
+		         		+ " from "
+		         		+ "	 ( "
+		         		+ "	select rownum as rno, pdno, pdname, brand, price, saleprice, pdimg1 "
+		         		+ "	 from "
+		         		+ "	( "
+		         		+ "	 select rownum,pdno, pdname, brand, price, saleprice, pdimg1 "
+		         		+ "	from tbl_product "
+		         		+ "	 where pdstatus = 1 ";
+	         			 
+	         
+	         String searchWord = paraMap.get("searchWord");
+	         String sort = paraMap.get("sort");
+	         String colname = paraMap.get("colname");
+	       
+	         
+	         	sql += " and brand like '%'|| ? ||'%' ";
+				
+	            sql += " order by " +  colname + " " + sort
+	            		+ " ) v "
+	            		+ " ) T "
+	            		+ "	where T.rno between ? and ? ";
+	         
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setString(1, searchWord);
+	         
+	         int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo") );
+				// 조회할 페이지 번호
+				
+	         int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage") );
+				// 한페이지당 보여줄 행 갯수
+			
+	         pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage - 1) ); // 공식
+			 pstmt.setInt(3, (currentShowPageNo * sizePerPage) ); 
+	         
+	         
+	         rs = pstmt.executeQuery();
+	         
+	         while(rs.next()) {
+	            
+	            ProductVO pvo = new ProductVO();
+	            
+	            pvo.setPdno(String.valueOf(rs.getInt("pdno")));     // 제품번호
+	            pvo.setPdname(rs.getString("pdname")); // 제품명
+	            
+	            
+	            pvo.setBrand(rs.getString("brand"));  // 브랜드명
+	            pvo.setPdimg1(rs.getString("pdimg1"));   // 제품이미지1   이미지파일명
+	            pvo.setPrice(rs.getInt("price"));        // 제품 정가
+	            pvo.setSaleprice(rs.getInt("saleprice"));    // 제품 판매가(할인해서 팔 것이므로)
+	            
+	            
+	            productList.add(pvo);
+	            
+	         }// end of while(rs.next())-------------------------
+	         
+	         
+	      } finally {
+	         close();
+	      }
+		
+		return productList;
+	} // end of
+
+	
+	// 
+	@Override
+	public List<ProductVO> search_product_pagin_pdname(Map<String, String> paraMap) throws SQLException {
+		
+		List<ProductVO> productList = new ArrayList<>();
+		
+		try {
+	         conn = ds.getConnection();
+	         
+	         String sql = " select rno , pdno, pdname, brand, price, saleprice, pdimg1 "
+		         		+ " from "
+		         		+ "	 ( "
+		         		+ "	select rownum as rno, pdno, pdname, brand, price, saleprice, pdimg1 "
+		         		+ "	 from "
+		         		+ "	( "
+		         		+ "	 select rownum,pdno, pdname, brand, price, saleprice, pdimg1 "
+		         		+ "	from tbl_product "
+		         		+ "	 where pdstatus = 1 ";
+	         			 
+	         
+	         String searchWord = paraMap.get("searchWord");
+	         String sort = paraMap.get("sort");
+	         String colname = paraMap.get("colname");
+	       
+	         
+	         	sql += " and pdname like '%'|| ? ||'%' ";
+				
+	            sql += " order by " +  colname + " " + sort
+	            		+ " ) v "
+	            		+ " ) T "
+	            		+ "	where T.rno between ? and ? ";
+	         
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setString(1, searchWord);
+	         
+	         int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo") );
+				// 조회할 페이지 번호
+				
+	         int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage") );
+				// 한페이지당 보여줄 행 갯수
+			
+	         pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage - 1) ); // 공식
+			 pstmt.setInt(3, (currentShowPageNo * sizePerPage) ); 
+	         
+	         
+	         rs = pstmt.executeQuery();
+	         
+	         while(rs.next()) {
+	            
+	            ProductVO pvo = new ProductVO();
+	            
+	            pvo.setPdno(String.valueOf(rs.getInt("pdno")));     // 제품번호
+	            pvo.setPdname(rs.getString("pdname")); // 제품명
+	            
+	            
+	            pvo.setBrand(rs.getString("brand"));  // 브랜드명
+	            pvo.setPdimg1(rs.getString("pdimg1"));   // 제품이미지1   이미지파일명
+	            pvo.setPrice(rs.getInt("price"));        // 제품 정가
+	            pvo.setSaleprice(rs.getInt("saleprice"));    // 제품 판매가(할인해서 팔 것이므로)
+	            
+	            
+	            productList.add(pvo);
+	            
+	         }// end of while(rs.next())-------------------------
+	         
+	         
+	      } finally {
+	         close();
+	      }
+		
+		return productList;
 	}
+
+
+	// 브랜드명을 조회해서 나오는 토탈페이지구하기
+	@Override
+	public int search_brand_TotalPage(Map<String, String> paraMap) throws SQLException {
+		
+		int getTotalPage = 0;
+		
+		try {
+			conn = ds.getConnection();
+         
+			String sql = " select ceil(count(*)/?) as pagecnt "
+					   + " from tbl_product "
+					   + " where pdstatus = 1 "
+					   + " and brand like '%'|| ? ||'%' ";
+			
+			String searchWord = paraMap.get("searchWord");
+			
+			pstmt = conn.prepareStatement(sql); 
+			
+			pstmt.setInt(1, Integer.parseInt(paraMap.get("sizePerPage") ) );
+			
+			pstmt.setString(2, searchWord);
+			
+			rs = pstmt.executeQuery();
+         	
+			rs.next();
+			
+			getTotalPage = rs.getInt("pagecnt");
+         
+		} finally {
+			close();
+		}
+		
+		return getTotalPage;
+		
+	} // end of public int search_brand_TotalPage(Map<String, String> paraMap) throws SQLException {
+
+	
+	// 상품명을 조회해서 나오는 토탈페이지구하기
+	@Override
+	public int search_pdname_TotalPage(Map<String, String> paraMap) throws SQLException {
+		
+		int getTotalPage = 0;
+		
+		try {
+			conn = ds.getConnection();
+         
+			String sql = " select ceil(count(*)/?) as pagecnt "
+					   + " from tbl_product "
+					   + " where pdstatus = 1 "
+					   + " and pdname like '%'|| ? ||'%' ";
+			
+			String searchWord = paraMap.get("searchWord");
+			
+			pstmt = conn.prepareStatement(sql); 
+			
+			pstmt.setInt(1, Integer.parseInt(paraMap.get("sizePerPage") ) );
+			
+			pstmt.setString(2, searchWord);
+			
+			rs = pstmt.executeQuery();
+         	
+			rs.next();
+			
+			getTotalPage = rs.getInt("pagecnt");
+         
+		} finally {
+			close();
+		}
+		
+		return getTotalPage;
+		
+	} // end of public int search_pdname_TotalPage(Map<String, String> paraMap) throws SQLException {
+
+
 
 
 	
