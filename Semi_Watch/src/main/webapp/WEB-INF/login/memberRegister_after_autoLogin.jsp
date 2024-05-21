@@ -19,7 +19,7 @@
       alert("회원가입에 감사합니다 . ^^");
       
       const frm = document.loginFrm;
-      frm.action="<%=ctxPath %>/login/login.flex";
+      frm.action="<%=ctxPath %>/login/loginAfterReg.flex";
       frm.method = "post";
       frm.submit();
    }//end of window.onload =function()

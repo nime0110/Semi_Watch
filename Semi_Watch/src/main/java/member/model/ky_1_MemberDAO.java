@@ -27,7 +27,11 @@ public interface ky_1_MemberDAO {
 	Map<String, Object> isUserExist(Map<String, String> paraMap) throws SQLException;
 	
 	// 비밀번호 수정하기(맵에서 유저 아이디랑 새로운 비밀번호를 가져와서 데이터베이스 상에 업데이트 해준다.)
-	int pwdUpdate(Map<String, String> paraMap) throws SQLException;	
+	int pwdUpdate(Map<String, String> paraMap) throws SQLException;
+	
+	// 회원가입유저 오토 로그인 처리
+	MemberVO loginAfterReg(Map<String, String> paraMap) throws SQLException;
+	
 	
 
 	

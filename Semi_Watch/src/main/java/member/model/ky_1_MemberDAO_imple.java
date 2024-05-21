@@ -366,5 +366,63 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
 	}// end of public int pwdUpdate(Map<String, String> paraMap) throws SQLException---
 
 	
+	// 회원가입유저 오토 로그인 처리
+	@Override
+	public MemberVO loginAfterReg(Map<String, String> paraMap) throws SQLException {
+		
+		MemberVO member = null;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " SELECT userid, NVL( lastlogingap, trunc( months_between(sysdate, registerday)) ) AS lastlogingap "
+					   + " FROM "
+					   + " ( select userid, registerday "
+					   + " from tbl_member "
+					   + " where status = 1 and userid = ? and pw = ? ) M "
+					   + " CROSS JOIN "
+					   + " ( select trunc( months_between(sysdate, max(logindate)) ) AS lastlogingap "
+					   + " from tbl_loginhistory "
+					   + " where fk_userid = ? ) H ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, Sha256.encrypt(paraMap.get("pwd")));
+			pstmt.setString(3, paraMap.get("userid"));
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				
+				member = new MemberVO();
+				
+				member.setUserid(rs.getString("userid"));
+				// loginuser VO에 추가할 것이 있다면 여기에 추가하시오.
+			
+			
+				if( rs.getInt("lastlogingap") < 12) {
+					sql = " insert into tbl_loginhistory(fk_userid, clientip) "
+						+ " values(?, ?) ";
+					
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setString(1, paraMap.get("userid"));
+					pstmt.setString(2, paraMap.get("clientip"));
+					
+					pstmt.executeUpdate();
+					
+				}
+			
+			}// end of if(rs.next()) 
+			
+		} finally {
+			close();
+		}
+		
+		return member;
+		
+	}// end of public MemberVO loginAfterReg(Map<String, String> paraMap) throws SQLException 
+
+	
 	
 }

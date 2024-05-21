@@ -95,8 +95,8 @@ public class MemberRegister extends AbstractController {
 					request.setAttribute("pw", pw);
 					
 					super.setRedirect(false);
-					super.setViewPage("/WEB-INF/login/goLogin.jsp");
-				}
+					super.setViewPage("/WEB-INF/login/memberRegister_after_autoLogin.jsp");
+				} 
 				
 			} catch (SQLException e) {	
 				e.printStackTrace();

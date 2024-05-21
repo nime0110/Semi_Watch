@@ -63,6 +63,20 @@ from tbl_loginhistory;
 
 select *
 from tbl_member
-where userid = 'kimkh2';
+where userid = 'kimkh3';
 
 commit;
+
+select *
+from tbl_loginhistory;
+
+
+SELECT userid, NVL( lastlogingap, trunc( months_between(sysdate, registerday)) ) AS lastlogingap
+FROM
+( select userid, registerday
+from tbl_member
+where status = 1 and userid = ? and pw = ? ) M
+CROSS JOIN
+( select trunc( months_between(sysdate, max(logindate)) ) AS lastlogingap
+from tbl_loginhistory
+where fk_userid = ? ) H;
