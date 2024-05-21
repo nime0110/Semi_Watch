@@ -116,8 +116,9 @@
     <section class="cart-section" id="cart-section" aria-live="polite">
       <h3 class="cart-section__title">위시리스트</h3>
       <div class="cart-section__body">
-        <p class="empty-msg">위시리스트가 비어있습니다. <br>좋아하는 상품을 찜해보세요!</p>
-        <ul class="cart-section__products"></ul>
+<!--         <p class="empty-msg">위시리스트가 비어있습니다. <br>좋아하는 상품을 찜해보세요!</p> -->
+        <ul class="cart-section__products">
+        </ul>
         <button type="button" class="cart-section__btn-checkout">Checkout</button>
       </div>
       <div style="display:flex; flex-direction: column; border-radius:0px !important;">  

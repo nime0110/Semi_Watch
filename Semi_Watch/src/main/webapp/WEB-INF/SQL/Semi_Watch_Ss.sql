@@ -252,5 +252,16 @@ from (
 ) T
 where T.rno between 6 and 10;
 
+select pd_extraimg, pdimg1, pdno, brand, price, saleprice from tbl_product a JOIN tbl_product_img b
+ON a.pdno = b.fk_pdno;
+
+-- pdimg -> 썸네일 다시 내가 넣어야돼.. ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ
+-- pd_extraimg = 썸네일
+-- pdimg = 메인 
+-- 어떻게 하지.. ? ㅠㅠ
+-- 그럼.. 이걸 일단 가져와서 html에 뿌리고 뿌린걸 js에서 데이터만 선택자로 뽂뽁 가져와서 넣으면 되는 거 아닌가..! 이게 맞아?이게..진짜 맞아? 이렇게.. 주먹구구 식으로.. 
+-- 
+
+select * from tbl_product_img;
 
 

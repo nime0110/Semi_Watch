@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import member.domain.MemberVO;
+import shop.domain.ImageVO;
 
 public interface ss_2_MemberDAO {
 
@@ -25,7 +26,12 @@ public interface ss_2_MemberDAO {
 
 	// userid로 데이터베이스에서 유저 정보를 가져오기 - 자동 로그인 부분
 	MemberVO getMemberByUserid(String userid) throws SQLException;
+
+	// 상품상세 이미지 파일명 가져오는 메소드 (추후사용예정)
+	List<ImageVO> imageSelectAll() throws SQLException;
 	
+	// 상품상세 이미지 메인 - 파일명 가져오는 메소드 
+	ImageVO imageSelect() throws SQLException;
 	
 	
 	

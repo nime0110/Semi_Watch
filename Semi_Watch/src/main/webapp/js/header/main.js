@@ -1,340 +1,123 @@
 $(document).ready(function() {
-  const cart = (function() {
-    // 장바구니에 새로운 상품 항목을 만드는 함수
-    function createItemToCart(productId, quantity, thumbImageURL, productName, discountPrice, totalPrice) {
-      return {
-        item_id: productId,
-        quantity: quantity,
-        thumb_URL: thumbImageURL,
-        name: productName,
-        discount_price: discountPrice,
-        total_price: totalPrice
-      };
-    }
 
-    // 새로운 상품을 장바구니에 추가하는 함수
-    function addNewItem(productId, quantity, thumbImageURL, productName, discountPrice, totalPrice) {
-      let item = JSON.parse(localStorage.getItem(productId));
-      let flagAlreadyExisted = false;
-
-      if (item !== null) {
-        flagAlreadyExisted = true;
-        quantity = parseInt(quantity) + parseInt(item.quantity);
-      }
-
-      let newItem = createItemToCart(productId, quantity, thumbImageURL, productName, discountPrice, totalPrice);
-      localStorage.setItem(newItem.item_id, JSON.stringify(newItem));
-      newItem.existsInDOM = flagAlreadyExisted;
-
-      return newItem;
-    }
-
-    // localStorage에서 모든 상품 항목을 로드하는 함수
-    function loadAllItems() {
-      const items = [];
-      for (let i = 0; i < localStorage.length; i++) {
-        let key = localStorage.key(i);
-        if (key.startsWith('item-cart-')) {
-          let item = localStorage.getItem(key);
-          if (item !== null) {
-            items.push(JSON.parse(item));
-          }
-        }
-      }
-      return items;
-    }
-
-    // 장바구니에 있는 상품의 총 수량을 계산하는 함수
-    function getCartSize() {
-      const items = loadAllItems();
-      return items.reduce((total, item) => total + parseInt(item.quantity), 0);
-    }
-
-    // 장바구니에서 특정 상품을 삭제하는 함수
-    function deleteItem(productId) {
-      localStorage.removeItem(productId);
-    }
-
-    // 모듈의 공개 인터페이스 정의
-    return {
-      addNewItem,
-      getCartSize,
-      loadAllItems,
-      deleteItem
-    };
-  })();
+  
+    const navBtn = $('.top-header__left .nav-btn'); // 네비게이션 버튼
+    const mainNav = $('.top-header__left .main-nav'); // 메인 네비게이션
+    const mainNavCloseBtn = $('.main-nav__close-btn'); // 네비게이션 닫기 버튼
+    const mainNavContentContainer = $('.main-nav__content-container'); // 네비게이션 콘텐츠 컨테이너
+    const btnCart = $('.top-header__btn-cart'); // 장바구니 버튼
+    const cartSection = $('.cart-section'); // 장바구니 섹션
+    const inputProductQuantity = $('#product__quantity'); // 제품 수량 입력
 
 
-  const mainJs = (function() {
-    const $navBtn = $('.top-header__left .nav-btn');
-    const $mainNav = $('.top-header__left .main-nav');
-    const $mainNavCloseBtn = $('.main-nav__close-btn');
-    const $mainNavContentContainer = $('.main-nav__content-container');
-    const $btnCart = $('.top-header__btn-cart');
-    const $btnUser = $('.top-header .user-container');
-    const $cartSection = $('.cart-section');
-    const $itemsCounter = $('.top-header__btn-cart .items-quantity');
-    const $cartForm = $('.cart-form');
-    const $inputProductQuantity = $('#product__quantity');
-    const $cartProducts = $('.cart-section__products');
-    const $emptyMsg = $('.empty-msg');
-    const $cartBody = $('.cart-section__body');
-    const $originalProductSlider = $('.product__slider');
-    const $lightbox = $('.lightbox');
 
-    var modalLightbox = null;
-    var productIndex = 0;
-    $inputProductQuantity.val(0);
-    manageItemsCounter(cart.getCartSize());
-    updateCartItems();
-    adjustAriaAttributesOnBtnMenu();
-    initProductSliders();
+    inputProductQuantity.val(0); // 초기 제품 수량을 0으로 설정
+
 	
-	//네비게이션 버튼 클릭 이벤트 
-    $navBtn.click(toggleMenu);
-    $mainNavCloseBtn.click(toggleMenu);
-    $btnCart.click(toggleCart);
-    $btnUser.click(toggleBtnCheckout);
-    $cartForm.click(manageFormClicks);
-    $cartSection.click(manageCartClicks);
+	  // 네비게이션 버튼 클릭 이벤트 
+    navBtn.click(toggleMenu);
+    mainNavCloseBtn.click(toggleMenu);
+    btnCart.click(toggleCart);
 
-    function initProductSliders() {
-      updateLightboxContent();
-      $('.product__slider').on('click keydown', manageProductClicks);
-      autoSelectFirstThumbItem();
-    }
-
-    function updateLightboxContent() {
-      const $clonedElement = $originalProductSlider.clone(true);
-      $clonedElement.addClass('--lightbox-active');
-      $lightbox.append($clonedElement);
-    }
-
-    function adjustAriaAttributesOnBtnMenu() {
-      if (window.matchMedia('(min-width: 992px)').matches) {
-        $navBtn.removeAttr('aria-controls aria-expanded');
-      }
-    }
-
-
-    function autoSelectFirstThumbItem() {
-      $('.product__thumbs').each(function() {
-        let hasThumbSelected = false;
-        $(this).find('.thumb-item__btn').each(function() {
-          if ($(this).hasClass('--selected')) {
-            hasThumbSelected = true;
-          }
-        });
-        if (!hasThumbSelected) {
-          $(this).children().first().find('.thumb-item__btn').addClass('--selected');
-        }
-      });
-    }
-
+  // 문서 오버플로우 토글 함수
     function toggleDocumentOverflow() {
       $('html, body').toggleClass('--overflow-hidden');
     }
 
+    // 메뉴 토글 함수
     function toggleMenu() {
-      toggleDocumentOverflow();
-      $mainNav.toggleClass('active');
-      $mainNavContentContainer.toggleClass('active');
-      $navBtn.attr('aria-expanded', $mainNav.hasClass('active'));
+      toggleDocumentOverflow(); // 문서 오버플로우 토글
+      mainNav.toggleClass('active'); // 메인 네비게이션 활성화 토글
+      mainNavContentContainer.toggleClass('active'); // 네비게이션 콘텐츠 컨테이너 활성화 토글
+      navBtn.attr('aria-expanded', mainNav.hasClass('active')); // 네비게이션 버튼의 ARIA 확장 속성 설정
     }
-
+    // 위시리스트 토글 함수
     function toggleCart() {
-      if ($cartSection.hasClass('active')) {
-        $cartSection.hide();
-        $btnCart.attr('aria-expanded', false);
+      if (cartSection.hasClass('active')) {
+          cartSection.hide(); // 장바구니 섹션 숨기기
+          btnCart.attr('aria-expanded', false); // 장바구니 버튼 ARIA 확장 속성 false 설정
       } else {
-        $cartSection.show();
-        $btnCart.attr('aria-expanded', true);
+          cartSection.show(); // 장바구니 섹션 보이기
+          btnCart.attr('aria-expanded', true); // 장바구니 버튼 ARIA 확장 속성 true 설정
       }
       setTimeout(function() {
-        $cartSection.toggleClass('active');
+          cartSection.toggleClass('active'); // 장바구니 섹션 활성화 토글
       }, 100);
-      $btnCart.toggleClass('--active');
+      btnCart.toggleClass('--active'); // 장바구니 버튼 활성화 토글
     }
 
-    function toggleCartProducts() {
 
-      if (cart.getCartSize() <= 0 && $emptyMsg.hasClass('--deactivate')) {
-        $emptyMsg.removeClass('--deactivate');
-        $cartProducts.removeClass('--active');
-        $cartBody.removeClass('--with-items');
-      } else {
-        $emptyMsg.addClass('--deactivate');
-        $cartProducts.addClass('--active');
-        $cartBody.addClass('--with-items');
+    // 위시리스트 버튼 클릭시 
+    $('#wish_list').click(function() { // 첫번째 찜
+
+      //빈 배열 선언
+      let arr_jjim = [];
+      //특정한 키값이 getItem 했을때 
+      if (localStorage.getItem('name').trim() == "" || localStorage.getItem('name') == null ) { // 첫번째 찜
+
+        // 키를 선택자로 가져온다.
+        let productName = $('#productName').text();
+
+        // local 스토리지에 담음
+        localStorage.setItem('str_arr_jjim', str_arr_jjim);
+        // 이미지/ 상품명을 가져옴
+            
+        // 위시리스트 배열 만들기
+        arr_jjim.push("name", productName);
+        /*
+        let arr_jjim = {
+          image: productImage,
+          name: productName
+        };
+        */
+        let str_arr_jjim = JSON.stringify(arr_jjim); //객체 -> json 으로 바꾸기
+
+      } else { //두번째 이후의 찜
+        // get을 먼저 해와서 
+        let jjim_arr = JSON.parse(localStorage.getItem('str_arr_jjim')); //배열 - 원래 있던 값
+        //다른 상품도 가져와야 함
+        let productName = $('#productName').text();
+        jjim_arr.push("name", productName);
       }
-    }
 
-    function toggleBtnCheckout() {
-      $('.cart-section__btn-checkout').toggleClass('--active');
-    }
 
-    function manageFormClicks(event) {
-      const $target = $(event.target);
-      if (!$target.is('.cart-form, #product__quantity, .cart-form__input-container')) {
-        if ($target.is('.icon-cart, .cart-form__add-btn')) {
-          const notValidEntries = ['+', '-', 'e'];
-          let quantity = $inputProductQuantity.val();
-          let isValid = !notValidEntries.some(entry => quantity.includes(entry));
 
-          if (isValid) {
-            if (quantity === "0") {
-              alert('Please determine the product quantity.');
-              $inputProductQuantity.val(0);
-            } else {
-              const productId = $originalProductSlider.find('.image-box__src').data('product-id');
-              const thumbImageURL = `images/itemDetail/image-product-${productId.split('-')[2]}-thumbnail.jpg`;
-              const productName = $('.product__name').text().trim();
-              let discountPrice = parseInt($('.discount-price__value').text().replace(/,/g, ''));
-              let totalPrice = parseInt($('.full-price').text().replace(/,/g, ''));
 
-              const newItem = cart.addNewItem(productId, quantity, thumbImageURL, productName, discountPrice, totalPrice);
-              manageItemsCounter(cart.getCartSize());
-              updateCartItems([newItem]);
-            }
-          } else {
-            alert('Invalid quantity of the product!');
-            $inputProductQuantity.val(0);
-          }
-        } else {
-          let newValue = parseInt($inputProductQuantity.val()) + ($target.is('.plus-item, .icon-plus') ? 1 : -1);
-          $inputProductQuantity.val(Math.max(0, newValue));
+      // 위시리스트에서 보여줌 
+      displayWishListDetails(productImage, productName);
+
+      $.ajax({
+        type: "method",
+        url: "url", //컨트롤러 만들고 
+        data: "data",
+        dataType: "dataType",
+        success: function (json) {
+
+          let html ='';
+          //foreach로 json. 
+          html += `
+          <div id="wish_list_details">
+            <img src="${image}" alt="${name}">
+            <span>${name}</span>
+          </div> `;
+       
+          $("#cart-section > div.cart-section__body > ul").html(wishListDetailsHtml);
+  
         }
-      }
+      });
+
+    });
+
+    function displayWishListDetails(image, name) {
+      //위시리스트 디테일 html 더해주는 코드~~ li로 작성해야 
+      let wishListDetailsHtml = `
+        <div id="wish_list_details">
+          <img src="${image}" alt="${name}">
+          <span>${name}</span>
+        </div> `;
+     
+        $("#cart-section > div.cart-section__body > ul").html(wishListDetailsHtml);
+
     }
 
-    function manageProductClicks(event) {
-      let $target = $(event.target);
-      console.log($target);
-      if ($target.is('p')) {
-        $target = $target.parent();
-      }
-      const actionCondition = (event.type === "keydown" && event.key === "Enter") || event.type === "click";
-
-      if (actionCondition) {
-        event.preventDefault();
-        if ($target.is('.image-box__src[tabindex="0"]') && window.matchMedia('(min-width: 992px)').matches) {
-          zoomProductImage(event);
-          $('body').css('overflow', 'hidden');
-        } else if ($target.is('[data-thumb-index], .thumb-item__btn')) {
-          const $localProductSlider = $target.closest('.product__slider');
-          const $product = $localProductSlider.find('.image-box__src');
-          
-          productIndex = parseInt($target.data('thumb-index'));
-          slideProductImage('', $product.data('product-id'), $product);
-          
-        } else if ($target.is('.icon-previous, .icon-next, .btn-previousImage, .btn-nextImage')) {
-          const $product = $target.closest('.image-box').find('.image-box__src');
-          let operation = $target.hasClass('btn-nextImage') ? '+' : '-';
-          slideProductImage(operation, $product.data('product-id'), $product);
-        } else if ($target.is('.icon-close, .product__slider___btn-close-lightbox')) {
-          setTimeout(function() {
-            $lightbox.hide();
-            if (modalLightbox) modalLightbox.removeEvents();
-            $('body').css('overflow', '');
-          });
-        }
-      }
-    }
-
-    function zoomProductImage() {
-      $lightbox.addClass('--active').show();
-      setTimeout(function() {
-        modalLightbox = new Modal($lightbox.get(0));
-      }, 200);
-    }
-
-    function slideProductImage(operator, productId, $image) {
-      let productImagesLength = products.get(productId).length - 1;
-      if (operator === '+') {
-        productIndex = productIndex < productImagesLength ? productIndex + 1 : 0;
-      } else if (operator === '-') {
-        productIndex = productIndex > 0 ? productIndex - 1 : productImagesLength;
-      }
-      const $localProductSlider = $image.closest('.product__slider');
-      $localProductSlider.find('.thumb-item__btn.--selected').removeClass('--selected');
-      let $elementToSelect = $localProductSlider.find(`[data-thumb-index='${productIndex}']`);
-      $elementToSelect.closest('button').addClass('--selected');
-
-      let fullImgURL = products.get(productId)[productIndex].full_img_url;
-      $image.addClass('--changed');
-      setTimeout(function() {
-        $image.removeClass('--changed').attr('src', fullImgURL);
-      }, 200);
-    }
-
-    function manageItemsCounter(quantity) {
-      $itemsCounter.find('.value').text(quantity);
-      if (!quantity) {
-        $itemsCounter.removeClass('active');
-      } else {
-        $itemsCounter.addClass('active');
-      }
-    }
-
-    function manageCartClicks(event) {
-      const $target = $(event.target).closest('.btn-del-product, img:not(.product__thumb)');
-      if ($target.hasClass('btn-del-product')) {
-        const itemId = $target.closest('[data-item-id]').data('item-id');
-        cart.deleteItem(itemId);
-        $target.closest('.list-item').remove();
-        manageItemsCounter(cart.getCartSize());
-        toggleCartProducts();
-      }
-    }
-
-    function updateCartItems(items) {
-      items = items || cart.loadAllItems();
-      if (items.length > 0) {
-        toggleCartProducts();
-        items.forEach(function(item) {
-          if (item.existsInDOM) {
-            const $elementInDOM = $(`[data-item-id='${item.item_id}']`);
-            $elementInDOM.find('.price-calculation__value .quantity').text(item.quantity);
-            $elementInDOM.find('.final-price__span').text((parseInt(item.discount_price) * parseInt(item.quantity)).toLocaleString());
-          } else {
-            $cartProducts.append(createDOMCartElement(item));
-          }
-        });
-      }
-    }
-
-    function createDOMCartElement(item) {
-      const totalPrice = item.discount_price * item.quantity;
-      const formattedPrice = totalPrice.toLocaleString("ko-KR");
-      return $('<li>').html(`
-        <a href="#" class="list-item" data-item-id="${item.item_id}">
-          <img src="${item.thumb_URL}" alt="" class="product__thumb">
-          <div class="list-item__abstract">
-            <h4 class="title">${item.name}</h4>
-            <div class="price-calculation">
-              <p class="price-calculation__value">
-                <span class="value__span">${item.discount_price.toLocaleString("ko-KR")}</span>
-                <span class="sr-only">dollars</span>
-                <span class="sr-only">by</span>
-                <span aria-hidden="true">x</span>
-                <span class="quantity">${item.quantity}</span>
-              </p>
-            </div>
-            <p class="price-calculation__final-price">
-              <span class="final-price__span">${formattedPrice}</span>
-              <span class="sr-only">dollars on total</span> 
-            </p>
-          </div>
-          <button type="button" class="btn-del-product">
-            <span class="sr-only">Delete this product</span>
-            <img src="images/header/icon-delete.svg" alt="" role="presentation">
-          </button>
-        </a>
-      `);
-    }
-
-    return {
-      toggleDocumentOverflow
-    }
-  })();
-});
+  });

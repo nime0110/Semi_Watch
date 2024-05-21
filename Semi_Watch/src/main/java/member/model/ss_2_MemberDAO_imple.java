@@ -16,6 +16,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import member.domain.MemberVO;
+import shop.domain.ImageVO;
 import util.security.AES256;
 import util.security.SecrectMyKey;
 import util.security.Sha256;
@@ -416,6 +417,66 @@ public class ss_2_MemberDAO_imple implements ss_2_MemberDAO {
 		}
 		return member;
 		
+	}
+
+	// 상품상세 이미지 파일명 가져오는 메소드 
+	@Override
+	public List<ImageVO> imageSelectAll() throws SQLException {
+			
+			List<ImageVO> imgList = new ArrayList<>();
+			try {
+				conn = ds.getConnection();
+				
+				String sql = " select fk_pdno, pd_extraimg"
+						+ " from tbl_product_img ";
+				
+				pstmt = conn.prepareStatement(sql);
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()) {
+					
+					ImageVO imgvo = new ImageVO();
+					imgvo.setImgno(rs.getInt("fk_pdno"));
+					imgvo.setImgfilename(rs.getString("pd_extraimg"));
+					
+					imgList.add(imgvo);
+					
+				}//end of while(rs.next())
+				
+			} finally {
+				close();
+			}
+			return imgList;
+		
+		
+	}
+
+	// 상품상세 이미지 메인 - 파일명 가져오는 메소드 
+	@Override
+	public ImageVO imageSelect() throws SQLException {
+		ImageVO imgvo = null;
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select pdno, pdimg1 "
+					+ " from tbl_product ";
+			
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				imgvo = new ImageVO();
+				imgvo.setImgno(rs.getInt("pdno"));
+				imgvo.setImgfilename(rs.getString("pdimg1"));
+				
+			}//end of while(rs.next())
+			
+		} finally {
+			close();
+		}
+		return imgvo;
+	
 	}
 	
 }
