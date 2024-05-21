@@ -1,9 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <%
 String ctxPath = request.getContextPath();
 %>
+
+<jsp:include page="../header1.jsp" />
 
 <style>
 
@@ -27,14 +32,12 @@ String ctxPath = request.getContextPath();
 	transition: all .05s linear;
 }
 
-.shop_sorting>li>a:hover, .shop_sorting>li>a:focus {
+.shop_sorting>li>a:hover {
 	color: #ed3e49;
 	text-decoration: none;
 }
 
-.shop_sorting>li.active>a {
-	color: #ed3e49;
-}
+
 
 .shop_sorting {
 	display: flex;
@@ -52,49 +55,12 @@ String ctxPath = request.getContextPath();
 	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.shop_sorting>li.active>a {
+.shop_sorting>li>a.active {
+	color: #ed3e49;
 	font-weight: 600;
 }
 
-/* Checkboxes */
-/*
-    .shop__filter {
-        padding: 20px;
-    }
-.checkbox input[type="checkbox"] {
-  display: none;
-}
-.checkbox label {
-  padding-left: 0;
-}
-.checkbox label:before {
-  content: "";
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: 15px;
-  width: 20px;
-  height: 20px;
-  line-height: 20px;
-  background-color: #eee;
-  text-align: center;
-  font-family: "FontAwesome";
-}
 
-.checkbox input[type="checkbox"]:checked + label::before {
-  content: "\f00c";
-}
-
-
-
-#floatingDiv {
-	border-radius: 3%;
-	  background-color: #F0F8FF;
-    position: fixed;
-	padding: 1% 0 0 1%;
-    width: 15%;
-
-  }
-*/
 .button {
 	border-radius: 10px;
 	border: none;
@@ -158,7 +124,9 @@ String ctxPath = request.getContextPath();
 	position: relative;
 	margin-bottom: 2%;
 	overflow: hidden;
+
 }
+
 
 .shop-thumb_title {
 	color: #00008B;
@@ -173,210 +141,222 @@ String ctxPath = request.getContextPath();
 	font-weight: bolder;
 	text-align: right;
 	margin: 3% 10% 3% 0;
+	text-decoration: line-through;
 }
 
-#top-button {
-	border-radius: 10%;
-	background-color: light;
-	position: fixed;
-	margin: 1% 0 0 12%;
-	width: 4.5%;
-	padding-left: 0.8%;
+.shop-thumb_saleprice {
+	color: blue;
+	font-size: 11pt;
+	font-weight: bolder;
+	text-align: right;
+	margin: 3% 10% 3% 0;
 }
+
+.shop-thumb_sale {
+	
+	color: red;
+	font-size: 11pt;
+	font-weight: bolder;
+	text-align: right;
+	margin: 3% 10% 3% 0;
+}
+
 
 ul.pagination li {
 	font-size: 13pt;
 	font-weight: bold;
 }
 
-.dp-space.show {
-	height: 18%; /* 필요에 따라 높이를 조정 */
+
+
+.shop-thumb_brand{
+	color: green;
+	font-size: 14pt;
+	font-weight: 600;
+	text-decoration: none;
 }
 
-.dp-space {
-	margin-bottom: 20%; /* 드롭다운 버튼들 사이의 간격 추가 */
-	height: 0;
-	transition: height 0.3s ease;
+ .sidebar {
+	position: fixed;
+	width: 15%;
+
 }
 
-.dp-space button {
-	width: 70%;
+/* Sidebar links */
+.sidebar a {
+  display: block;
+  color: black;
+  padding: 16px;
+  text-decoration: none;
+  
 }
+
+/* Active/current link */
+.sidebar a.active {
+  background-color: #555;
+  color: white;
+}
+
+/* Links on mouse-over */
+.sidebar a:hover:not(.active) {
+  background-color: white;
+  color: black;
+}
+@media screen and (max-width: 700px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .sidebar a {float: left;}
+  div.content {margin-left: 0;}
+}
+
+/* On screens that are less than 400px, display the bar vertically, instead of horizontally */
+@media screen and (max-width: 400px) {
+  .sidebar a {
+    text-align: center;
+    float: none;
+  }
+}
+
 </style>
-<script>
-	$(document).ready(function() {
 
-		$("ul.shop_sorting li:first-child").addClass("active");
-
-		$(".pagination li").on("click", function() {
-			// 다른 li 요소에서 active 클래스를 제거합니다.
-			$(".pagination li.active").removeClass("active");
-
-			// 클릭된 li 요소에 active 클래스를 추가합니다.
-			$(this).addClass("active");
-		});
-
-		$('#dropdown').on('click', function() {
-			$('.dp-space').toggleClass('show');
-		});
-
-	});
-</script>
 <%-- Font Awesome 6 Icons --%>
 
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-<jsp:include page="../header1.jsp" />
 
-<div class="container">
+
+<script>
+
+$(document).ready(function(){
+    // 브랜드 탭을 클릭했을 때 폼태그에 담아서 전송하기
+    $("div.sidebar a").click(function(e){
+        e.preventDefault();
+
+        $("div.sidebar a").removeClass("active");
+        $(e.target).addClass("active");
+
+        const brand = $(e.target).text();
+        sessionStorage.setItem('brand', brand);
+
+        $("input:hidden[name='sort']").val("신상품순");
+        $("input:hidden[name='brand']").val(brand);
+
+        sessionStorage.removeItem('searchWord');
+        
+        const frm = document.hiddensend;
+        frm.action = "itemList.flex";
+        frm.submit();
+        
+    }); // end of $("div.sidebar a").click(function(e){}
+    
+
+    // 정렬 탭을 클릭했을 때 폼태그에 담아서 전송하기
+    $("ul.shop_sorting li a").click(function(e){
+        e.preventDefault();
+
+        $("ul.shop_sorting li a").removeClass("active");
+        $(e.target).addClass("active");
+
+        const sort = $(e.target).text();
+        $("input:hidden[name='sort']").val(sort);
+
+        const brand = sessionStorage.getItem('brand');
+      
+        $("input:hidden[name='brand']").val(brand);
+     
+        const searchWord = sessionStorage.getItem('searchWord');
+        
+        $("input:hidden[name='searchWord']").val(searchWord);
+      
+        const frm = document.hiddensend;
+        frm.action = "itemList.flex";
+        frm.submit();
+        
+    }); // end of $("ul.shop_sorting li a").click(function(e){ 정렬탭 클릭시
+    	
+
+    // 검색 버튼 클릭과 엔터 키 입력 이벤트 처리
+    $("button:button[name='search']").click(gosearch);
+
+    
+    $("input:text[class='form-control']").keydown(function (e) {
+        if (e.keyCode === 13) {
+        	gosearch(e);
+        }
+    }); // end of $("input:text[class='form-control']").keydown(function (e) {
+    	
+
+    function gosearch(e) {
+        e.preventDefault();
+
+        const searchWord = $("input:text[class='form-control']").val();
+        $("input:hidden[name='searchWord']").val(searchWord);
+        sessionStorage.setItem('searchWord', searchWord);
+
+        sessionStorage.removeItem('brand');
+        
+        const frm = document.hiddensend;
+        frm.action = "itemList.flex";
+        frm.submit();
+        
+    } // end of function gosearch
+    
+
+        
+    
+});
+		
+</script>
+
+<div class="container pt-2">
 	<div class="row">
 		<div class="col-sm-4 col-md-3">
 
-
-			<form>
-				<div class="well">
-					<div class="row">
-						<div class="col-sm-12">
-							<div class="input-group">
-								<input type="text" class="form-control"
-									placeholder="Search products...">
-								<button class="btn btn-success" type="button">
-									<i class="fa fa-search"></i>
-								</button>
-							</div>
+			<div class="well">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="input-group">
+							<input type="text" name="searchWord" class="form-control"
+								placeholder="Search products..." value="${requestScope.searchWord}">
+							<input type="text" style="display: none;" />
+							<button name="search" class="btn btn-light" type="button">
+								<i class="fa fa-search"></i>
+							</button>
 						</div>
 					</div>
 				</div>
-			</form>
-
-
-
-
+			</div>
 			
 			<!-- Filter -->
-			<form class="shop_filter">
-
-				<!-- Checkboxes -->
-				<div class="text-left">
-					<div class="dp-space">
-						<button class="btn btn-light dropdown-toggle btn-gradient"
-							type="button" id="dropdown" data-toggle="dropdown"
-							aria-haspopup="true" aria-expanded="false">브랜드</button>
-						<div class="dropdown-menu" aria-labelledby="dropdown1">
-							<a class="dropdown-item" href="#">전체보기</a> <a
-								class="dropdown-item" href="#">카시오</a> <a class="dropdown-item"
-								href="#">G-Shock</a> <a class="dropdown-item" href="#">까르띠에</a>
-							<a class="dropdown-item" href="#">세이코</a> <a
-								class="dropdown-item" href="#">롤렉스</a>
-						</div>
-					</div>
-
-					<div class="dp-space">
-						<button class="btn btn-light dropdown-toggle" type="button"
-							id="dropdown" data-toggle="dropdown" aria-haspopup="true"
-							aria-expanded="false">카테고리</button>
-						<div class="dropdown-menu" aria-labelledby="dropdown2">
-							<a class="dropdown-item" href="#">전체 보기</a> <a
-								class="dropdown-item" href="#">남성 시계</a> <a
-								class="dropdown-item" href="#">여성 시계</a> <a
-								class="dropdown-item" href="#">ACC</a>
-						</div>
-					</div>
-				</div>
-
-
-				<%-- 
-		<div id="floatingDiv" class="pt-7">
-        <h3 class="headline pb-2">
-          <span>Brand</span>
-        </h3>
-        <div class="checkbox">
-          <input type="checkbox" class="custom-chk" value="" id="shop-filter-checkbox_1" checked="">
-          <label for="shop-filter-checkbox_1">G-Shock</label>
-        </div>
-        <div class="checkbox">
-          <input type="checkbox" class="custom-chk" value="" id="shop-filter-checkbox_2">
-          <label for="shop-filter-checkbox_2"></label>
-        </div>
-        <div class="checkbox">
-          <input type="checkbox" class="custom-chk" value="" id="shop-filter-checkbox_3">
-          <label for="shop-filter-checkbox_3">Columbia</label>
-        </div>
-        <div class="checkbox">
-          <input type="checkbox" class="custom-chk" value="" id="shop-filter-checkbox_4">
-          <label for="shop-filter-checkbox_4">Tommy Hilfiger</label>
-        </div>
-        <div class="checkbox">
-          <input type="checkbox" class="custom-chk" value="" id="shop-filter-checkbox_all">
-          <label for="shop-filter-checkbox_all">Not specified</label>
-        </div>
-        <%-- 
-        <div class="dropdown">
-			<!-- 버튼태그에서 아래로 보여주는걸 의미함 -->
-		  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		    Dropdown button
-		  </button>
-		  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-		    <a class="dropdown-item" href="#">Adidas</a>
-		    <a class="dropdown-item active" href="#">Calvin Klein</a>
-		    <a class="dropdown-item" href="#">Columbia</a>
-		    <a class="dropdown-item" href="#">Tommy Hilfiger</a>
-		    <a class="dropdown-item" href="#">Not specified</a>
-		  </div>
-		</div>
-		--%>
-
-				<%-- 
-        <h3 class="pt-3 pb-2 headline">
-          <span>Material</span>
-        </h3>
-        <div class="checkbox">
-          <input type="checkbox" name="shop-filter__radio" id="shop-filter-radio_1" value="" checked="">
-          <label for="shop-filter-radio_1">100% Cotton</label>
-        </div>
-        <div class="checkbox">
-          <input type="checkbox" name="shop-filter__radio" id="shop-filter-radio_2" value="">
-          <label for="shop-filter-radio_2">Bamboo</label>
-        </div>
-        <div class="checkbox">
-          <input type="checkbox" name="shop-filter__radio" id="shop-filter-radio_3" value="">
-          <label for="shop-filter-radio_3">Leather</label>
-        </div>
-        <div class="checkbox">
-          <input type="checkbox" name="shop-filter__radio" id="shop-filter-radio_4" value="">
-          <label for="shop-filter-radio_4">Polyester</label>
-        </div>
-        <div class="checkbox">
-          <input type="checkbox" name="shop-filter__radio" id="shop-filter-radio_5" value="">
-          <label for="shop-filter-radio_5">Not specified</label>
-        </div>
-        
-        <%-- 
-        <div class="dropdown">
-			<!-- 버튼태그에서 아래로 보여주는걸 의미함 -->
-		  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		    Material
-		  </button>
-		  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-		    <a class="dropdown-item" href="#">100% Cotton</a>
-		    <a class="dropdown-item active" href="#">Bamboo</a>
-		    <a class="dropdown-item" href="#">Leather</a>
-		    <a class="dropdown-item" href="#">Polyester</a>
-		    <a class="dropdown-item" href="#">Not specified</a>
-		  </div>
-		</div>
-		--%>
-
-				<%-- 	<div class="float-right" id="top-button"><a style="text-decoration: none; color:black;" href="#">Top&nbsp;▲</a></div>
-		</div>
-		--%>
-
-				<div class="float-right" id="top-button">
-					<a style="text-decoration: none; color: black;" href="#">Top&nbsp;▲</a>
-				</div>
-
-
+			<form class="shop_filter col-sm-8 col-md-9">
+			    <div class="sidebar">
+			        <h2 class="py-3">브랜드</h2>
+			        <c:set var="brand" value="${requestScope.brand}" />
+			        
+			        <a href="#" class="<c:choose>
+			        	<c:when test='${brand == "전체보기"}'>active</c:when>
+			        	</c:choose>">전체보기</a>
+			        	
+			        <a href="#" class="<c:choose>
+				        <c:when test='${brand == "G-SHOCK"}'>active</c:when>
+				        </c:choose>">G-SHOCK</a>
+				        
+			        <a href="#" class="<c:choose>
+				        <c:when test='${brand == "카시오"}'>active</c:when>
+				        </c:choose>">카시오</a>
+				        
+			        <a href="#" class="<c:choose>
+				        <c:when test='${brand == "롤렉스"}'>active</c:when>
+				        </c:choose>">롤렉스</a>
+				        
+			        <a href="#" class="<c:choose>
+				        <c:when test='${brand == "세이코"}'>active</c:when>
+				        </c:choose>">세이코</a>
+			    </div>
 			</form>
 
 
@@ -384,252 +364,98 @@ ul.pagination li {
 
 		<div class="col-sm-8 col-md-9">
 			<!-- Filters -->
+			<form>
 			<ul class="shop_sorting d-flex justify-content-end">
-				<li><a href="#">신상품순</a></li>
-				<li><a href="#">인기상품순</a></li>
-				<li><a href="#">높은가격순</a></li>
-				<li><a href="#">낮은가격순</a></li>
+			
+			<c:set var="sort" value="${requestScope.sort}" />
+			
+				<li><a id="default" href="#" class="<c:choose>
+				        <c:when test='${sort == "신상품순" or sort == "" }'>active</c:when>
+				        </c:choose>">신상품순</a></li>
+				<li><a href="#" class="<c:choose>
+				        <c:when test='${sort == "인기상품순"}'>active</c:when>
+				        </c:choose>">인기상품순</a></li>
+				<li><a href="#" class="<c:choose>
+				        <c:when test='${sort == "높은가격순"}'>active</c:when>
+				        </c:choose>">높은가격순</a></li>
+				<li><a href="#" class="<c:choose>
+				        <c:when test='${sort == "낮은가격순"}'>active</c:when>
+				        </c:choose>">낮은가격순</a></li>
 			</ul>
 
+			</form>
 
 
 			<div class="row">
-
-				<div class="col-sm-6 col-md-4">
-					<div class="shop_thumb">
-						<div class="position-relative overflow-hidden">
-							<div class="shop-thumb__img">
-								<a href=""><img class="img-fluid"
-									src="<%=ctxPath%>/images/product/watchTest.png" alt=""></a>
+				
+				<c:if test="${empty requestScope.productList}">
+					<div style="height:500px;">
+					<span>상품이 없습니다</span>
+					</div>
+				</c:if>
+				
+				<c:if test="${not empty requestScope.productList}"> 
+				
+				
+				<c:forEach var="pvo" items="${requestScope.productList}" varStatus="status">
+				
+				          <fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" />
+				          
+				          <fmt:parseNumber var="sizePerPage" value="${requestScope.sizePerPage}" />
+	
+					<div class="col-sm-6 col-md-4">
+						<div class="shop_thumb">
+							<div class="position-relative overflow-hidden">
+								<div class="shop-thumb_img">
+									<a href=""><img class="img-fluid"
+										src="<%= ctxPath%>/images/product/product_thum/${pvo.pdimg1}" alt=""></a>
+								</div>
+							
 							</div>
-							<div
-								class="bg-primary rounded text-white position-absolute start-0 top-0 py-1 px-3">SALE</div>
-						</div>
-						<a href="#"> <span class="shop-thumb_title"> 티쏘 젠틀맨
-								실리시움 </span>
-						</a>
-						<div class="shop-thumb_price">1,140,000원</div>
-						<div>
-							<button type="button" class="button btn-Light">
-								<span>Buy</span>
-							</button>
-							<button type="button" class="button btn-dark">
-								<span>Cart</span>
-							</button>
+							<span class="shop-thumb_brand">${pvo.brand}</span> <br>
+							<a href="#"> <span class="shop-thumb_title">${pvo.pdname}</span>
+							</a>
+							<div class="shop-thumb_price">정가 : <fmt:formatNumber value="${pvo.price}" type="number" groupingUsed="true"/>원</div>
+							<div class="shop-thumb_saleprice">판매가 : <fmt:formatNumber value="${pvo.saleprice}" type="number" groupingUsed="true"/>원</div>
+							<div class="shop-thumb_sale">${pvo.discountPercent}% 할인</div>
+							<div>
+							
+								<button type="button" class="button btn-Light">
+									<span>Buy</span>
+								</button>
+								<button type="button" class="button btn-dark">
+									<span>Cart</span>
+								</button>
+								<button type="button" class="btn btn-danger">
+									<i class="fa-solid fa-heart"></i>
+								</button>
+							</div>
 						</div>
 					</div>
-				</div>
+				
+				</c:forEach>
+				
+				
+				
+			
+				</c:if>
 
-				<div class="col-sm-6 col-md-4">
-					<div class="shop_thumb">
-						<div class="position-relative overflow-hidden">
-							<div class="shop-thumb__img">
-								<a href=""><img class="img-fluid"
-									src="<%=ctxPath%>/images/product/watchTest.png" alt=""></a>
-							</div>
-
-						</div>
-						<a href="#"> <span class="shop-thumb_title"> 티쏘 젠틀맨
-								실리시움 </span>
-						</a>
-						<div class="shop-thumb_price">1,140,000원</div>
-						<div>
-							<button type="button" class="button btn-Light">
-								<span>Buy</span>
-							</button>
-							<button type="button" class="button btn-dark">
-								<span>Cart</span>
-							</button>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-sm-6 col-md-4">
-					<div class="shop_thumb">
-						<div class="position-relative overflow-hidden">
-							<div class="shop-thumb__img">
-								<a href=""><img class="img-fluid"
-									src="<%=ctxPath%>/images/product/watchTest.png" alt=""></a>
-							</div>
-							<div
-								class="bg-primary rounded text-white position-absolute start-0 top-0 py-1 px-3">SALE</div>
-						</div>
-						<a href="#"> <span class="shop-thumb_title"> 티쏘 젠틀맨
-								실리시움 </span>
-						</a>
-						<div class="shop-thumb_price">1,140,000원</div>
-						<div>
-							<button type="button" class="button btn-Light">
-								<span>Buy</span>
-							</button>
-							<button type="button" class="button btn-dark">
-								<span>Cart</span>
-							</button>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-sm-6 col-md-4">
-					<div class="shop_thumb">
-						<div class="position-relative overflow-hidden">
-							<div class="shop-thumb__img">
-								<a href=""><img class="img-fluid"
-									src="<%=ctxPath%>/images/product/watchTest.png" alt=""></a>
-							</div>
-
-						</div>
-						<a href="#"> <span class="shop-thumb_title"> 티쏘 젠틀맨
-								실리시움 </span>
-						</a>
-						<div class="shop-thumb_price">1,140,000원</div>
-						<div>
-							<button type="button" class="button btn-Light">
-								<span>Buy</span>
-							</button>
-							<button type="button" class="button btn-dark">
-								<span>Cart</span>
-							</button>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-sm-6 col-md-4">
-					<div class="shop_thumb">
-						<div class="position-relative overflow-hidden">
-							<div class="shop-thumb__img">
-								<a href=""><img class="img-fluid"
-									src="<%=ctxPath%>/images/product/watchTest.png" alt=""></a>
-							</div>
-
-						</div>
-						<a href="#"> <span class="shop-thumb_title"> 티쏘 젠틀맨
-								실리시움 </span>
-						</a>
-						<div class="shop-thumb_price">1,140,000원</div>
-						<div>
-							<button type="button" class="button btn-Light">
-								<span>Buy</span>
-							</button>
-							<button type="button" class="button btn-dark">
-								<span>Cart</span>
-							</button>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-sm-6 col-md-4">
-					<div class="shop_thumb">
-						<div class="position-relative overflow-hidden">
-							<div class="shop-thumb__img">
-								<a href=""><img class="img-fluid"
-									src="<%=ctxPath%>/images/product/watchTest.png" alt=""></a>
-							</div>
-
-						</div>
-						<a href="#"> <span class="shop-thumb_title"> 티쏘 젠틀맨
-								실리시움 </span>
-						</a>
-						<div class="shop-thumb_price">1,140,000원</div>
-						<div>
-							<button type="button" class="button btn-Light">
-								<span>Buy</span>
-							</button>
-							<button type="button" class="button btn-dark">
-								<span>Cart</span>
-							</button>
-						</div>
-					</div>
-				</div>
-
-
-
-				<div class="col-sm-6 col-md-4">
-					<div class="shop_thumb">
-						<div class="position-relative overflow-hidden">
-							<div class="shop-thumb__img">
-								<a href=""><img class="img-fluid"
-									src="<%=ctxPath%>/images/product/watchTest.png" alt=""></a>
-							</div>
-
-						</div>
-						<a href="#"> <span class="shop-thumb_title"> 티쏘 젠틀맨
-								실리시움 </span>
-						</a>
-						<div class="shop-thumb_price">1,140,000원</div>
-						<div>
-							<button type="button" class="button btn-Light">
-								<span>Buy</span>
-							</button>
-							<button type="button" class="button btn-dark">
-								<span>Cart</span>
-							</button>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-sm-6 col-md-4">
-					<div class="shop_thumb">
-						<div class="position-relative overflow-hidden">
-							<div class="shop-thumb__img">
-								<a href=""><img class="img-fluid"
-									src="<%=ctxPath%>/images/product/watchTest.png" alt=""></a>
-							</div>
-
-						</div>
-						<a href="#"> <span class="shop-thumb_title"> 티쏘 젠틀맨
-								실리시움 </span>
-						</a>
-						<div class="shop-thumb_price">1,140,000원</div>
-						<div>
-							<button type="button" class="button btn-Light">
-								<span>Buy</span>
-							</button>
-							<button type="button" class="button btn-dark">
-								<span>Cart</span>
-							</button>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-sm-6 col-md-4">
-					<div class="shop_thumb">
-						<div class="position-relative overflow-hidden">
-							<div class="shop-thumb__img">
-								<a href=""><img class="img-fluid"
-									src="<%=ctxPath%>/images/product/watchTest.png" alt=""></a>
-							</div>
-
-						</div>
-						<a href="#"> <span class="shop-thumb_title"> 티쏘 젠틀맨
-								실리시움 </span>
-						</a>
-						<div class="shop-thumb_price">1,140,000원</div>
-						<div>
-							<button type="button" class="button btn-Light">
-								<span>Buy</span>
-							</button>
-							<button type="button" class="button btn-dark">
-								<span>Cart</span>
-							</button>
-						</div>
-					</div>
-				</div>
-
+				
 			</div>
 			<!-- / .row -->
 
 			<!-- Pagination -->
 
-			<div class="row justify-content-center">
-				<div class="text-center">
-					<ul class="pagination">
-						<li><a href="#">«</a></li>
-						<li><a class="page-link" href="#">1</a></li>
-						<li><a class="page-link" href="#">2</a></li>
-						<li><a class="page-link" href="#">3</a></li>
-						<li><a href="#">»</a></li>
-					</ul>
-				</div>
+			<div class="row justify-content-center pt-3">
+				
+				<div id="pageBar">
+			       <nav>
+			          <ul class="pagination">
+			          	<li>${requestScope.pageBar}</li>
+			          </ul>
+			       </nav>
+			    </div>
+				
 			</div>
 			<!-- / .row -->
 
@@ -638,7 +464,11 @@ ul.pagination li {
 	</div>
 	<!-- / .row -->
 </div>
-
-
+	<form name="hiddensend">	
+		<input type="hidden" name="brand" value="">
+    	<input type="hidden" name="sort" value=""/>
+		<input type="hidden" name="searchWord" value=""/>
+	</form>
+			
 
 <jsp:include page="../footer.jsp" />

@@ -31,21 +31,7 @@ $(document).ready(function(){
 	// 확인용 method : GET 기본값
 	// 확인용 method : POST 입력했을 때 값
 	
-	if(method == "GET"){
-		$("div#div_findResult").hide();
-	}
 	
-	if(method == "POST"){
-		$("input:text[name='userid']").val("${requestScope.userid}");
-		$("input:text[name='email']").val("${requestScope.email}");
-		
-		if(${requestScope.sendMailSuccess == true && requestScope.isUserExist == true}){
-			
-			$("button.btn-success").hide();
-			
-		}
-	
-	}// end of if(method == "POST")
 	
 	$("button.btn-success").click(function(){
 		goFind();
@@ -57,28 +43,6 @@ $(document).ready(function(){
 		}	
 	});// end of $("input:text[name='email']").bind("keyup", function
 			
-	// === 인증하기 버튼 클릭시 이벤트 처리해주기 시작 === //
-	$("button.btn-info").click(function(){
-		
-		const input_confirmCode = $("input:text[name='input_confirmCode']").val().trim();
-		
-		if(input_confirmCode == ""){
-			alert("인증코드를 입력하세요!!");
-			return;
-		}
-		
-		const frm = document.verifyCertificationFrm;
-		frm.userCertificationCode.value = input_confirmCode;
-		frm.userid.value = $("input:text[name='userid']").val();
-		
-		frm.action = "<%= ctxPath%>/login/verifyCertification.up";
-		frm.method = "post";
-		frm.submit();
-		
-		
-	});
-	// === 인증하기 버튼 클릭시 이벤트 처리해주기 끝 === //
-	
 	
 }); // end of $(document).ready(function() 
 		
@@ -105,15 +69,90 @@ $(document).ready(function(){
 			return; // 종료
 		}
 		
-		const frm = document.pwdFindFrm;
-		frm.action = "<%=ctxPath%>/login/pwdFind.up";
-		frm.method = "post";
-		frm.submit();
+		$.ajax({
+	        url: "<%= ctxPath%>/login/pwdFind.flex",
+	        type: "post",
+	        data: {
+	            userid: userid,
+	            email: email
+	        },
+	        dataType: "json",
+	        
+	        success: function(json) {
+/* 	            $("input:text[name='userid']").val(userid);
+	            $("input:text[name='email']").val(email); */
+	            
+	            console.log(json.isUserExist);
+	            console.log(json.sendMailSuccess)
+	            
+	            if (json.isUserExist == false) {
+	                $("div#div_findResult").html("<span style='color: red;'>사용자 정보가 없습니다</span>");
+	            } else if (json.isUserExist == true && json.sendMailSuccess == true) {
+	                $("div#div_findResult").html(
+	                    "<span style='font-size: 10pt;'>인증코드가 " + json.email + "로 발송되었습니다.<br>" +
+	                    "인증코드를 입력해주세요</span><br>" +
+	                    "<input type='text' name='input_confirmCode' /><br><br>" +
+	                    "<button type='button' class='btn btn-info'>인증하기</button>"
+	                );
+	                
+	                // 인증하기 버튼 클릭 이벤트 처리
+                    $("button.btn-info").click(function() {
+                        // 인증하기 버튼이 클릭되었을 때 실행되는 코드 작성
+                        codeSubmit();
+                    });
+	                
+	                
+	            } else if (json.isUserExist == true && json.sendMailSuccess == false) {
+	                $("div#div_findResult").html("<span style='color: red;'>메일발송이 실패했습니다</span>");
+	            }
+	        },
+	        error: function(error) {
+	            console.log("AJAX 요청 중 오류 발생함: " + error);
+	            // 오류 처리 코드 추가
+	        }
+	    });
 	
 	}// end of function goFind()
 	
 	
+	// == 인증하기 버튼 클릭시 이벤트 처리해주기 시작 ==//
+	function codeSubmit() {
+		
+		const input_confirmCode = $("input:text[name='input_confirmCode']").val().trim();
+		
+		if(input_confirmCode == "") {
+			alert("인증코드를 입력하세요!!");
+			return; //종료
+		}
+
+		const userid = $("input:text[name='userid']").val();
+		console.log("userid" + userid);
+
+	    $.ajax({
+	        url: "<%= ctxPath %>/login/verifyCertification.flex",
+	        type: "post",
+	        data: { //인증코드 보내야 됨 유저아이디랑
+	        	"input_confirmCode": input_confirmCode,
+	            "userid": userid
+	        },
+	        dataType: "json",
+	        
+	        success: function(json) {
+				alert(json.message);
+				location.href=json.loc;
+	        },
+	        error: function(error) {
+	            console.log("AJAX 요청 중 오류 발생함: " + error);
+	            // 오류 처리 코드 추가
+	        }
+	    });				
+
+		
+		
+	}
 	
+	
+	// == 인증하기 버튼 클릭시 이벤트 처리해주기 끝 ==//
 		
 </script>
 
@@ -138,42 +177,8 @@ $(document).ready(function(){
 
 <div class="my-3 text-center" id="div_findResult">
 
-<c:if test="${requestScope.isUserExist == false}">
-
-	<span style="color: red;">사용자 정보가 없습니다</span>
-
-</c:if>
-
 	
-<c:if test="${requestScope.isUserExist == true}">
-	
-	<c:if test="${requestScope.sendMailSuccess == true}">
-		<span style="font-size: 10pt;">
-           인증코드가 ${requestScope.email}로 발송되었습니다.<br>
-           인증코드를 입력해주세요
-       </span>
-       <br>
-       <input type="text" name="input_confirmCode" />
-       <br><br> 
-       <button type="button" class="btn btn-info">인증하기</button>
-	</c:if>
-	
-	<c:if test="${requestScope.sendMailSuccess == false}">
-	
-		<span style="color: red;">메일발송이 실패했습니다</span>
-		
-	</c:if>
-     
-
-</c:if>	
-	
-
 </div>
 
-<%-- 인증하기 form --%>
-<form name="verifyCertificationFrm">
-	<input type="hidden" name="userCertificationCode"/>
-	<input type="hidden" name="userid"/>
-</form>
 
 
