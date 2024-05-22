@@ -1,10 +1,12 @@
 
 $(document).ready(function(){
 
+    const ctxPath = document.getElementById("ctxPath").value;
+
     // 변경 row 안보이게 함
     $("tr#change_password_area").hide();
     $("tr#change_email_area").hide();
-    $("tr#post_area").hide();
+    $("tr#change_post_area").hide();
 
     // $("table#userinfo").find("tr#change_password_area").hide();
     // $("table#userinfo").find("tr#change_email_area").hide();
@@ -17,6 +19,21 @@ $(document).ready(function(){
     const currentpwd= $("input:hidden[name='currentPwd']").val();
     const maskedPwd = '*'.repeat(currentpwd.length);
     $("td#cpwdview").text(maskedPwd);
+
+    // 비밀번호 표시 버튼을 클릭했을 때의 동작을 정의합니다.
+    $('img#viewEye').click(function(e) {
+        // 버튼의 부모
+        const parent = $(e.target).parent();
+        const passwordInput = parent.find('input#confirmPassword');
+        
+        if (passwordInput.attr('type') == 'password') {
+        	passwordInput.attr('type','text');
+            $(e.target).attr("src",`${ctxPath}/images/eye-show.png`);
+        } else {
+        	passwordInput.attr('type','password');
+        	$(e.target).attr("src",`${ctxPath}/images/eye-hide.png`);
+        }
+    });
 
     // 비밀번호 변경 버튼 누르면
     $("button#change_pwd").click(function(){
@@ -89,17 +106,97 @@ $(document).ready(function(){
         
         $("tr#email_area").hide();
         $("tr#change_email_area").show();
+        $("button#submit_email").attr("disabled", true);
+
+        $("div#email_authTemp").hide(); // 인증코드 입력부분 숨기기
 
     }); // end of $("button#change_btn").click(function() -------
+
+    // 이메일 변경 취소 버튼 누르면
+    $("button:reset[id='emailcancle']").click(function(){
+        $("span#email_check").empty();
+        $("span#authTempKey_check").empty();
+
+        $("tr#password_area").show();
+        $("tr#change_password_area").hide();
+        $("div#email_authTemp").hide(); // 인증코드 입력부분 숨기기
+
+    });
+
+    // 신규이메일 유효성 검사
+    $("input#newemail").blur(e => {
+
+        // 이메일 유효성검사
+        //   const regExp_email = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;  
+        //  또는
+       const regExp_email = new RegExp(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i);  
+       // 이메일 정규표현식 객체 생성
+
+        const bool = regExp_email.test($(e.target).val());
+        
+        if(!bool){ // 이메일이 정규표현식에 위배된 경우
+            
+            ///$(e.target).next().show();  // <span>태그는 보여라
+            // 또는
+            $("span#email_check").html("이메일 양식에 맞게 입력하세요.").css("color", "red");
+            $(e.target).val("");
+            
+        }
+        else{ // 공백이 아닌 글자를 입력했을 경우
+            $("button#send_authentication_email").removeAttr("disabled");
+            $("span#email_check").empty();
+
+        }
+
+    });// email 인 것은 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
+
+    // 인증번호발송 버튼 누르면
+    $("button#send_authentication_email").click(function(){
+        // alert("인증하기버튼 클릭!");
+        sendCode(); // 인증코드 발송 함수
+
+    });// end of $("button#send_authentication_email").click(function()----------
+
+
+    // === 인증하기 버튼 클릭시 이벤트 처리해주기 시작 === //
+    // 가정. 생성된 인증코드와 입력한 인증코드가 같은지 확인 후 같으면 end 클래스에 넘겨준다음
+    // 알림에 이메일 변경완료 띄우거나 다르면 인증번호가 다릅니다. 다시 해주세요 하고 인증코드 삭제하고 새로고침
+    
+    $("button#authTempKey_check").click(function(){
+        const input_confirmCode = $("input#email_authTempKey").val().trim();
+        
+        // alert("확인용 인증버튼 클릭함! "+input_confirmCode);
+        
+        if(input_confirmCode == ""){
+            alert("인증코드를 입력하세요!!");
+            $("span#authTempKey_checkMent").text("인증코드를 입력하세요!!").css("color","red");
+            return; // 종료
+        }
+
+        $("span#authTempKey_checkMent").empty();
+
+        
+        const Frm = document.emailForm;
+
+        Frm.action = "verifyCertification.flex";
+        Frm.method = "post";
+        Frm.submit();
+        
+    });// end of $("button.btn-info").click(function()----------
+
+
+
 
 
     // ==== 이메일 관련 내용 끝 === //
 
 
-    
-    function change_email(){
-        
-    }
+    // === 주소 관련 내용 시작 === //
+    // 주소 변경 버튼 클릭시
+    $("button#change_post").click(function(){
+        $("tr#change_post_area").show();
+        $("tr#post_area").hide();
+    });
 
 
     // 우편번호 찾기 버튼 클릭시
@@ -251,3 +348,45 @@ function pwdUP(){
     }
 
 }// end of function pwdUP()
+
+
+
+// 이메일 인증코드 보내는 함수
+function sendCode(){
+    const newEmail = $("input:text[name='newemail']").val().trim();
+		
+    if(newEmail == ""){
+        alert("이메일이 올바르지 않습니다.");
+        $("div#email_authTemp").hide();
+        return;	// 종료
+    }
+
+    $("div#email_authTemp").show();
+
+    const Frm = document.emailForm;
+    
+    Frm.action = "sendEmailCode.flex";
+    Frm.method = "post";
+    Frm.submit();
+
+
+
+}// end of function sendCode()---
+
+// 이메일 변경 완료 버튼 눌르면
+function emailUP(){
+    const newEmail = $("input:text[name='newemail']").val().trim();
+		
+    if(newEmail == ""){
+        alert("이메일이 올바르지 않습니다.");
+        $("div#email_authTemp").hide();
+        return;	// 종료
+    }
+
+    const Frm = document.emailForm;
+    
+    Frm.action = "memberInfoChangeEnd.flex";
+    Frm.method = "post";
+    Frm.submit();
+
+}

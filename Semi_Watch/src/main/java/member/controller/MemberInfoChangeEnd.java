@@ -21,14 +21,16 @@ public class MemberInfoChangeEnd extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String method = request.getMethod();
+		System.out.println("MemberInfoChangeEnd 클래스 작동!");
+		
 		
 		if("POST".equalsIgnoreCase(method)) {	// post 방식일 경우에만 실행
 			
 			String infoUpdate = request.getParameter("infoUpdate");
-			String login_userid = request.getParameter("login_userid");
+			String userid = request.getParameter("userid");
 			
 			MemberVO member = new MemberVO();
-			member.setUserid(login_userid);
+			member.setUserid(userid);
 			
 			String message = "";
 			String loc = "";
@@ -49,12 +51,12 @@ public class MemberInfoChangeEnd extends AbstractController {
 					
 				}
 				else if("email".equals(infoUpdate)){
-					String newemail = request.getParameter("newemail");
-					if(newemail == null) {
+					String newEmail = request.getParameter("newemail");
+					if(newEmail == null) {
 						System.out.println("이메일 값 null 임");
 					}
 					
-					member.setEmail(newemail);
+					member.setEmail(newEmail);
 					
 //					result = mdao.updateEmail(member);
 				}
@@ -82,7 +84,7 @@ public class MemberInfoChangeEnd extends AbstractController {
 				
 				
 				message = "회원정보 수정 성공!!";
-				loc = request.getContextPath()+"//member/memberInfoChange.flex"; // 다시페이지로 이동한다.
+				loc = request.getContextPath()+"/member/memberInfoChange.flex"; // 다시페이지로 이동한다.
 			
 			
 			}catch(Exception e) {

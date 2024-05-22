@@ -30,7 +30,7 @@ label#selectPicture{
 	margin-bottom: 0;
 }
 
-button#change_btn{
+button.change_btn{
 	width: 150px;
 }
 
@@ -58,6 +58,10 @@ div.postname{
 
 span#pwd_wrong, span#pwd_check, span#pwd_check2 {
 	color: red;
+}
+
+.emailbtn {
+	display: flex;
 }
 
 

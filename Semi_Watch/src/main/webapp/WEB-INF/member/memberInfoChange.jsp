@@ -18,24 +18,65 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-    // 비밀번호 표시 버튼을 클릭했을 때의 동작을 정의합니다.
-    $('img#viewEye').click(function(e) {
-        // 버튼의 부모
-        const parent = $(e.target).parent();
-        const passwordInput = parent.find('input#confirmPassword');
-        
-        if (passwordInput.attr('type') == 'password') {
-        	passwordInput.attr('type','text');
-            $(e.target).attr("src","<%=ctxPath%>/images/eye-show.png");
-        } else {
-        	passwordInput.attr('type','password');
-        	$(e.target).attr("src","<%=ctxPath%>/images/eye-hide.png");
-        }
-    });
-      
+	
+	const checkGoodong = "${requestScope.checkGoodong}";
+	
+	if(checkGoodong == "yes"){
+		// alert("인증코드 생성까지 되었습니다.");
+		// 초기화면 보여지도록
+		$("tr#change_email_area").show();
+		$("div#email_authTemp").show();
+		$("input#email_authTempKey").focus();
+		$("span#email_check").html("인증코드가 발송되었습니다.").css("color","blue");
+		
+		
+		// 이메일값 넣고, 인증번호 발송 버튼 비활성화,
+		$("input:text[name='newemail']").val("${requestScope.newEmail}");
+		$("input:text[name='newemail']").attr("readonly", true);
+		$("button#send_authentication_email").attr("disabled", true);
+		
+		// 입력한 인증번호가 맞는지 확인 후 틀리면 초기화
+	}
+	
+	if(${requestScope.AuthTemp == true}){
+		// alert("인증이 성공하였습니다.");
+		$("tr#change_email_area").show();
+		$("div#email_authTemp").show();
+		
+		$("input:text[name='newemail']").val("${requestScope.newEmail}").focus();
+		$("input:text[name='newemail']").attr("readonly", true);
+		$("button#send_authentication_email").attr("disabled", true);
+		
+		// 입력한 이메일 변경 못하게 하고, 인증코드 다시 못보내게함
+		$("input#email_authTempKey").attr("disabled", true);
+		$("button#authTempKey_check").attr("disabled", true);
+		
+		// 인증확인 멘트 보여줌
+		$("span#authTempKey_checkMent").html("${requestScope.checkMent}").css("color","blue");
+		
+		// 완료버튼 활성화
+		$("button#submit_email").attr("disabled", false);
+		
+
+	}
+	else if(${requestScope.AuthTemp == false}){
+		// alert("인증이 실패하였습니다.");
+		$("tr#change_email_area").show();
+		$("div#email_authTemp").show();
+		
+		$("input:text[name='newemail']").val("${requestScope.newEmail}").focus();
+		// $("button#send_authentication_email").attr("disabled", true);
+		
+		
+		// 인증코드 확인 못건드리게 함
+		$("input#email_authTempKey").attr("disabled", true);
+		$("button#authTempKey_check").attr("disabled", true);
+		
+		$("span#authTempKey_checkMent").html("${requestScope.checkMent}").css("color","red");
+	}
     
 });// end of $(document).ready(function() ----------
-		
+	
 </script>
 
 <%-- 회원정보 내용 시작 --%>
@@ -129,6 +170,7 @@ $(document).ready(function() {
 					</colgroup>
 					<%-- 기존 로그인 정보 --%>
 					<input name="currentPwd" type="hidden" value="Qwer1234@"/>
+					<input id="ctxPath" type="hidden" value="<%= ctxPath%>"/>
 					
 					<%-- 사진 파트--%>
 					<tr >
@@ -141,7 +183,7 @@ $(document).ready(function() {
                             <p>회원님을 알릴 수 있는 사진을 등록해 주세요.</p>
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-outline-dark" type="button" id="change_btn">사진 변경</button>
+                            <button class="btn btn-sm btn-outline-dark change_btn" type="button" id="change_btn">사진 변경</button>
                         </td>
                     </tr>
                     <%--사진 수정 할 경우 기본 숨김--%>
@@ -176,14 +218,14 @@ $(document).ready(function() {
                         <th scope="row">비밀번호</th>
                         <td id="cpwdview"></td>
                         <td>
-                            <button class="btn btn-sm btn-outline-dark" type="button" id="change_pwd">비밀번호 변경</button>
+                            <button class="btn btn-sm btn-outline-dark change_btn" type="button" id="change_pwd">비밀번호 변경</button>
                         </td>
                     </tr>
 					<%-- 비밀번호 변경 누를 경우 기본 숨김 --%>
 					<tr id="change_password_area">
                         <th scope="row">비밀번호 변경</th>
                         <td colspan="2">
-							<form id="pwdForm">
+							<form name="pwdForm">
 								<div class="mb-2" style="display: flex;">
 									<label for="password" style="width: 18%;">현재 비밀번호</label>
 									<div id="password_div" style="display: flex;">
@@ -213,13 +255,13 @@ $(document).ready(function() {
 									<button class="btn btn-sm btn-outline-dark twobtn" type="button" id="pwdUpdate" onclick="pwdUP()">완료</button>
 								</div>
 								<input name="infoUpdate" value="pwd" type="hidden"/>
-								<input name="login_userid" value="${requestScope.userid}" type="hidden" />
+								<input name="userid" value="${requestScope.userid}" type="hidden" />
 							</form>
                         </td>
                     </tr>
 
 					<%-- 이름 파트(변경 불가) --%>
-					<tr id="userid">
+					<tr id="username">
                         <th scope="row">이름</th>
                         <td colspan="2">홍길동</td>
                     </tr>
@@ -231,31 +273,38 @@ $(document).ready(function() {
                             <span id="currentEmail">example@naver.com</span>
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-outline-dark" type="button" id="change_email">이메일 변경</button>
+                            <button class="btn btn-sm btn-outline-dark change_btn" type="button" id="change_email">이메일 변경</button>
                         </td>
                     </tr>
                     <%--이메일 인증 기본 숨김 --%>
                     <tr id="change_email_area">
                         <th scope="row">이메일 변경</th>
                         <td colspan="2">
-                            <form id="emailForm">
+                            <form name="emailForm">
                                 <p class="mb-2">메일주소 입력 후 인증하기 버튼을 누르시면, 회원님의 이메일로 이메일 인증 번호가 적힌메일이 발송됩니다.<br>
 									아래에 인증 번호를 입력하시면 인증이 완료됩니다.
 								</p>
-                                <div class="input mb-1" style="display: flex;">
+                                <div class="emailbtn mb-1" >
                                     <input name="newemail" id="newemail" maxlength="50" placeholder="이메일 주소 입력" type="text" style="margin-right: 10px;">
-                                    <button class="btn btn-sm btn-outline-dark" id="send-authentication-email" type="button">인증번호 발송</button>
+                                    <button class="btn btn-sm btn-outline-dark" id="send_authentication_email" type="button">인증번호 발송</button>
+                                    &nbsp;&nbsp;<span id="email_check"></span>
                                 </div>
-                                <div class="input mb-2">
-                                    <input id="email-authTempKey" placeholder="인증번호 입력" type="text">
+                                <div class="emailbtn mb-2" id="email_authTemp">
+                                    <input name="emailAuthTempKey" id="email_authTempKey" placeholder="인증번호 입력" type="text" style="margin-right: 10px;">
+                                    <button class="btn btn-sm btn-outline-dark" id="authTempKey_check" type="button">인증</button>
+                                    &nbsp;&nbsp;<span id="authTempKey_checkMent"></span>
                                 </div>
                                 <div class="mb-3">
-                                    <button class="btn btn-sm btn-outline-secondary twobtn" type="button" >취소</button>
-                                    <button class="btn btn-sm btn-outline-dark twobtn" type="button" >완료</button>
+                                    <button class="btn btn-sm btn-outline-secondary twobtn" type="reset" id="emailcancle">취소</button>
+                                    <button disabled class="btn btn-sm btn-outline-dark twobtn" id="submit_email" type="button" onclick="emailUP()">완료</button>
                                 </div>
                                 <input name="infoUpdate" value="email" type="hidden"/>
-								<input name="login_userid" value="${requestScope.userid}" type="hidden" />
+								<input name="userid" value="${requestScope.userid}" type="hidden" />
                             </form>
+                            <%-- 인증하기 form 만들기 --%>
+							<form name="verifyFrm">
+								
+							</form>
                         </td>
                     </tr>
 
@@ -266,12 +315,12 @@ $(document).ready(function() {
 							<span>010-1234-5678</span>
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-outline-dark" type="button" id="change_btn">휴대전화 변경</button>
+                            <button class="btn btn-sm btn-outline-dark change_btn" type="button" id="change_btn">휴대전화 변경</button>
                         </td>
                     </tr>
 
 					<%-- 주소 파트 --%>
-					<tr id="post-area">
+					<tr id="post_area">
                         <th scope="row">주소</th>
                         <td>
 							<div class="mb-2" style="display: flex;">
@@ -289,12 +338,12 @@ $(document).ready(function() {
 							
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-outline-dark" type="button" id="change_btn">주소 변경</button>
+                            <button class="btn btn-sm btn-outline-dark change_btn" type="button" id="change_post">주소 변경</button>
                         </td>
                     </tr>
 
 					<%-- 주소 변경 클릭 시 기본 숨김 --%>
-					<tr id="post_area">
+					<tr id="change_post_area">
                         <th scope="row">주소 변경</th>
                         <td colspan="2">
 	                        <form>
@@ -317,7 +366,7 @@ $(document).ready(function() {
 									<button class="btn btn-sm btn-outline-dark twobtn" type="button">완료</button>
 								</div>
 								<input name="infoUpdate" value="post" type="hidden"/>
-								<input name="login_userid" value="${requestScope.userid}" type="hidden" />
+								<input name="userid" value="${requestScope.userid}" type="hidden" />
 							</form>
                         </td>
 
