@@ -424,5 +424,31 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
 	}// end of public MemberVO loginAfterReg(Map<String, String> paraMap) throws SQLException 
 
 	
+	// 페이징 처리를 한 모든 리뷰 또는 검색한 리뷰 목록 보여주기
+	@Override
+	public List<MemberVO> select_review_paging(Map<String, String> paraMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}// end of public List<MemberVO> select_review_paging(Map<String, String> paraMap) throws SQLException 	
+	
+	
+	// 페이지 바 만들기 - 페이징 처리를 위한 검색이 있는/없는 리뷰에 대한 총페이지 수 알아오기
+	@Override
+	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return 0;
+	}// end of public int getTotalPage(Map<String, String> paraMap) throws SQLException 
+
+	
+	// 뷰단(memberList.jsp)에서 "페이징 처리시 보여주는 순번 공식" 에서 사용하기 위해 검색이 있는 또는 검색이 없는 회원의 총개수 알아오기 시작
+	@Override
+	public int getTotalReviewCount(Map<String, String> paraMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return 0;
+	}// end of public int getTotalReviewCount(Map<String, String> paraMap) throws SQLException 
+
+
+
+	
 	
 }

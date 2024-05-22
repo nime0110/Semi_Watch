@@ -80,3 +80,53 @@ CROSS JOIN
 ( select trunc( months_between(sysdate, max(logindate)) ) AS lastlogingap
 from tbl_loginhistory
 where fk_userid = ? ) H;
+
+
+/* 사용자리뷰 */
+CREATE TABLE tbl_review (
+   reviewno VARCHAR2(30) NOT NULL, /* 리뷰코드 */
+   fk_pdno VARCHAR2(30) NOT NULL, /* 상품코드 */
+   fk_userid VARCHAR2(20), /* 아이디 */
+   review_content VARCHAR2(100), /* 리뷰내용 */
+   starpoint NUMBER(1) DEFAULT 1, /* 별점 */
+   review_date DATE default sysdate, /* 리뷰작성일자 */
+    review_status NUMBER(1) DEFAULT 0, /* 리뷰 */
+    CONSTRAINT PK_tbl_review_reviewno PRIMARY KEY (reviewno), -- 리뷰코드 기본키설정
+    CONSTRAINT FK_tbl_review_FK_USERID FOREIGN KEY(FK_USERID) REFERENCES TBL_MEMBER(USERID), -- 회원테이블의 아이디를 외래키로 받음
+    CONSTRAINT FK_tbl_review_FK_PDNO FOREIGN KEY(FK_PDNO) REFERENCES TBL_PRODUCT(PDNO), -- 상품테이블의 상품번호를 외래키로 받음
+    CONSTRAINT CK_tbl_review_starpoint CHECK (starpoint BETWEEN 1 AND 5); -- 별점 체크제약 1부터 5까지만
+-- Table TBL_REVIEW이(가) 생성되었습니다.
+
+
+
+select *
+from tbl_review;
+
+create sequence seq_reviewno
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+-- Sequence SEQ_REVIEWNO이(가) 생성되었습니다.
+
+commit;
+
+insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
+values('r-'||seq_reviewno.nextval,'5','kimkh','비싼 시계 처음 구입해봤는데 돈값 합니다. 강력 추천합니다! b','5');
+
+commit;
+
+
+(select reviewno, fk_pdno, fk_userid, review_content, starpoint  
+from tbl_review) R
+JOIN
+(select brand
+from tbl_product) P
+
+-- 관리자 리뷰관리에서 띄워줄 셀렉트문
+SELECT R.reviewno, P.pdname, M.userid, M.username, P.brand, R.review_content, R.starpoint
+FROM tbl_review R JOIN tbl_product P
+ON R.fk_pdno = P.pdno JOIN tbl_member M
+on R.fk_userid = M.userid;

@@ -32,6 +32,15 @@ public interface ky_1_MemberDAO {
 	// 회원가입유저 오토 로그인 처리
 	MemberVO loginAfterReg(Map<String, String> paraMap) throws SQLException;
 	
+	// 페이지 바 만들기 - 페이징 처리를 위한 검색이 있는/없는 리뷰에 대한 총페이지 수 알아오기 
+	int getTotalPage(Map<String, String> paraMap) throws SQLException;
+	
+	// 페이징 처리를 한 모든 리뷰 또는 검색한 리뷰 목록 보여주기 
+	List<MemberVO> select_review_paging(Map<String, String> paraMap) throws SQLException;
+	
+	// 뷰단(memberList.jsp)에서 "페이징 처리시 보여주는 순번 공식" 에서 사용하기 위해 검색이 있는 또는 검색이 없는 회원의 총개수 알아오기 시작
+	int getTotalReviewCount(Map<String, String> paraMap) throws SQLException;
+	
 	
 
 	
