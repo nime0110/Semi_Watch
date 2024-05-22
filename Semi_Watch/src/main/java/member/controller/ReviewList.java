@@ -12,6 +12,7 @@ import member.domain.MemberVO;
 import member.model.ky_1_MemberDAO;
 import member.model.ky_1_MemberDAO_imple;
 import my.util.MyUtil;
+import review.domain.ReviewVO;
 
 public class ReviewList extends AbstractController {
 
@@ -33,7 +34,7 @@ public class ReviewList extends AbstractController {
 	      // 관리자(admin)로 로그인 했을 경우
 	      String searchType = request.getParameter("searchType"); // 검색종류
 	      String searchWord = request.getParameter("searchWord"); // 검색어(검색단어)
-	      String sizePerPage = request.getParameter("sizePerPage"); // 페이지당 회원명수
+	      String sizePerPage = request.getParameter("sizePerPage"); // 페이지당 리뷰수
 	      String currentShowPageNo = request.getParameter("currentShowPageNo"); // 자기자신의 페이지 위치(1,2,3,4..) 넘김
 	      //마우스를 클릭해야만 넘어온 값이 있고 처음에는 넘어온 값이 없으므로 초기화를 아래에서 해준다.	      
 //	       System.out.println("searchType :" + searchType);
@@ -41,8 +42,8 @@ public class ReviewList extends AbstractController {
 //	       System.out.println("sizePerPage :" + sizePerPage);
 //	       System.out.println("currentShowPageNo :" + currentShowPageNo);
 
-	      if (searchType == null || (!"username".equals(searchType) && !"email".equals(searchType)
-	          && !"userid".equals(searchType))) {
+	      if (searchType == null || (!"pdname".equals(searchType) && !"brand".equals(searchType)
+	          && !"fk_userid".equals(searchType))) {
 	        searchType = "";
 	      }
 
@@ -172,7 +173,7 @@ public class ReviewList extends AbstractController {
 	       // ** [맨처음] [이전]만들기 ** //
 	       pageBar += "<li class='page-item'><a class='page-link' href='memberList.flex?searchType="+searchType+"&searchWord="+searchWord+"&sizePerPage="+sizePerPage+"&currentShowPageNo=1'>[맨처음]</a></li>";
 	       if(pageNo != 1) {
-	         pageBar += "<li class='page-item'><a class='page-link' href='memberList.flex?searchType="+searchType+"&searchWord="+searchWord+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";         
+	         pageBar += "<li class='page-item'><a class='page-link' href='reviewList.flex.flex?searchType="+searchType+"&searchWord="+searchWord+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";         
 	       }
 	       
 	       while( !(loop > blockSize || pageNo > totalPage) ) {
@@ -180,7 +181,7 @@ public class ReviewList extends AbstractController {
 	           pageBar += "<li class='page-item active'><a class='page-link' href='#'>"+pageNo+"</a></li>";
 	         }
 	         else {
-	           pageBar += "<li class='page-item'><a class='page-link' href='memberList.flex?searchType="+searchType+"&searchWord="+searchWord+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+	           pageBar += "<li class='page-item'><a class='page-link' href='reviewList.flex?searchType="+searchType+"&searchWord="+searchWord+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
 	         }
 	         loop++;   // 1 2 3 4 5 6 7 8 9 10 
 	         pageNo++; // 1 2 3 4 5 6 7 8 9 10
@@ -195,9 +196,9 @@ public class ReviewList extends AbstractController {
 	       // ** [다음] [마지막]만들기 ** //
 	       // pageNo ==> 11 / 21 / 31 이럴때
 	       if(pageNo <= totalPage) {         
-	         pageBar += "<li class='page-item'><a class='page-link' href='memberList.flex?searchType="+searchType+"&searchWord="+searchWord+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+pageNo+"'>[다음]</a></li>";
+	         pageBar += "<li class='page-item'><a class='page-link' href='reviewList.flex?searchType="+searchType+"&searchWord="+searchWord+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+pageNo+"'>[다음]</a></li>";
 	       }
-	       pageBar += "<li class='page-item'><a class='page-link' href='memberList.flex?searchType="+searchType+"&searchWord="+searchWord+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+	       pageBar += "<li class='page-item'><a class='page-link' href='reviewList.flex?searchType="+searchType+"&searchWord="+searchWord+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
 	       
 
 	      
@@ -209,13 +210,13 @@ public class ReviewList extends AbstractController {
 	       
 	      
 	      // *** 페이징 처리를 한 모든 리뷰 또는 검색한 리뷰 목록 보여주기 **
-	      List<MemberVO> memberList = mdao.select_review_paging(paraMap);
+	      List<ReviewVO> reviewList = mdao.select_review_paging(paraMap);
 
-	      // DB에서 select 해준 결과물인 memberList를 넘겨주기
-	      request.setAttribute("memberList", memberList);
+	      // DB에서 select 해준 결과물인 reviewList를 넘겨주기
+	      request.setAttribute("reviewList", reviewList);
 
-	      if (searchType != null && "username".equals(searchType) || "email".equals(searchType)
-	          || "userid".equals(searchType)) {
+	      if (searchType != null && "pdname".equals(searchType) || "brand".equals(searchType)
+	          || "fk_userid".equals(searchType)) {
 	        request.setAttribute("searchType", searchType);
 	      }
 
@@ -229,13 +230,13 @@ public class ReviewList extends AbstractController {
 	      request.setAttribute("currentURL", currentURL); ////현재 페이지 - 회원조회를 했을시 현재 그 페이지로 그대로 되돌아가길 위한 용도로 쓰임.
 	      
 	      // >>뷰단(memberList.jsp)에서 "페이징 처리시 보여주는 순번 공식" 에서 사용하기 위해 검색이 있는 또는 검색이 없는 회원의 총개수 알아오기 시작 <<
-	      int totalMemberCount = mdao.getTotalReviewCount(paraMap);
-	      // System.out.println(" 확인용 getTotalMemberCount" + totalMemberCount);
-	      request.setAttribute("totalMemberCount", totalMemberCount);
+	      int totalReviewCount = mdao.getTotalReviewCount(paraMap);
+	      // System.out.println(" 확인용 getTotalReviewCount" + totalReviewCount);
+	      request.setAttribute("totalReviewCount", totalReviewCount);
 	      request.setAttribute("currentShowPageNo", currentShowPageNo);
 	      // >>뷰단(memberList.jsp)에서 "페이징 처리시 보여주는 순번 공식" 에서 사용하기 위해 검색이 있는 또는 검색이 없는 회원의 총개수 알아오기 끝 <<
 
-	      super.setViewPage("/WEB-INF/member/admin/memberList.jsp");
+	      super.setViewPage("/WEB-INF/member/admin/reviewList.jsp");
 
 	    } else {
 	      // 로그인을 안한 경우 또는 일반사용자로 로그인 한 경우

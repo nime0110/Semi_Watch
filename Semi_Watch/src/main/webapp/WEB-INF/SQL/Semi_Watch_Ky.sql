@@ -113,8 +113,22 @@ nocache;
 
 commit;
 
+update tbl_review set reviewno='1' where fk_pdno = '5'; 
+
 insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
-values('r-'||seq_reviewno.nextval,'5','kimkh','비싼 시계 처음 구입해봤는데 돈값 합니다. 강력 추천합니다! b','5');
+values(seq_reviewno.nextval,'5','kimkh','비싼 시계 처음 구입해봤는데 돈값 합니다. 강력 추천합니다! b','5');
+
+insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
+values(seq_reviewno.nextval,'6','kimkh','비싼 시계 처음 구입해봤는데 돈값 합니다. 강력 추천합니다! b','5');
+
+insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
+values(seq_reviewno.nextval,'7','kimkh','시계 멋있습니다. 강력 추천합니다! b','5');
+
+insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
+values(seq_reviewno.nextval,'8','kimkh','가격에 비해 많이 아쉽습니다!','1');
+
+insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
+values(seq_reviewno.nextval,'9','kimkh','그냥저냥 쓸만 합니다','3');
 
 commit;
 
@@ -129,4 +143,17 @@ from tbl_product) P
 SELECT R.reviewno, P.pdname, M.userid, M.username, P.brand, R.review_content, R.starpoint
 FROM tbl_review R JOIN tbl_product P
 ON R.fk_pdno = P.pdno JOIN tbl_member M
-on R.fk_userid = M.userid;
+on R.fk_userid = M.userid
+where userid != 'admin';
+
+
+
+ select count(*) 
+ from tbl_review R JOIN tbl_product P
+ on R.fk_pdno = P.pdno
+ where fk_userid != 'admin'
+ 
+ select ceil(count(*)/?) 
+ from tbl_review R JOIN tbl_product P
+ on R.fk_pdno = P.pdno
+ where fk_userid != 'admin'

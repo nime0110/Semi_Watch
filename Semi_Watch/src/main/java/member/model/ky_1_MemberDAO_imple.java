@@ -17,6 +17,8 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import member.domain.MemberVO;
+import review.domain.ReviewVO;
+import shop.domain.ProductVO;
 import util.security.AES256;
 import util.security.SecrectMyKey;
 import util.security.Sha256;
@@ -423,28 +425,183 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
 		
 	}// end of public MemberVO loginAfterReg(Map<String, String> paraMap) throws SQLException 
 
-	
-	// 페이징 처리를 한 모든 리뷰 또는 검색한 리뷰 목록 보여주기
-	@Override
-	public List<MemberVO> select_review_paging(Map<String, String> paraMap) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}// end of public List<MemberVO> select_review_paging(Map<String, String> paraMap) throws SQLException 	
-	
-	
+
 	// 페이지 바 만들기 - 페이징 처리를 위한 검색이 있는/없는 리뷰에 대한 총페이지 수 알아오기
 	@Override
 	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
-	}// end of public int getTotalPage(Map<String, String> paraMap) throws SQLException 
+
+		int totalPage = 0;
+		
+		try {
+			 
+			conn = ds.getConnection();
+			
+			String sql = " select ceil(count(*)/?) "
+					+ " from tbl_review R JOIN tbl_product P "
+					+ " on R.fk_pdno = P.pdno "
+					+ " where fk_userid != 'admin' ";
+
+			String colname = paraMap.get("searchType");
+			String searchWord = paraMap.get("searchWord");
+			
+			//유저가 검색했다면 true;
+		    boolean userSearch = (colname != null && !colname.trim().isEmpty()) && 
+                    (searchWord != null && !searchWord.trim().isEmpty());
+			
+			if(userSearch) {
+				 sql += " and " + colname + " like '%' || ? || '%' ";
+			}
+			
+			pstmt = conn.prepareStatement(sql);
+	
+			pstmt.setInt(1, Integer.parseInt(paraMap.get("sizePerPage")));
+			
+			if(userSearch) {
+				pstmt.setString(2, searchWord);
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			totalPage = rs.getInt(1); //ceil(count(*)/?)
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				close();
+			}
+		return totalPage;
+		
+	}// end of public int getTotalPage(Map<String, String> paraMap) throws SQLException	
+	
+	
+	// 페이징 처리를 한 모든 리뷰 또는 검색한 리뷰 목록 보여주기
+	@Override
+	public List<ReviewVO> select_review_paging(Map<String, String> paraMap) throws SQLException {
+		
+		List<ReviewVO> reviewList = new ArrayList<>();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " SELECT R.reviewno AS reviewno, P.pdname AS pdname, M.userid AS userid,"
+					+ " M.username AS username, P.brand AS brand, R.review_content AS review_content, R.starpoint AS starpoint "
+					+ " FROM tbl_review R JOIN tbl_product P "
+					+ " ON R.fk_pdno = P.pdno JOIN tbl_member M "
+					+ " on R.fk_userid = M.userid "
+					+ " where userid != 'admin' ";
+			 
+			 
+			String colname = paraMap.get("searchType");
+			String searchWord = paraMap.get("searchWord");
+			
+			//유저가 검색했다면 true;
+		    boolean userSearch = (colname != null && !colname.trim().isEmpty()) && 
+                    (searchWord != null && !searchWord.trim().isEmpty());
+			
+			if(userSearch) {
+				 sql += " and " + colname + " like '%' || ? || '%' ";
+			}
+				
+			sql += " and R.reviewno between ? and ? "
+					+ " order by R.review_date desc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			// (10-9) and 10 // => between 1 and 10
+			
+			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo")); // 현재 페이지위치
+			int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage")); //1페이지당 보여지는 회원명수
+			
+			if(userSearch) { 
+				pstmt.setString(1, searchWord);
+				pstmt.setString(2, Integer.toString((currentShowPageNo * sizePerPage) - (sizePerPage - 1)) );
+				pstmt.setString(3, Integer.toString((currentShowPageNo * sizePerPage)) );
+			} else {
+				pstmt.setString(1, Integer.toString((currentShowPageNo * sizePerPage) - (sizePerPage - 1)) );
+				pstmt.setString(2, Integer.toString((currentShowPageNo * sizePerPage)) );
+			}
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				MemberVO mvo = new MemberVO();
+				ProductVO pvo = new ProductVO();
+				ReviewVO rvo = new ReviewVO();
+				
+				mvo.setUserid(rs.getString("userid"));
+				mvo.setUsername(rs.getString("username"));
+				pvo.setBrand(rs.getString("brand"));
+				pvo.setPdname(rs.getString("pdname"));
+				
+				rvo.setMvo(mvo);
+				rvo.setPvo(pvo);
+				rvo.setReviewno(rs.getString("reviewno"));
+				rvo.setReview_content(rs.getString("review_content"));
+				rvo.setStarpoint(rs.getString("starpoint"));
+				
+				reviewList.add(rvo);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		
+		return reviewList;
+		
+	}// end of public List<MemberVO> select_review_paging(Map<String, String> paraMap) throws SQLException 	
 
 	
 	// 뷰단(memberList.jsp)에서 "페이징 처리시 보여주는 순번 공식" 에서 사용하기 위해 검색이 있는 또는 검색이 없는 회원의 총개수 알아오기 시작
 	@Override
 	public int getTotalReviewCount(Map<String, String> paraMap) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		int totalReviewCount = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = "  select count(*) "
+					+ " from tbl_review R JOIN tbl_product P "
+					+ " on R.fk_pdno = P.pdno "
+					+ " where fk_userid != 'admin' "; 
+			 
+			 
+			String colname = paraMap.get("searchType");
+			String searchWord = paraMap.get("searchWord");
+			 
+			
+			//유저가 검색했다면 true;
+		    boolean userSearch = (colname != null && !colname.trim().isEmpty()) && 
+                    (searchWord != null && !searchWord.trim().isEmpty());
+			
+			if(userSearch) {
+				 sql += " and " + colname + " like '%' || ? || '%' ";
+			}
+				
+			
+			pstmt = conn.prepareStatement(sql);
+			// (10-9) and 10 // => between 1 and 10
+		
+			
+			if(userSearch) { 
+				pstmt.setString(1, searchWord);
+			}
+			
+			rs = pstmt.executeQuery();
+			rs.next();
+			totalReviewCount = rs.getInt(1); 
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		
+		return totalReviewCount;
+		
 	}// end of public int getTotalReviewCount(Map<String, String> paraMap) throws SQLException 
 
 
