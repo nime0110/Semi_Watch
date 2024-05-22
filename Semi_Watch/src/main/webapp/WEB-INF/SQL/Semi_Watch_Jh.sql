@@ -18,3 +18,17 @@ grant connect, resource, create view, unlimited tablespace to semi_orauser2;
 
 show user;
 -- USER이(가) "SEMI_ORAUSER2"입니다.
+
+SELECT * 
+FROM all_tables;
+
+SELECT * 
+FROM user_tables;
+
+
+
+
+
+
+
+
