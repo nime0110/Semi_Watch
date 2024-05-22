@@ -13,6 +13,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import shop.domain.ImageVO;
+import shop.domain.ProductVO;
 
 public class ss_2_ProductDAO_imple implements ss_2_ProductDAO {
 
@@ -51,6 +52,43 @@ public class ss_2_ProductDAO_imple implements ss_2_ProductDAO {
          e.printStackTrace();
       }
    } // end of private void close() {} 
+
+
+// 화면에서 찜하기를 눌렀을 때 해당하는 상품의 정보를 VO에 담아서 반환하는 메소드
+@Override
+public List<ProductVO> getWishListItem(String pdname) throws SQLException {
+	
+	 List<ProductVO> wishProductList = new ArrayList<>(); 
+	    
+	    try {
+	        conn = ds.getConnection();
+	        
+	        String sql = " select pdname, pdimg1, price "
+	        		+ " from tbl_product "
+	        		+ " where pdname IN ( " + pdname + " ) ";
+	                  
+	       pstmt = conn.prepareStatement(sql);
+	             
+	       rs = pstmt.executeQuery();
+	                
+	       while(rs.next()) {
+	    	  ProductVO pvo = new ProductVO();
+	    	  pvo.setPdname(rs.getString(1));
+	    	  pvo.setPdimg1(rs.getString(2));
+	    	  pvo.setPrice(rs.getInt(3));
+	          
+	    	  wishProductList.add(pvo);
+	       }// end of while(rs.next())----------------------------------
+	       
+	    } finally {
+	       close();
+	    }   
+	    
+	    return wishProductList;
+
+	
+	
+}
 	
 	
 	

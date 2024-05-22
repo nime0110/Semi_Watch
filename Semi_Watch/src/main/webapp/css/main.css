@@ -325,7 +325,7 @@ img{
 .cart-section__products .btn-del-product{
     height: max-content;
     width: max-content;
-    padding: .5em;
+    padding: 1em;
     margin-right: -0.5em;
     border: none;
     background: transparent;

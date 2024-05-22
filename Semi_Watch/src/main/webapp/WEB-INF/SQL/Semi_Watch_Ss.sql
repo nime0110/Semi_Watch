@@ -264,4 +264,8 @@ ON a.pdno = b.fk_pdno;
 
 select * from tbl_product_img;
 
+select pdname, pdimg1, price 
+from tbl_product 
+where pdname IN ( 'GA-2100-2A2DR' );
+
 
