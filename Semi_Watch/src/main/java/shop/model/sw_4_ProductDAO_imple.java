@@ -65,16 +65,16 @@ public class sw_4_ProductDAO_imple implements sw_4_ProductDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " select PDNAME, BRAND, PRICE, SALEPRICE, PDIMG1 "
+			String sql = " select pdname, brand, price, saleprice, pdimg1 "
 					   + " from tbl_product "
-					   + " where pdno='1' ";
+					   + " where pdno in(1,2,3) ";
 			
 			pstmt = conn.prepareStatement(sql);
 			
 			
 			rs = pstmt.executeQuery();
 			
-			if(rs.next()) { // sql 결과물 
+			while(rs.next()) { // sql 결과물 
 				
 				ProductVO pvo = new ProductVO();
 				// PDNAME, BRAND, PRICE, SALEPRICE, PDIMG1
@@ -82,8 +82,8 @@ public class sw_4_ProductDAO_imple implements sw_4_ProductDAO {
 				pvo.setPdname(rs.getString("pdname"));
 				pvo.setBrand(rs.getString("brand"));
 				pvo.setPrice(rs.getInt("price"));
-				pvo.setSaleprice(rs.getInt("Saleprice"));
-				pvo.setPdimg1(rs.getString("Pdimg1"));
+				pvo.setSaleprice(rs.getInt("saleprice"));
+				pvo.setPdimg1(rs.getString("pdimg1"));
 			
 				ProductList.add(pvo);
 				

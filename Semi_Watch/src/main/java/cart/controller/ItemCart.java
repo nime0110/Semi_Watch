@@ -20,6 +20,12 @@ public class ItemCart extends AbstractController {
 	      mdao = new sw_4_ProductDAO_imple();
 	   }
 	
+	
+	
+
+	
+	
+	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
@@ -41,11 +47,17 @@ public class ItemCart extends AbstractController {
 		///////////////////////////////////////////////////
 		  
 		// mdao.select_product(paraMap);
-		List<ProductVO> ProductList = mdao.select_product();
+		//장바구니에 넣을 성품 select해오기
+		List<ProductVO> productList = mdao.select_product(); // proid
+		//장바구니 인서트 dao 만들기
 		
-		request.setAttribute("ProductList", ProductList);
-		
-		
+	/*  == 확인용 ==
+		for(ProductVO pvo : productList) {
+			System.out.println(pvo.getBrand()+", "+pvo.getPdname());
+		}
+	*/
+		request.setAttribute("productList", productList);
+				
 		super.setRedirect(false);
 	    super.setViewPage("/WEB-INF/item/itemCart.jsp");
 	}
