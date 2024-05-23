@@ -25,9 +25,19 @@ FROM all_tables;
 SELECT * 
 FROM user_tables;
 
+select *
+from tbl_member;
 
+update tbl_member set username = '강지훈2'
+where userid = 'jhkvng';
 
-
+rollback;
+/*
+address
+detail_address
+extra_address
+postcode
+*/
 
 
 
