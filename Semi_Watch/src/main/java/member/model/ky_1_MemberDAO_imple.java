@@ -16,6 +16,9 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.apache.jasper.tagplugins.jstl.core.Catch;
+
+import jakarta.servlet.jsp.tagext.TryCatchFinally;
 import member.domain.MemberVO;
 import review.domain.ReviewVO;
 import shop.domain.ProductVO;
@@ -377,11 +380,11 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " SELECT userid, NVL( lastlogingap, trunc( months_between(sysdate, registerday)) ) AS lastlogingap "
+			String sql = " SELECT userid, username, email, mobile, postcode, address, detail_address, NVL( lastlogingap, trunc( months_between(sysdate, registerday)) ) AS lastlogingap "
 					   + " FROM "
-					   + " ( select userid, registerday "
+					   + " ( select userid, username, email, mobile, postcode, address||' '||extra_address AS address, detail_address, registerday "
 					   + " from tbl_member "
-					   + " where status = 1 and userid = ? and pw = ? ) M "
+					   + " where status = 1 and userid = ? and pw = ?) M "
 					   + " CROSS JOIN "
 					   + " ( select trunc( months_between(sysdate, max(logindate)) ) AS lastlogingap "
 					   + " from tbl_loginhistory "
@@ -400,8 +403,13 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
 				member = new MemberVO();
 				
 				member.setUserid(rs.getString("userid"));
+				member.setUsername(rs.getString("username"));
+				member.setEmail( aes.decrypt(rs.getString("email")) );
+				member.setMobile( aes.decrypt(rs.getString("mobile")) );
+				member.setPostcode(rs.getString("postcode"));
+				member.setAddress(rs.getString("address"));
+				member.setDetail_address(rs.getString("detail_address"));
 				// loginuser VO에 추가할 것이 있다면 여기에 추가하시오.
-			
 			
 				if( rs.getInt("lastlogingap") < 12) {
 					sql = " insert into tbl_loginhistory(fk_userid, clientip) "
@@ -410,13 +418,15 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
 					pstmt = conn.prepareStatement(sql);
 					pstmt.setString(1, paraMap.get("userid"));
 					pstmt.setString(2, paraMap.get("clientip"));
+						
 					
 					pstmt.executeUpdate();
 					
 				}
 			
 			}// end of if(rs.next()) 
-			
+		} catch(UnsupportedEncodingException | GeneralSecurityException e) {
+	         e.printStackTrace();
 		} finally {
 			close();
 		}
@@ -609,6 +619,43 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
 		return totalReviewCount;
 		
 	}// end of public int getTotalReviewCount(Map<String, String> paraMap) throws SQLException 
+
+	
+	// 입력받은 reviewno 를 가지고 하나의 리뷰정보를 리턴시켜주는 메소드
+	@Override
+	public ReviewVO selectOneReview(String reviewno) throws SQLException {
+		
+		ReviewVO review = null;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " SELECT R.reviewno AS reviewno, P.pdname AS pdname, P.pdimg1 AS pdimg1, M.userid AS userid, M.username AS username, P.brand AS brand, R.review_content AS review_content, R.starpoint AS starpoint "
+					+ " FROM tbl_review R JOIN tbl_product P "
+					+ " ON R.fk_pdno = P.pdno JOIN tbl_member M "
+					+ " on R.fk_userid = M.userid "
+					+ " where reviewno = '?' ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, reviewno);
+			
+			if(rs.next()) {
+				review = new ReviewVO();
+				
+				review.setReviewno(reviewno);
+				
+				
+				
+			}
+			
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return review;
+	}// end of public ReviewVO selectOneReview(String userid) throws SQLException 
 
 
 

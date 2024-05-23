@@ -169,7 +169,7 @@ SELECT R.reviewno AS reviewno, P.pdname AS pdname, P.pdimg1 AS pdimg1, M.userid 
 FROM tbl_review R JOIN tbl_product P
 ON R.fk_pdno = P.pdno JOIN tbl_member M
 on R.fk_userid = M.userid
-where userid != 'admin';
+where reviewno = '1';
 
 
 
@@ -196,3 +196,25 @@ FROM
     ORDER BY R.review_date DESC
 ) 
 WHERE rno BETWEEN 1 AND 5;
+
+
+
+SELECT userid, username, email, mobile, postcode, address, detail_address, NVL( lastlogingap, trunc( months_between(sysdate, registerday)) ) AS lastlogingap 
+FROM
+( select userid, username, email, mobile, postcode, address||' '||extra_address AS address, detail_address, registerday 
+from tbl_member 
+where status = 1 and userid = 'kimkh7') M 
+CROSS JOIN 
+( select trunc( months_between(sysdate, max(logindate)) ) AS lastlogingap 
+from tbl_loginhistory 
+where fk_userid = 'kimkh7' ) H 
+
+ SELECT userid, username, email, mobile, postcode, address, detail_address, NVL( lastlogingap, trunc( months_between(sysdate, registerday)) ) AS lastlogingap 
+FROM 
+( select userid, username, email, mobile, postcode, address||' '||extra_address AS address, detail_address, registerday 
+from tbl_member 
+where status = 1 and userid = 'kimkh22' ) M 
+CROSS JOIN 
+(select trunc( months_between(sysdate, max(logindate)) ) AS lastlogingap 
+from tbl_loginhistory 
+where fk_userid = 'kimkh22' ) H

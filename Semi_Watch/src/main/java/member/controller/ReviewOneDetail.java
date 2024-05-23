@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpSession;
 import member.domain.MemberVO;
 import member.model.ky_1_MemberDAO;
 import member.model.ky_1_MemberDAO_imple;
+import review.domain.ReviewVO;
 
 public class ReviewOneDetail extends AbstractController {
 
@@ -29,10 +30,23 @@ public class ReviewOneDetail extends AbstractController {
 			// 관리자(admin)로 로그인 했을 경우
 			String method = request.getMethod();
 			
+			if("POST".equalsIgnoreCase(method)) {
+				// POST 방식일 때
+				String reviewno = request.getParameter("reviewno");
+				String goBackURL = request.getParameter("goBackURL");
+				
+				ReviewVO rvo = mdao.selectOneReview(reviewno);
+				
+				request.setAttribute("rvo", rvo);
+				request.setAttribute("goBackURL", goBackURL);
+				
+				super.setRedirect(false);
+		        super.setViewPage("/WEB-INF/member/admin/reviewOneDetail.jsp");
+				
+				
+			}// end of if("POST".equalsIgnoreCase(method))
 			
 			
-			super.setRedirect(false);
-	        super.setViewPage("/WEB-INF/member/admin/reviewOneDetail.jsp");
 		}
 		else {
 		      // 로그인을 안한 경우 또는 일반사용자로 로그인 한 경우
