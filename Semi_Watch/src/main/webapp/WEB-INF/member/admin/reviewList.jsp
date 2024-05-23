@@ -108,10 +108,10 @@
    
    <form name="review_search_frm">
       <select name="searchType">
-         <option name="">검색대상</option>
-         <option name="pdname">제품명</option>
-         <option name="fk_userid">아이디</option>
-         <option name="brand">브랜드</option>
+         <option value="">검색대상</option>
+         <option value="pdname">제품명</option>
+         <option value="userid" >아이디</option>
+         <option value="brand">브랜드</option>
       </select>
       &nbsp;
       <input type="text" name="searchWord" /> 
@@ -143,6 +143,8 @@
 	      <c:if test="${not empty requestScope.reviewList}">      
 	          <c:forEach var="rvo" items="${requestScope.reviewList}" varStatus="status">
 	          	<tr class="reviewInfo">
+	          		<fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" />
+                 	<fmt:parseNumber var="sizePerPage" value="${requestScope.sizePerPage}" />
 	          		<td>${rvo.reviewno}</td>
 	          		<td class="userid">${rvo.mvo.userid}</td>
 	          		<td>${rvo.mvo.username}</td>

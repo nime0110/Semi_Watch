@@ -485,12 +485,17 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql = " SELECT R.reviewno AS reviewno, P.pdname AS pdname, M.userid AS userid,"
-					+ " M.username AS username, P.brand AS brand, R.review_content AS review_content, R.starpoint AS starpoint "
-					+ " FROM tbl_review R JOIN tbl_product P "
-					+ " ON R.fk_pdno = P.pdno JOIN tbl_member M "
-					+ " on R.fk_userid = M.userid "
-					+ " where userid != 'admin' ";
+			String sql = " SELECT rno, reviewno, pdname, userid, username, brand, review_content, starpoint "
+					+ " FROM "
+					+ " ( "
+					+ "    SELECT rownum AS rno, R.reviewno AS reviewno, P.pdname AS pdname, M.userid AS userid, "
+					+ "    M.username AS username, P.brand AS brand, R.review_content AS review_content, R.starpoint AS starpoint "
+					+ "    FROM tbl_review R "
+					+ "    JOIN tbl_product P ON R.fk_pdno = P.pdno "
+					+ "    JOIN tbl_member M ON R.fk_userid = M.userid "
+					+ "    WHERE M.userid != 'admin' "
+					+ "    ORDER BY R.review_date DESC "
+					+ " ) where ";
 			 
 			 
 			String colname = paraMap.get("searchType");
@@ -501,19 +506,20 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
                     (searchWord != null && !searchWord.trim().isEmpty());
 			
 			if(userSearch) {
-				 sql += " and " + colname + " like '%' || ? || '%' ";
+				 sql += colname + " like '%' || ? || '%' and ";
 			}
 				
-			sql += " and R.reviewno between ? and ? "
-					+ " order by R.review_date desc ";
+			sql += " rno between ? and ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			// (10-9) and 10 // => between 1 and 10
 			
 			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo")); // 현재 페이지위치
-			int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage")); //1페이지당 보여지는 회원명수
+			int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage")); //1페이지당 보여지는 회원명수			
 			
-			if(userSearch) { 
+			if(userSearch) {
+				searchWord = searchWord.toUpperCase();
+				
 				pstmt.setString(1, searchWord);
 				pstmt.setString(2, Integer.toString((currentShowPageNo * sizePerPage) - (sizePerPage - 1)) );
 				pstmt.setString(3, Integer.toString((currentShowPageNo * sizePerPage)) );

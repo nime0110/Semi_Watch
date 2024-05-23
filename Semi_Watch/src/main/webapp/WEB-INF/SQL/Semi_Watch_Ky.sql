@@ -130,6 +130,24 @@ values(seq_reviewno.nextval,'8','kimkh','가격에 비해 많이 아쉽습니다
 insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
 values(seq_reviewno.nextval,'9','kimkh','그냥저냥 쓸만 합니다','3');
 
+insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
+values(seq_reviewno.nextval,'25','kimkh','그냥저냥 쓸만 합니다','3');
+
+insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
+values(seq_reviewno.nextval,'26','kimkh','그냥저냥 쓸만 합니다','3');
+
+insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
+values(seq_reviewno.nextval,'27','kimkh','그냥저냥 쓸만 합니다','3');
+
+insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
+values(seq_reviewno.nextval,'28','kimkh','그냥저냥 쓸만 합니다','3');
+
+insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
+values(seq_reviewno.nextval,'29','kimkh','그냥저냥 쓸만 합니다','3');
+
+insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
+values(seq_reviewno.nextval,'30','kimkh','그냥저냥 쓸만 합니다','3');
+
 commit;
 
 
@@ -146,6 +164,13 @@ ON R.fk_pdno = P.pdno JOIN tbl_member M
 on R.fk_userid = M.userid
 where userid != 'admin';
 
+-- 관리자 리뷰상세보기에서 띄워줘야 할 것
+SELECT R.reviewno AS reviewno, P.pdname AS pdname, P.pdimg1 AS pdimg1, M.userid AS userid, M.username AS username, P.brand AS brand, R.review_content AS review_content, R.starpoint AS starpoint
+FROM tbl_review R JOIN tbl_product P
+ON R.fk_pdno = P.pdno JOIN tbl_member M
+on R.fk_userid = M.userid
+where userid != 'admin';
+
 
 
  select count(*) 
@@ -157,3 +182,17 @@ where userid != 'admin';
  from tbl_review R JOIN tbl_product P
  on R.fk_pdno = P.pdno
  where fk_userid != 'admin'
+
+ 
+SELECT rno, reviewno, pdname, userid, username, brand, review_content, starpoint
+FROM 
+(
+    SELECT rownum AS rno, R.reviewno AS reviewno, P.pdname AS pdname, M.userid AS userid,
+    M.username AS username, P.brand AS brand, R.review_content AS review_content, R.starpoint AS starpoint 
+    FROM tbl_review R 
+    JOIN tbl_product P ON R.fk_pdno = P.pdno 
+    JOIN tbl_member M ON R.fk_userid = M.userid 
+    WHERE M.userid != 'admin'
+    ORDER BY R.review_date DESC
+) 
+WHERE rno BETWEEN 1 AND 5;

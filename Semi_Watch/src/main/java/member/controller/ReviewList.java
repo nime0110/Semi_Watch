@@ -43,7 +43,7 @@ public class ReviewList extends AbstractController {
 //	       System.out.println("currentShowPageNo :" + currentShowPageNo);
 
 	      if (searchType == null || (!"pdname".equals(searchType) && !"brand".equals(searchType)
-	          && !"fk_userid".equals(searchType))) {
+	          && !"userid".equals(searchType))) {
 	        searchType = "";
 	      }
 
@@ -171,7 +171,7 @@ public class ReviewList extends AbstractController {
 	       //pageNo는 페이지 바에서 보여지는 첫번째 번호이다.
 	       
 	       // ** [맨처음] [이전]만들기 ** //
-	       pageBar += "<li class='page-item'><a class='page-link' href='memberList.flex?searchType="+searchType+"&searchWord="+searchWord+"&sizePerPage="+sizePerPage+"&currentShowPageNo=1'>[맨처음]</a></li>";
+	       pageBar += "<li class='page-item'><a class='page-link' href='reviewList.flex?searchType="+searchType+"&searchWord="+searchWord+"&sizePerPage="+sizePerPage+"&currentShowPageNo=1'>[맨처음]</a></li>";
 	       if(pageNo != 1) {
 	         pageBar += "<li class='page-item'><a class='page-link' href='reviewList.flex.flex?searchType="+searchType+"&searchWord="+searchWord+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";         
 	       }
@@ -211,12 +211,12 @@ public class ReviewList extends AbstractController {
 	      
 	      // *** 페이징 처리를 한 모든 리뷰 또는 검색한 리뷰 목록 보여주기 **
 	      List<ReviewVO> reviewList = mdao.select_review_paging(paraMap);
-
+	      
 	      // DB에서 select 해준 결과물인 reviewList를 넘겨주기
 	      request.setAttribute("reviewList", reviewList);
 
 	      if (searchType != null && "pdname".equals(searchType) || "brand".equals(searchType)
-	          || "fk_userid".equals(searchType)) {
+	          || "userid".equals(searchType)) {
 	        request.setAttribute("searchType", searchType);
 	      }
 
