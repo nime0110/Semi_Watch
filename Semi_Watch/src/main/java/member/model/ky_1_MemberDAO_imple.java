@@ -630,28 +630,36 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " SELECT R.reviewno AS reviewno, P.pdname AS pdname, P.pdimg1 AS pdimg1, M.userid AS userid, M.username AS username, P.brand AS brand, R.review_content AS review_content, R.starpoint AS starpoint "
+			String sql = " SELECT R.reviewno AS reviewno, P.brand AS brand, P.pdname AS pdname, P.pdimg1 AS pdimg1, M.userid AS userid, M.username AS username, R.review_content AS review_content, R.starpoint AS starpoint "
 					+ " FROM tbl_review R JOIN tbl_product P "
 					+ " ON R.fk_pdno = P.pdno JOIN tbl_member M "
 					+ " on R.fk_userid = M.userid "
-					+ " where reviewno = '?' ";
+					+ " where reviewno = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, reviewno);
 			
+			rs = pstmt.executeQuery();
+			
 			if(rs.next()) {
 				review = new ReviewVO();
 				
-				review.setReviewno(reviewno);
-				
-				
+				review.setReviewno(rs.getString("reviewno"));
+				review.getPvo().setBrand(rs.getString("brand"));
+				review.getPvo().setPdname(rs.getString("pdname"));
+				review.getPvo().setPdimg1(rs.getString("pdimg1"));
+				review.getMvo().setUserid(rs.getString("userid"));
+				review.getMvo().setUsername(rs.getString("username"));
+				review.setReview_content(rs.getString("review_content"));
+				review.setStarpoint(rs.getString("starpoint"));
 				
 			}
-			
-			
+	
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			close();
 		}
 		
 		return review;
