@@ -102,8 +102,6 @@ CREATE TABLE tbl_loginhistory (
 
 
 
-alter table tbl_loginhistory modify logindate default sysdate;
-alter table tbl_loginhistory modify clientip default '127.0.0.1';
 
 /* 상품추가이미지 */
 CREATE TABLE tbl_product_img (
@@ -149,14 +147,17 @@ CREATE TABLE tbl_review (
 	fk_pdno VARCHAR2(30) NOT NULL, /* 상품코드 */
 	fk_userid VARCHAR2(20), /* 아이디 */
 	review_content VARCHAR2(100), /* 리뷰내용 */
-	starpoint NUMBER(1) DEFAULT 0, /* 별점 */
+	starpoint NUMBER(1) DEFAULT 1, /* 별점 */
 	review_date DATE default sysdate, /* 리뷰작성일자 */
-    review_status NUMBER(1) DEFAULT 0, /* 리뷰 */
+    review_status NUMBER(1) DEFAULT 0, /* 리뷰선정코드  */
     CONSTRAINT PK_tbl_review_reviewno PRIMARY KEY (reviewno), -- 리뷰코드 기본키설정
     CONSTRAINT FK_tbl_review_FK_USERID FOREIGN KEY(FK_USERID) REFERENCES TBL_MEMBER(USERID), -- 회원테이블의 아이디를 외래키로 받음
     CONSTRAINT FK_tbl_review_FK_PDNO FOREIGN KEY(FK_PDNO) REFERENCES TBL_PRODUCT(PDNO), -- 상품테이블의 상품번호를 외래키로 받음
     CONSTRAINT CK_tbl_review_starpoint CHECK (starpoint BETWEEN 1 AND 5); -- 별점 체크제약 1부터 5까지만
 -- Table TBL_REVIEW이(가) 생성되었습니다.
+    
+    
+
 
 
     insert into tbl_member(userid, pw, username, email, mobile, address, detail_address, extra_address, postcode,  gender, birthday) 
@@ -185,19 +186,6 @@ CREATE TABLE tbl_review (
     nocycle
     nocache;
     -- Sequence SEQ_TBL_PRODUCT_pdno이(가) 생성되었습니다.
-    
-    select * from tbl_product;
-    
-    pdno VARCHAR2(30) NOT NULL, /* 상품코드 */
-	pdname NVARCHAR2(30) NOT NULL, /* 상품명 */
-	brand NVARCHAR2(20), /* 상품브랜드 */
-	price NUMBER(10) DEFAULT 0 NOT NULL, /* 상품정가 */
-	saleprice NUMBER(10) DEFAULT 0, /* 상품판매가 */
-	pdimg1 VARCHAR2(50) DEFAULT 'noimg.png', /* 상품이미지 */
-	pd_content NVARCHAR2(1000), /* 상품상세내용 */
-	pdinputdate DATE DEFAULT sysdate NOT NULL, /* 상품등록일자 */
-	pdstatus NUMBER(1) DEFAULT 1, /* 상품상태 1은 신상품, 2는 일반상품, 3은 인기상품*/
-    point /* 상품 구매시 적립포인트 */
     
     
     select rno , pdno, pdname,brand,price,saleprice,pdimg1
@@ -315,9 +303,7 @@ CREATE TABLE tbl_review (
      commit;
      -- 롤렉스 17번까지 올린거임 추후 등록을 위해
      
-     
-     
-     
+ 
      
      
      -- 카시오
@@ -560,6 +546,11 @@ CREATE TABLE tbl_review (
     commit;
     
    -- test 상품상세코드
+   String a = " ' a ' ,  '  b '  ,  ' c  ' " ;
+   
+   select * 
+   from tbl_product
+   where pdname in ( " ' a ' ,  '  b '  ,  ' c  ' "      );
    
    create sequence seq_test_pdno
     start with 1
@@ -616,10 +607,113 @@ CREATE TABLE tbl_review (
 
      
     select distinct brand from tbl_product; 
+    
+    
+    select * from tbl_member where userid = 'admin';
+   
+  
+delete from  tbl_product_img; 
+delete from tbl_product where pdno in (96);
+  commit;
+delete from tbl_pd_detail;
+commit;  
+  
+select * from tbl_product_img;
+select * from tbl_pd_detail;
+select * from tbl_product order by pdno desc;
+
+
+
+     select * from tbl_product;
+    
+   
+    
+    ------------------------------------------ 0523
+     create sequence seq_tbl_order_ordercode
+     start with 1
+     increment by 1
+     nomaxvalue
+     nominvalue
+     nocycle
+     nocache;
+     -- Sequence SEQ_TBL_CART_CARTNO이(가) 생성되었습니다.
+     
+ pdno VARCHAR2(30) NOT NULL, /* 상품코드 */
+	pdname NVARCHAR2(30) NOT NULL, /* 상품명 */
+	brand NVARCHAR2(20), /* 상품브랜드 */
+	price NUMBER(10) DEFAULT 0 NOT NULL, /* 상품정가 */
+	saleprice NUMBER(10) DEFAULT 0, /* 상품판매가 */
+	pdimg1 VARCHAR2(50) DEFAULT 'noimg.png', /* 상품이미지 */
+	pd_content NVARCHAR2(1000), /* 상품상세내용 */
+	pdinputdate DATE DEFAULT sysdate NOT NULL, /* 상품등록일자 */
+	pdstatus NUMBER(1) DEFAULT 0, /* 상품상태 0은 재고 및 색상 등록전, 1은 재고 및 색상 등록*/
+    point /* 상품 구매시 적립포인트 */
+	
+
+
+
+  select * from user_sequences;
+     
+     comment on table TBL_PRODUCT_IMG
+     is '상품의 추가이미지(페이지가 상품상세페이지일때)가 담겨있는 테이블';
+    
+     comment on column TBL_PRODUCT_IMG.PD_DETAILNO
+     is '상품상세테이블의 기본키인 상품상세번호 (시퀀스 사용 : SEQ_PRODUCT_IMG)';
+    
+     comment on column TBL_PRODUCT_IMG.pd_extraimg
+     is '해당 상품의 추가 이미지파일명';
+    
+     comment on column TBL_PD_DETAIL.PD_QTY
+     is '상품상세번호별 재고수량(즉, 컬러별 재고수량을 의미함)';
+    
+     comment on column TBL_PRODUCT_IMG.FK_PDNO
+     is '상품번호 tbl_product 테이블의 pdno 컬럼을 참조한다.';
+    
+     comment on column tbl_orderdetail.ORDER_PRICE
+     is '해당 주문의 배송비';
+     
+     select column_name, comments
+     from user_col_comments
+     where table_name = 'TBL_PD_DETAIL';
+    
+     
+ 
+     select *
+     from user_tab_comments;
+
+    
      
      
+     select *
+     from tbl_cart;
      
+     select cartno, fk_userid, fk_pnum, oqty, registerday 
+     from tbl_cart
+     order by cartno asc;
      
-     
+     select * from user_constraints where constraint_type = 'R'
+    
+    select distinct pd_extraimg, pdno , pdname , brand, pd_content, pdimg1
+    from TBL_PRODUCT P join TBL_pd_detail D
+    on P.pdno = D.fk_pdno
+    join TBL_Product_img I
+    on D.fk_pdno = I.fk_pdno;
+    
+    
+    select pd_extraimg from tbl_product_img where fk_pdno = ?;
+    
+    select * from tbl_pd_detail;
+    select * from tbl_product_img;
+
+
+
+
+
+
+
+
+
+
+
     
 

@@ -16,7 +16,16 @@ public class ProductVO {
 	
 	////////////////////////// 여기까지 insert 용도 /////////////////////////////
 	
+	private ImageVO ivo;
 	
+	public ImageVO getIvo() {
+		return ivo;
+	}
+
+	public void setIvo(ImageVO ivo) {
+		this.ivo = ivo;
+	}
+
 	private Product_DetailVO pdvo; // tbl_pd_detail 조인 select 용도
 	
 	

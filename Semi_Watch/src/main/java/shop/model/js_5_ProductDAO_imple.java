@@ -239,7 +239,7 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 		         		+ "	select rownum as rno, pdno, pdname, brand, price, saleprice, pdimg1 "
 		         		+ "	 from "
 		         		+ "	( "
-		         		+ "	 select rownum,pdno, pdname, brand, price, saleprice, pdimg1 "
+		         		+ "	 select rownum, pdno, pdname, brand, price, saleprice, pdimg1 "
 		         		+ "	from tbl_product "
 		         		+ "	 where pdstatus = 1 ";
 	         			 
@@ -446,6 +446,174 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 		return getTotalPage;
 		
 	} // end of public int search_pdname_TotalPage(Map<String, String> paraMap) throws SQLException {
+
+
+	// 제품번호 채번해오기
+	@Override
+	public int getPnumOfProduct() throws SQLException {
+		
+		int pdno = 0;
+	      
+	      try {
+	         conn = ds.getConnection();
+	         
+	         String sql = " select seq_tbl_product_pdno.nextval AS pdno "
+	                  + " from dual ";
+	         
+	         pstmt = conn.prepareStatement(sql);
+	         rs = pstmt.executeQuery();
+	         
+	         rs.next();
+	         pdno = rs.getInt(1);
+	         
+	      } finally {
+	         close();
+	      }
+	      
+	      return pdno;
+	      
+	} // end of public int getPnumOfProduct() throws SQLException {
+
+
+	// tbl_product 테이블에 제품정보 insert 하기
+	@Override
+	public int productinsert(ProductVO pvo) throws SQLException {
+		
+		int result = 0;
+	      
+	      try {
+	         conn = ds.getConnection();
+	         
+	         String sql = " insert into tbl_product(pdno, pdname, brand, "
+	         			+ " price, saleprice, pdimg1, pd_content, point) "
+	         			+ " values(?,?,?, "
+	         			+ "	?,?,?,?,?) ";
+	         
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setString(1, pvo.getPdno());
+	         pstmt.setString(2, pvo.getPdname());
+	         pstmt.setString(3, pvo.getBrand());    
+	         pstmt.setInt(4, (int) pvo.getPrice()); 
+	         pstmt.setInt(5, (int) pvo.getSaleprice()); 
+	         pstmt.setString(6, pvo.getPdimg1()); 
+	         pstmt.setString(7, pvo.getPd_content());
+	         pstmt.setInt(8, pvo.getPoint());
+	         
+	         result = pstmt.executeUpdate();
+	         
+	      } finally {
+	         close();
+	      }
+	      
+	      return result;
+
+	} // end of public int productinsert(ProductVO pvo) throws SQLException {
+
+
+	// >>> tbl_product_imagefile 테이블에 제품의 추가이미지 파일명 insert 하기 <<<
+	@Override
+	public int product_imagefile_insert(Map<String, String> paraMap) throws SQLException {
+		
+		int result = 0;
+	      
+	      try {
+	         conn = ds.getConnection();
+	         
+	         String sql = " insert into tbl_product_img(img_no, fk_pdno, pd_extraimg) "
+	                  + " values(seq_product_img.nextval, ?, ?) ";
+	         
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setInt(1, Integer.parseInt(paraMap.get("pdno")) );
+	         pstmt.setString(2, paraMap.get("attachFileName"));
+	         
+	         result = pstmt.executeUpdate();
+	         
+	      } finally {
+	         close();
+	      }
+	      
+	      return result;
+	      
+	} // end of public int product_imagefile_insert(Map<String, String> paraMap) throws SQLException {
+
+
+	
+	// 상품추가정보입력을 위한 상품명, 브랜도 조회해오기
+	@Override
+	public ProductVO select_extrainfo(String setpdno) throws SQLException {
+		
+		ProductVO pvo = new ProductVO();
+		
+		try {
+	         conn = ds.getConnection();
+	         
+	         String sql = " select pdname, brand "
+	         		+ " from tbl_product "
+	         		+ " where pdno = ? ";
+	         
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setString(1, setpdno);
+	         
+	         rs = pstmt.executeQuery();
+	         
+	         if(rs.next()){
+	        	 
+	        	 pvo.setPdname(rs.getString(1));
+		         pvo.setBrand(rs.getString(2));
+	        	 
+	         }
+	         
+	        
+	         
+	      } finally {
+	         close();
+	      }
+		
+		
+		return pvo;
+		
+	} // end of public ProductVO select_extrainfo(String setpdno) throws SQLException {
+
+
+	
+	// 상품추가정보 입력
+	@Override
+	public int insert_product_detail(Map<String, String> paraMap) throws SQLException {
+
+		int result = 0;
+		
+		try {
+	         conn = ds.getConnection();
+	         
+	         for(int i=1 ; i<=3; i++) {
+	        	 
+	        	 if(paraMap.get("color"+i) != null && paraMap.get("pdqty"+i) !=null) {
+	        		 
+	        		 String sql = " insert into tbl_pd_detail(pd_detailno, fk_pdno, color, pd_qty) "
+	   	                  + " values(seq_product_detail.nextval, ?, ? , ?) ";
+	        		 
+	        		 pstmt = conn.prepareStatement(sql);
+	        		 
+	        		 pstmt.setString(1, paraMap.get("pdno") );
+	    	         pstmt.setString(2, paraMap.get("color"+i));
+	    	         pstmt.setString(3, paraMap.get("pdqty"+i));
+	    	         
+	    	         result = pstmt.executeUpdate();
+	    	         
+	        	 } // end of if
+	        	 
+	         } // end of for
+	          
+	         
+	      } finally {
+	         close();
+	      }
+	      
+	      return result;
+	} // end of public int insert_product_detail(Map<String, String> paraMap) throws SQLException {
 
 
 

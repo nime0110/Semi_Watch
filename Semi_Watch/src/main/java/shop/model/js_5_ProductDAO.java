@@ -29,6 +29,21 @@ public interface js_5_ProductDAO {
 	// 상품명을 조회해서 나오는 토탈페이지구하기
 	int search_pdname_TotalPage(Map<String, String> paraMap) throws SQLException;
 
+	// 제품번호 채번해오기
+	int getPnumOfProduct() throws SQLException;
+
+	// tbl_product 테이블에 제품정보 insert 하기
+	int productinsert(ProductVO pvo) throws SQLException;
+
+	// >>> tbl_product_imagefile 테이블에 제품의 추가이미지 파일명 insert 하기 <<<
+	int product_imagefile_insert(Map<String, String> paraMap) throws SQLException;
+
+	// 상품추가정보입력을 위한 상품명, 브랜도 조회해오기
+	ProductVO select_extrainfo(String setpdno) throws SQLException;
+
+	// 상품추가정보 입력
+	int insert_product_detail(Map<String, String> paraMap) throws SQLException;
+
 
 
 	
