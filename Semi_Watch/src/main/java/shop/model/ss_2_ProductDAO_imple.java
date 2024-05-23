@@ -58,6 +58,7 @@ public class ss_2_ProductDAO_imple implements ss_2_ProductDAO {
 @Override
 public List<ProductVO> getWishListItem(String pdname) throws SQLException {
 	
+	System.out.println("mdaoimple pdname" + pdname);
 	 List<ProductVO> wishProductList = new ArrayList<>(); 
 	    
 	    try {
@@ -76,7 +77,7 @@ public List<ProductVO> getWishListItem(String pdname) throws SQLException {
 	    	  pvo.setPdname(rs.getString(1));
 	    	  pvo.setPdimg1(rs.getString(2));
 	    	  pvo.setPrice(rs.getInt(3));
-	          
+
 	    	  wishProductList.add(pvo);
 	       }// end of while(rs.next())----------------------------------
 	       

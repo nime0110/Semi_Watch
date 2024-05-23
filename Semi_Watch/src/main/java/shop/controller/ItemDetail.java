@@ -10,11 +10,11 @@ import member.model.ss_2_MemberDAO;
 import member.model.ss_2_MemberDAO_imple;
 import shop.domain.ImageVO;
 
-public class ItemDetailController extends AbstractController {
+public class ItemDetail extends AbstractController {
 	
 	private ss_2_MemberDAO mdao = null;
 	
-	public ItemDetailController() {
+	public ItemDetail() {
 		mdao = new ss_2_MemberDAO_imple();
 	}
 	@Override

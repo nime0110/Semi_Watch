@@ -117,7 +117,7 @@
         <header>
           <h2 class="company-name" tabindex="0">CASIO</h2>
           <p class="product__name" tabindex="0"></p>
-          <h3 class="product__title" tabindex="0" id="productName">A-1100B-1DF</h3>
+          <h3 class="product__title" tabindex="0" id="productName">DAYTONA</h3>
         </header>
         <p class="product__description" tabindex="0">
           터프니스를 추구하며 진화를 계속하는 G-SHOCK에서, 세부적인 파트까지 모두 원톤으로 완성한 One tone 시리즈입니다. 베이스 모델은 옥타곤 베젤의 GA-2100을 채용하고, 인기 있는 컬러링을 케이스, 베젤, 밴드, 다이얼의 각 파트에 이르기까지 원톤으로 통일하여 전체적으로 깊이감이 있는 모델로 완성했습니다. 스트릿 패션에도 최적화된 캐주얼하고 스타일링의 포인트로 활용하기 좋은 컬러 모델입니다.

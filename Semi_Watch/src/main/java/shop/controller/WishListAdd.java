@@ -23,7 +23,12 @@ public class WishListAdd extends AbstractController {
 	}
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String pdnames = request.getParameter("pdnames"); // GPR-H1000-9DR,GPR-H1000-9DR,GA-2100-2A2DR
+		
+
+		
+		/* ---------- 위시리스트 관련 코드 ------------*/
+		
+		String pdnames = request.getParameter("pdnum"); 
 		//System.out.println(pdnames);
 		String[] name_arr = pdnames.split(",");
 		
@@ -33,7 +38,7 @@ public class WishListAdd extends AbstractController {
 		}
 		
         String pdname = String.join(", ", name_arr);
-        System.out.println(pdname); // PR-H1000-9DR GPR-H1000-9DR GA-2100-2A2DR
+        //System.out.println(pdname); // PR-H1000-9DR GPR-H1000-9DR GA-2100-2A2DR
      // 'PR-H1000-9DR', 'GPR-H1000-9DR' , 'GA-2100-2A2DR'
         
         // 화면에서 찜하기를 눌렀을 때 해당하는 상품의 정보를 VO에 담아서 반환하는 메소드
@@ -64,14 +69,13 @@ public class WishListAdd extends AbstractController {
         
         String json = jsonArr.toString(); //문자열로 변환
         // 데이터가 없을시 "[]"로 된다.
-        
-        
+
         request.setAttribute("json", json);
         
         super.setViewPage("/WEB-INF/jsonview.jsp");
         
         
-        
+        /* ---------- 위시리스트 관련 코드 ------------*/
         
         
 	}

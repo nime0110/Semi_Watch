@@ -407,13 +407,13 @@ $(document).ready(function(){
 						<div class="shop_thumb">
 							<div class="position-relative overflow-hidden">
 								<div class="shop-thumb_img">
-									<a href=""><img class="img-fluid"
+									<a href="<%= ctxPath%>/item/itemDetail.flex?pdno=${pvo.pdno}"><img class="img-fluid"
 										src="<%= ctxPath%>/images/product/product_thum/${pvo.pdimg1}" alt=""></a>
 								</div>
 							
 							</div>
 							<span class="shop-thumb_brand">${pvo.brand}</span> <br>
-							<a href="#"> <span class="shop-thumb_title">${pvo.pdname}</span>
+							<a href="<%= ctxPath%>/item/itemDetail.flex?pdno=${pvo.pdno}"> <span class="shop-thumb_title">${pvo.pdname}</span>
 							</a>
 							<div class="shop-thumb_price">정가 : <fmt:formatNumber value="${pvo.price}" type="number" groupingUsed="true"/>원</div>
 							<div class="shop-thumb_saleprice">판매가 : <fmt:formatNumber value="${pvo.saleprice}" type="number" groupingUsed="true"/>원</div>
