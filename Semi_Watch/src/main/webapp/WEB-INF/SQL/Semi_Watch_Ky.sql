@@ -238,10 +238,17 @@ order by review_date desc;
 SELECT rno, reviewno, pdname, userid, username, brand, review_content, starpoint 
 FROM 
 ( 
-SELECT rownum AS rno, R.reviewno AS reviewno, P.pdname AS pdname, M.userid AS userid, 
+SELECT rownum AS rno, TO_NUMBER(R.reviewno) AS reviewno, P.pdname AS pdname, M.userid AS userid, 
 M.username AS username, P.brand AS brand, R.review_content AS review_content, R.starpoint AS starpoint 
 FROM tbl_review R 
 JOIN tbl_product P ON R.fk_pdno = P.pdno 
 JOIN tbl_member M ON R.fk_userid = M.userid 
 WHERE M.userid != 'admin' 
-ORDER BY rno DESC) 
+ORDER BY reviewno DESC) 
+
+
+ SELECT R.reviewno AS reviewno, P.brand AS brand, P.pdname AS pdname, P.pdimg1 AS pdimg1, M.userid AS userid, M.username AS username, R.review_content AS review_content, R.starpoint AS starpoint, R.review_date AS review_date 
+FROM tbl_review R JOIN tbl_product P 
+ON R.fk_pdno = P.pdno JOIN tbl_member M 
+on R.fk_userid = M.userid 
+where reviewno = 1 
