@@ -45,6 +45,9 @@ public interface ky_1_MemberDAO {
 	// 입력받은 reviewno 를 가지고 하나의 리뷰정보를 리턴시켜주는 메소드
 	ReviewVO selectOneReview(String reviewno) throws SQLException;
 	
+	// 입력받은 reviewno 를 가지고 리뷰정보를 삭제해주는 메소드
+	int deleteOneReview(String reviewno) throws SQLException;
+	
 	
 
 	

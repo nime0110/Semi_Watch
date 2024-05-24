@@ -218,3 +218,30 @@ CROSS JOIN
 (select trunc( months_between(sysdate, max(logindate)) ) AS lastlogingap 
 from tbl_loginhistory 
 where fk_userid = 'kimkh22' ) H
+
+
+SELECT R.reviewno AS reviewno, P.brand AS brand, P.pdname AS pdname, P.pdimg1 AS pdimg1, M.userid AS userid, M.username AS username, R.review_content AS review_content, R.starpoint AS starpoint 
+FROM tbl_review R JOIN tbl_product P 
+ON R.fk_pdno = P.pdno JOIN tbl_member M 
+ON R.fk_userid = M.userid 
+where reviewno = 7; 
+
+delete from tbl_review where reviewno = 4
+
+rollback;
+
+select *
+from tbl_review
+order by review_date desc;
+
+
+SELECT rno, reviewno, pdname, userid, username, brand, review_content, starpoint 
+FROM 
+( 
+SELECT rownum AS rno, R.reviewno AS reviewno, P.pdname AS pdname, M.userid AS userid, 
+M.username AS username, P.brand AS brand, R.review_content AS review_content, R.starpoint AS starpoint 
+FROM tbl_review R 
+JOIN tbl_product P ON R.fk_pdno = P.pdno 
+JOIN tbl_member M ON R.fk_userid = M.userid 
+WHERE M.userid != 'admin' 
+ORDER BY rno DESC) 

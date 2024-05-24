@@ -26,7 +26,11 @@ public class ReviewList extends AbstractController {
 	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		 // == 관리자(admin) 로 로그인 했을 때만 회원 조회가 가능하도록 해야 한다.
+		
+		// 리뷰 삭제 후 시작페이지가 아닌 리뷰목록 페이지로 가기 위해서 설정하는 것이다.
+		super.goBackURL(request);
+		
+		// == 관리자(admin) 로 로그인 했을 때만 회원 조회가 가능하도록 해야 한다.
 	    HttpSession session = request.getSession();
 	    MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
 

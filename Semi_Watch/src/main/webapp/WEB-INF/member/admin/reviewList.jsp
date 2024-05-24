@@ -73,9 +73,9 @@
 		// **** 특정 리뷰을 클릭하면 그 리뷰의 상세정보를 보여주도록 한다. **** //
 		$("table#reviewTbl tr.reviewInfo").click( e => {
 		
-			const userid = $(e.target).parent().children(".userid").text();
+			const reviewno = $(e.target).parent().children(".reviewno").text();
 			// alert(userid);
-			$("input:hidden[name='userid']").val(userid);
+			$("input:hidden[name='reviewno']").val(reviewno);
 			
 			const frm = document.reviewOneDetail_frm;
 			frm.action = "${pageContext.request.contextPath}/member/reviewOneDetail.flex"; 
@@ -145,7 +145,7 @@
 	          	<tr class="reviewInfo">
 	          		<fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" />
                  	<fmt:parseNumber var="sizePerPage" value="${requestScope.sizePerPage}" />
-	          		<td>${rvo.reviewno}</td>
+	          		<td class="reviewno">${rvo.reviewno}</td>
 	          		<td class="userid">${rvo.mvo.userid}</td>
 	          		<td>${rvo.mvo.username}</td>
 	          		<td>${rvo.pvo.pdname}</td>
@@ -173,7 +173,7 @@
 </div>
 
 <form name="reviewOneDetail_frm">
-	<input type="hidden" name="userid"/>
+	<input type="hidden" name="reviewno"/>
 	<input type="hidden" name="goBackURL" value="${requestScope.currentURL}"/>
 	<%-- 폼 전송을 통해 URL 을 보낸다. --%>
 </form>

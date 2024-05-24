@@ -495,19 +495,6 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql = " SELECT rno, reviewno, pdname, userid, username, brand, review_content, starpoint "
-					+ " FROM "
-					+ " ( "
-					+ "    SELECT rownum AS rno, R.reviewno AS reviewno, P.pdname AS pdname, M.userid AS userid, "
-					+ "    M.username AS username, P.brand AS brand, R.review_content AS review_content, R.starpoint AS starpoint "
-					+ "    FROM tbl_review R "
-					+ "    JOIN tbl_product P ON R.fk_pdno = P.pdno "
-					+ "    JOIN tbl_member M ON R.fk_userid = M.userid "
-					+ "    WHERE M.userid != 'admin' "
-					+ "    ORDER BY R.review_date DESC "
-					+ " ) where ";
-			 
-			 
 			String colname = paraMap.get("searchType");
 			String searchWord = paraMap.get("searchWord");
 			
@@ -515,11 +502,22 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
 		    boolean userSearch = (colname != null && !colname.trim().isEmpty()) && 
                     (searchWord != null && !searchWord.trim().isEmpty());
 			
+			String sql = " SELECT rno, reviewno, pdname, userid, username, brand, review_content, starpoint "
+					+ " FROM "
+					+ " ( "
+					+ "    SELECT rownum AS rno, TO_NUMBER(R.reviewno) AS reviewno, P.pdname AS pdname, M.userid AS userid, "
+					+ "    M.username AS username, P.brand AS brand, R.review_content AS review_content, R.starpoint AS starpoint "
+					+ "    FROM tbl_review R "
+					+ "    JOIN tbl_product P ON R.fk_pdno = P.pdno "
+					+ "    JOIN tbl_member M ON R.fk_userid = M.userid "
+					+ "    WHERE M.userid != 'admin' ";
+			
 			if(userSearch) {
-				 sql += colname + " like '%' || ? || '%' and ";
+				 sql +="AND " + colname + " LIKE '%' || ? || '%' ";
 			}
 				
-			sql += " rno between ? and ? ";
+			sql += " ORDER BY reviewno DESC) "
+			    + " WHERE rno BETWEEN ? AND ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			// (10-9) and 10 // => between 1 and 10
@@ -627,10 +625,12 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
 		
 		ReviewVO review = null;
 		
+		// System.out.println("확인용 reviewno : " + reviewno);
+		
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " SELECT R.reviewno AS reviewno, P.brand AS brand, P.pdname AS pdname, P.pdimg1 AS pdimg1, M.userid AS userid, M.username AS username, R.review_content AS review_content, R.starpoint AS starpoint "
+			String sql = " SELECT R.reviewno AS reviewno, P.brand AS brand, P.pdname AS pdname, P.pdimg1 AS pdimg1, M.userid AS userid, M.username AS username, R.review_content AS review_content, R.starpoint AS starpoint, R.review_date AS review_date "
 					+ " FROM tbl_review R JOIN tbl_product P "
 					+ " ON R.fk_pdno = P.pdno JOIN tbl_member M "
 					+ " on R.fk_userid = M.userid "
@@ -644,14 +644,21 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
 			if(rs.next()) {
 				review = new ReviewVO();
 				
+				ProductVO pvo = new ProductVO();
+				MemberVO mvo = new MemberVO();
+				
 				review.setReviewno(rs.getString("reviewno"));
-				review.getPvo().setBrand(rs.getString("brand"));
-				review.getPvo().setPdname(rs.getString("pdname"));
-				review.getPvo().setPdimg1(rs.getString("pdimg1"));
-				review.getMvo().setUserid(rs.getString("userid"));
-				review.getMvo().setUsername(rs.getString("username"));
+				pvo.setBrand(rs.getString("brand"));
+				pvo.setPdname(rs.getString("pdname"));
+				pvo.setPdimg1(rs.getString("pdimg1"));
+				mvo.setUserid(rs.getString("userid"));
+				mvo.setUsername(rs.getString("username"));
 				review.setReview_content(rs.getString("review_content"));
 				review.setStarpoint(rs.getString("starpoint"));
+				review.setReview_date(rs.getString("review_date"));
+				
+				review.setPvo(pvo);
+				review.setMvo(mvo);
 				
 			}
 	
@@ -661,12 +668,33 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
 		} finally {
 			close();
 		}
-		
+			
 		return review;
 	}// end of public ReviewVO selectOneReview(String userid) throws SQLException 
 
-
-
 	
+	// 입력받은 reviewno 를 가지고 리뷰정보를 삭제해주는 메소드
+	@Override
+	public int deleteOneReview(String reviewno) throws SQLException {
+		int n = 0;
+			
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " delete from tbl_review where reviewno = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, reviewno);
+			
+			n = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return n;
+	}// end of public int deleteOneReview(String reviewno) throws SQLException 
+
+
 	
 }
