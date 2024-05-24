@@ -674,13 +674,19 @@ select * from tbl_product order by pdno desc;
      
      select column_name, comments
      from user_col_comments
-     where table_name = 'TBL_PD_DETAIL';
+     where table_name = 'TBL_REVIEW';
     
+    select * from tbl_product_img
+    
+    -- 테이블당 컬럼 코멘트조회 --
+     select column_name, comments
+     from user_col_comments
+     where table_name = '테이블명';
      
- 
+    -- 테이블 코멘트조회 --
      select *
      from user_tab_comments;
-
+    
     
      
      
@@ -699,13 +705,37 @@ select * from tbl_product order by pdno desc;
     join TBL_Product_img I
     on D.fk_pdno = I.fk_pdno;
     
+    select *
+    from TBL_PRODUCT P right join TBL_pd_detail D
+    on P.pdno = D.fk_pdno
+    join TBL_Product_img I
+    on D.fk_pdno = I.fk_pdno
+    where ;
     
-    select pd_extraimg from tbl_product_img where fk_pdno = ?;
+    select * from tbl_orderdetail;
+    
+    
+    select * from tbl_product 
+    select * from tbl_pd_detail
+    select rno,  pdno, pdname, brand, saleprice, pdstatus, pd_qty , color
+    from
+    (
+    select rownum as rno , pdno, pdname, brand, saleprice, pdstatus, pd_qty , 
+            CASE WHEN color = N'none' THEN N'단일색상' ELSE color END AS color
+    from tbl_product P full join tbl_pd_detail D
+    on P.pdno = D.fk_pdno
+    ) P
+    where pdstatus != 0 ;
     
     select * from tbl_pd_detail;
-    select * from tbl_product_img;
+    select * from tbl_product_img; 
 
-
+    select * from tbl_product ;
+    
+    delete from tbl_product where pdno not in(95, 99 ,105 ,107);
+    commit;
+    
+    delete from tbl_member where email= 'Uqqfgdi052vJc9GbT3XIhooUlaQvPVtsd04skgjrpIg=';
 
 
 

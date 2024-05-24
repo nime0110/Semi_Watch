@@ -128,10 +128,10 @@ public class ItemList extends AbstractController {
 			
 		}
 				
-		paraMap.put("brand", brand); // 위의 if문을 제외한 g-shock, 세이코, 롤렉스, 카시오일때 해주는 put		
+		paraMap.put("brand", brand.toUpperCase()); // 위의 if문을 제외한 g-shock, 세이코, 롤렉스, 카시오일때 해주는 put		
 		paraMap.put("sort", sort); // 임시로 desc , asc만 들어가는중
 		paraMap.put("colname", colname);
-		paraMap.put("searchWord", searchWord);
+		paraMap.put("searchWord", searchWord.toUpperCase());
 		
 		int totalPage = 0;
 		

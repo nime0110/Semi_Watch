@@ -1,6 +1,8 @@
 package shop.model;
 
 
+
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,8 +17,8 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 
-
 import shop.domain.ProductVO;
+import shop.domain.Product_DetailVO;
 
 public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 
@@ -69,12 +71,14 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 	         String sql = " select rno , pdno, pdname, brand, price, saleprice, pdimg1 "
 		         		+ " from "
 		         		+ "	 ( "
-		         		+ "	select rownum as rno, pdno, pdname, brand, price, saleprice, pdimg1 "
+		         		+ "	select rno, pdno, pdname, brand, price, saleprice, pdimg1 "
 		         		+ "	 from "
 		         		+ "	( "
-		         		+ "	 select rownum,pdno, pdname, brand, price, saleprice, pdimg1 "
-		         		+ "	from tbl_product "
-		         		+ "	 where pdstatus = 1 ";
+		         		+ "	 select rownum as rno ,pdno, pdname, brand, price, saleprice, pdimg1 "
+		         		+ "	from tbl_product P "
+		         		+ " join tbl_pd_detail D "
+		         		+ " on P.pdno = D.fk_pdno "
+		         		+ " where pd_qty > 1 ";
 	         			 
 	         
 	         String brand = paraMap.get("brand");
@@ -143,8 +147,9 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 			conn = ds.getConnection();
          
 			String sql = " select ceil(count(*)/?) as pagecnt "
-					   + " from tbl_product "
-					   + " where pdstatus = 1 "
+					   + " from tbl_product P join tbl_pd_detail D "
+					   + " on P.pdno = D.fk_pdno "
+					   + " where pd_qty > 0 "
 					   + " and brand like '%'|| ? ||'%' ";
 			
 			String brand = paraMap.get("brand");
@@ -182,8 +187,9 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 			conn = ds.getConnection();
          
 			String sql = " select count(*) as cnt "
-					+ " from tbl_product "
-					+ " where pdstatus = 1  ";
+					+ " from tbl_product P join tbl_pd_detial D "
+					+ " on P.pdno = D.fk_pdno "
+					+ " where pd_qty > 0 ";
 			
 			String brand = paraMap.get("brand");
 						
@@ -236,12 +242,14 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 	         String sql = " select rno , pdno, pdname, brand, price, saleprice, pdimg1 "
 		         		+ " from "
 		         		+ "	 ( "
-		         		+ "	select rownum as rno, pdno, pdname, brand, price, saleprice, pdimg1 "
+		         		+ "	select rno, pdno, pdname, brand, price, saleprice, pdimg1 "
 		         		+ "	 from "
 		         		+ "	( "
-		         		+ "	 select rownum, pdno, pdname, brand, price, saleprice, pdimg1 "
-		         		+ "	from tbl_product "
-		         		+ "	 where pdstatus = 1 ";
+		         		+ "	 select rownum as rno ,pdno, pdname, brand, price, saleprice, pdimg1 "
+		         		+ "	from tbl_product P "
+		         		+ " join tbl_pd_detail D "
+		         		+ " on P.pdno = D.fk_pdno "
+		         		+ " where pd_qty > 1 ";
 	         			 
 	         
 	         String searchWord = paraMap.get("searchWord");
@@ -311,12 +319,14 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 	         String sql = " select rno , pdno, pdname, brand, price, saleprice, pdimg1 "
 		         		+ " from "
 		         		+ "	 ( "
-		         		+ "	select rownum as rno, pdno, pdname, brand, price, saleprice, pdimg1 "
+		         		+ "	select rno, pdno, pdname, brand, price, saleprice, pdimg1 "
 		         		+ "	 from "
 		         		+ "	( "
-		         		+ "	 select rownum,pdno, pdname, brand, price, saleprice, pdimg1 "
-		         		+ "	from tbl_product "
-		         		+ "	 where pdstatus = 1 ";
+		         		+ "	 select rownum as rno ,pdno, pdname, brand, price, saleprice, pdimg1 "
+		         		+ "	from tbl_product P "
+		         		+ " join tbl_pd_detail D "
+		         		+ " on P.pdno = D.fk_pdno "
+		         		+ " where pd_qty > 1 ";
 	         			 
 	         
 	         String searchWord = paraMap.get("searchWord");
@@ -381,11 +391,13 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 		int getTotalPage = 0;
 		
 		try {
+			
 			conn = ds.getConnection();
          
 			String sql = " select ceil(count(*)/?) as pagecnt "
-					   + " from tbl_product "
-					   + " where pdstatus = 1 "
+					   + " from tbl_product P join tbl_pd_detail D "
+				   	   + " on P.pdno = D.fk_pdno "
+					   + " where pd_qty > 0 "
 					   + " and brand like '%'|| ? ||'%' ";
 			
 			String searchWord = paraMap.get("searchWord");
@@ -421,8 +433,9 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 			conn = ds.getConnection();
          
 			String sql = " select ceil(count(*)/?) as pagecnt "
-					   + " from tbl_product "
-					   + " where pdstatus = 1 "
+					   + " from tbl_product P join tbl_pd_detail D "
+				   	   + " on P.pdno = D.fk_pdno "
+					   + " where pd_qty > 0 "
 					   + " and pdname like '%'|| ? ||'%' ";
 			
 			String searchWord = paraMap.get("searchWord");
@@ -614,6 +627,248 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 	      
 	      return result;
 	} // end of public int insert_product_detail(Map<String, String> paraMap) throws SQLException {
+
+	
+	// 관리자가 상품을 수정하기위한 상품리스트의 total 페이지
+	@Override
+	public int get_admin_ProductTotalPage(Map<String, String> paraMap) throws SQLException {
+		
+		int getTotalPage = 0;
+		
+		try {
+			conn = ds.getConnection();
+         
+			String sql = " select ceil(count(*)/?) as pagecnt "
+					   + " from tbl_product P join tbl_pd_detail D "
+					   + " on P.pdno = D.fk_pdno "
+					   + " where pd_qty > -1 ";
+			
+			String colname = paraMap.get("searchType");
+			String searchWord = paraMap.get("searchWord");
+			
+			if( (colname != null && !colname.trim().isEmpty() ) &&
+				(searchWord != null && !searchWord.trim().isEmpty() ) ) {
+			// if(colname != null && searchWord != null) { // 단일로 되는데...?
+				
+					sql += " and " + colname + " like '%'|| ? ||'%' ";
+					// 컬럼명과 테이블명은 위치홀더(?)로 사용하면 꽝!!! 이다.
+		            // 위치홀더(?)로 들어오는 것은 컬럼명과 테이블명이 아닌 오로지 데이터값만 들어온다.!!!!
+					
+			}
+			
+			pstmt = conn.prepareStatement(sql); 
+			
+			pstmt.setInt(1, Integer.parseInt(paraMap.get("sizePerPage") ) );
+			
+			
+			if( (colname != null && !colname.trim().isEmpty() ) &&
+				(searchWord != null && !searchWord.trim().isEmpty() ) ) {
+				// 검색이 있는경우
+				
+				pstmt.setString(2, searchWord);
+				
+			}
+			
+			rs = pstmt.executeQuery();
+         	
+			rs.next();
+			
+			getTotalPage = rs.getInt("pagecnt");
+         
+		} finally {
+			close();
+		}
+		
+		return getTotalPage;
+		
+	} // end of public int getProductTotalPage(Map<String, String> paraMap) throws SQLException {
+
+
+	// 관리자가 상품을 수정하기위한 상품리스트
+	@Override
+	public List<ProductVO> select_admin_product_pagin(Map<String, String> paraMap) throws SQLException {
+		
+		List<ProductVO> ProductList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+         
+			String sql = " select rno,  pdno, pdname, brand, saleprice, pdstatus, pd_qty , color"
+					+ " from "
+					+ " ( "
+					+ " select rno,  pdno, pdname, brand, saleprice, pdstatus, "
+					+ " pd_qty , color "
+					+ " from "
+					+ " ( "
+					+ " select rownum as rno , pdno, pdname, brand, saleprice, pdstatus, nvl(pd_qty , 0 ) as pd_qty "
+					+ " , pdinputdate ,  "
+					+ " CASE WHEN color = N'none' THEN N'단일색상' ELSE color END AS color "
+					+ " from tbl_product P full join tbl_pd_detail D "
+					+ " on P.pdno = D.fk_pdno "
+					+ " where pd_qty != -1 ";
+			
+			String colname = paraMap.get("searchType");
+			String searchWord = paraMap.get("searchWord");
+			
+			if( (colname != null && !colname.trim().isEmpty() ) &&
+				(searchWord != null && !searchWord.trim().isEmpty() ) ) {
+			
+					sql += " and " + colname + " like '%'|| ? ||'%' ";
+					
+			}
+				
+			sql += " order by pdinputdate desc "
+				+ " ) V "	
+				+ " ) T "
+				+ " where rno between ? and ? ";
+		        
+			pstmt = conn.prepareStatement(sql); 
+				
+			
+			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo") );
+			// 조회할 페이지 번호
+			
+			int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage") );
+			// 한페이지당 보여줄 행 갯수
+			
+			
+			if( (colname != null && !colname.trim().isEmpty() ) &&
+				(searchWord != null && !searchWord.trim().isEmpty() ) ) {
+				// 검색이 있는경우
+				pstmt.setString(1, searchWord);
+				pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage - 1) ); // 공식
+				pstmt.setInt(3, (currentShowPageNo * sizePerPage) ); // 공식
+				
+			}
+			/*
+		    === 페이징처리의 공식 ===
+		    where RNO between (조회하고자하는페이지번호 * 한페이지당보여줄행의개수) - (한페이지당보여줄행의개수 - 1) and (조회하고자하는페이지번호 * 한페이지당보여줄행의개수);
+		    */
+			else {
+				// 검색이 없는경우
+				pstmt.setInt(1, (currentShowPageNo * sizePerPage) - (sizePerPage - 1) ); // 공식
+				pstmt.setInt(2, (currentShowPageNo * sizePerPage) ); // 공식
+				
+			} 
+			
+			
+			rs = pstmt.executeQuery();
+         	
+			while(rs.next()){
+				
+				ProductVO pvo = new ProductVO();
+				Product_DetailVO pdvo = new Product_DetailVO();
+				
+				pvo.setPdno(rs.getString("pdno"));
+				pvo.setBrand(rs.getString("brand"));
+				pvo.setPdname(rs.getString("pdname"));
+				pvo.setSaleprice(rs.getLong("saleprice"));
+				pvo.setPdstatus(rs.getInt("pdstatus"));
+				
+				pdvo.setColor(rs.getString("color"));
+				pdvo.setPd_qty(rs.getInt("pd_qty"));
+				
+				pvo.setPdvo(pdvo);
+				
+				ProductList.add(pvo);
+				
+			}
+           
+         
+		} finally {
+			close();
+		}
+		
+		
+		return ProductList;
+		
+	} // end of public List<ProductVO> select_admin_product_pagin(Map<String, String> paraMap) throws SQLException {
+
+
+	// 관리자가 상품을 수정하기위한 상품리스트의 total 개수
+	@Override
+	public int get_admin_TotalProductCount(Map<String, String> paraMap) throws SQLException {
+		
+		int getTotalMemberCount = 0;
+		
+		try {
+			conn = ds.getConnection();
+         
+			String sql = " select count(*) as cnt "
+					+ " from tbl_product "
+					+ " where pdstatus != 0 ";
+			
+			String colname = paraMap.get("searchType");
+			String searchWord = paraMap.get("searchWord");
+			
+			if( (colname != null && !colname.trim().isEmpty() ) &&
+				(searchWord != null && !searchWord.trim().isEmpty() ) ) {
+			// if(colname != null && searchWord != null) { // 단일로 되는데...?
+				
+					sql += " and " + colname + " like '%'|| ? ||'%' ";
+					// 컬럼명과 테이블명은 위치홀더(?)로 사용하면 꽝!!! 이다.
+		            // 위치홀더(?)로 들어오는 것은 컬럼명과 테이블명이 아닌 오로지 데이터값만 들어온다.!!!!
+					
+			}
+			
+			pstmt = conn.prepareStatement(sql); 
+			
+			if( (colname != null && !colname.trim().isEmpty() ) &&
+				(searchWord != null && !searchWord.trim().isEmpty() ) ) {
+				// 검색이 있는경우
+				pstmt.setString(1, searchWord);
+				
+			}
+			
+			rs = pstmt.executeQuery();
+         	
+			rs.next();
+			
+			getTotalMemberCount = rs.getInt("cnt");
+         
+		}  finally {
+			close();
+		}
+		
+		return getTotalMemberCount;
+		
+	} // end of public int get_admin_TotalProductCount(Map<String, String> paraMap) throws SQLException {
+
+
+	// 특정 상품번호의 상품정보를 가져오는 메소드
+	@Override
+	public List<ProductVO> selectOneProductInfo(String pdno) throws SQLException {
+		
+		List<ProductVO> pvoList = new ArrayList<ProductVO>();
+		
+		try {
+	         conn = ds.getConnection();
+	         
+	         String sql =  " select userid, name, email, mobile, postcode, address, detailaddress, extraaddress, gender "
+	                  + "      , birthday, coin, point, to_char(registerday, 'yyyy-mm-dd') AS registerday "
+	                  + " from tbl_member "
+	                  + " where status = 1 and userid = ? ";
+	                     
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setString(1, pdno);
+	         
+	         rs = pstmt.executeQuery();
+	         
+	         if(rs.next()) {
+	            ProductVO pvo = new ProductVO();
+	            
+	           
+	            
+	            
+	            
+	         } // end of if(rs.next())-------------------
+	         
+	      } finally {
+	         close();
+	      }
+		return null;
+	}
 
 
 

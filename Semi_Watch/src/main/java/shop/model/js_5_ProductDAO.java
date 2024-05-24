@@ -3,6 +3,8 @@ package shop.model;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+
+
 import shop.domain.ProductVO;
 
 public interface js_5_ProductDAO {
@@ -43,6 +45,18 @@ public interface js_5_ProductDAO {
 
 	// 상품추가정보 입력
 	int insert_product_detail(Map<String, String> paraMap) throws SQLException;
+
+	// 관리자가 상품을 수정하기위한 상품리스트의 total 페이지개수
+	int get_admin_ProductTotalPage(Map<String, String> paraMap) throws SQLException;
+
+	// 관리자가 상품을 수정하기위한 상품리스트
+	List<ProductVO> select_admin_product_pagin(Map<String, String> paraMap) throws SQLException;
+
+	// 관리자가 상품을 수정하기위한 상품리스트의 total 개수
+	int get_admin_TotalProductCount(Map<String, String> paraMap) throws SQLException;
+
+	// 특정 상품번호의 상품정보를 가져오는 메소드
+	List<ProductVO> selectOneProductInfo(String pdno) throws SQLException;
 
 
 

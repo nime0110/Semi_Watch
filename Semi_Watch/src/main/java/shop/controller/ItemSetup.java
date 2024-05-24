@@ -68,6 +68,10 @@ public class ItemSetup extends AbstractController {
 				
 				for(int i=0; i<3; i++) {
 					
+					if( request.getParameter("color"+(i+1)) == null) {
+						break;
+					}
+					
 					color[i] = request.getParameter("color"+(i+1));
 					pqty[i] = request.getParameter("pqty"+(i+1));
 					
@@ -80,7 +84,6 @@ public class ItemSetup extends AbstractController {
 						setvalue.add(pqty[i]);
 					}
 					
-					
 				} // end of for
 				
 				String color1 = null;
@@ -92,17 +95,21 @@ public class ItemSetup extends AbstractController {
 				String color3 = null;
 				String pqty3 = null;
 				
-				if(!setvalue.get(0).isEmpty() && !setvalue.get(1).isEmpty()) {
+				int setvalue_size = setvalue.size();
+				
+				if( setvalue_size <= 6 && !setvalue.get(0).isBlank() && !setvalue.get(1).isBlank()) {
 					
 					color1 = setvalue.get(0);
 					pqty1 = setvalue.get(1);
 				}
-				if(!setvalue.get(2).isEmpty() && !setvalue.get(3).isEmpty()) {
+				
+				if( setvalue_size >= 4 && setvalue_size <= 6 && !setvalue.get(2).isBlank() && !setvalue.get(3).isBlank()) {
 					
 					color2 = setvalue.get(2);
 					pqty2 = setvalue.get(3);
 				}
-				if(!setvalue.get(4).isEmpty() && !setvalue.get(5).isEmpty()) {
+				
+				if( setvalue_size == 6 && !setvalue.get(4).isBlank() && !setvalue.get(5).isBlank()) {
 					
 					color3 = setvalue.get(4);
 					pqty3 = setvalue.get(5);
@@ -125,7 +132,7 @@ public class ItemSetup extends AbstractController {
 				
 				int n = pdao.insert_product_detail(paraMap);
 				
-				if(n > 0) {
+				if(n == 1) {
 					
 					
 				   super.setRedirect(true);
