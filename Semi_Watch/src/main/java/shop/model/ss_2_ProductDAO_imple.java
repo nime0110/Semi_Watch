@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 
 import shop.domain.ImageVO;
 import shop.domain.ProductVO;
+import shop.domain.Product_DetailVO;
 
 public class ss_2_ProductDAO_imple implements ss_2_ProductDAO {
 
@@ -56,18 +57,15 @@ public class ss_2_ProductDAO_imple implements ss_2_ProductDAO {
 
 // 화면에서 찜하기를 눌렀을 때 해당하는 상품의 정보를 VO에 담아서 반환하는 메소드
 @Override
-public List<ProductVO> getWishListItem(String pdname) throws SQLException {
-	
-	System.out.println("mdaoimple pdname" + pdname);
+public List<ProductVO> getWishListItem(String pdno) throws SQLException {
 	 List<ProductVO> wishProductList = new ArrayList<>(); 
 	    
 	    try {
 	        conn = ds.getConnection();
 	        
-	        String sql = " select pdname, pdimg1, price "
+	        String sql = " select pdname, pdimg1, saleprice, pdno "
 	        		+ " from tbl_product "
-	        		+ " where pdname IN ( " + pdname + " ) ";
-	                  
+	        		+ " where pdno IN ( " + pdno + " ) ";
 	       pstmt = conn.prepareStatement(sql);
 	             
 	       rs = pstmt.executeQuery();
@@ -76,7 +74,8 @@ public List<ProductVO> getWishListItem(String pdname) throws SQLException {
 	    	  ProductVO pvo = new ProductVO();
 	    	  pvo.setPdname(rs.getString(1));
 	    	  pvo.setPdimg1(rs.getString(2));
-	    	  pvo.setPrice(rs.getInt(3));
+	    	  pvo.setSaleprice(rs.getLong(3));
+	    	  pvo.setPdno(rs.getString(4));
 
 	    	  wishProductList.add(pvo);
 	       }// end of while(rs.next())----------------------------------
@@ -90,7 +89,108 @@ public List<ProductVO> getWishListItem(String pdname) throws SQLException {
 	
 	
 }
+
+//제품번호를 가지고서 제품의 정보 가져오기
+@Override
+public ProductVO selectOneProductBypdno(String pdno) throws SQLException {
+	ProductVO pvo = null;
 	
+	try {
+		conn = ds.getConnection();
+		
+		String sql = " select pdno, pdname, brand, pdimg1, price, saleprice, pd_content "
+				+ " from tbl_product "
+				+ " where pdno = ? ";
+		
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, pdno);
+		
+		rs = pstmt.executeQuery();
+		
+		while(rs.next()) {
+			pvo = new ProductVO();
+			
+			pvo.setPdno(rs.getString("pdno"));
+			pvo.setPdname(rs.getString("pdname"));
+			pvo.setBrand(rs.getString("brand"));
+			pvo.setPdimg1(rs.getString("pdimg1"));
+			pvo.setPrice(rs.getLong("price"));
+			pvo.setSaleprice(rs.getLong("saleprice"));
+			pvo.setPd_content(rs.getString("pd_content"));
+		
+			
+		}//end of while(rs.next()) --------------
+		
+	} finally {
+		close();
+	}
+	
+	return pvo;
+}
+
+//제품정보를 가지고서 상세이미지 가져오기 
+@Override
+public List<String> getImagesByPnum(String pdno) throws SQLException {
+	
+	List<String> imgList = new ArrayList<>(); //빈 리스트 만들기
+	
+	try {
+		conn = ds.getConnection();
+		
+		String sql =  " select pd_extraimg "
+				+ " from tbl_product_img "
+				+ " where fk_pdno = ? ";
+		
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, pdno);
+		
+		rs = pstmt.executeQuery();
+		
+		while(rs.next()) {
+			//추가이미지가 있을 경우
+			String imgfilename = rs.getString(1);
+			imgList.add(imgfilename);
+		}//end of while(rs.next()) --------------
+		
+	} finally {
+		close();
+	}
+	
+	
+	return imgList;	
+}
+
+
+//제품번호를 가지고서 제품의 상세코드 가져오기 
+@Override
+public List<String> getColorsByPnum(String pdno) throws SQLException {
+
+	List<String> colorList = new ArrayList<>(); //빈 리스트 만들기
+	
+	try {
+		conn = ds.getConnection();
+		
+		String sql =  " select color "
+				+ " from tbl_pd_detail "
+				+ " where fk_pdno IN ( " + pdno + " ) ";
+		
+		pstmt = conn.prepareStatement(sql);
+		
+		rs = pstmt.executeQuery();
+		
+		while(rs.next()) {
+			//추가이미지가 있을 경우
+			colorList.add(rs.getString("color"));
+		 }//end of while(rs.next()) --------------
+		
+	} finally {
+		close();
+	}
+	
+	return colorList;	
+}
+	
+
 	
 	
 

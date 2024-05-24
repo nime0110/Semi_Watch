@@ -23,33 +23,30 @@ public class WishListAdd extends AbstractController {
 	}
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
 
-		
 		/* ---------- 위시리스트 관련 코드 ------------*/
 		
-		String pdnames = request.getParameter("pdnum"); 
+		String pdnos = request.getParameter("pdnos"); 
 		//System.out.println(pdnames);
-		String[] name_arr = pdnames.split(",");
+		String[] no_arr = pdnos.split(",");
 		
 		//각 문자열에 작은따옴표 추가
-		for (int i = 0; i < name_arr.length; i++) {
-			name_arr[i] = "'" + name_arr[i].trim() + "'";
+		for (int i = 0; i < no_arr.length; i++) {
+			no_arr[i] = no_arr[i].trim();
 		}
 		
-        String pdname = String.join(", ", name_arr);
-        //System.out.println(pdname); // PR-H1000-9DR GPR-H1000-9DR GA-2100-2A2DR
+        String pdno = String.join(", ", no_arr);
+        
+        System.out.println("pdno:" + pdno); // PR-H1000-9DR GPR-H1000-9DR GA-2100-2A2DR
      // 'PR-H1000-9DR', 'GPR-H1000-9DR' , 'GA-2100-2A2DR'
         
         // 화면에서 찜하기를 눌렀을 때 해당하는 상품의 정보를 VO에 담아서 반환하는 메소드
-        List<ProductVO> wishList = pdao.getWishListItem(pdname);
+        List<ProductVO> wishList = pdao.getWishListItem(pdno);
         
-        /*
-        cnum code   cname
-         1  100000 전자제품
-         2  200000 의류
-         3  300000 도서
-       */
+        System.out.println("1.헤헤헤헤~~~~~~~ pdno : " + pdno);
+        // 1.헤헤헤헤~~~~~~~ pdno : 99
+        
+        List<String> colorList = pdao.getColorsByPnum(pdno);
         
         JSONArray jsonArr = new JSONArray();// []
         if(wishList.size() > 0) {
@@ -59,24 +56,31 @@ public class WishListAdd extends AbstractController {
             JSONObject jsonObj = new JSONObject(); 
             jsonObj.put("pdname", pvo.getPdname());// 
             jsonObj.put("pdimg", pvo.getPdimg1());// {"cnum":1, "code":100000}
-            jsonObj.put("pdprice", pvo.getPrice());// {"cnum":1, "code":100000,"cname":전자제품} 이런식으로
+            jsonObj.put("pdsaleprice", pvo.getSaleprice());// {"cnum":1, "code":100000,"cname":전자제품} 이런식으로
+            jsonObj.put("pdno", pvo.getPdno());
+           
+            if(colorList.size() > 0) {
+            	jsonObj.put("colorlist", colorList);
+            }
             
-            jsonArr.put(jsonObj);
-                      
+            jsonArr.put(jsonObj); 
             
           }//end of for(ProductVO pvo : wishList)--------
         }//end of  if(wishList.size() > 0) -----------------------------
         
         String json = jsonArr.toString(); //문자열로 변환
         // 데이터가 없을시 "[]"로 된다.
+        
+        // [{"pdname":"새우깡", "color":"빨강", "color":"주황"}]
 
         request.setAttribute("json", json);
+        System.out.println("json:" + json);
         
         super.setViewPage("/WEB-INF/jsonview.jsp");
         
         
         /* ---------- 위시리스트 관련 코드 ------------*/
-        
+
         
 	}
 

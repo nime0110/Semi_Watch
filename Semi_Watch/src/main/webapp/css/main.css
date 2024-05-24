@@ -411,7 +411,7 @@ img{
         min-height: 20px;
     }
     .cart-section__body.--with-items{
-        padding: 1.25em 1em 2em;
+        padding: 1.25em 3em 2em;
     }
     .cart-section__products .list-item{
         grid-template-columns: 17% 65% 10%;
