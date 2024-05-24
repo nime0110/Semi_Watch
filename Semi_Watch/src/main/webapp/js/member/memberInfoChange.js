@@ -22,7 +22,7 @@ $(document).ready(function(){
     const currentpwd= $("input:hidden[name='currentPwd']").val();
     const maskedPwd = '*'.repeat(currentpwd.length);
     $("td#cpwdview").text(maskedPwd);
-
+    */
     // 비밀번호 표시 버튼을 클릭했을 때의 동작을 정의합니다.
     $('img#viewEye').click(function(e) {
         // 버튼의 부모
@@ -37,7 +37,7 @@ $(document).ready(function(){
         	$(e.target).attr("src",`${ctxPath}/images/eye-hide.png`);
         }
     });
-    */
+    
 
     // 비밀번호 변경 버튼 누르면
     $("button#change_pwd").click(function(){
@@ -51,6 +51,7 @@ $(document).ready(function(){
     // 신규비밀번호가 양식에 맞는지 확인
     $("input#newPassword").blur( (e) => {
         $("span#pwd_check2").empty();
+        $("span#pwd_wrong").empty();
     //	const regExp_pwd = /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).*$/g; 
     //  또는
         const regExp_pwd = new RegExp(/^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).*$/g); 
@@ -65,6 +66,7 @@ $(document).ready(function(){
         //  또는
             $("span#pwd_check").html("숫자/문자/특수문자 포함 형태의 8~15자리 이내의 암호이여야 합니다.");
             $(e.target).val("");
+            
         }
         else {
             // 암호가 정규표현식에 맞는 경우 
@@ -81,7 +83,8 @@ $(document).ready(function(){
 
             $("span#pwd_check2").html("비밀번호가 일치하지 않습니다.");
             $(e.target).val("");
-            $("input#newPassword").val("");
+            $("input#newPassword").val("").focus();
+            $("span#pwd_check").empty();
         }
         else {
             // 암호와 암호확인값이 같은 경우
@@ -181,7 +184,7 @@ $(document).ready(function(){
 
             type:"post",
             
-            async:true, // 비동기 방식  
+            async:false, // 비동기 방식  
             
             dataType:"json", 
             
@@ -205,7 +208,9 @@ $(document).ready(function(){
                     // 다시할 수 있으므로 인증버튼 초기화
                     $("button#authTempKey_check").removeAttr("disabled");
                     $("span#authTempKey_checkMent").empty();
-                    
+
+                    alert($("input#newEmail").val());
+
                  }
                  else{
                     alert("인증코드 발송을 실패하였습니다.");
@@ -244,11 +249,11 @@ $(document).ready(function(){
         $.ajax({
             url:"verifyCertification.flex",
             data:{"emailAuthTempKey":$("input:text[name='emailAuthTempKey']").val()
-                 ,"infoUpdate":$("input:hidden[name='infoUpdateE']").val()},
+                 ,"infoUpdate":$("input:hidden[id='infoUpdateE']").val()},
 
             type:"post",
             
-            async:true, // 동기 방식  
+            async:false, // 비동기 방식  
             
             dataType:"json", 
             
@@ -260,6 +265,11 @@ $(document).ready(function(){
                     $("span#email_check").empty();
                     $("span#authTempKey_checkMent").html("인증이 완료되었습니다.").css("color", "blue");
                     $("button#submit_email").removeAttr("disabled");
+
+                    alert($("input#newEmail").val());
+                    
+                    // 입력한 이메일 값을 저장input에 넣는다.
+                    $("input#newEmailSave").val($("input#newEmail").val());
                 }
                 else{
                     alert("인증을 실패하였습니다. 다시 인증해주세요");
@@ -271,6 +281,8 @@ $(document).ready(function(){
                     $("button#authTempKey_check").removeAttr("disabled");
                     $("button#submit_email").attr("disabled", true);
                     // $("span#mobileAuthTempKey_checkMent").html("인증을 실패하였습니다. 다시 인증해주세요").css("color", "red");
+
+                    
                 }
                 
             },
@@ -329,7 +341,7 @@ $(document).ready(function(){
     });// 아이디가 hp2 인 것은 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
 
 
-    // 인증번호 발송 버튼 클릭 시
+    // 전화번호 인증번호 발송 버튼 클릭 시
     $("button#send_authentication_mobile").click(function(){
         const newMoblie = $("input#newMoblie").val().trim();
 
@@ -360,6 +372,8 @@ $(document).ready(function(){
                     $("div#mobile_authTemp").show();
 
                     $("input#mobile_authTempKey").focus();
+
+                    
                     
                  }
                  else if(json.error_count != 0) {
@@ -375,7 +389,7 @@ $(document).ready(function(){
 
     });// end of  $("button#send_authentication_mobile").click(function()---
 
-    // 인증하기 버튼 클릭 시
+    // 전화번호 인증하기 버튼 클릭 시
     $("button#mobileAuthTempKey_check").click(function(e){
         $(e.target).attr("disabled", true);
 
@@ -383,7 +397,7 @@ $(document).ready(function(){
             url:"verifyCertification.flex",
             data:{"mobileAuthTempKey":$("input#mobile_authTempKey").val()
                  ,"newMoblie":$("input#newMoblie").val()
-                 ,"infoUpdate":$("input:hidden[name='infoUpdateM']").val()},
+                 ,"infoUpdate":$("input:hidden[id='infoUpdateM']").val()},
 
             type:"post",
             
@@ -399,6 +413,11 @@ $(document).ready(function(){
                     $("span#mobile_check").empty();
                     $("span#mobileAuthTempKey_checkMent").html("인증이 완료되었습니다.").css("color", "blue");
                     $("button#submit_mobile").removeAttr("disabled");
+
+                    alert($("input#newMoblie").val());
+                    
+                    // 입력한 이메일 값을 저장input에 넣는다.
+                    $("input#newMoblieSave").val($("input#newMoblie").val());
                 }
                 else{
                     alert("인증을 실패하였습니다. 다시 인증해주세요");
@@ -440,6 +459,11 @@ $(document).ready(function(){
     $("button#change_post").click(function(){
         $("tr#change_post_area").show();
         $("tr#post_area").hide();
+
+        // 초기에 못하도록 한다.
+        $("input#postcode").attr("disabled", true);
+        $("input#address").attr("disabled", true);
+        $("button#submit_post").attr("disabled", true);
     });
 
     // 취소 버튼 클릭시
@@ -454,10 +478,10 @@ $(document).ready(function(){
         alert("주소찾기버튼누름");
 		
 		// 주소를 쓰기가능 으로 만들기
-		$("input#postcode").removeAttr("readonly");
+		$("input#postcode").removeAttr("disabled");
         
-        // 참고항목을 쓰기가능 으로 만들기
-        $("input#address").removeAttr("readonly");
+        // 주소명 쓰기가능 으로 만들기
+        $("input#address").removeAttr("disabled");
         
         // 주소를 활성화 시키기
 	//	$("input#address").removeAttr("disabled");
@@ -508,6 +532,7 @@ $(document).ready(function(){
                 
                 document.getElementById("address").value = addr+extraAddr;
 
+                document.getElementById("postcodeinput").value = data.zonecode;
                 document.getElementById("addrinput").value = addr;
                 document.getElementById("extraAddrinput").value = extraAddr;
 
@@ -517,19 +542,16 @@ $(document).ready(function(){
         }).open();
         
         // 주소를 읽기전용(readonly) 로 만들기
-        $("input#postcode").attr("readonly", true);
+        $("input#postcode").attr("disabled", true);
         
         // 참고항목을 읽기전용(readonly) 로 만들기
-        $("input#address").attr("readonly", true);
+        $("input#address").attr("disabled", true);
+
+        // 완료버튼
+        $("button#submit_post").attr("disabled", false);
         
-        // 주소를 비활성화 로 만들기
-    //  $("input#address").attr("disabled", true);
-        
-        // 참고항목을 비활성화 로 만들기
-    //  $("input#extraAddress").attr("disabled", true);
         
 	});// end of $("img#zipcodeSearch").click()------------
-    
     
 
 
@@ -559,44 +581,12 @@ function pwdUP(){
     }
 */
     // 현재비밀번호 입력한 값이 일치하는지 체크한 후 새로울 때만 변경 가능
-    correctpwd = true;
-    $.ajax({
-        url:"pwdDuplicateCheck.flex",
-        data:{"newpassword":$("input#password").val()
-             ,"userid":$("td#userid").text()},
-        type:"post",
-        
-        async:false, // 비동기 방식  
-        
-        dataType:"json", 
-        
-        success:function(json){
-            
-            if(json.isExists) {// 입력한 암호가 현재비밀번호가 일치하지 않는 경우
-                alert("현재 비밀번호 와 일치하지 않습니다.");
-                $("input#password").val("");
-                $("input#newPassword").val("");
-                $("input#confirmPassword").val("");
-                $("span#pwd_wrong").html("현재가 일치하지 않습니다."); 
-                correctpwd = false;
-                return;
-            }
-            
-        },
-        
-        error: function(request, status, error){
-            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-        }
-    });
-
-
-    // 변경한 비밀번호가 기존에 사용한 비밀번호와 동일한지 체크한 후 새로울 때만 변경할 수 있도록 한다.
     isNewPwd = true;
 
     // ajax 로 준다음 체크한다.
     $.ajax({
         url:"pwdDuplicateCheck.flex",
-        data:{"newpassword":$("input#newPassword").val()
+        data:{"password":$("input#password").val()
             ,"userid":$("td#userid").text()},
         type:"post",
         
@@ -606,12 +596,12 @@ function pwdUP(){
         
         success:function(json){
             
-            if(json.isExists) {// 입력한 암호가 이미 사용중
-                alert("현재 사용중인 비밀번호로 비밀번호 변경은 불가합니다.");
+            if(!json.isExists) {// 입력한 암호가 이미 사용중
+                alert("현재 비밀번호 값이 일치 하지않습니다.");
                 $("input#password").val("");
                 $("input#newPassword").val("");
                 $("input#confirmPassword").val("");
-                $("span#pwd_wrong").html("현재 사용중인 비밀번호로 비밀번호 변경은 불가합니다."); 
+                $("span#pwd_wrong").html("현재 비밀번호 값이 일치 하지않습니다."); 
                 isNewPwd = false;
                 return;
             }
@@ -623,9 +613,10 @@ function pwdUP(){
         }
     });
 
-    if(correctpwd && isNewPwd && password != "" && newPassword != "" && confirmPassword != "") { 
+    if(isNewPwd && password != "" && newPassword != "" && confirmPassword != "") { 
         // 변경한 암호가 새로운 암호일 경우이고, 값이 모두 작성된 상태라면
         alert("DB에 사용자 정보를 수정하러 간다.");
+        alert()
         
         const frm = document.pwdForm;
         frm.action = "memberInfoChangeEnd.flex";
@@ -704,18 +695,16 @@ function postUP(){
     }
 
 
-    // 키값 정리
-    // 우편번호 postcode
-    // 도로명   addr
-    // 구주소   extraAddr
-    // 상세주소 addressDetail
-
-
-    const Frm = document.postForm;
     
-    Frm.action = "memberInfoChangeEnd.flex";
-    Frm.method = "post";
-    Frm.submit();
+    const Frm = document.forms['postForm'];
+
+    if (Frm) {
+        Frm.method = "post";
+        Frm.action = "memberInfoChangeEnd.flex";
+        Frm.submit();
+    } else {
+        console.error('Form not found.');
+    }
 
     
 }// end of function postUP()

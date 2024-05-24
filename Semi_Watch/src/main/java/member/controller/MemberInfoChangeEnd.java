@@ -48,10 +48,12 @@ public class MemberInfoChangeEnd extends AbstractController {
 				
 				if("pwd".equals(infoUpdate)){	// 비밀번호 변경일 경우에만
 					String newPassword = request.getParameter("newPassword");
+					System.out.println("비밀번호 변경 에 들어옴");
 					
 					if(newPassword == null) {
 						System.out.println("비밀번호 값 null 임");
 					}
+					System.out.println(newPassword);
 					
 					paraMap.put("newPassword", newPassword);
 					
@@ -63,8 +65,9 @@ public class MemberInfoChangeEnd extends AbstractController {
 					
 					
 				}
-				else if("email".equals(infoUpdate)){
-					String newEmail = request.getParameter("newEmail");
+				
+				if("email".equals(infoUpdate)){
+					String newEmail = request.getParameter("newEmailSave");
 					if(newEmail == null) {
 						System.out.println("이메일 값 null 임");
 					}
@@ -78,8 +81,9 @@ public class MemberInfoChangeEnd extends AbstractController {
 					message = "이메일 변경이 완료되었습니다.";
 					
 				}
-				else if("mobile".equals(infoUpdate)){
-					String newMoblie = request.getParameter("newMoblie");
+				
+				if("mobile".equals(infoUpdate)){
+					String newMoblie = request.getParameter("newMoblieSave");
 					
 					if(newMoblie == null) {
 						System.out.println("전화번호 값 null 임");
@@ -95,14 +99,15 @@ public class MemberInfoChangeEnd extends AbstractController {
 					
 					
 				}
-				else if("post".equals(infoUpdate)){
-					String postcode = request.getParameter("postcode");	// 우편번호
+				
+				if("post".equals(infoUpdate)){
+					String postcode = request.getParameter("pcode");	// 우편번호
 					String addr = request.getParameter("addr");	// 도로명
 					String extraAddr = request.getParameter("extraAddr");	// 구주소동
 					String addressDetail = request.getParameter("addressDetail");	// 상세주소
 					
 					if(postcode == null) {
-						System.out.println("이메일 값 null 임");
+						System.out.println("우편번호 값 null 임");
 					}
 					
 					paraMap.put("postcode", postcode);
@@ -113,7 +118,7 @@ public class MemberInfoChangeEnd extends AbstractController {
 					result = mdao.updatePost(paraMap);
 					
 					loginuser.setPostcode(postcode);
-					loginuser.setAddress(addressDetail);
+					loginuser.setAddress(addr);
 					loginuser.setExtra_address(extraAddr);
 					loginuser.setDetail_address(addressDetail);
 					
@@ -122,8 +127,15 @@ public class MemberInfoChangeEnd extends AbstractController {
 				}
 				
 				
+				if(result==0) {
+					message = "변경 실패.";
+					loc = request.getContextPath()+"/index.flex";
+				}
+				else {
+					loc = request.getContextPath()+"/member/memberInfoChange.flex"; // 다시페이지로 이동한다.
+				}
 				
-				loc = request.getContextPath()+"/member/memberInfoChange.flex"; // 다시페이지로 이동한다.
+				
 			
 			
 			}catch(SQLException e) {
@@ -132,19 +144,23 @@ public class MemberInfoChangeEnd extends AbstractController {
 				e.printStackTrace();
 			}
 			
-			message = "비정상적인 경로로 들어왔습니다.";
-			loc = "javascript:history.go(0);";
 			
-			request.setAttribute("message", message);
-			request.setAttribute("loc", loc);
-			
-			// request.setAttribute("memberEditEnd", true); 필요없을듯
-			
-		//	super.setRedirect(false); 
-			super.setViewPage("/WEB-INF/msg.jsp");
 			
 
 		}// end of if("POST".equalsIgnoreCase(method))---
+		else {	// get 방식이면
+			message = "비정상적인 경로로 들어왔습니다.";
+			loc = request.getContextPath()+"/index.flex";
+		}
+		
+		
+		request.setAttribute("message", message);
+		request.setAttribute("loc", loc);
+		
+		// request.setAttribute("memberEditEnd", true); 필요없을듯
+		
+		super.setRedirect(false); 
+		super.setViewPage("/WEB-INF/msg.jsp");
 
 	}
 
