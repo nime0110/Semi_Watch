@@ -27,6 +27,8 @@ select *
 from tbl_product;
 
 
-
+select pdname, brand, price, saleprice, pdimg1
+from tbl_product
+where pdno in(1,2,3);
 
 

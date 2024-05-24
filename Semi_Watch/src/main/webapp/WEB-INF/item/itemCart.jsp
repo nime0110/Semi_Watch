@@ -6,6 +6,7 @@
 %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <jsp:include page="../header1.jsp" />
 
@@ -208,7 +209,8 @@ a:hover{
             </div>    
             <div class="row border-bottom">
                 <div class="row align-items-center flex-column">
-                	<c:forEach var="pvo" items="${requestScope.productList}">
+                	<%--  <c:set var="sumAmount" value="${sum_amount}" /> --%>
+                	<c:forEach var="pvo" items="${requestScope.productList}" varStatus="">
                 		<div class="mb-1 mt-1 pt-5 pb-5" style="display: flex; border-top: 1px solid #ccc; align-items: center;">
 		                	<div class="col-1">
 		                		<input type="checkbox" class="item-checkbox" data-index="0">
@@ -222,11 +224,12 @@ a:hover{
 		                        <span class="">${pvo.pdname}</span>
 		                    </div>
 		                    <div class="col-3 pt-5">
-		                        <input type="number" min="0" max="20" value="0" class="quantity-input led" data-index="0" size="1">
+		                        <input type="number" min="1" max="5" value="1" class="quantity-input led" data-index="0" size="1">
 		                    </div>
-		                    <input type="hidden" class="danga" value="${pvo.price}" />
-		                    <div class="col">₩<span class="item-price">0</span>
+		                    <div class="col">
+		                    	₩<span id ="item-price"><fmt:formatNumber value="${pvo.price}" pattern="###,###" /></span>
 		                        <button class="fixed-button">&#10005;</button>
+		                        <div style="display : none;" id = "danga">${pvo.price}</div>
 		                    </div>
 	                    </div>
                   	</c:forEach>
