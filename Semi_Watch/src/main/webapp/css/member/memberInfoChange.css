@@ -55,6 +55,9 @@ div.postname{
 	padding-top: 0.5%; 
 	
 }
+div.p-flex {
+	display: flex;
+}
 
 span#pwd_wrong, span#pwd_check, span#pwd_check2 {
 	color: red;
@@ -63,6 +66,8 @@ span#pwd_wrong, span#pwd_check, span#pwd_check2 {
 .emailbtn .mobilebtn {
 	display: flex;
 }
+
+
 
 
 

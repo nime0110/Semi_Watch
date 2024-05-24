@@ -23,7 +23,7 @@ public class MemberInfoChange extends AbstractController {
 		}
 		else {
 			super.setRedirect(true);
-			super.setViewPage(request.getContextPath()+"/index.flex");
+			super.setViewPage(request.getContextPath()+"/login/login.flex");
 		}
 		
 		
