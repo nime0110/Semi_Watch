@@ -26,11 +26,11 @@ public class PwdDuplicateCheck extends AbstractController {
 		
 		if("POST".equalsIgnoreCase(method)) {
 		
-			String newpassword = request.getParameter("newpassword");
+			String password = request.getParameter("password");
 			String userid = request.getParameter("userid");
 			
 			Map<String, String> paraMap = new HashMap<>();
-			paraMap.put("newpassword", newpassword);
+			paraMap.put("password", password);
 			paraMap.put("userid", userid);
 			
 			// 사용하고 있는 비밀번호 인지 확인한다.

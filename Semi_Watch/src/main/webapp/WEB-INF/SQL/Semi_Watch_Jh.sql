@@ -40,5 +40,16 @@ postcode
 */
 
 
+update tbl_member set pw = 'qwer1234@', lastpwdchangedate = sysdate
+where userid = 'jhkvng123';
+
+rollback;
+
+select *
+from tbl_member
+where userid = 'jhkvng123';
+
+select *
+from TBL_PRODUCT;
 
 

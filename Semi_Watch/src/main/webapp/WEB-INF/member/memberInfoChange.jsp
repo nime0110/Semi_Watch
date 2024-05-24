@@ -98,6 +98,9 @@ $(document).ready(function() {
 				      		<li>
 				        		<a class="nav-link" href="#">마일리지</a>
 				      		</li>
+				      		<li>
+				        		<a class="nav-link" href="<%=ctxPath%>/login/logout.flex">로그아웃</a>
+				      		</li>
 				    	</ul>
 				  	</div>
 	            </nav>
@@ -161,7 +164,7 @@ $(document).ready(function() {
 					<%-- 비밀번호 파트 --%>
 					<tr id="password_area">
                         <th scope="row">비밀번호</th>
-                        <td id="cpwdview"></td>
+                        <td id="cpwdview">********</td>
                         <td>
                             <button class="btn btn-sm btn-outline-dark change_btn" type="button" id="change_pwd">비밀번호 변경</button>
                         </td>
@@ -199,7 +202,7 @@ $(document).ready(function() {
 									<button class="btn btn-sm btn-outline-secondary twobtn" type="reset" id="pwdcancle">취소</button>
 									<button class="btn btn-sm btn-outline-dark twobtn" type="button" id="pwdUpdate" onclick="pwdUP()">완료</button>
 								</div>
-								<input name="infoUpdateP" value="pwd" type="hidden"/>
+								<input name="infoUpdate" value="pwd" type="hidden"/>
 								<input name="userid" value="${sessionScope.loginuser.userid}" type="hidden" />
 							</form>
                         </td>
@@ -243,8 +246,9 @@ $(document).ready(function() {
                                     <button class="btn btn-sm btn-outline-secondary twobtn" type="reset" id="emailcancle">취소</button>
                                     <button disabled class="btn btn-sm btn-outline-dark twobtn" id="submit_email" type="button" onclick="emailUP()">완료</button>
                                 </div>
-                                <input name="infoUpdateE" value="email" type="hidden"/>
+                                <input name="infoUpdate" id="infoUpdateE" value="email" type="hidden"/>
 								<input name="userid" value="${sessionScope.loginuser.userid}" type="hidden" />
+								<input name="newEmailSave" id="newEmailSave" value="" type="hidden"/>
                             </form>
                         </td>
                     </tr>
@@ -281,8 +285,9 @@ $(document).ready(function() {
                                     <button class="btn btn-sm btn-outline-secondary twobtn" type="reset" id="mobilecancle">취소</button>
                                     <button disabled class="btn btn-sm btn-outline-dark twobtn" id="submit_mobile" type="button" onclick="mobileUP()">완료</button>
                                 </div>
-                                <input name="infoUpdateM" value="mobile" type="hidden"/>
-								<input name="userid" value="${sessionScope.loginuser.userid}" type="text" />
+                                <input name="infoUpdate" id="infoUpdateM" value="mobile" type="hidden"/>
+								<input name="userid" value="${sessionScope.loginuser.userid}" type="hidden" />
+								<input name="newMoblieSave" id="newMoblieSave" value="" type="hidden"/>
                             </form>
                         </td>
                     </tr>
@@ -291,15 +296,15 @@ $(document).ready(function() {
 					<tr id="post_area">
                         <th scope="row">주소</th>
                         <td>
-							<div class="mb-2" style="display: flex;">
+							<div class="mb-2 p-flex">
 								<div style="width: 18%;">우편번호</div>
 								<div >${sessionScope.loginuser.postcode}</div>
 							</div>
-							<div class="mb-2" style="display: flex;">
+							<div class="mb-2 p-flex">
 								<div style="width: 18%;">주소명</div>
-								<div >${sessionScope.loginuser.address} ${sessionScope.loginuser.extra_address}</div>
+								<div >${sessionScope.loginuser.address}&nbsp;${sessionScope.loginuser.extra_address}</div>
 							</div>
-							<div class="mb-2" style="display: flex;">
+							<div class="mb-2 p-flex">
 								<div style="width: 18%;">상세주소</div>
 								<div >${sessionScope.loginuser.detail_address}</div>
 							</div>
@@ -314,27 +319,28 @@ $(document).ready(function() {
 					<tr id="change_post_area">
                         <th scope="row">주소 변경</th>
                         <td colspan="2">
-	                        <form class="postForm">
-								<div class="mb-2" style="display: flex;">
+	                        <form name="postForm" class="postForm">
+								<div class="mb-2 p-flex">
 									<div class="postname">우편번호</div>
-									<input readonly type="text" name="postcode" id="postcode" size="10" maxlength="10" placeholder="우편번호" style="margin-right: 15px;" value=""/>
+									<input type="text" name="postcode" id="postcode" size="10" maxlength="10" placeholder="우편번호" style="margin-right: 15px;" value=""/>
 									<button class="btn btn-sm btn-outline-secondary" type="button" id="findpost">우편번호 찾기</button>
 								</div>
-								<div class="mb-2" style="display: flex;">
+								<div class="mb-2 p-flex">
 									<div class="postname">주소명</div>
-									<input readonly type="text" name="address" id="address" size="40" maxlength="250" placeholder="주소명" value="" />
+									<input type="text" name="address" id="address" size="40" maxlength="250" placeholder="주소명" value="" />
 									<%-- 주소와 xx동 나오는 값 나누어 저장 --%>
-									<input readonly type="hidden" name="addr" id="addrinput" value="" />
-									<input readonly type="hidden" name="extraAddr" id="extraAddrinput" value="" />
+									<input type="hidden" name="pcode" id="postcodeinput" value="" />
+									<input type="hidden" name="addr" id="addrinput" value="" />
+									<input type="hidden" name="extraAddr" id="extraAddrinput" value="" />
 									
 								</div>
-								<div class="mb-3" style="display: flex;">
+								<div class="mb-3 p-flex">
 									<div class="postname">상세주소</div>
 									<input type="text" name="addressDetail" id="addressDetail" size="40" maxlength="200" placeholder="상세주소를 입력하세요" value=""/>
 								</div>
 								<div class="mb-3">
 									<button class="btn btn-sm btn-outline-secondary twobtn" type="reset" id="postcancle">취소</button>
-									<button class="btn btn-sm btn-outline-dark twobtn" type="button" onclick="postUP()">완료</button>
+									<button class="btn btn-sm btn-outline-dark twobtn" type="button" id="submit_post" onclick="postUP()">완료</button>
 								</div>
 								<input name="infoUpdate" value="post" type="hidden"/>
 								<input name="userid" value="${sessionScope.loginuser.userid}" type="hidden" />
