@@ -19,61 +19,7 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	
-	const checkGoodong = "${requestScope.checkGoodong}";
 	
-	if(checkGoodong == "yes"){
-		// alert("인증코드 생성까지 되었습니다.");
-		// 초기화면 보여지도록
-		$("tr#change_email_area").show();
-		$("div#email_authTemp").show();
-		$("input#email_authTempKey").focus();
-		$("span#email_check").html("인증코드가 발송되었습니다.").css("color","blue");
-		
-		
-		// 이메일값 넣고, 인증번호 발송 버튼 비활성화,
-		$("input:text[name='newemail']").val("${requestScope.newEmail}");
-		$("input:text[name='newemail']").attr("readonly", true);
-		$("button#send_authentication_email").attr("disabled", true);
-		
-		// 입력한 인증번호가 맞는지 확인 후 틀리면 초기화
-	}
-	
-	if(${requestScope.AuthTemp == true}){
-		// alert("인증이 성공하였습니다.");
-		$("tr#change_email_area").show();
-		$("div#email_authTemp").show();
-		
-		$("input:text[name='newemail']").val("${requestScope.newEmail}").focus();
-		$("input:text[name='newemail']").attr("readonly", true);
-		$("button#send_authentication_email").attr("disabled", true);
-		
-		// 입력한 이메일 변경 못하게 하고, 인증코드 다시 못보내게함
-		$("input#email_authTempKey").attr("disabled", true);
-		$("button#authTempKey_check").attr("disabled", true);
-		
-		// 인증확인 멘트 보여줌
-		$("span#authTempKey_checkMent").html("${requestScope.checkMent}").css("color","blue");
-		
-		// 완료버튼 활성화
-		$("button#submit_email").attr("disabled", false);
-		
-
-	}
-	else if(${requestScope.AuthTemp == false}){
-		// alert("인증이 실패하였습니다.");
-		$("tr#change_email_area").show();
-		$("div#email_authTemp").show();
-		
-		$("input:text[name='newemail']").val("${requestScope.newEmail}").focus();
-		// $("button#send_authentication_email").attr("disabled", true);
-		
-		
-		// 인증코드 확인 못건드리게 함
-		$("input#email_authTempKey").attr("disabled", true);
-		$("button#authTempKey_check").attr("disabled", true);
-		
-		$("span#authTempKey_checkMent").html("${requestScope.checkMent}").css("color","red");
-	}
     
 });// end of $(document).ready(function() ----------
 	
@@ -152,6 +98,9 @@ $(document).ready(function() {
 				      		<li>
 				        		<a class="nav-link" href="#">마일리지</a>
 				      		</li>
+				      		<li>
+				        		<a class="nav-link" href="<%=ctxPath%>/login/logout.flex">로그아웃</a>
+				      		</li>
 				    	</ul>
 				  	</div>
 	            </nav>
@@ -168,8 +117,7 @@ $(document).ready(function() {
 						<col style="width: 55%;">
 						<col style="width: 30%;">
 					</colgroup>
-					<%-- 기존 로그인 정보 --%>
-					<input name="currentPwd" type="hidden" value="Qwer1234@"/>
+					<%-- contextPath 정보 --%>
 					<input id="ctxPath" type="hidden" value="<%= ctxPath%>"/>
 					
 					<%-- 사진 파트--%>
@@ -210,13 +158,13 @@ $(document).ready(function() {
 					<%-- 아이디 파트 --%>
 					<tr id="userid_area">
                         <th scope="row">아이디</th>
-                        <td colspan="2" id="userid">example</td>
+                        <td colspan="2" id="userid">${sessionScope.loginuser.userid}</td>
                     </tr>
 
 					<%-- 비밀번호 파트 --%>
 					<tr id="password_area">
                         <th scope="row">비밀번호</th>
-                        <td id="cpwdview"></td>
+                        <td id="cpwdview">********</td>
                         <td>
                             <button class="btn btn-sm btn-outline-dark change_btn" type="button" id="change_pwd">비밀번호 변경</button>
                         </td>
@@ -255,7 +203,7 @@ $(document).ready(function() {
 									<button class="btn btn-sm btn-outline-dark twobtn" type="button" id="pwdUpdate" onclick="pwdUP()">완료</button>
 								</div>
 								<input name="infoUpdate" value="pwd" type="hidden"/>
-								<input name="userid" value="${requestScope.userid}" type="hidden" />
+								<input name="userid" value="${sessionScope.loginuser.userid}" type="hidden" />
 							</form>
                         </td>
                     </tr>
@@ -263,14 +211,14 @@ $(document).ready(function() {
 					<%-- 이름 파트(변경 불가) --%>
 					<tr id="username">
                         <th scope="row">이름</th>
-                        <td colspan="2">홍길동</td>
+                        <td colspan="2" id="username">${sessionScope.loginuser.username}</td>
                     </tr>
 
 					<%-- 이메일 파트 --%>
 					<tr id="email_area">
                         <th scope="row">이메일</th>
                         <td>
-                            <span id="currentEmail">example@naver.com</span>
+                            <span id="currentEmail">${sessionScope.loginuser.email}</span>
                         </td>
                         <td>
                             <button class="btn btn-sm btn-outline-dark change_btn" type="button" id="change_email">이메일 변경</button>
@@ -285,7 +233,7 @@ $(document).ready(function() {
 									아래에 인증 번호를 입력하시면 인증이 완료됩니다.
 								</p>
                                 <div class="emailbtn mb-1" >
-                                    <input name="newemail" id="newemail" maxlength="50" placeholder="이메일 주소 입력" type="text" style="margin-right: 10px;">
+                                    <input name="newEmail" id="newEmail" maxlength="50" placeholder="이메일 주소 입력" type="text" style="margin-right: 10px;">
                                     <button class="btn btn-sm btn-outline-dark" id="send_authentication_email" type="button">인증번호 발송</button>
                                     &nbsp;&nbsp;<span id="email_check"></span>
                                 </div>
@@ -298,24 +246,49 @@ $(document).ready(function() {
                                     <button class="btn btn-sm btn-outline-secondary twobtn" type="reset" id="emailcancle">취소</button>
                                     <button disabled class="btn btn-sm btn-outline-dark twobtn" id="submit_email" type="button" onclick="emailUP()">완료</button>
                                 </div>
-                                <input name="infoUpdate" value="email" type="hidden"/>
-								<input name="userid" value="${requestScope.userid}" type="hidden" />
+                                <input name="infoUpdate" id="infoUpdateE" value="email" type="hidden"/>
+								<input name="userid" value="${sessionScope.loginuser.userid}" type="hidden" />
+								<input name="newEmailSave" id="newEmailSave" value="" type="hidden"/>
                             </form>
-                            <%-- 인증하기 form 만들기 --%>
-							<form name="verifyFrm">
-								
-							</form>
                         </td>
                     </tr>
 
 					<%-- 전화번호 파트 --%>
-					<tr id="mobile-area">
+					<tr id="mobile_area">
                         <th scope="row">휴대전화</th>
                         <td>
-							<span>010-1234-5678</span>
+							<span>${sessionScope.loginuser.mobile}</span>
                         </td>
                         <td>
                             <button class="btn btn-sm btn-outline-dark change_btn" type="button" id="change_btn">휴대전화 변경</button>
+                        </td>
+                    </tr>
+                    <%-- 전화번호 변경 파트 --%>
+                    <tr id="change_mobile_area">
+                        <th scope="row">휴대전화 변경</th>
+                        <td colspan="2">
+                            <form name="mobileForm">
+                                <p class="mb-2">전화번호 입력 후 인증하기 버튼을 누르시면, 회원님의 전화번호로 인증 번호가 발송됩니다.<br>
+									인증 번호를 입력하시면 인증이 완료됩니다.
+								</p>
+                                <div class="mobilebtn mb-1" >
+                                    <input name="newMoblie" id="newMoblie" maxlength="11" placeholder="전화번호 입력(숫자만)" type="text" style="margin-right: 10px;">
+                                    <button disabled class="btn btn-sm btn-outline-dark" id="send_authentication_mobile" type="button">인증번호 발송</button>
+                                    &nbsp;&nbsp;<span id="mobile_check"></span>
+                                </div>
+                                <div class="mobilebtn mb-2" id="mobile_authTemp">
+                                    <input name="mobileAuthTempKey" id="mobile_authTempKey" placeholder="인증번호 입력" type="text" style="margin-right: 10px;">
+                                    <button class="btn btn-sm btn-outline-dark" id="mobileAuthTempKey_check" type="button">인증</button>
+                                    &nbsp;&nbsp;<span id="mobileAuthTempKey_checkMent"></span>
+                                </div>
+                                <div class="mb-3">
+                                    <button class="btn btn-sm btn-outline-secondary twobtn" type="reset" id="mobilecancle">취소</button>
+                                    <button disabled class="btn btn-sm btn-outline-dark twobtn" id="submit_mobile" type="button" onclick="mobileUP()">완료</button>
+                                </div>
+                                <input name="infoUpdate" id="infoUpdateM" value="mobile" type="hidden"/>
+								<input name="userid" value="${sessionScope.loginuser.userid}" type="hidden" />
+								<input name="newMoblieSave" id="newMoblieSave" value="" type="hidden"/>
+                            </form>
                         </td>
                     </tr>
 
@@ -323,17 +296,17 @@ $(document).ready(function() {
 					<tr id="post_area">
                         <th scope="row">주소</th>
                         <td>
-							<div class="mb-2" style="display: flex;">
+							<div class="mb-2 p-flex">
 								<div style="width: 18%;">우편번호</div>
-								<div >16688</div>
+								<div >${sessionScope.loginuser.postcode}</div>
 							</div>
-							<div class="mb-2" style="display: flex;">
+							<div class="mb-2 p-flex">
 								<div style="width: 18%;">주소명</div>
-								<div >경기도 어쩌구 저쩌구</div>
+								<div >${sessionScope.loginuser.address}&nbsp;${sessionScope.loginuser.extra_address}</div>
 							</div>
-							<div class="mb-2" style="display: flex;">
+							<div class="mb-2 p-flex">
 								<div style="width: 18%;">상세주소</div>
-								<div >아무개 아파트 495동 2903호</div>
+								<div >${sessionScope.loginuser.detail_address}</div>
 							</div>
 							
                         </td>
@@ -346,27 +319,31 @@ $(document).ready(function() {
 					<tr id="change_post_area">
                         <th scope="row">주소 변경</th>
                         <td colspan="2">
-	                        <form>
-								<div class="mb-2" style="display: flex;">
+	                        <form name="postForm" class="postForm">
+								<div class="mb-2 p-flex">
 									<div class="postname">우편번호</div>
-									<input readonly type="text" name="postcode" id="postcode" size="10" maxlength="10" style="margin-right: 15px;" value=""/>
+									<input type="text" name="postcode" id="postcode" size="10" maxlength="10" placeholder="우편번호" style="margin-right: 15px;" value=""/>
 									<button class="btn btn-sm btn-outline-secondary" type="button" id="findpost">우편번호 찾기</button>
 								</div>
-								<div class="mb-2" style="display: flex;">
+								<div class="mb-2 p-flex">
 									<div class="postname">주소명</div>
-									<input readonly type="text" name="address" id="address" size="40" maxlength="250" placeholder="주소명" value="" />
+									<input type="text" name="address" id="address" size="40" maxlength="250" placeholder="주소명" value="" />
+									<%-- 주소와 xx동 나오는 값 나누어 저장 --%>
+									<input type="hidden" name="pcode" id="postcodeinput" value="" />
+									<input type="hidden" name="addr" id="addrinput" value="" />
+									<input type="hidden" name="extraAddr" id="extraAddrinput" value="" />
 									
 								</div>
-								<div class="mb-3" style="display: flex;">
+								<div class="mb-3 p-flex">
 									<div class="postname">상세주소</div>
 									<input type="text" name="addressDetail" id="addressDetail" size="40" maxlength="200" placeholder="상세주소를 입력하세요" value=""/>
 								</div>
 								<div class="mb-3">
-									<button class="btn btn-sm btn-outline-secondary twobtn" type="button">취소</button>
-									<button class="btn btn-sm btn-outline-dark twobtn" type="button">완료</button>
+									<button class="btn btn-sm btn-outline-secondary twobtn" type="reset" id="postcancle">취소</button>
+									<button class="btn btn-sm btn-outline-dark twobtn" type="button" id="submit_post" onclick="postUP()">완료</button>
 								</div>
 								<input name="infoUpdate" value="post" type="hidden"/>
-								<input name="userid" value="${requestScope.userid}" type="hidden" />
+								<input name="userid" value="${sessionScope.loginuser.userid}" type="hidden" />
 							</form>
                         </td>
 

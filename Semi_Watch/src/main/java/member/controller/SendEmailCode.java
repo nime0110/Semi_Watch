@@ -1,11 +1,16 @@
 package member.controller;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+
+import org.json.JSONObject;
 
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import login.controller.GoogleMail;
 import member.domain.MemberVO;
 
 public class SendEmailCode extends AbstractController {
@@ -14,21 +19,22 @@ public class SendEmailCode extends AbstractController {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		String method = request.getMethod();	// GET 또는 POST 방식
-		String checkGoodong = "none";
 		
 		if("POST".equalsIgnoreCase(method)) {
 			
 			HttpSession session = request.getSession();
-//			MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
-//			String loginuserid = loginuser.getUserid();
-//			String userid = request.getParameter("userid");
+			// MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+			// String loginuserid = loginuser.getUserid();
+			
+			String userid = request.getParameter("userid");
+			String username = request.getParameter("username");
 			
 			System.out.println("인증코드 클래스 넘어왔어요");
 			
 			boolean sendMailSuccess = false; // 메일이 정상적으로 전송되었는지 유무를 알아오기 위한 용도
 			
 //			if(userid.equals(loginuserid)) {
-				String newEmail = request.getParameter("newemail");
+				String newEmail = request.getParameter("newEmail");
 				
 				Random rnd = new Random();
 	            
@@ -64,17 +70,21 @@ public class SendEmailCode extends AbstractController {
 	            
 	            
 	            // 랜덤하게 생성한 인증코드(certification_code)를 비밀번호 찾기를 하고자 하는 사용자의 email 로 전송시킨다.
-				GoogleMail_my mail = new GoogleMail_my();
+				GoogleMail mail = new GoogleMail();
+				Map<String,String> paraMap = new HashMap<>();
+				paraMap.put("newEmail", newEmail);
+				paraMap.put("email_code", email_code);
+				paraMap.put("userid", userid);
+				paraMap.put("username", username);
 				
 				try {
 					
-					mail.send_certification_code(newEmail, email_code);
+					mail.send_certification_email_code(paraMap);
 					// send_certification_code(수신자, 보내는 내용);
 					
 					sendMailSuccess = true;	// 메일 전송이 성공했음을 기록함.
-					checkGoodong = "yes";
 					
-					session.setAttribute("email_code", "12345");
+					session.setAttribute("email_code", email_code);
 					// 발급한 인증키를 sesstion 에 저장시킨다. 그래서 다른 클래스 및 jsp에서 사용할 수 있도록 한다.
 					
 				}catch(Exception e) {
@@ -82,19 +92,25 @@ public class SendEmailCode extends AbstractController {
 					e.printStackTrace();
 					sendMailSuccess = false; // 메일 전송 실패했음을 기록함. 확인사살용
 				}
+//			}// end of if(userid.equals(loginuserid))---
 				
-				request.setAttribute("sendMailSuccess", sendMailSuccess);
-				request.setAttribute("newEmail", newEmail);
 				
-//			}
 				
-			request.setAttribute("checkGoodong", checkGoodong);
 				
-			// get 방식이든 post 이든 같은 form 을 보여줘야하기 때문에 아래다 둔다.
-			super.setRedirect(false);
-			super.setViewPage("/WEB-INF/member/memberInfoChange.jsp");
+				JSONObject jsonObj = new JSONObject();
+				jsonObj.put("sendMailSuccess", sendMailSuccess);
+				
+				String json = jsonObj.toString();
+				
+				request.setAttribute("json", json);
+				
+				super.setRedirect(false);
+				super.setViewPage("/WEB-INF/jsonview.jsp");
+				
 			
 		}// end of if("POST".equalsIgnoreCase(method))---
+		
+		
 	}
 
 }

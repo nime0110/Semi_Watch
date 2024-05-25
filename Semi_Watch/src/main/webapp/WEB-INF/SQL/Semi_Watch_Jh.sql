@@ -25,10 +25,31 @@ FROM all_tables;
 SELECT * 
 FROM user_tables;
 
+select *
+from tbl_member;
+
+update tbl_member set username = '강지훈2'
+where userid = 'jhkvng';
+
+rollback;
+/*
+address
+detail_address
+extra_address
+postcode
+*/
 
 
+update tbl_member set pw = 'qwer1234@', lastpwdchangedate = sysdate
+where userid = 'jhkvng123';
 
+rollback;
 
+select *
+from tbl_member
+where userid = 'jhkvng123';
 
+select *
+from TBL_PRODUCT;
 
 
