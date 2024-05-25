@@ -304,3 +304,6 @@ select color
 from tbl_pd_detail
 where fk_pdno = 99;
 
+select *
+from tbl_pd_detail;
+

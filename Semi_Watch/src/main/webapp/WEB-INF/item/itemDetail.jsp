@@ -91,7 +91,7 @@
           <!-- 라이트박스용 -->
       <section class="product__content default-container" aria-label="Product content">
         <header>
-          <input type="text" id="productno" name="pdno" value="${pvo.pdno}">
+          <input type="hidden" id="productno" name="pdno" value="${pvo.pdno}">
           <h2 class="company-name" tabindex="0">${pvo.brand}</h2>
           <p class="product__name" tabindex="0"></p>
           <h3 class="product__title" tabindex="0" id="productName">${pvo.pdname}</h3>
@@ -113,6 +113,7 @@
             </p>
           </div>
         </div>  
+		  <!-- 색상선택  -->
 		<c:if test="${not empty requestScope.colorList}">
 		    <c:set var="hasValidColor" value="false" />
 		    <c:forEach var="colorname" items="${requestScope.colorList}">
@@ -122,26 +123,19 @@
 		    </c:forEach>
 		    <c:if test="${hasValidColor}">
 		        <span style="margin-top:30px;">컬러 선택하기</span>
-		        <ul id="thumb_ul" style="display:flex;">
-		            <c:forEach var="colorname" items="${requestScope.colorList}" varStatus="status">
+		        <select id="color_select" style="margin-top:10px;">
+		            <option value="" disabled selected>선택하세요</option>
+		            <c:forEach var="colorname" items="${requestScope.colorList}">
 		                <c:if test="${colorname != 'none'}">
-		                    <li class="thumb-item" id="thumb_li${status.index}">
-		                        <c:if test="${colorname == 'white'}">
-		                            <div class="color-box" style="width: 30px; height: 30px; padding-right:10px; margin-right:10px; background-color: rgb(242, 242, 242);"></div>
-		                        </c:if>
-		                        <c:if test="${colorname != 'white' && colorname != 'black'}">
-		                            <div class="color-box" style="width: 30px; height: 30px; padding-right:10px; background-color: ${colorname};">
-		                            </div>
-		                        </c:if>
-		                        <c:if test="${colorname == 'black'}">
-		                            <div class="color-box" style="width: 30px; height: 30px; padding-right:10px; background-color: rgb(64, 64, 64);"></div>
-		                        </c:if>
-		                    </li>
+		                    <option value="${colorname}">
+		                        ${colorname}
+		                    </option>
 		                </c:if>
 		            </c:forEach>
-		        </ul>
+		        </select>
 		    </c:if>
 		</c:if>
+		<!-- 색상선택끝 -->
         <form action="#" class="cart-form" style="margin-top:30px;">
           <div class="cart-form__input-container" aria-label="Define the product quantity">
             <button type="button" class="btn-changeValue minus-item">

@@ -189,6 +189,13 @@ public List<String> getColorsByPnum(String pdno) throws SQLException {
 	
 	return colorList;	
 }
+
+//들어온 컬러 코드와 제품번호로 제품상세번호 가져오는 메소드 
+@Override
+public List<Product_DetailVO> getWishDetailByPnum(String pdno, String selectedColor) {
+	// TODO Auto-generated method stub
+	return null;
+}
 	
 
 	

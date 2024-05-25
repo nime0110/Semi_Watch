@@ -122,7 +122,7 @@
         <button type="button" class="cart-section__btn-checkout">Checkout</button>
       </div>
       <div style="display:flex; flex-direction: column; border-radius:0px !important;">  
-	    <button class="btn btn-dark">장바구니로 이동하기</button>
+	    <button class="btn btn-dark" onclick="addCart()">장바구니로 이동하기</button>
       </div>
     </section>
     <%-- cart end  --%>

@@ -60,9 +60,8 @@ public class ItemDetail extends AbstractController {
 		//제품번호를 가지고서 제품의 추가된 이미지 정보 가져오기	
 		List<String> imgList = pdao.getImagesByPnum(pdno);
 		
-		//제품번호를 가지고서 제품의 색상 정보 가져오기
+		//제품번호를 가지고서 제품의 상세코드를 조회해오기
 		List<String> colorList = pdao.getColorsByPnum(pdno);
-		
 		
 		
 		request.setAttribute("pvo", pvo);
