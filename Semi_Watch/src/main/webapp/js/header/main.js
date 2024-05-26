@@ -12,12 +12,24 @@ $(document).ready(function() {
     let arr_jjim = [];
     let colorMap = {};
     
+    
     // 페이지가 로드될 때 로컬 스토리지에서 위시리스트 데이터를 불러와서 렌더링
-    let storedWishlistHTML = localStorage.getItem('wishlistHTML');
-    if (storedWishlistHTML) {
-      $("#cart-section > div.cart-section__body > ul").html(storedWishlistHTML);
-       checkWishlist(); // 위시리스트 상태 다시 확인
+    wishListRendering();
+    function wishListRendering() {
+	    let storedWishlistHTML = localStorage.getItem('wishlistHTML');
+	    if (storedWishlistHTML) {
+	      $("#cart-section > div.cart-section__body > ul").html(storedWishlistHTML);
+	       checkWishlist(); // 위시리스트 상태 다시 확인
+	    }	
     }
+    
+    // 페이지가 다시 표시될 때 위시리스트 렌더링
+    window.addEventListener('pageshow', function(e) { //history.back() 에서도 실행 됨 반대는 pagehide
+    	//pageshow - html로드시 반드시 실행
+        wishListRendering(); //렌더링 ㄱㄱ
+    });
+
+
     
     // 색상 맵 로컬 스토리지
     let storedColorMap = localStorage.getItem('colorMap');
@@ -48,37 +60,37 @@ $(document).ready(function() {
 	//색상 박스가 없을 경우 아래 코드 실행
     //-------------------------------------------------------------------------
 
-
-  //특정한 키값이 getItem 했을때 
-  if (localStorage.getItem('str_arr_jjim') == null) { // 첫번째 찜
-    // 키를 선택자로 가져온다.
-   // 위시리스트 배열 만들기
-    arr_jjim.push(productno);
-
-    let str_arr_jjim = JSON.stringify(arr_jjim); //객체 -> json 으로 바꾸기
-    // local 스토리지에 담음
-    localStorage.setItem('str_arr_jjim', str_arr_jjim);
-    // 이미지/ 상품명을 가져옴
-
-    /*
-    let str_arr_jjim = ["새우깡"];
-    */
-    
-  } else { //첫번째 이후의 찜
-    // get을 먼저 해와서 
-    arr_jjim = JSON.parse(localStorage.getItem('str_arr_jjim')); //배열 - 원래 있던 값  ["새우깡"];
-    //console.log("else 문의 jjim_arr:", arr_jjim);
-    //다른 상품도 가져와야 함
-    //console.log("productName: " + productName);
-    // 중복 확인 후 추가
-    
-    let idx = -1;
-    for(let i=0; i<arr_jjim.length; i++){
-		if(productno == arr_jjim[i]) {
-			idx = i;
-			break;
-		}
-	} 
+	
+	  //특정한 키값이 getItem 했을때 
+	  if (localStorage.getItem('str_arr_jjim') == null) { // 첫번째 찜
+	    // 키를 선택자로 가져온다.
+	   // 위시리스트 배열 만들기
+	    arr_jjim.push(productno);
+	
+	    let str_arr_jjim = JSON.stringify(arr_jjim); //객체 -> json 으로 바꾸기
+	    // local 스토리지에 담음
+	    localStorage.setItem('str_arr_jjim', str_arr_jjim);
+	    // 이미지/ 상품명을 가져옴
+	
+	    /*
+	    let str_arr_jjim = ["새우깡"];
+	    */
+	    
+	  } else { //첫번째 이후의 찜
+	    // get을 먼저 해와서 
+	    arr_jjim = JSON.parse(localStorage.getItem('str_arr_jjim')); //배열 - 원래 있던 값  ["새우깡"];
+	    //console.log("else 문의 jjim_arr:", arr_jjim);
+	    //다른 상품도 가져와야 함
+	    //console.log("productName: " + productName);
+	    // 중복 확인 후 추가
+	    
+	    let idx = -1;
+	    for(let i=0; i<arr_jjim.length; i++){
+			if(productno == arr_jjim[i]) {
+				idx = i;
+				break;
+			}
+		} 
    
         //alert(idx);   // 0
         //alert(arr_jjim[idx]);  // "새우깡""
@@ -108,7 +120,8 @@ $(document).ready(function() {
       // 위시리스트에서 보여줌 
       //displayWishListDetails(productImage, productName);
 	    // 선택된 색상 정보를 "95:black,99:white" 형식으로 생성
-        let colorInfo = arr_jjim.map(pdno => `${pdno}:${colorMap[pdno] || '없음'}`).join(",");
+        let colorInfo = arr_jjim.map(pdno => `${pdno}:${colorMap[pdno] || 'none'}`).join(","); 
+        //색상없을경우 공백  let colorInfo = arr_jjim.map(pdno => `${pdno}:${colorMap[pdno] || 'none'}`).join(",");
         console.log("colorInfo:", colorInfo);
       
       $.ajax({
@@ -123,18 +136,13 @@ $(document).ready(function() {
 		  console.log("AJAX 요청 성공");
           console.log("응답 데이터:", json);
           let html ='';
-          //foreach로 json. ~~ 해서 가져오면 되..           
+          //foreach로 json. ~~ 해서 가져오면 됨         
           // JSON 데이터가 배열이라고 가정하고 루프를 통해 각 항목을 처리
-          json.forEach(item => {   
-			let itemColor = item.color || '색상 없음';
-                console.log("foreach 속 item.pdname" + item.pdname);
-            // html += `
-            //   <li id="wish_list_details">
-            //     <img src="${pdimg}" alt="${pdname}">            
-            //     <span>${item.pdname}</span>
-            //     <span>	${item.pdprice}</span>
-            //   </li>`;
-            //a태그에 해당 상품의 페이지로 가는거 있으면 좋을 듯함
+          json.forEach(item => { 
+			    
+			  let itemColor = item.color || 'none'; //색상없을경우 none
+              console.log("foreach 속 item.pdname" + item.pdname);
+
             html += `
               <li id="${item.pdno}" style="position:relative; margin-bottom: 50px;">
 			        <a href="${contextPath}/item/itemDetail.flex?pdno=${item.pdno}" class="list-item">
@@ -143,8 +151,9 @@ $(document).ready(function() {
 			        <img src="${contextPath}/images/product/product_thum/${item.pdimg}" alt="${item.pdname}" class="product__thumb">
 			        <div class="list-item__abstract">
 			            <h4>${item.pdname}</h4>
-			            <div class="price-calculation" style="display: flex; width: 70%; justify-content: space-between;">
-			                <span>${itemColor}</span>
+			            <div class="price-calculation" style="display: flex; justify-content: space-between;">
+			            	<input type="hidden" class="input_color" value="${itemColor}">
+			                <span>색상: ${itemColor}</span>
 			                <p class="price-calculation__value">
 			                    <span class="value__span">${item.pdsaleprice.toLocaleString("ko-KR")}</span>
 			                </p>
@@ -165,7 +174,7 @@ $(document).ready(function() {
 	       checkWishlist(); // 위시리스트 상태 다시 확인
   
         },
-        error:function(request,status,error){
+        error:function(request,error){
               alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         }
        
@@ -174,9 +183,15 @@ $(document).ready(function() {
     }); // 찜하기 버튼 끝
 
         
-   function checkWishlist() { //위시리스트가 있는지 확인하고 정렬예정
+   function checkWishlist() { //위시리스트가 있는지 확인하고 정렬하는 함수 
+     let wishlistStr = localStorage.getItem('str_arr_jjim');
+     let wishlist = JSON.parse(wishlistStr || '[]'); // JSON으로 파싱, 없는 경우 빈 배열로 초기화 : 위시리스트 위 동그라미에 숫자 표시 위함
     //위시리스트 내부 정렬 
       if (localStorage.getItem('str_arr_jjim').length > 2) {
+		  
+		$('body > header > div.top-header__right > button > span').addClass('active'); //위시리스트에 담긴 숫자 표시하는 css 클래스 
+		$('body > header > div.top-header__right > button > span > span.value').html(wishlist.length);
+		  
 		  //console.log("localStorage.getItem('wishlistHTML')", localStorage.getItem('wishlistHTML'));
 		  //alert("위시리스트가 안비어있음");
 		  
@@ -191,6 +206,7 @@ $(document).ready(function() {
         $('.empty-msg').addClass('--deactivate');
         // ----------------------------------------------------
       } else {
+		  $('body > header > div.top-header__right > button > span').removeClass('active'); //비어있는 순간 동그라미 사라짐
 		  //alert("위시리스트가 비어있음");
 		          // --------------------- html 정렬 ---------------------
         // cart-section__body 클래스 div에 --with-items 클래스 지우기
@@ -208,9 +224,7 @@ $(document).ready(function() {
 	}
 
 
-    inputProductQuantity.val(0); // 초기 제품 수량을 0으로 설정
-    
-	  // 네비게이션 버튼 클릭 이벤트 
+	// 네비게이션 버튼 클릭 이벤트 
     navBtn.click(toggleMenu);
     mainNavCloseBtn.click(toggleMenu);
     btnCart.click(toggleCart);
@@ -250,7 +264,7 @@ $(document).ready(function() {
     
 
 
-    // 위시리스트 섹션 내의 삭제 버튼 클릭
+    // 위시리스트 섹션 내의 삭제 버튼 클릭 이벤트 
     $(document).on('click', '.btn-del-product', function() {
 	  //alert("삭제 버튼 클릭");
       const li = $(this).closest('li'); //해당 코드에서 가장 위에있는 li를 찾음
@@ -282,17 +296,23 @@ $(document).ready(function() {
 		
 
     });
+	// ---------------------------------------------
+	
 
-
-    // 위시리스트 내에서 장바구니로 이동하기 버튼 클릭시 -----------------
+	
+    // 위시리스트 내에서 장바구니로 이동하기 버튼 클릭 이벤트 ---------------------------
     window.addCart = function() {
         let cartItems = [];
+        let selectedLis = []; //선택된 li
         $('#cart-section > div.cart-section__body > ul > li').each(function() { //li만큼 반복문
 			  if ($(this).find('input[type="checkbox"]').is(':checked')) { //체크박스에 체크된 것만 선택자로 갖고드어옴
 		            let productno = $(this).attr('id');
 		            let productName = $(this).find('h4').text();
 		            let productPrice = $(this).find('.value__span').text();
-		            let productColor = $(this).find('.price-calculation > span').text().replace('색상: ', '');
+		            let productColor = $(this).find('input.input_color').val();
+		            alert(productColor);
+		            
+		            //let productColor = $(this).find('input[type="hidden"]').text().replace('색상: ', '');
 		       
 		            let productImage = $(this).find('img.product__thumb').attr('src');
 		            cartItems.push({ //배열생성 -ajax 전달객체
@@ -302,22 +322,49 @@ $(document).ready(function() {
 		                productColor: productColor,
 		                productImage: productImage
 		            });
-            }
+		              selectedLis.push($(this)); // 선택된 li를 배열에 저장
+            } 
+
         });
+        if(cartItems.length === 0) {
+			alert("장바구니로 보낼 상품을 선택하세요!!");
+			return;
+		}
 
         console.log("cartItems:", cartItems);
         
         $.ajax({
             type: "POST",
-            url: "addToCartJSON.flex", // 서버의 장바구니 추가 API 엔드포인트
-            data: JSON.stringify(cartItems),
+            url: contextPath + "/item/addToCartJSON.flex", 
+            data: {"cartItems":JSON.stringify(cartItems)},
             dataType: "json",
             success: function(json) {
                 console.log("AJAX 요청 성공:", json);
-                alert("장바구니에 상품이 추가되었습니다.");
-                // 장바구니 페이지로 이동 (필요한 경우)
-                window.location.href = contextPath + "/cartPage.flex";
-            },
+             
+                if (json.loginRequired) {
+                    alert(json.message);
+                    location.href = contextPath + "/login/login.flex"; // 로그인 페이지로 이동
+                } else {
+                    alert(json.message);
+                    // 장바구니 페이지로 이동 (필요한 경우 고려)
+                    selectedLis.forEach(function(li) {
+                        li.remove();
+                        let liIdlistid = li.attr('id');
+					    // 로컬 스토리지에서 데이터 삭제 --------------------------------
+					    arr_jjim = JSON.parse(localStorage.getItem('str_arr_jjim'));
+					    arr_jjim = arr_jjim.filter(item => item !== liIdlistid);
+					    localStorage.setItem('str_arr_jjim', JSON.stringify(arr_jjim));
+				
+				        delete colorMap[liIdlistid];
+				        localStorage.setItem('colorMap', JSON.stringify(colorMap));
+                    });
+                          // 업데이트된 HTML을 다시 로컬 스토리지에 저장
+				      const wishlistHTML = $("#cart-section > div.cart-section__body > ul").html();
+				      localStorage.setItem('wishlistHTML', wishlistHTML);
+                    checkWishlist(); // 위시리스트 상태 다시 확인
+                    /// ---------------------------------
+                }
+             },
             error: function(request, status, error) {
                 alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
             }

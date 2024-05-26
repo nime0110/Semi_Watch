@@ -192,9 +192,36 @@ public List<String> getColorsByPnum(String pdno) throws SQLException {
 
 //들어온 컬러 코드와 제품번호로 제품상세번호 가져오는 메소드 
 @Override
-public List<Product_DetailVO> getWishDetailByPnum(String pdno, String selectedColor) {
-	// TODO Auto-generated method stub
-	return null;
+public List<Product_DetailVO> getWishDetailByPnum(String pdno, String selectedColor) throws SQLException {
+	List<Product_DetailVO> wishProductDetailList = new ArrayList<>(); 
+    
+    try {
+        conn = ds.getConnection();
+        
+        String sql = " SELECT pd_detailno "
+        		+ " FROM tbl_product A "
+        		+ " JOIN tbl_pd_detail B "
+        		+ " ON A.pdno = B.fk_pdno "
+        		+ " WHERE (A.pdno = ? AND B.color LIKE ? ) "; 
+        
+       pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, pdno);
+		pstmt.setString(2, selectedColor);
+             
+       rs = pstmt.executeQuery();
+                
+       if(rs.next()) {
+    	  Product_DetailVO pdvo = new Product_DetailVO();
+    	  pdvo.setPd_detailno(rs.getString(1));
+    	  wishProductDetailList.add(pdvo);
+       }// end of while(rs.next())----------------------------------
+       
+    } finally {
+       close();
+    }   
+    
+    return wishProductDetailList;
+
 }
 	
 

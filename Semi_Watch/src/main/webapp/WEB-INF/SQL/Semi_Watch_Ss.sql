@@ -307,3 +307,12 @@ where fk_pdno = 99;
 select *
 from tbl_pd_detail;
 
+
+SELECT pd_detailno
+FROM tbl_product A
+JOIN tbl_pd_detail B
+ON A.pdno = B.fk_pdno
+WHERE (A.pdno = 95 AND B.color LIKE 'pink')
+   OR (A.pdno = 99 AND B.color LIKE 'none');
+   
+SELECT * FROM tbl_cart;
