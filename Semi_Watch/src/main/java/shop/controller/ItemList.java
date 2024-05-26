@@ -33,7 +33,7 @@ public class ItemList extends AbstractController {
 		String sort = request.getParameter("sort");
 		String searchWord = request.getParameter("searchWord");
 		
-		String colname = "pdno";
+		String colname = "pdinputdate";
 		 // System.out.println(brand);
 		 // System.out.println(sort);
 		
@@ -41,6 +41,7 @@ public class ItemList extends AbstractController {
 		
 		if(sort == null ||  "신상품순".equals(sort) ) {
 			// sort 가 읽어온 값이 없거나 신상품순과 일치하다면
+			
 			sort = "desc"; // 상품번호 내림차순인데 일단 임시
 			
 		}

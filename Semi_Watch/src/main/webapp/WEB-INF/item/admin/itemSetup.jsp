@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 
 <%
 String ctxPath = request.getContextPath();
 
 %>
-<jsp:include page="../header1.jsp" />
+<jsp:include page="../../header1.jsp" />
 
 <style>
 body > div.container {
@@ -143,7 +144,6 @@ $(document).ready(function(){
 }); // end of $(document).ready(function(){})
 
 let count = 1;
-
 function showInput() {
     if (count < 3) {
         count++;
@@ -152,6 +152,14 @@ function showInput() {
     } else {
         alert('더 이상 추가할 수 없습니다.');
     }
+}
+function HideInput() {
+    if (count >= 2) {
+        
+        const inputDiv = document.getElementById('inputDiv' + count);
+        count--;
+        inputDiv.style.display = 'none';
+    } 
 }
  	
 
@@ -190,6 +198,40 @@ function showInput() {
             		
          		</tr>
                 <!-- 상품 대표이미지 -->
+                <c:forEach begin="1" end="3" varStatus="status">
+			         <tr id="inputDiv${status.count}" class="form-group" style="${status.count > 1 ? 'display:none;' : ''}">
+			         	<td class="control-label">컬러명</td>
+                    	<td class="input-group">
+			                <select name="color_select${status.count}" class="infoData form-control">
+			                 	<option value="">컬러를 선택하세요</option>
+			                    <option value="black">블랙</option>
+			                    <option value="white">화이트</option>
+			                    <option value="gray">회색</option>
+			                    <option value="pink">분홍</option>
+			                    <option value="red">빨강</option>
+			                    <option value="navy">남색</option>
+			                    <option value="green">초록</option>
+			                    <option value="blue">파랑</option>
+			                    <option value="yellow">노랑</option>
+			                    <option value="none">단일컬러</option>
+			                </select>
+			            </td>
+			            <td class="prodInputName">상품재고수량</td>
+			            <td align="left" style="border-top: hidden; border-bottom: hidden;">
+			              <input name="spinnerPqty${status.count}" value="0" style="width: 30px; height: 20px;"> 개
+			              <span class="error">필수입력</span>
+			              <c:if test="${status.count == 1}">
+			              <button type="button" onclick="showInput()" style="border: none;">+</button>
+			              </c:if>
+			              <c:if test="${status.count > 1}">
+			              <button type="button" onclick="HideInput()" style="border: none;">-</button>
+			              </c:if>
+			  			  <input type="hidden" name="color${status.count}" value="" />
+			  			  <input type="hidden" name="pqty${status.count}" value="" />
+			 			</td>
+			         </tr>
+		         </c:forEach>
+		         <%-- 
                 <tr id="inputDiv1" class="form-group">
                 	<td class="control-label">컬러명</td>
                     <td class="input-group">
@@ -266,7 +308,7 @@ function showInput() {
 	               		<span class="error">필수입력</span>
            			 </td>
                 </tr>
-                
+                --%>
                  
 
                 
@@ -291,4 +333,4 @@ function showInput() {
     </div>
 </div>
 
-<jsp:include page="../footer.jsp" />
+<jsp:include page="../../footer.jsp" />

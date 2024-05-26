@@ -4,8 +4,9 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-
+import shop.domain.ImageVO;
 import shop.domain.ProductVO;
+import shop.domain.Product_DetailVO;
 
 public interface js_5_ProductDAO {
 
@@ -55,9 +56,28 @@ public interface js_5_ProductDAO {
 	// 관리자가 상품을 수정하기위한 상품리스트의 total 개수
 	int get_admin_TotalProductCount(Map<String, String> paraMap) throws SQLException;
 
-	// 특정 상품번호의 상품정보를 가져오는 메소드
-	List<ProductVO> selectOneProductInfo(String pdno) throws SQLException;
+	// 특정 상품번호의 상품정보를 가져오는 메소드1
+	ProductVO selectOneProductInfo(String pdno) throws SQLException;
 
+	// 상품삭제하기 
+	int delete_product(String pdno) throws SQLException;
+
+	// 삭제할 상품이미지 파일명 가져오기
+	List<String> select_imgfilename(String pdno) throws SQLException;
+
+	// 상품테이블 업데이트 후 자식테이블 삭제 후 insert ==> 수동커밋!!
+	int delete_after_insert(Map<String, String> paraMap);
+
+	// 삭제할 추가 상품이미지 파일명 가져오기
+	List<String> select_extraimgfilename(String pdno2) throws SQLException;
+
+	// 상품수정페이지에 띄울 상품상세정보(색상별 재고)
+	List<Product_DetailVO> selectOnePDetail(String pdno) throws SQLException;
+
+	// 상품수정페이지에 띄울 상품추가이미지
+	List<ImageVO> extraimgfilename(String pdno) throws SQLException;
+
+	
 
 
 	

@@ -70,7 +70,7 @@ public class ItemUpdateList extends AbstractController {
 			Map<String, String> paraMap = new HashMap<>();
 			
 			paraMap.put("searchType", searchType);
-			paraMap.put("searchWord", searchWord);
+			paraMap.put("searchWord", searchWord.toUpperCase());
 			
 			if(sizePerPage == null || 
 			  (!"10".equals(sizePerPage) && 
@@ -248,7 +248,7 @@ public class ItemUpdateList extends AbstractController {
 			
 		
 			super.setRedirect(false);
-			super.setViewPage("/WEB-INF/item/itemUpdateList.jsp");
+			super.setViewPage("/WEB-INF/item/admin/itemUpdateList.jsp");
 		
 		}else {
 	         // 로그인을 안한 경우 또는 일반사용자로 로그인 한 경우 
@@ -260,6 +260,7 @@ public class ItemUpdateList extends AbstractController {
 	         
 	      //   super.setRedirect(false);
 	         super.setViewPage("/WEB-INF/msg.jsp");
+	         
 	    }
 		
 		

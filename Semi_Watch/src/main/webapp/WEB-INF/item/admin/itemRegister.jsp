@@ -8,7 +8,7 @@ String ctxPath = request.getContextPath();
 
 
 
-<jsp:include page="../header1.jsp" />
+<jsp:include page="../../header1.jsp" />
 
 <style>
 body > div.container {
@@ -69,6 +69,28 @@ div.fileDrop{ display: inline-block;
 $(document).ready(function(){
 	
 	$("span.error").hide();
+	
+	$(document).on("change", "input.sal", function(e){
+		
+		// alert('ㅎ');
+		const sal = Number($(e.target).val());
+		
+		if(isNaN(sal)){
+			
+			$(e.target).val('');
+		}
+		
+		const point = sal/100;
+		
+		if(!isNaN(point) ){
+			
+			$("input:text[name='point']").val(point);
+		}
+		else{
+			$("input:text[name='point']").val('');
+		}
+		
+	}); // end of $(document).on("change", "input.sal", function(e){
 	
 	// ==>> 제품이미지 파일선택을 선택하면 화면에 이미지를 미리 보여주기 시작 <<== //
 	$(document).on("change", "input.img_file", function(e){
@@ -284,7 +306,7 @@ $(document).ready(function(){
 	 			$.ajax({
 	 				
 	 				<%-- url : "<%= ctxPath%>/shop/admin/productRegister.up", --%>
-	                url : "${pageContext.request.contextPath}/item/itemRegister.flex",
+	                url : "${pageContext.request.contextPath}/admin/itemRegister.flex",
 	                type : "post",
 	                data : formData,
 	                
@@ -364,7 +386,7 @@ $(document).ready(function(){
                     <td class="control-label">상품브랜드</td>
                     <td class="input-group" style="width:30% !important;">
                         <select name="brand" class="infoData form-control" >
-                            <option value="선택하세요">선택하세요</option>
+                            <option value="">선택하세요</option>
                             <option value="G-SHOCK">G-SHOCK</option>
                             <option value="롤렉스">롤렉스</option>
                             <option value="세이코">세이코</option>
@@ -383,11 +405,10 @@ $(document).ready(function(){
                     </td>
                 </tr>
 
-                <!-- 재고수량 -->
                 
                 <!-- 제품정가 -->
                 <tr class="form-group">
-                    <td class="control-label">제품정가</td>
+                    <td class="control-label">상품 정가</td>
                     <td class="input-group" style="width: 35% !important;">
                         <input type="text" name="price"  class="form-control"/> 원
                         <span class="error">필수입력</span>
@@ -396,9 +417,9 @@ $(document).ready(function(){
 
                 <!-- 제품판매가 -->
                 <tr class="form-group">
-                    <td class="control-label">제품판매가</td>
+                    <td class="control-label">상품 판매가</td>
                     <td class="input-group" style="width: 35% !important;">
-                        <input type="text" name="saleprice" class="form-control"/> 원
+                        <input type="text" name="saleprice" class="form-control sal"/> 원
                         <span class="error">필수입력</span>
                     </td>
                 </tr>
@@ -410,10 +431,19 @@ $(document).ready(function(){
                         <textarea name="pdcontent" rows="5" class="form-control" ></textarea>
                     </td>
                 </tr>
+                
+                <!-- 상품 대표이미지 -->
+                <tr class="form-group">
+                    <td class="control-label">상품 상세이미지</td>
+                    <td class="input-group">
+                        <input type="file" name="pd_contentimg" class="infoData img_file" accept="image/*" />
+                        <span class="error">필수입력</span>
+                    </td>
+                </tr>
 
                 <!-- 제품포인트 -->
                 <tr class="form-group">
-                    <td class="control-label">제품포인트</td>
+                    <td class="control-label">상품 구매시 적립 포인트</td>
                     <td class="input-group" style="width: 33% !important;">
                         <input type="text" name="point" class="form-control" /> POINT
                         <span class="error">필수입력</span>
@@ -433,7 +463,7 @@ $(document).ready(function(){
                 <tr class="form-group">
                     <td class="control-label">이미지파일<br>미리보기</td>
                     <td class="input-group">
-                        <img id="previewImg" width="300" />
+                        <img id="previewImg" width="300" height="400" />
                     </td>
                 </tr>
 
@@ -452,4 +482,4 @@ $(document).ready(function(){
     </div>
 </div>
 
-<jsp:include page="../footer.jsp" />
+<jsp:include page="../../footer.jsp" />

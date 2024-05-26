@@ -1,5 +1,6 @@
 package shop.controller;
 
+
 import java.util.List;
 
 import common.controller.AbstractController;
@@ -7,15 +8,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import member.domain.MemberVO;
+import shop.domain.ImageVO;
 import shop.domain.ProductVO;
+import shop.domain.Product_DetailVO;
 import shop.model.js_5_ProductDAO;
 import shop.model.js_5_ProductDAO_imple;
 
-public class Item_admin_OneDetail extends AbstractController {
+public class ItemAdminOneDetail extends AbstractController {
 	
 	private js_5_ProductDAO pdao = null;
 	
-	public Item_admin_OneDetail() {
+	public ItemAdminOneDetail() {
 		pdao = new js_5_ProductDAO_imple();
 	}
 
@@ -44,12 +47,23 @@ public class Item_admin_OneDetail extends AbstractController {
 				// goBackURL ==> /member/memberList.up?searchType=name&searchWord=%EC%9C%A0&sizePerPage=5&currentShowPageNo=15
 				request.setAttribute("goBackURL", goBackURL);
 				
-				List<ProductVO> pvo = pdao.selectOneProductInfo(pdno);
-							
+				// 클릭한 상품번호에대한 상품테이블 정보
+				ProductVO pvo = pdao.selectOneProductInfo(pdno);
+				
 				request.setAttribute("pvo", pvo);
 				
+				// 클릭한 상품번호에대한 색상별 재고
+				List<Product_DetailVO> pdlist = pdao.selectOnePDetail(pdno);
+				
+				request.setAttribute("pdlist", pdlist);
+				
+				// 클릭한 상품번호에대한 추가이미지파일
+				List<ImageVO> imglist = pdao.extraimgfilename(pdno);
+				
+				request.setAttribute("imglist", imglist);
+				
 				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/member/admin/memberOneDetail.jsp");
+				super.setViewPage("/WEB-INF/item/admin/itemAdminOneDetail.jsp");
 				
 				
 			} // end of post 

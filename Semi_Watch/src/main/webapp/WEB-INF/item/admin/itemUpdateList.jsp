@@ -5,7 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>  
 <%-- 문자를 숫자로 변환해주는!!!! taglib!!!!  --%>
 
-<jsp:include page="../header1.jsp" />
+<jsp:include page="../../header1.jsp" />
 
 <%-- 직접 넣은 사용자 css --%>
 <style type="text/css">
@@ -103,7 +103,7 @@
 			
 			frm.pdno.value = pdno;
 
-			frm.action = "${pageContext.request.contextPath}/item/itemOneDetail.flex";
+			frm.action = "${pageContext.request.contextPath}/admin/itemAdminOneDetail.flex";
 			frm.method = "post";
 			frm.submit();
 			
@@ -193,8 +193,9 @@
 	             <th class="col-sm-2 col-md-2">상품명</th>
 	             <th class="col-sm-1 col-md-1">브랜드</th>
 	             <th class="col-sm-1 col-md-1">상품<br>상태</th>
+	             <th class="col-sm-1 col-md-2">정가</th>
 	             <th class="col-sm-2 col-md-2">판매가</th>
-	             <th class="col-sm-1 col-md-1">남은<br>재고</th>
+	             
 	          </tr>
 	      </thead>
 	      
@@ -232,8 +233,9 @@
 		          			   
 		          	
 		          	</td>
+		          	<td><fmt:formatNumber pattern="###,###"> ${productvo.price}</fmt:formatNumber>원</td>
 		          	<td><fmt:formatNumber pattern="###,###"> ${productvo.saleprice}</fmt:formatNumber>원</td>
-		          	<td>${productvo.pdvo.pd_qty}</td>
+		          	
 		          </tr>
 		          	          	
 		          </c:forEach>
@@ -267,4 +269,4 @@
 	</form>
 
 
-<jsp:include page="../footer.jsp" />
+<jsp:include page="../../footer.jsp" />

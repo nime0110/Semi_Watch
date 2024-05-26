@@ -16,9 +16,10 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-
+import shop.domain.ImageVO;
 import shop.domain.ProductVO;
 import shop.domain.Product_DetailVO;
+
 
 public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 
@@ -68,17 +69,17 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 		try {
 	         conn = ds.getConnection();
 	         
-	         String sql = " select rno , pdno, pdname, brand, price, saleprice, pdimg1 "
+	         String sql = " select rno , pdno, pdname, brand, price, saleprice, pdimg1, pdstatus "
 		         		+ " from "
-		         		+ "	 ( "
-		         		+ "	select rno, pdno, pdname, brand, price, saleprice, pdimg1 "
-		         		+ "	 from "
 		         		+ "	( "
-		         		+ "	 select rownum as rno ,pdno, pdname, brand, price, saleprice, pdimg1 "
+		         		+ "	select rownum as rno, pdno, pdname, brand, price, saleprice, pdimg1, pdstatus "
+		         		+ "	from "
+		         		+ "	( "
+		         		+ "	select distinct pdno as pdno , pdname, brand, price, saleprice, pdimg1, pdstatus, pdinputdate "
 		         		+ "	from tbl_product P "
 		         		+ " join tbl_pd_detail D "
 		         		+ " on P.pdno = D.fk_pdno "
-		         		+ " where pd_qty > 1 ";
+		         		+ " where pd_qty > 0 ";
 	         			 
 	         
 	         String brand = paraMap.get("brand");
@@ -146,7 +147,7 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 		try {
 			conn = ds.getConnection();
          
-			String sql = " select ceil(count(*)/?) as pagecnt "
+			String sql = " select ceil(count(distinct pdno)/?) as pagecnt "
 					   + " from tbl_product P join tbl_pd_detail D "
 					   + " on P.pdno = D.fk_pdno "
 					   + " where pd_qty > 0 "
@@ -186,7 +187,7 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 		try {
 			conn = ds.getConnection();
          
-			String sql = " select count(*) as cnt "
+			String sql = " select count(distinct pdno) as cnt "
 					+ " from tbl_product P join tbl_pd_detial D "
 					+ " on P.pdno = D.fk_pdno "
 					+ " where pd_qty > 0 ";
@@ -230,7 +231,7 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 		
 	}// end of public int getTotalProductCount(Map<String, String> paraMap) throws SQLException {}
 
-	// 
+	// 브랜드명을 검색하는 메소드
 	@Override
 	public List<ProductVO> search_product_pagin_brand(Map<String, String> paraMap) throws SQLException {
 		
@@ -239,17 +240,17 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 		try {
 	         conn = ds.getConnection();
 	         
-	         String sql = " select rno , pdno, pdname, brand, price, saleprice, pdimg1 "
+	         String sql = " select rno , pdno, pdname, brand, price, saleprice, pdimg1, pdstatus "
 		         		+ " from "
 		         		+ "	 ( "
-		         		+ "	select rno, pdno, pdname, brand, price, saleprice, pdimg1 "
+		         		+ "	select rownum as rno, pdno, pdname, brand, price, saleprice, pdimg1, pdstatus "
 		         		+ "	 from "
 		         		+ "	( "
-		         		+ "	 select rownum as rno ,pdno, pdname, brand, price, saleprice, pdimg1 "
+		         		+ "	 select pdno, pdname, brand, price, saleprice, pdimg1, pdstatus "
 		         		+ "	from tbl_product P "
 		         		+ " join tbl_pd_detail D "
 		         		+ " on P.pdno = D.fk_pdno "
-		         		+ " where pd_qty > 1 ";
+		         		+ " where pd_qty > 0 ";
 	         			 
 	         
 	         String searchWord = paraMap.get("searchWord");
@@ -307,7 +308,7 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 	} // end of
 
 	
-	// 
+	// 상품명을 검색하는 메소드
 	@Override
 	public List<ProductVO> search_product_pagin_pdname(Map<String, String> paraMap) throws SQLException {
 		
@@ -316,17 +317,17 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 		try {
 	         conn = ds.getConnection();
 	         
-	         String sql = " select rno , pdno, pdname, brand, price, saleprice, pdimg1 "
+	         String sql = " select rno , pdno, pdname, brand, price, saleprice, pdimg1, pdstatus "
 		         		+ " from "
 		         		+ "	 ( "
-		         		+ "	select rno, pdno, pdname, brand, price, saleprice, pdimg1 "
+		         		+ "	select rownum as rno, pdno, pdname, brand, price, saleprice, pdimg1, pdstatus "
 		         		+ "	 from "
 		         		+ "	( "
-		         		+ "	 select rownum as rno ,pdno, pdname, brand, price, saleprice, pdimg1 "
+		         		+ "	 select  pdno , pdname, brand, price, saleprice, pdimg1, pdstatus "
 		         		+ "	from tbl_product P "
 		         		+ " join tbl_pd_detail D "
 		         		+ " on P.pdno = D.fk_pdno "
-		         		+ " where pd_qty > 1 ";
+		         		+ " where pd_qty > 0 ";
 	         			 
 	         
 	         String searchWord = paraMap.get("searchWord");
@@ -381,7 +382,7 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 	      }
 		
 		return productList;
-	}
+	} // end of public List<ProductVO> search_product_pagin_pdname(Map<String, String> paraMap) throws SQLException {
 
 
 	// 브랜드명을 조회해서 나오는 토탈페이지구하기
@@ -394,7 +395,7 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 			
 			conn = ds.getConnection();
          
-			String sql = " select ceil(count(*)/?) as pagecnt "
+			String sql = " select ceil(count(distinct pdno)/?) as pagecnt "
 					   + " from tbl_product P join tbl_pd_detail D "
 				   	   + " on P.pdno = D.fk_pdno "
 					   + " where pd_qty > 0 "
@@ -432,7 +433,7 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 		try {
 			conn = ds.getConnection();
          
-			String sql = " select ceil(count(*)/?) as pagecnt "
+			String sql = " select ceil(count(distinct pdno)/?) as pagecnt "
 					   + " from tbl_product P join tbl_pd_detail D "
 				   	   + " on P.pdno = D.fk_pdno "
 					   + " where pd_qty > 0 "
@@ -498,9 +499,9 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 	         conn = ds.getConnection();
 	         
 	         String sql = " insert into tbl_product(pdno, pdname, brand, "
-	         			+ " price, saleprice, pdimg1, pd_content, point) "
+	         			+ " price, saleprice, pdimg1, pd_content, pd_contentimg , point) "
 	         			+ " values(?,?,?, "
-	         			+ "	?,?,?,?,?) ";
+	         			+ "	?,?,?,?,?,?) ";
 	         
 	         pstmt = conn.prepareStatement(sql);
 	         
@@ -511,7 +512,8 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 	         pstmt.setInt(5, (int) pvo.getSaleprice()); 
 	         pstmt.setString(6, pvo.getPdimg1()); 
 	         pstmt.setString(7, pvo.getPd_content());
-	         pstmt.setInt(8, pvo.getPoint());
+	         pstmt.setString(8, pvo.getPd_contentimg());
+	         pstmt.setInt(9, pvo.getPoint());
 	         
 	         result = pstmt.executeUpdate();
 	         
@@ -579,8 +581,6 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 	        	 
 	         }
 	         
-	        
-	         
 	      } finally {
 	         close();
 	      }
@@ -639,9 +639,8 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 			conn = ds.getConnection();
          
 			String sql = " select ceil(count(*)/?) as pagecnt "
-					   + " from tbl_product P join tbl_pd_detail D "
-					   + " on P.pdno = D.fk_pdno "
-					   + " where pd_qty > -1 ";
+					   + " from tbl_product "
+					   + " where pdstatus != -1 ";
 			
 			String colname = paraMap.get("searchType");
 			String searchWord = paraMap.get("searchWord");
@@ -693,19 +692,17 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 		try {
 			conn = ds.getConnection();
          
-			String sql = " select rno,  pdno, pdname, brand, saleprice, pdstatus, pd_qty , color"
+			String sql = " select rno,  pdno, pdname, brand,  price , saleprice, pdstatus, pdinputdate "
 					+ " from "
 					+ " ( "
-					+ " select rno,  pdno, pdname, brand, saleprice, pdstatus, "
-					+ " pd_qty , color "
+					+ " select rownum as rno,  pdno, pdname, brand, price , saleprice, pdstatus, pdinputdate "
 					+ " from "
 					+ " ( "
-					+ " select rownum as rno , pdno, pdname, brand, saleprice, pdstatus, nvl(pd_qty , 0 ) as pd_qty "
-					+ " , pdinputdate ,  "
-					+ " CASE WHEN color = N'none' THEN N'단일색상' ELSE color END AS color "
-					+ " from tbl_product P full join tbl_pd_detail D "
-					+ " on P.pdno = D.fk_pdno "
-					+ " where pd_qty != -1 ";
+					+ " select pdno, pdname, brand, price , saleprice, pdstatus "
+					+ " , pdinputdate "
+					+ " from tbl_product "
+					+ " where pdstatus != 0 "
+					+ " order by pdinputdate desc ";
 			
 			String colname = paraMap.get("searchType");
 			String searchWord = paraMap.get("searchWord");
@@ -717,10 +714,9 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 					
 			}
 				
-			sql += " order by pdinputdate desc "
-				+ " ) V "	
+			sql += " ) V "	
 				+ " ) T "
-				+ " where rno between ? and ? ";
+				+ " where T.rno between ? and ? "	;
 		        
 			pstmt = conn.prepareStatement(sql); 
 				
@@ -751,24 +747,18 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 				
 			} 
 			
-			
 			rs = pstmt.executeQuery();
          	
 			while(rs.next()){
 				
 				ProductVO pvo = new ProductVO();
-				Product_DetailVO pdvo = new Product_DetailVO();
-				
+
 				pvo.setPdno(rs.getString("pdno"));
 				pvo.setBrand(rs.getString("brand"));
 				pvo.setPdname(rs.getString("pdname"));
+				pvo.setPrice(rs.getLong("price"));
 				pvo.setSaleprice(rs.getLong("saleprice"));
 				pvo.setPdstatus(rs.getInt("pdstatus"));
-				
-				pdvo.setColor(rs.getString("color"));
-				pdvo.setPd_qty(rs.getInt("pd_qty"));
-				
-				pvo.setPdvo(pdvo);
 				
 				ProductList.add(pvo);
 				
@@ -835,40 +825,438 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 	} // end of public int get_admin_TotalProductCount(Map<String, String> paraMap) throws SQLException {
 
 
-	// 특정 상품번호의 상품정보를 가져오는 메소드
+	// 특정 상품번호의 상품정보를 가져오는 메소드1
 	@Override
-	public List<ProductVO> selectOneProductInfo(String pdno) throws SQLException {
+	public ProductVO selectOneProductInfo(String pdno) throws SQLException {
 		
-		List<ProductVO> pvoList = new ArrayList<ProductVO>();
+		ProductVO pvo = null;
 		
 		try {
 	         conn = ds.getConnection();
 	         
-	         String sql =  " select userid, name, email, mobile, postcode, address, detailaddress, extraaddress, gender "
-	                  + "      , birthday, coin, point, to_char(registerday, 'yyyy-mm-dd') AS registerday "
-	                  + " from tbl_member "
-	                  + " where status = 1 and userid = ? ";
+	         String sql = " select pdno, pdname , brand , price, saleprice, pdimg1, "
+	                  	+ " pd_content , to_char(pdinputdate, 'yyyy-mm-dd') as pdinputdate,"
+	                  	+ " pdstatus , point , pd_contentimg "
+	                  	+ " from tbl_product "	                  
+	                  	+ " where pdno = ? ";
+	                     
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setInt(1, Integer.parseInt(pdno));
+	         
+	         rs = pstmt.executeQuery();
+	         
+	         if(rs.next()) {
+	            pvo = new ProductVO();
+	            
+	            pvo.setPdno(rs.getString(1));
+	            pvo.setPdname(rs.getString(2));
+	            pvo.setBrand(rs.getString(3));
+	            pvo.setPrice(rs.getLong(4));
+	            pvo.setSaleprice(rs.getLong(5));
+	            pvo.setPdimg1(rs.getString(6));
+	            pvo.setPd_content(rs.getString(7));
+	            pvo.setPdinputdate(rs.getString(8));
+	            pvo.setPdstatus(rs.getInt(9));
+	            pvo.setPoint(rs.getInt(10));
+	            pvo.setPd_contentimg(rs.getString(11));
+	            
+	          
+	         } // end of if(rs.next())-------------------
+	         
+	      } finally {
+	         close();
+	      }
+		return pvo;
+		
+	} // end of  public List<ProductVO> selectOneProductInfo(String pdno) throws SQLException {
+
+
+	// 상품삭제하기
+	@Override
+	public int delete_product(String pdno) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			
+	         conn = ds.getConnection();
+	         
+	         String sql = " delete from tbl_product where pdno = ? ";
 	                     
 	         pstmt = conn.prepareStatement(sql);
 	         
 	         pstmt.setString(1, pdno);
 	         
+	         result = pstmt.executeUpdate();
+	         
+	      } finally {
+	      		
+	  			close();
+	  		
+	  	  }
+	    
+		
+		return result;
+		
+	} // end of public int delete_product(String pdno) {
+
+
+	// 삭제할 상품이미지 파일명 가져오기
+	@Override
+	public List<String> select_imgfilename(String pdno) throws SQLException {
+		
+		List<String> imglist = new ArrayList<>();
+		
+		try {
+	         conn = ds.getConnection();
+	         
+	         String sql = " select imgfilename "
+	        		 	+ " from "
+	        		 	+ " ( "
+	        		 	+ " select pd_extraimg as imgfilename from tbl_product_img where fk_pdno = ? "
+	        		 	+ " union "
+	        		 	+ " select pdimg1 as imgfilename  from tbl_product where pdno = ? "
+	        		 	+ " union "
+	        		 	+ " select pd_contentimg as imgfilename from tbl_product where pdno = ? "
+	        		 	+ " ) "; 
+	         		
+	                     
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setString(1, pdno);
+	         pstmt.setString(2, pdno);
+	         pstmt.setString(3, pdno);
+	         
 	         rs = pstmt.executeQuery();
 	         
-	         if(rs.next()) {
-	            ProductVO pvo = new ProductVO();
+	         while(rs.next()) {
+	        	 
+	        	String img = rs.getString(1); 
 	            
-	           
-	            
-	            
+	            imglist.add(img);
 	            
 	         } // end of if(rs.next())-------------------
 	         
 	      } finally {
 	         close();
 	      }
-		return null;
-	}
+		
+		return imglist;
+		
+	} // end of public List<ImageVO> select_imgfilename(String pdno) throws SQLException {
+
+
+	// 상품테이블 업데이트 후 자식테이블 삭제 후 insert ==> 수동커밋!!
+	@Override
+	public int delete_after_insert(Map<String, String> paraMap) {
+		
+	    int sum = 0;
+	    
+	    try {
+	    	
+	        conn = ds.getConnection();
+	        
+	        conn.setAutoCommit(false);
+
+	        String sql = " update tbl_product set pdname = ? , brand = ? , price = ? , saleprice = ? , "
+	        		+ " pdimg1 = ?, pd_content = ? , pd_contentimg = ? , pdstatus = ?, point = ? where pdno = ? ";
+	        
+	        pstmt = conn.prepareStatement(sql);
+	        /*
+	        System.out.println(paraMap.get("pdname"));
+	        System.out.println(paraMap.get("brand"));
+	        System.out.println(paraMap.get("price"));
+	        System.out.println(paraMap.get("saleprice"));
+	        System.out.println(paraMap.get("pdimg1"));
+	        System.out.println(paraMap.get("pd_content"));
+	        System.out.println(paraMap.get("pd_contentimg"));
+	        System.out.println(paraMap.get("pdstatus"));
+	        System.out.println(paraMap.get("point"));
+	        System.out.println(paraMap.get("pdno"));
+			*/
+	        pstmt.setString(1, paraMap.get("pdname"));
+	        pstmt.setString(2, paraMap.get("brand"));
+	        pstmt.setString(3, paraMap.get("price"));
+	        pstmt.setString(4, paraMap.get("saleprice"));
+	        pstmt.setString(5, paraMap.get("pdimg1"));
+	        pstmt.setString(6, paraMap.get("pd_content"));
+	        pstmt.setString(7, paraMap.get("pd_contentimg"));
+	        pstmt.setString(8, paraMap.get("pdstatus"));
+	        pstmt.setString(9, paraMap.get("point"));
+	        pstmt.setString(10, paraMap.get("pdno"));
+
+	        sum = pstmt.executeUpdate();
+
+	        if(sum == 0) {
+	        	
+	            System.out.println("첫번째 SQL 문 실행 실패");
+	        }
+
+	        if(sum == 1) {
+	        	System.out.println("첫번째 성공");
+	        	
+	        	String sqls = " select count(*) from tbl_pd_detail where fk_pdno = ? ";
+	            
+	            pstmt = conn.prepareStatement(sqls);
+	            
+	            pstmt.setString(1, paraMap.get("pdno"));
+	            
+	            rs = pstmt.executeQuery();
+	        	
+	        	if(rs.next()) {
+	        		
+	        		int count = rs.getInt(1);
+	        		
+	        		String sql2 = " delete from tbl_pd_detail where fk_pdno = ? ";
+		            
+		            pstmt = conn.prepareStatement(sql2);
+		            
+		            pstmt.setString(1, paraMap.get("pdno"));
+		            
+		            sum = pstmt.executeUpdate();
+
+		            if(sum != count) {
+		            	
+		                System.out.println("두번째 SQL 실행 실패1");
+		                
+		            }else {
+		            	
+		            	System.out.println("두번째 SQL 성공");
+		            	sum = 1;
+		            }
+		            
+	        	}else {
+	        		
+	        		System.out.println("두번째 SQL 실행 실패2");
+	        		
+	        	}
+	        	
+	        }else {
+	        	
+	        	System.out.println("두번째 SQL 실행 실패3");
+	        }
+	        
+
+	        if (sum == 1) {
+	        	
+	            for (int i = 1; i <= 3; i++) {
+	            	
+	                if ( paraMap.get("color" + i) != null && paraMap.get("pdqty" + i) != null ) {
+	                	
+	                    String sql3 = " INSERT INTO tbl_pd_detail (pd_detailno, fk_pdno, color, pd_qty) "
+	                            + " VALUES (seq_product_detail.nextval, ?, ?, ?) ";
+	                    
+	                    pstmt = conn.prepareStatement(sql3);
+	                    
+	                    pstmt.setString(1, paraMap.get("pdno"));
+	                    pstmt.setString(2, paraMap.get("color" + i));
+	                    pstmt.setString(3, paraMap.get("pdqty" + i));
+	                    
+	                    int result = pstmt.executeUpdate();
+	                    
+	                    if (result == 1) {
+	                    	
+	                    	System.out.println("일단 insert 하나 성공");
+	                    	sum = 1;
+	                        
+	                    }
+	                }
+	                
+	            } // end of for
+	            
+	        } 
+	        
+	        if (sum == 1) {
+	            String sqlCount = " select count(*) from tbl_product_img where fk_pdno = ? ";
+	            
+	            pstmt = conn.prepareStatement(sqlCount);
+	            pstmt.setString(1, paraMap.get("pdno"));
+	            
+	            rs = pstmt.executeQuery();
+	            
+	            if (rs.next()) {
+	                int count = rs.getInt(1);
+	                
+	                if (count > 0) {
+	                    String deleteSql = " delete from tbl_product_img where fk_pdno = ? ";
+	                    
+	                    pstmt = conn.prepareStatement(deleteSql);
+	                    
+	                    pstmt.setString(1, paraMap.get("pdno"));
+	                    
+	                    int result = pstmt.executeUpdate();
+	                    
+	                    if (result > 0) {
+	                        System.out.println("SQL 성공 이미지 삭제 완료");
+	                    } else {
+	                        System.out.println("SQL 실패 이미지 삭제 실패");
+	                        sum = 0;
+	                    }
+	                } else {
+	                    System.out.println("SQL 실패 상품번호에 대한 이미지 없음");
+	                }
+	            } else {
+	                System.out.println("SQL 실패 count 없음 ");
+	               
+	            }
+	        }
+
+	        if(sum == 1) {
+	        	
+	            conn.commit();
+	            
+	            System.out.println("커밋 성공");
+	            
+	        } else {
+	        	
+	            try {
+	                conn.rollback();
+	                
+	                System.out.println("롤백 성공");
+	                
+	            } catch (SQLException e1) {
+	            	
+	                System.out.println("롤백 실패");
+	                
+	                e1.printStackTrace();
+	                
+	            }
+	        }
+
+	    } catch(SQLException e) {
+	    	
+	        try {
+	            conn.rollback();
+	            
+	        } catch (SQLException e1) {
+	        	
+	            e1.printStackTrace();
+	            
+	        }
+	        e.printStackTrace();
+	        
+	    } finally {
+	    	
+	        close();
+	    }
+
+	    return sum;
+	    
+	} // end of public int delete_after_insert(Map<String, String> paraMap) {
+
+
+	// 삭제할 추가 상품이미지 파일명 가져오기
+	@Override
+	public List<String> select_extraimgfilename(String pdno2) throws SQLException {
+		
+		List<String> imglist = new ArrayList<>();
+		
+		try {
+			
+	         conn = ds.getConnection();
+	         
+	         String sql = " select pd_extraimg from tbl_product_img where fk_pdno = ? "; 
+	        	           
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setString(1, pdno2);
+	        
+	         rs = pstmt.executeQuery();
+	         
+	         while(rs.next()) {
+	        	 
+	        	String img = rs.getString(1); 
+	            
+	            imglist.add(img);
+	            
+	         } // end of if(rs.next())-------------------
+	         
+	      } finally {
+	         close();
+	      }
+		
+		return imglist;
+		
+	} // end of public List<String> select_extraimgfilename(String pdno2) throws SQLException {
+
+
+	// 상품수정페이지에 띄울 상품상세정보(색상별 재고)
+	@Override
+	public List<Product_DetailVO> selectOnePDetail(String pdno) throws SQLException {
+		
+		List<Product_DetailVO> pdlist = new ArrayList<>();
+		
+		try {
+			
+	         conn = ds.getConnection();
+	         
+	         String sql = " select color, pd_qty from tbl_pd_detail where fk_pdno = ? "; 
+	        	           
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setString(1, pdno);
+	        
+	         rs = pstmt.executeQuery();
+	         
+	         while(rs.next()) {
+	        	 
+	        	Product_DetailVO pdvo = new Product_DetailVO();
+	        	
+	        	pdvo.setColor(rs.getString(1));
+	            pdvo.setPd_qty(rs.getInt(2));
+	            
+	            pdlist.add(pdvo);
+	        	
+	         } // end of if(rs.next())-------------------
+	         
+	      } finally {
+	         close();
+	      }
+		
+		return pdlist;
+		
+	} // end of public List<Product_DetailVO> selectOnePDetail(String pdno) throws SQLException {
+
+
+	// 상품수정페이지에 띄울 상품추가이미지
+	@Override
+	public List<ImageVO> extraimgfilename(String pdno) throws SQLException {
+		
+		List<ImageVO> imglist = new ArrayList<ImageVO>();
+		
+		try {
+			
+	         conn = ds.getConnection();
+	         
+	         String sql = " select pd_extraimg from tbl_product_img where fk_pdno = ? "; 
+	        	           
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setString(1, pdno);
+	        
+	         rs = pstmt.executeQuery();
+	         
+	         while(rs.next()) {
+	        	 
+	        	ImageVO img = new ImageVO();
+	        	
+	        	img.setImgfilename(rs.getString(1));
+	            
+	        	imglist.add(img);
+	        	
+	         } // end of if(rs.next())-------------------
+	         
+	      } finally {
+	    	  
+	         close();
+	      }
+		
+		return imglist;
+		
+	} // end of public List<ImageVO> extraimgfilename(String pdno) throws SQLException {
+	
+
 
 
 

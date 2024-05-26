@@ -49,8 +49,8 @@ public class ItemSetup extends AbstractController {
 				
 				request.setAttribute("pvo", pvo);
 				
-			//   super.setRedirect(false);
-		         super.setViewPage("/WEB-INF/item/itemSetup.jsp");
+				super.setRedirect(false);
+			   	super.setViewPage("/WEB-INF/item/admin/itemSetup.jsp");
 				
 				
 			}
@@ -152,7 +152,7 @@ public class ItemSetup extends AbstractController {
 	         request.setAttribute("message", message);
 	         request.setAttribute("loc", loc);
 	         
-	      //   super.setRedirect(false);
+	         super.setRedirect(false);
 	         super.setViewPage("/WEB-INF/msg.jsp");
 	    }		
 	}

@@ -120,11 +120,13 @@ String ctxPath = request.getContextPath();
 	text-decoration: none;
 }
 
-.shop-thumb_img {
-	position: relative;
-	margin-bottom: 2%;
-	overflow: hidden;
 
+img[name='itemtimg']{
+margin: auto;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  
 }
 
 
@@ -407,8 +409,8 @@ $(document).ready(function(){
 						<div class="shop_thumb">
 							<div class="position-relative overflow-hidden">
 								<div class="shop-thumb_img">
-									<a href=""><img class="img-fluid"
-										src="<%= ctxPath%>/images/product/product_thum/${pvo.pdimg1}" alt=""></a>
+									<a href=""><img class="img-fluid" name="itemtimg" 
+										src="<%= ctxPath%>/images/product/${pvo.pdimg1}" alt=""></a>
 								</div>
 							
 							</div>
@@ -417,19 +419,21 @@ $(document).ready(function(){
 							</a>
 							<div class="shop-thumb_price">정가 : <fmt:formatNumber value="${pvo.price}" type="number" groupingUsed="true"/>원</div>
 							<div class="shop-thumb_saleprice">판매가 : <fmt:formatNumber value="${pvo.saleprice}" type="number" groupingUsed="true"/>원</div>
-							<div class="shop-thumb_sale">${pvo.discountPercent}% 할인</div>
-							<div>
-							
+							<div class="shop-thumb_sale">${pvo.discountPercent}% 할인
+								<button type="button" class="btn btn-danger" style="margin-left: 3%;">
+									<i class="fa-solid fa-heart"></i>
+								</button>
+							</div>
+							<%--<div>
+								 
 								<button type="button" class="button btn-Light">
 									<span>Buy</span>
 								</button>
 								<button type="button" class="button btn-dark">
 									<span>Cart</span>
-								</button>
-								<button type="button" class="btn btn-danger">
-									<i class="fa-solid fa-heart"></i>
-								</button>
-							</div>
+								</button> 
+								
+							</div>--%>
 						</div>
 					</div>
 				
