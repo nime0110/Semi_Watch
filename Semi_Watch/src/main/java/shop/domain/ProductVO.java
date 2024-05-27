@@ -10,13 +10,25 @@ public class ProductVO {
 	private long 	price;      // 제품 정가
 	private long 	saleprice;  // 제품 판매가(할인해서 팔 것이므로)
 	private String 	pd_content; // 제품설명 
+	private String 	pd_contentimg; // 상품상세이미지
 	private int 	point;      // 제품구매시 적립되는 포인트(마일리지)    
+	
+
 	private int     pdstatus;	// 제품상태(등록중, 비등록중)
 	private String 	pdinputdate; // 제품등록일자	
 	
 	////////////////////////// 여기까지 insert 용도 /////////////////////////////
 	
+	private ImageVO ivo;
 	
+	public ImageVO getIvo() {
+		return ivo;
+	}
+
+	public void setIvo(ImageVO ivo) {
+		this.ivo = ivo;
+	}
+
 	private Product_DetailVO pdvo; // tbl_pd_detail 조인 select 용도
 	
 	
@@ -46,6 +58,7 @@ public class ProductVO {
 						long saleprice,
 						String category,
 						String pd_content, 
+						String pd_contentimg,
 						int point,    
 						int pdstatus,
 						String pdinputdate) {
@@ -56,10 +69,19 @@ public class ProductVO {
 		this.pdimg1 = pdimg1;
 		this.price = price;
 		this.saleprice = saleprice;
+		this.pd_content = pd_content;
+		this.pd_contentimg = pd_contentimg;
 		this.point = point;
 		this.pdstatus = pdstatus;
 		this.pdinputdate = pdinputdate;
 		
+	}
+	public String getPd_contentimg() {
+		return pd_contentimg;
+	}
+
+	public void setPd_contentimg(String pd_contentimg) {
+		this.pd_contentimg = pd_contentimg;
 	}
 
 	

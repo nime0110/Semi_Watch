@@ -120,11 +120,13 @@ String ctxPath = request.getContextPath();
 	text-decoration: none;
 }
 
-.shop-thumb_img {
-	position: relative;
-	margin-bottom: 2%;
-	overflow: hidden;
 
+img[name='itemtimg']{
+margin: auto;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  
 }
 
 
@@ -160,13 +162,6 @@ String ctxPath = request.getContextPath();
 	text-align: right;
 	margin: 3% 10% 3% 0;
 }
-
-
-ul.pagination li {
-	font-size: 13pt;
-	font-weight: bold;
-}
-
 
 
 .shop-thumb_brand{
@@ -220,6 +215,39 @@ ul.pagination li {
   }
 }
 
+ul.pagination li {
+	font-size: 12pt;
+	border: solid 0px gray;
+
+}
+
+.pagination a {
+    color: #555;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: color .3s;
+}
+
+.pagination a.active {
+	/*
+    color: white;
+    background-color: #2196F3;*/
+    text-decoration: underline;
+    font-weight: bolder;
+    color:#2196F3;
+}
+
+.pagination a.active:hover,
+.pagination a:hover:not(.active) {
+    color: #2196F3;
+}
+
+.pagination .disabled {
+    color: black;
+    pointer-e
+}    
+
 </style>
 
 <%-- Font Awesome 6 Icons --%>
@@ -252,7 +280,7 @@ $(document).ready(function(){
         frm.submit();
         
     }); // end of $("div.sidebar a").click(function(e){}
-    
+  
 
     // 정렬 탭을 클릭했을 때 폼태그에 담아서 전송하기
     $("ul.shop_sorting li a").click(function(e){
@@ -321,7 +349,7 @@ $(document).ready(function(){
 					<div class="col-sm-12">
 						<div class="input-group">
 							<input type="text" name="searchWord" class="form-control"
-								placeholder="Search products..." value="${requestScope.searchWord}">
+								placeholder="Search Product..." value="${requestScope.searchWord}">
 							<input type="text" style="display: none;" />
 							<button name="search" class="btn btn-light" type="button">
 								<i class="fa fa-search"></i>
@@ -407,8 +435,8 @@ $(document).ready(function(){
 						<div class="shop_thumb">
 							<div class="position-relative overflow-hidden">
 								<div class="shop-thumb_img">
-									<a href=""><img class="img-fluid"
-										src="<%= ctxPath%>/images/product/product_thum/${pvo.pdimg1}" alt=""></a>
+									<a href=""><img class="img-fluid" name="itemtimg" 
+										src="<%= ctxPath%>/images/product/${pvo.pdimg1}" alt=""></a>
 								</div>
 							
 							</div>
@@ -417,19 +445,21 @@ $(document).ready(function(){
 							</a>
 							<div class="shop-thumb_price">정가 : <fmt:formatNumber value="${pvo.price}" type="number" groupingUsed="true"/>원</div>
 							<div class="shop-thumb_saleprice">판매가 : <fmt:formatNumber value="${pvo.saleprice}" type="number" groupingUsed="true"/>원</div>
-							<div class="shop-thumb_sale">${pvo.discountPercent}% 할인</div>
-							<div>
-							
+							<div class="shop-thumb_sale">${pvo.discountPercent}% 할인
+								<button type="button" class="btn btn-danger" style="margin-left: 3%;">
+									<i class="fa-solid fa-heart"></i>
+								</button>
+							</div>
+							<%--<div>
+								 
 								<button type="button" class="button btn-Light">
 									<span>Buy</span>
 								</button>
 								<button type="button" class="button btn-dark">
 									<span>Cart</span>
-								</button>
-								<button type="button" class="btn btn-danger">
-									<i class="fa-solid fa-heart"></i>
-								</button>
-							</div>
+								</button> 
+								
+							</div>--%>
 						</div>
 					</div>
 				

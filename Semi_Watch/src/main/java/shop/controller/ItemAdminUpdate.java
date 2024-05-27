@@ -1,11 +1,12 @@
 package shop.controller;
 
-
-
 import java.io.File;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONObject;
@@ -17,20 +18,18 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import member.domain.MemberVO;
-import shop.domain.ProductVO;
 import shop.model.js_5_ProductDAO;
 import shop.model.js_5_ProductDAO_imple;
 
-
-public class ItemRegister extends AbstractController {
-
+public class ItemAdminUpdate extends AbstractController {
+	
 	private js_5_ProductDAO pdao = null;
-	   
-    public ItemRegister() {
-       pdao = new js_5_ProductDAO_imple();
-    }
-    
-    private String extractFileName(String partHeader) {
+	
+	public ItemAdminUpdate() {
+		pdao = new js_5_ProductDAO_imple();
+	}
+	
+	private String extractFileName(String partHeader) {
     	
  	   for(String cd : partHeader.split("\\;")) {
  		   
@@ -47,8 +46,7 @@ public class ItemRegister extends AbstractController {
  	   }
  	      return null;
  	}// end of private String extractFileName(String partHeader)-------------------
-	
-	
+
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
@@ -62,13 +60,8 @@ public class ItemRegister extends AbstractController {
 			
 			String method = request.getMethod();
 			
-			if(!"POST".equalsIgnoreCase(method)) { // "GET" 이라면
+			if("POST".equalsIgnoreCase(method)) { // "POST" 이라면
 				
-				super.setRedirect(false);
-	            super.setViewPage("/WEB-INF/item/admin/itemRegister.jsp");
-	            
-			} // end of if get방식일때
-			else { // "POST" 이라면 
 				// ==== formdata .ajax 로 전송되어진 이후 작업!!! ==== //
 				
 				// 1. 첨부되어진 파일을 디스크의 어느 경로에 업로드 할 것인지 그 경로를 설정해야 한다. 
@@ -81,7 +74,7 @@ public class ItemRegister extends AbstractController {
 	            String pd_contentimg = null;
 	            
                 String attachCount = request.getParameter("attachCount");
-			 
+				
                 int n_attachCount = 0;
                 
                 if(attachCount != null) {
@@ -146,55 +139,174 @@ public class ItemRegister extends AbstractController {
                 	
                 } // end of for
                 
-             // === 첨부 이미지 파일, 제품설명서 파일을 올렸으니 그 다음으로 제품정보를 (제품명, 정가, 제품수량,...) DB의 tbl_product 테이블에 insert 를 해주어야 한다.  ===
+             
+				String[] color = new String[3];
+				String[] pqty = new String[3];
+				
+				List<String> setvalue = new ArrayList<>();
+				
+				for(int i=0; i<3; i++) {
+					
+					if( request.getParameter("color"+(i+1)) == null) {
+						break;
+					}
+					
+					color[i] = request.getParameter("color"+(i+1));
+					pqty[i] = request.getParameter("pqty"+(i+1));
+					
+					 System.out.println(color[i]);
+					 System.out.println(pqty[i]);
+					
+					if((color[i] != null && !"".equals(color[i]) ) && (pqty[i] != null && !"".equals(pqty[i]) ) ){
+						
+						setvalue.add(color[i]);
+						setvalue.add(pqty[i]);
+					}
+					
+				} // end of for
+				
+				String color1 = null;
+				String pqty1 = null;
+				
+				String color2 = null;
+				String pqty2 = null;
+				
+				String color3 = null;
+				String pqty3 = null;
+				
+				int setvalue_size = setvalue.size();
+				
+				if( setvalue_size <= 6 && !setvalue.get(0).isBlank() && !setvalue.get(1).isBlank()) {
+					
+					color1 = setvalue.get(0);
+					pqty1 = setvalue.get(1);
+				}
+				
+				if( setvalue_size >= 4 && setvalue_size <= 6 && !setvalue.get(2).isBlank() && !setvalue.get(3).isBlank()) {
+					
+					color2 = setvalue.get(2);
+					pqty2 = setvalue.get(3);
+				}
+				
+				if( setvalue_size == 6 && !setvalue.get(4).isBlank() && !setvalue.get(5).isBlank()) {
+					
+					color3 = setvalue.get(4);
+					pqty3 = setvalue.get(5);
+				}
+				
+				System.out.println("color1 : " + color1);
+				System.out.println("pqty1 : " + pqty1);
+				System.out.println("color2 : " + color2);
+				System.out.println("pqty2 : " + pqty2);
+				System.out.println("color3 : " + color3);
+				System.out.println("pqty3 : " + pqty3);
+				
+				// update, delete ,insert 할거 받아오기
                 
-                String pdname = request.getParameter("pdname");       // 제품명
+                String pdno = request.getParameter("pdno");			  // 상품번호
+                String pdname = request.getParameter("pdname");       // 상품명
                 String brand = request.getParameter("brand");  		  // 브랜드
-                String price = request.getParameter("price");         // 제품 정가
-                String saleprice = request.getParameter("saleprice"); // 제품 판매가(할인해서 팔 것이므로)
+                String price = request.getParameter("price");         // 상품 정가
+                String saleprice = request.getParameter("saleprice"); // 성품 판매가(할인해서 팔 것이므로)
                 String pd_content = request.getParameter("pdcontent");   // 제품설명
-                
+                String pdstatus = request.getParameter("pdstatus");
                 
              // !!!! 크로스 사이트 스크립트 공격에 대응하는 안전한 코드(시큐어코드) 작성하기 !!!! //  
                 String point = request.getParameter("point");         // 포인트 점수
                 
+                Map<String, String> paraMap = new HashMap<>();
+				
+				// System.out.println("2--"+pdno);
+				
+				paraMap.put("pdno", pdno);
+				paraMap.put("pdname", pdname);
+				paraMap.put("brand", brand);
+				paraMap.put("price", price);
+				paraMap.put("saleprice", saleprice);
+				paraMap.put("pd_content", pd_content);
+				paraMap.put("pdstatus", pdstatus);
+				paraMap.put("point", point);
+				paraMap.put("pdimg1", pdimg1);
+				paraMap.put("pd_contentimg", pd_contentimg);
+				
+				paraMap.put("color1", color1);
+				paraMap.put("pdqty1", pqty1);
+				paraMap.put("color2", color2);
+				paraMap.put("pdqty2", pqty2);
+				paraMap.put("color3", color3);
+				paraMap.put("pdqty3", pqty3);
+				
+				List<String> imglist = null;
+				
+				String pdno2 = paraMap.get("pdno");
+				
+				try {
+					
+					imglist = pdao.select_extraimgfilename(pdno2);
+					
+					System.out.println("상품 이미지 파일명 가져오기 성공");
+					
+				}catch(SQLException e) {
+					
+					System.out.println("상품 이미지 파일명 가져오기 실패");
+					
+					return;
+					
+				}
+				
+				// 상품테이블 업데이트 후 자식테이블 삭제 후 insert ==> 수동커밋!!
+				int sum = pdao.delete_after_insert(paraMap);
                 
-                // 제품번호 채번해오기
-                int pdno = pdao.getPnumOfProduct();
-                
-                ProductVO pvo = new ProductVO();
-
-                pvo.setPdno(String.valueOf(pdno));   // 제품번호(Primary Key)
-                pvo.setBrand(brand); // 브랜드
-                pvo.setPdname(pdname); // 제품명
-                pvo.setPrice(Long.parseLong(price)); // 제품 정가
-                pvo.setSaleprice(Long.parseLong(saleprice)); // 제품 판매가(할인해서 팔 것이므로)
-                pvo.setPdimg1(pdimg1);   // 제품이미지1 
-                pvo.setPd_content(pd_content); // 제품설명
-                pvo.setPd_contentimg(pd_contentimg); // 상품상세이미지
-                pvo.setPoint(Integer.parseInt(point)); // 포인트
-                
-                // tbl_product 테이블에 제품정보 insert 하기
-                int n = pdao.productinsert(pvo);
-                
+                // System.out.println(sum);
                 int result = 0;
                 
-                if(n==1) {
+                if(sum == 1) {
                 	
                 	result = 1;
-                }
+                	
+                	if(imglist != null && imglist.size() > 0) {
+                		
+	    				for (String filename : imglist) {
+	    					
+	    					File imageFile = new File(uploadFileDir, filename);
+	    					
+	    					if (imageFile.exists()) {
+	    						
+	    		                boolean deleteResult = imageFile.delete();
+	    		                
+	    		                if (deleteResult) {
+	    		                	
+	    		                    System.out.println("이미지 파일 삭제 성공 : " + filename);
+	
+	    		                } else {
+	    		                	
+	    		                    System.out.println("이미지 파일 삭제 실패 : " + filename);
+	    		                    
+	    		                    return;
+	    		                }
+	    		            } else {
+	    		            	
+	    		                System.out.println("삭제할 이미지 파일이 없음 : " + filename);
+	    		                
+	    		                return;
+	    		                
+	    		            }
+	    					
+	    				} // end of for
+    				
+                	} // end of if(imglist != null) { 가져온 이미지파일이 있다면
+                	
+                } // 다중 sql문 성공여부 확인
                 
                 // === 추가이미지파일이 있다라면 tbl_product_imagefile 테이블에 제품의 추가이미지 파일명 insert 해주기 === //
                 
-                if(n==1 && n_attachCount > 0) {
+                if(result ==1 &&n_attachCount > 0) {
                 	
                 	result = 0;
                 	
-                	Map<String, String> paraMap = new HashMap<>();
+                	Map<String, String> paraMap2 = new HashMap<>();
                 	
-                	paraMap.put("pdno", String.valueOf(pdno));
-                	// pnum 은 위에서 채번해온 제품번호이다.
-                	
+                	paraMap2.put("pdno", paraMap.get("pdno"));
                 	
                 	int cnt = 0; // 추가이미지 파일 insert문이 돌아가는 횟수를 표현하는 용도의 변수
                 	
@@ -202,11 +314,11 @@ public class ItemRegister extends AbstractController {
                 		
                 		String attachFileName = arr_attachFileName[i];
                 		
-                		paraMap.put("attachFileName", attachFileName);
+                		paraMap2.put("attachFileName", attachFileName);
                 		// 키값을 고정적으로 써도되는 이유는 insert문이 for문으로 같이돌기 때문에 반복할때마다 덮어씌운다! 
                 		
                 		// >>> tbl_product_imagefile 테이블에 제품의 추가이미지 파일명 insert 하기 <<<
-                    	int attach_insert_result = pdao.product_imagefile_insert(paraMap);
+                    	int attach_insert_result = pdao.product_imagefile_insert(paraMap2);
                     	
                     	if(attach_insert_result == 1) {
                     		
@@ -228,7 +340,7 @@ public class ItemRegister extends AbstractController {
                 JSONObject jsonObj = new JSONObject(); // { }
                 
                 jsonObj.put("result", result);
-                jsonObj.put("setpdno", pdno);
+                
                 
                 String json = jsonObj.toString(); // 문자열로 변환 
                 request.setAttribute("json", json);
@@ -252,8 +364,10 @@ public class ItemRegister extends AbstractController {
 	      //   super.setRedirect(false);
 	         super.setViewPage("/WEB-INF/msg.jsp");
 	    }
-			
 		
-	} // end of execute
+		
+		
+
+	}
 
 }

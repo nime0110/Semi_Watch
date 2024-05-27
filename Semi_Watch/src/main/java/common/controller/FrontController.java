@@ -3,6 +3,7 @@ package common.controller;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebInitParam;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+@MultipartConfig
 @WebServlet(
 		description = "사용자가 웹에서 *.flex 을 했을 경우 이 서블릿이 응답을 해주도록 한다."
 		, urlPatterns = {"*.flex"}
