@@ -251,17 +251,71 @@ from (
     ) V
 ) T
 where T.rno between 6 and 10;
+------------------------------------
 
 select pd_extraimg, pdimg1, pdno, brand, price, saleprice from tbl_product a JOIN tbl_product_img b
 ON a.pdno = b.fk_pdno;
 
--- pdimg -> 썸네일 다시 내가 넣어야돼.. ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ
--- pd_extraimg = 썸네일
--- pdimg = 메인 
--- 어떻게 하지.. ? ㅠㅠ
--- 그럼.. 이걸 일단 가져와서 html에 뿌리고 뿌린걸 js에서 데이터만 선택자로 뽂뽁 가져와서 넣으면 되는 거 아닌가..! 이게 맞아?이게..진짜 맞아? 이렇게.. 주먹구구 식으로.. 
--- 
-
 select * from tbl_product_img;
+select * from tbl_product;
+
+select pdname, pdimg1, price
+from tbl_product 
+where pdname IN ( 'DAYTONA' );
 
 
+select pdname, pdimg1, price
+from tbl_product 
+where pdno IN ( '103', '104' );
+
+select color from tbl_pd_detail where fk_pdno = 99; 
+
+---------------------------- 상품상세 쿼리
+select pdno, pdname, brand, price, saleprice, pdimg1, pd_content
+from tbl_product; -- 상품 테이블
+
+select fk_pdno, color from tbl_pd_detail; --색상 테이블
+
+select pd_extraimg from tbl_product_img
+where fk_pdno = 95;
+
+select pdno, pdname, brand, price, saleprice, pdimg1, pd_content, NVL(color, '없음') as color
+from (
+    select pdno, pdname, brand, price, saleprice, pdimg1, pd_content
+    from tbl_product
+    where pdno = 95
+) A
+join tbl_pd_detail B
+on a.pdno = b.fk_pdno;
+-- 색상이 없을 경우 없음 처리
+
+
+select pdno, pdname, brand, pdimg1, price, saleprice, pd_content,  color 
+from ( 
+select pdno, pdname, brand, price, saleprice, pdimg1, pd_content 
+ from tbl_product 
+where pdno =  95
+ ) A 
+join tbl_pd_detail B 
+ on a.pdno = b.fk_pdno;
+-- 재고 where 조건문 추가필
+
+select color 
+from tbl_pd_detail
+where fk_pdno = 99;
+
+select *
+from tbl_pd_detail;
+
+
+SELECT pd_detailno
+FROM tbl_product A
+JOIN tbl_pd_detail B
+ON A.pdno = B.fk_pdno
+WHERE (A.pdno = 95 AND B.color LIKE 'pink')
+   OR (A.pdno = 99 AND B.color LIKE 'none');
+   
+SELECT * FROM tbl_cart;
+
+insert into tbl_cart(cartno, fk_pdno, fk_userid, cart_qty) 
+       values(person_seq.nextval, ?, ?, ?, ?);

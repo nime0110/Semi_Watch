@@ -328,7 +328,7 @@ public class ss_2_MemberDAO_imple implements ss_2_MemberDAO {
 		
 	}
 
-	//회원 상세정보 보여주기
+	//회원 상세정보 보여주기 - 비밀번호는 암호화 때문에 불러오지 않음
 	@Override
 	public MemberVO selectOneMember(String userid)  throws SQLException {
 		MemberVO member = null;
