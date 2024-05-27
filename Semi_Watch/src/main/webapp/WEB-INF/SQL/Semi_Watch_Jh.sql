@@ -22,6 +22,7 @@ show user;
 SELECT * 
 FROM all_tables;
 
+
 SELECT * 
 FROM user_tables;
 
@@ -47,9 +48,57 @@ rollback;
 
 select *
 from tbl_member
-where userid = 'jhkvng123';
+where userid = 'admin';
 
 select *
 from TBL_PRODUCT;
+
+select *
+from TBL_CART;
+
+select *
+from USER_SEQUENCES;
+
+insert into tbl_main_image(imgno, imgfilename) values(seq_main_image.nextval, '미샤.png');  
+
+insert into TBL_CART(cartno, fk_pdno, fk_userid, cart_qty, registerday)
+            values(SEQ_TBL_CART_CARTNO.nextval, '2', 'jhkvng123', 1, default);
+
+
+-- 테이블당 컬럼 코멘트조회 --
+    select column_name, comments
+    from user_col_comments
+    where table_name = '테이블명';
+    
+    
+    
+ 
+-- 테이블 코멘트조회 --
+    select *
+    from user_tab_comments;
+
+-- 생성된 시퀀스 조회 --
+    select * from user_tab_comments;
+
+select color 
+from tbl_pd_detail
+where fk_pdno = 95;
+
+
+commit; -- 커밋 필수
+
+select *
+from tbl_pd_detail;
+
+
+tbl_product
+
+
+select color, pd_qty
+from tbl_pd_detail
+where fk_pdno = 95;
+
+
+
 
 
