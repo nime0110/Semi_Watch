@@ -164,13 +164,6 @@ margin: auto;
 }
 
 
-ul.pagination li {
-	font-size: 13pt;
-	font-weight: bold;
-}
-
-
-
 .shop-thumb_brand{
 	color: green;
 	font-size: 14pt;
@@ -222,6 +215,39 @@ ul.pagination li {
   }
 }
 
+ul.pagination li {
+	font-size: 12pt;
+	border: solid 0px gray;
+
+}
+
+.pagination a {
+    color: #555;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: color .3s;
+}
+
+.pagination a.active {
+	/*
+    color: white;
+    background-color: #2196F3;*/
+    text-decoration: underline;
+    font-weight: bolder;
+    color:#2196F3;
+}
+
+.pagination a.active:hover,
+.pagination a:hover:not(.active) {
+    color: #2196F3;
+}
+
+.pagination .disabled {
+    color: black;
+    pointer-e
+}    
+
 </style>
 
 <%-- Font Awesome 6 Icons --%>
@@ -254,7 +280,7 @@ $(document).ready(function(){
         frm.submit();
         
     }); // end of $("div.sidebar a").click(function(e){}
-    
+  
 
     // 정렬 탭을 클릭했을 때 폼태그에 담아서 전송하기
     $("ul.shop_sorting li a").click(function(e){
@@ -323,7 +349,7 @@ $(document).ready(function(){
 					<div class="col-sm-12">
 						<div class="input-group">
 							<input type="text" name="searchWord" class="form-control"
-								placeholder="Search products..." value="${requestScope.searchWord}">
+								placeholder="Search Product..." value="${requestScope.searchWord}">
 							<input type="text" style="display: none;" />
 							<button name="search" class="btn btn-light" type="button">
 								<i class="fa fa-search"></i>

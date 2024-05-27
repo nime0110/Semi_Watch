@@ -189,16 +189,16 @@ public class ItemList extends AbstractController {
 		// *** [맨처음] [이전] 만들기 *** //
 		
 		// 맨처음 버튼 구성하기
-		pageBar += "<li class='page-item'><a class='page-link' href='itemList.flex?brand="
+		pageBar += "<li class='page-item'><a href='itemList.flex?brand="
 				+ brand + "&sort=" + sort2 + "&sizePerPage=" + sizePerPage + "&searchWord=" + searchWord +
-				"&currentShowPageNo=1'>[맨처음]</a></li>";
+				"&currentShowPageNo=1'>처음</a></li>";
 		
 		if(pageNo != 1) { // 가장 처음부분이 1이 아니라면 [이전] 페이지 버튼을 보여준다.
 			
 			// [이전] 구성하기
-			pageBar += "<li class='page-item'><a class='page-link' href='itemList.flex?brand="
+			pageBar += "<li class='page-item'><a href='itemList.flex?brand="
 					+ brand + "&sort=" + sort2 + "&sizePerPage=" + sizePerPage + "&searchWord=" + searchWord +
-					"&currentShowPageNo=" + (pageNo - 1) + "'>[이전]</a></li>";
+					"&currentShowPageNo=" + (pageNo - 1) + "'><<</a></li>";
 			
 		}
 		
@@ -210,13 +210,13 @@ public class ItemList extends AbstractController {
 			if(pageNo == Integer.parseInt(currentShowPageNo) ) {
 				// 해당페이지번호가 현재 보고자하는 페이지와 같다면
 				
-				pageBar += "<li class='page-item active'><a class='page-link' href='#'>" + pageNo + "</a></li>";
+				pageBar += "<li class='page-item'><a class='active' href='#'>" + pageNo + "</a></li>";
 				
 				
 			}
 			else {
 				
-				pageBar += "<li class='page-item'><a class='page-link' href='itemList.flex?brand="
+				pageBar += "<li class='page-item'><a href='itemList.flex?brand="
 						+ brand + "&sort=" + sort2 + "&sizePerPage=" + sizePerPage + "&searchWord=" + searchWord +
 						"&currentShowPageNo=" + pageNo + "'>" + pageNo + "</a></li>";
 				//  1 + 2 + ... 10 , 11 + 12 ... 20
@@ -237,18 +237,18 @@ public class ItemList extends AbstractController {
 			// 즉, pageNo가 마지막페이지이거나 마지막페이지보다 크게되면 [다음]버튼을 보여주지 않는다!!!
 			
 			// [다음] 구성하기
-			pageBar += "<li class='page-item'><a class='page-link' href='itemList.flex?brand="
+			pageBar += "<li class='page-item'><a href='itemList.flex?brand="
 					+ brand + "&sort=" + sort2 + "&sizePerPage=" + sizePerPage + "&searchWord=" + searchWord +
-					"&currentShowPageNo=" + pageNo + "'>[다음]</a></li>";
+					"&currentShowPageNo=" + pageNo + "'>>></a></li>";
 			// pageNo가 되는이유는 while문을 다돌고 나오면 PageNO 는 11 , 21 이런식으로 된다!!!
 			
 		}
 		
 		
 		// [마지막] 구성하기
-		pageBar += "<li class='page-item'><a class='page-link' href='itemList.flex?brand="
+		pageBar += "<li class='page-item'><a href='itemList.flex?brand="
 				+ brand + "&sort=" + sort2 + "&sizePerPage=" + sizePerPage + "&searchWord=" + searchWord +
-				"&currentShowPageNo=" + totalPage + "'>[마지막]</a></li>";
+				"&currentShowPageNo=" + totalPage + "'>마지막</a></li>";
 		
 		// *** ======== 페이지바 만들기 끝 ======= *** //
 		

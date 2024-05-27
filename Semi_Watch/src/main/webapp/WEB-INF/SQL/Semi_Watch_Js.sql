@@ -316,9 +316,10 @@ COMMENT ON COLUMN tbl_delivery.delivery_msg IS '배송시에 요청하는 배송
     where ;
     
     select * from tbl_orderdetail;
+  
     
     
-    select * from tbl_product ;
+    select * from tbl_product where pdno = 147 ;
     select * from tbl_pd_detail;
     select rno,  pdno, pdname, brand, saleprice, pdstatus, pd_qty , color
     from
@@ -361,6 +362,11 @@ select * from tbl_product;
 update tbl_product set saleprice = 9700000 ,point = 97000 where pdno= 162;
 commit;
 
+select * from user_sequences;
 
-    
+select * from tbl_cart;
+
+insert into tbl_cart (cartno , fk_pdno, fk_userid, cart_qty  ) values (SEQ_TBL_CART_CARTNO.nextval , 116 , 'admin' , 5);
+
+insert into tbl_cart (cartno , fk_pdno, fk_userid, cart_qty  ) values (SEQ_TBL_CART_CARTNO.nextval , 상품번호 , 유저아이디 , 장바구니수량);
 

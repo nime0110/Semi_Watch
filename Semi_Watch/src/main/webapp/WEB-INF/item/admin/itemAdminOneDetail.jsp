@@ -191,7 +191,6 @@ $(document).ready(function() {
                   };
                   // ===>> 이미지파일 미리보기 끝 <<=== //
 				 
-				
 				} // end of else (용량에도 문제없고 정상적인 png, jpg 인경우)
 				
 			}// end of if(files != null && files != undefined)
@@ -416,7 +415,7 @@ $(document).ready(function() {
          <tr id="inputDiv${status.count}" style="${status.count > 1 ? 'display:none;' : ''}">
          	<td>컬러명</td>
             <td>
-                <select name="color_select${status.count}" class="infoData form-control">
+                <select name="color_select${status.count}" class="infoData form-control" style="width:70%;">
                  	<option value="">컬러를 선택하세요</option>
                     <option value="black">블랙</option>
                     <option value="white">화이트</option>
@@ -444,6 +443,7 @@ $(document).ready(function() {
                <input type="hidden" name="color${status.count}" value="" />
 	           <input type="hidden" name="pqty${status.count}" value="" />
  			</td>
+ 				
          </tr>
          </c:forEach>
          

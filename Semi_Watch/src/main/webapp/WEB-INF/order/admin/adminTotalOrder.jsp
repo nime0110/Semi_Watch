@@ -46,40 +46,6 @@
    div#pageBar > nav {
       margin: auto;
    }
-
-ul.pagination li {
-	font-size: 12pt;
-	border: solid 0px gray;
-
-}
-
-.pagination a {
-    color: #555;
-    float: left;
-    padding: 8px 16px;
-    text-decoration: none;
-    transition: color .3s;
-}
-
-.pagination a.active {
-	/*
-    color: white;
-    background-color: #2196F3;*/
-    text-decoration: underline;
-    font-weight: bolder;
-    color:#2196F3;
-}
-
-.pagination a.active:hover,
-.pagination a:hover:not(.active) {
-    color: #2196F3;
-}
-
-.pagination .disabled {
-    color: black;
-    pointer-e
-}    
-   
    
 </style>
 
@@ -122,7 +88,7 @@ ul.pagination li {
 			frm.submit();
 		});
 		
-		
+	 
 		// **** 특정 상품을 클릭하면 그 상품의 상세정보를 보여주도록 한다. **** //
 		$("table#productTbl tr.productInfo").click( e => {
 			
@@ -143,19 +109,7 @@ ul.pagination li {
 			
 			
 			
-		}); // end of $("table#memberTbl tr.memberInfo").click( e => {})
-		
-		
-		<%--  .jsp 파일에서 사용되어지는 것들 
-	     console.log('${pageContext.request.contextPath}');  // 컨텍스트패스   /MyMVC
-	     console.log('${pageContext.request.requestURL}');   // 전체 URL     http://localhost:9090/MyMVC/WEB-INF/member/admin/memberList.jsp
-	     console.log('${pageContext.request.scheme}');       // http        http
-	     console.log('${pageContext.request.serverName}');   // localhost   localhost
-	     console.log('${pageContext.request.serverPort}');   // 포트번호      9090
-	     console.log('${pageContext.request.requestURI}');   // 요청 URI     /MyMVC/WEB-INF/member/admin/memberList.jsp 
-	     console.log('${pageContext.request.servletPath}');  // 파일명       /WEB-INF/member/admin/memberList.jsp 
-	    --%>
-		
+		}); // end of $("table#memberTbl tr.memberInfo").click( e => {}) 
 		
 		
 		
@@ -186,33 +140,22 @@ ul.pagination li {
 </script>
 
 	<div class="container" style="padding: 3% 0;">
-	   <h2 class="text-center mb-5">상품전체 목록(관리자용)</h2>
+	   <h2 class="text-center mb-5">주문내역전체 목록(관리자용)</h2>
 	   
 	   <form name="product_search_frm">
 	      <select name="searchType">
 	         <option value="">검색대상</option>
-	         <option value="brand">브랜드명</option>
-	         <option value="pdno">상품번호</option>
+	         <option value="cartno">주문번호명</option>
+	         <option value="brand">주문번호명</option>
 	         <option value="pdname">상품명</option>
 	      </select>
 	      &nbsp;
 	      <input type="text" name="searchWord" />
-	      <%--	 **************** input 태그 갯수 주의사항 !!!! ****************
-	             form 태그내에서 데이터를 전송해야 할 input 태그가 만약에 1개 밖에 없을 경우에는
-	             input 태그내에 값을 넣고나서 그냥 엔터를 해버리면 submit 되어져 버린다.
-	             그래서 유효성 검사를 거친후 submit 을 하고 싶어도 input 태그가 만약에 1개 밖에 없을 경우라면 
-	             유효성검사가 있더라도 유효성검사를 거치지 않고 바로 submit 되어진다. 
-	             이것을 막으려면 input 태그가 2개 이상 존재하면 된다.  
-	             그런데 실제 화면에 보여질 input 태그는 1개 이어야 한다.
-	             이럴 경우 아래와 같이 해주면 된다. 
-	             또한 form 태그에 action 이 명기되지 않았으면 현재보이는 URL 경로로 submit 되어진다.   
-	        --%>
-	        
-	       <input type="text" style="display: none;" /> <%-- 조심할 것은 type="hidden" 이 아니다. 히든 쓰면안댐!!! --%> 
+	      <input type="text" style="display: none;" /> <%-- 조심할 것은 type="hidden" 이 아니다. 히든 쓰면안댐!!! --%> 
 	      
 	      <button type="button" class="btn btn-secondary" onclick="goSearch()">검색</button>
 	      
-	      <span style="font-size: 12pt; font-weight: bold;">페이지당 상품목록수&nbsp;:&nbsp;</span>
+	      <span style="font-size: 12pt; font-weight: bold;">페이지당 주문목록수&nbsp;:&nbsp;</span>
 	      <select name="sizePerPage">
 	         <option value="10">10개</option>
 	         <option value="5">5개</option>
@@ -223,30 +166,26 @@ ul.pagination li {
 	   <table class="table table-bordered" id="productTbl">
 	      <thead>
 	          <tr>
-	             <th class="col-sm-1 col-md-1">상품<br>번호</th>
-	             <th class="col-sm-2 col-md-2">상품명</th>
-	             <th class="col-sm-1 col-md-1">브랜드</th>
-	             <th class="col-sm-1 col-md-1">상품<br>상태</th>
-	             <th class="col-sm-1 col-md-2">정가</th>
-	             <th class="col-sm-2 col-md-2">판매가</th>
+	             <th class="col-sm-1 col-md-1">주문<br>번호</th>
+	             <th class="col-sm-1 col-md-1">주문일자</th>
+	             <th class="col-sm-3 col-md-3">상품정보</th>
+	             <th class="col-sm-1 col-md-1">주문<br>수량</th>
+	             <th class="col-sm-1 col-md-1">주문총금액</th>
+	             <th class="col-sm-1 col-md-1">배송상태</th>
 	             
 	          </tr>
 	      </thead>
 	      
 	      <tbody>
 	          
-	          <c:if test="${not empty requestScope.productList}">
+	         
 	          
 		          <c:forEach var="productvo" items="${requestScope.productList}" varStatus="status" >
 		          
 		          <fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" />
-		          <%-- fmt포맷으로 숫자로 변환하고 그 결과를 var에 지정한 변수명에 담는다!!!!!  --%>
-		          <%-- fmt:parseNumber 은 문자열을 숫자형식으로 형변환 시키는 것이다. --%>
-		          
+
 		          <fmt:parseNumber var="sizePerPage" value="${requestScope.sizePerPage}" />
 		          
-		          <%-- totalMemberCount 는 int로 넘어왔고, currentShowPageNo은 String 이기때문에  --%>
-		          	
 		          <tr class="productInfo">
 		          	
 		          	<td class="pdno">${productvo.pdno}</td>
@@ -274,7 +213,7 @@ ul.pagination li {
 		          	          	
 		          </c:forEach>
 	          
-	          </c:if>
+	        
 	          
 	          <c:if test="${empty requestScope.productList}">
 						          

@@ -120,7 +120,7 @@ public class ItemUpdateList extends AbstractController {
 			
 			String pageBar = "";
 			
-			int blockSize = 10;
+			int blockSize = 5;
 			// blockSize 는 블럭(토막)당 보여지는 페이지 번호의 개수이다. 1 2 3 4 .. 10
 			
 			int loop = 1;
@@ -131,14 +131,14 @@ public class ItemUpdateList extends AbstractController {
 			// *** [맨처음] [이전] 만들기 *** //
 			
 			// 맨처음 버튼 구성하기
-			pageBar += "<li class='page-item'><a class='page-link' href='itemUpdateList.flex?searchType="
+			pageBar += "<li class='page-item'><a href='itemUpdateList.flex?searchType="
 					+ searchType + "&searchWord=" + searchWord + "&sizePerPage=" + sizePerPage + 
 					"&currentShowPageNo=1'>[맨처음]</a></li>";
 			
 			if(pageNo != 1) { // 가장 처음부분이 1이 아니라면 [이전] 페이지 버튼을 보여준다.
 				
 				// [이전] 구성하기
-				pageBar += "<li class='page-item'><a class='page-link' href='itemUpdateList.flex?searchType="
+				pageBar += "<li class='page-item'><a href='itemUpdateList.flex?searchType="
 						+ searchType + "&searchWord=" + searchWord + "&sizePerPage=" + sizePerPage + 
 						"&currentShowPageNo=" + (pageNo - 1) + "'>[이전]</a></li>";
 				
@@ -152,13 +152,13 @@ public class ItemUpdateList extends AbstractController {
 				if(pageNo == Integer.parseInt(currentShowPageNo) ) {
 					// 해당페이지번호가 현재 보고자하는 페이지와 같다면
 					
-					pageBar += "<li class='page-item active'><a class='page-link' href='#'>" + pageNo + "</a></li>";
+					pageBar += "<li class='page-item'><a class='active' href='#'>" + pageNo + "</a></li>";
 					// 
 					
 				}
 				else {
 					
-					pageBar += "<li class='page-item'><a class='page-link' href='itemUpdateList.flex?searchType="
+					pageBar += "<li class='page-item'><a href='itemUpdateList.flex?searchType="
 							+ searchType + "&searchWord=" + searchWord + "&sizePerPage=" + sizePerPage + 
 							"&currentShowPageNo=" + pageNo + "'>" + pageNo + "</a></li>";
 					//  1 + 2 + ... 10 , 11 + 12 ... 20
@@ -179,7 +179,7 @@ public class ItemUpdateList extends AbstractController {
 				// 즉, pageNo가 마지막페이지이거나 마지막페이지보다 크게되면 [다음]버튼을 보여주지 않는다!!!
 				
 				// [다음] 구성하기
-				pageBar += "<li class='page-item'><a class='page-link' href='itemUpdateList.flex?searchType="
+				pageBar += "<li class='page-item'><a  href='itemUpdateList.flex?searchType="
 						+ searchType + "&searchWord=" + searchWord + "&sizePerPage=" + sizePerPage + 
 						"&currentShowPageNo=" + pageNo + "'>[다음]</a></li>";
 				// pageNo가 되는이유는 while문을 다돌고 나오면 PageNO 는 11 , 21 이런식으로 된다!!!
@@ -188,7 +188,7 @@ public class ItemUpdateList extends AbstractController {
 			
 			
 			// [마지막] 구성하기
-			pageBar += "<li class='page-item'><a class='page-link' href='itemUpdateList.flex?searchType="
+			pageBar += "<li class='page-item'><a  href='itemUpdateList.flex?searchType="
 					+ searchType + "&searchWord=" + searchWord + "&sizePerPage=" + sizePerPage + 
 					"&currentShowPageNo=" + totalPage + "'>[마지막]</a></li>";
 			
