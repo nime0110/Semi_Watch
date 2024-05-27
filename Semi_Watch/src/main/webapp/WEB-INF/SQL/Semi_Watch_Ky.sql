@@ -80,3 +80,175 @@ CROSS JOIN
 ( select trunc( months_between(sysdate, max(logindate)) ) AS lastlogingap
 from tbl_loginhistory
 where fk_userid = ? ) H;
+
+
+/* 사용자리뷰 */
+CREATE TABLE tbl_review (
+   reviewno VARCHAR2(30) NOT NULL, /* 리뷰코드 */
+   fk_pdno VARCHAR2(30) NOT NULL, /* 상품코드 */
+   fk_userid VARCHAR2(20), /* 아이디 */
+   review_content VARCHAR2(100), /* 리뷰내용 */
+   starpoint NUMBER(1) DEFAULT 1, /* 별점 */
+   review_date DATE default sysdate, /* 리뷰작성일자 */
+    review_status NUMBER(1) DEFAULT 0, /* 리뷰 */
+    CONSTRAINT PK_tbl_review_reviewno PRIMARY KEY (reviewno), -- 리뷰코드 기본키설정
+    CONSTRAINT FK_tbl_review_FK_USERID FOREIGN KEY(FK_USERID) REFERENCES TBL_MEMBER(USERID), -- 회원테이블의 아이디를 외래키로 받음
+    CONSTRAINT FK_tbl_review_FK_PDNO FOREIGN KEY(FK_PDNO) REFERENCES TBL_PRODUCT(PDNO), -- 상품테이블의 상품번호를 외래키로 받음
+    CONSTRAINT CK_tbl_review_starpoint CHECK (starpoint BETWEEN 1 AND 5); -- 별점 체크제약 1부터 5까지만
+-- Table TBL_REVIEW이(가) 생성되었습니다.
+
+
+
+select *
+from tbl_review;
+
+create sequence seq_reviewno
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+-- Sequence SEQ_REVIEWNO이(가) 생성되었습니다.
+
+commit;
+
+update tbl_review set reviewno='1' where fk_pdno = '5'; 
+
+insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
+values(seq_reviewno.nextval,'112','kimkh','비싼 시계 처음 구입해봤는데 돈값 합니다. 강력 추천합니다! b','5');
+
+insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
+values(seq_reviewno.nextval,'112','kimkh23','비싼 시계 처음 구입해봤는데 돈값 합니다. 강력 추천합니다! b','5');
+
+insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
+values(seq_reviewno.nextval,'112','kimkh2','시계 멋있습니다. 강력 추천합니다! b','5');
+
+insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
+values(seq_reviewno.nextval,'112','kimkh3','가격에 비해 많이 아쉽습니다!','1');
+
+insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
+values(seq_reviewno.nextval,'112','kimkh4','그냥저냥 쓸만 합니다','3');
+
+insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
+values(seq_reviewno.nextval,'112','kimkh5','그냥저냥 쓸만 합니다','3');
+
+insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
+values(seq_reviewno.nextval,'112','kimkh6','그냥저냥 쓸만 합니다','3');
+
+insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
+values(seq_reviewno.nextval,'112','kimkh7','그냥저냥 쓸만 합니다','3');
+
+insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
+values(seq_reviewno.nextval,'112','kimkh8','그냥저냥 쓸만 합니다','3');
+
+insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
+values(seq_reviewno.nextval,'112','kimkh','그냥저냥 쓸만 합니다','3');
+
+insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
+values(seq_reviewno.nextval,'112','kimkh22','그냥저냥 쓸만 합니다','3');
+
+commit;
+
+
+(select reviewno, fk_pdno, fk_userid, review_content, starpoint  
+from tbl_review) R
+JOIN
+(select brand
+from tbl_product) P
+
+-- 관리자 리뷰관리에서 띄워줄 셀렉트문
+SELECT R.reviewno, P.pdname, M.userid, M.username, P.brand, R.review_content, R.starpoint
+FROM tbl_review R JOIN tbl_product P
+ON R.fk_pdno = P.pdno JOIN tbl_member M
+on R.fk_userid = M.userid
+where userid != 'admin';
+
+-- 관리자 리뷰상세보기에서 띄워줘야 할 것
+SELECT R.reviewno AS reviewno, P.pdname AS pdname, P.pdimg1 AS pdimg1, M.userid AS userid, M.username AS username, P.brand AS brand, R.review_content AS review_content, R.starpoint AS starpoint
+FROM tbl_review R JOIN tbl_product P
+ON R.fk_pdno = P.pdno JOIN tbl_member M
+on R.fk_userid = M.userid
+where reviewno = '1';
+
+
+
+ select count(*) 
+ from tbl_review R JOIN tbl_product P
+ on R.fk_pdno = P.pdno
+ where fk_userid != 'admin'
+ 
+ select ceil(count(*)/?) 
+ from tbl_review R JOIN tbl_product P
+ on R.fk_pdno = P.pdno
+ where fk_userid != 'admin'
+
+ 
+SELECT rno, reviewno, pdname, userid, username, brand, review_content, starpoint
+FROM 
+(
+    SELECT rownum AS rno, R.reviewno AS reviewno, P.pdname AS pdname, M.userid AS userid,
+    M.username AS username, P.brand AS brand, R.review_content AS review_content, R.starpoint AS starpoint 
+    FROM tbl_review R 
+    JOIN tbl_product P ON R.fk_pdno = P.pdno 
+    JOIN tbl_member M ON R.fk_userid = M.userid 
+    WHERE M.userid != 'admin'
+    ORDER BY R.review_date DESC
+) 
+WHERE rno BETWEEN 1 AND 5;
+
+
+
+SELECT userid, username, email, mobile, postcode, address, detail_address, NVL( lastlogingap, trunc( months_between(sysdate, registerday)) ) AS lastlogingap 
+FROM
+( select userid, username, email, mobile, postcode, address||' '||extra_address AS address, detail_address, registerday 
+from tbl_member 
+where status = 1 and userid = 'kimkh7') M 
+CROSS JOIN 
+( select trunc( months_between(sysdate, max(logindate)) ) AS lastlogingap 
+from tbl_loginhistory 
+where fk_userid = 'kimkh7' ) H 
+
+ SELECT userid, username, email, mobile, postcode, address, detail_address, NVL( lastlogingap, trunc( months_between(sysdate, registerday)) ) AS lastlogingap 
+FROM 
+( select userid, username, email, mobile, postcode, address||' '||extra_address AS address, detail_address, registerday 
+from tbl_member 
+where status = 1 and userid = 'kimkh22' ) M 
+CROSS JOIN 
+(select trunc( months_between(sysdate, max(logindate)) ) AS lastlogingap 
+from tbl_loginhistory 
+where fk_userid = 'kimkh22' ) H
+
+
+SELECT R.reviewno AS reviewno, P.brand AS brand, P.pdname AS pdname, P.pdimg1 AS pdimg1, M.userid AS userid, M.username AS username, R.review_content AS review_content, R.starpoint AS starpoint 
+FROM tbl_review R JOIN tbl_product P 
+ON R.fk_pdno = P.pdno JOIN tbl_member M 
+ON R.fk_userid = M.userid 
+where reviewno = 7; 
+
+delete from tbl_review where reviewno = 4
+
+rollback;
+
+select *
+from tbl_review
+order by review_date desc;
+
+
+SELECT rno, reviewno, pdname, userid, username, brand, review_content, starpoint 
+FROM 
+( 
+SELECT rownum AS rno, TO_NUMBER(R.reviewno) AS reviewno, P.pdname AS pdname, M.userid AS userid, 
+M.username AS username, P.brand AS brand, R.review_content AS review_content, R.starpoint AS starpoint 
+FROM tbl_review R 
+JOIN tbl_product P ON R.fk_pdno = P.pdno 
+JOIN tbl_member M ON R.fk_userid = M.userid 
+WHERE M.userid != 'admin' 
+ORDER BY reviewno DESC) 
+
+
+ SELECT R.reviewno AS reviewno, P.brand AS brand, P.pdname AS pdname, P.pdimg1 AS pdimg1, M.userid AS userid, M.username AS username, R.review_content AS review_content, R.starpoint AS starpoint, R.review_date AS review_date 
+FROM tbl_review R JOIN tbl_product P 
+ON R.fk_pdno = P.pdno JOIN tbl_member M 
+on R.fk_userid = M.userid 
+where reviewno = 1 
