@@ -9,6 +9,8 @@ import org.json.JSONObject;
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import member.domain.MemberVO;
 import shop.domain.ProductVO;
 import shop.domain.Product_DetailVO;
 import shop.model.ss_2_ProductDAO;
@@ -37,8 +39,11 @@ public class AddToCartJSON extends AbstractController {
             return; //리턴
         } else {
             // 로그인 한 상태라면
+        	HttpSession session = request.getSession();
+        	MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+        	
             String cartItems = request.getParameter("cartItems");
-            System.out.println("~~~~~~~~~~~~~~~~~~ cartItems:" + cartItems);
+            //System.out.println("~~~~~~~~~~~~~~~~~~ cartItems:" + cartItems);
            /*
             cartItems:[{"productno":"112","productName":"MW-240B-3BVDF","productPrice":"47,000","productColor":"none","productImage":"/Semi_Watch/images/product/product_thum/22_thum_20240524205324632091007060100.png"},{"productno":"99","productName":"테스트시계99","productPrice":"800,000","productColor":"색상:white","productImage":"/Semi_Watch/images/product/product_thum/40_extra_3_20240523165225531230499283500.png"},{"productno":"95","productName":"진짜테스트시계","productPrice":"70,000","productColor":"색상:pink",
             "productImage":"/Semi_Watch/images/product/product_thum/3_thum_20240523001616471461017989300.png"}] 
@@ -67,21 +72,28 @@ public class AddToCartJSON extends AbstractController {
                 System.out.println("============== pdDetailNo: " + pdDetailNo);
                 
                 // --- DB에 해당 제품 장바구니에 insert해주는 메소드
-                // 장바구니 테이블 칼럼 : cartno, fk_pdno, fk_userid, cart_qty, registerday?? 
+                // 장바구니 테이블 칼럼 : cartno, fk_pdno, fk_userid, cart_qty, registerday??  -카트 qty 무조건 1개
                 // 세션스코프에 저장된 로그인 유저 불러와서 걔의 유저아이디, 가입일자 가져오고 넣어줌 ( !! 자동로그인 테스트 필요 !!)
                 
-                //int n = pdao.productInsert(pdDetailNo );
+                String userid = loginuser.getUserid();
+                String registerday = loginuser.getRegisterday(); 
                 
+                //위시리스트 -> 장바구니 insert 메소드
+                int n = pdao.productInsert(pdDetailNo, userid, registerday);
+                
+                if(n == 1) { //위시리스트에 넣는게 성공했다면?
+                    jsonObj.put("message", "상품이 장바구니에 추가되었습니다.");
+                    jsonObj.put("loginRequired", false);
+
+                    out.print(jsonObj.toString());
+                }
                // -------
                 // 장바구니에 추가하는 서비스 호출
                 // cartService.addProductToCart(userId, product);
             }
 
             // 성공 메시지를 클라이언트로 반환 - 추후 페이지 이동 처리예정(모달창 - confirm? 고민중)
-            jsonObj.put("message", "상품이 장바구니에 추가되었습니다.");
-            jsonObj.put("loginRequired", false);
 
-            out.print(jsonObj.toString());
         }
 	}
 }

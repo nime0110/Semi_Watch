@@ -50,13 +50,13 @@ $(document).ready(function() {
 
     // 찜하기 버튼 클릭시 
     $('#wish_list').click(function() {
-    let productno = $('#productno').val(); //해당 제품의 제품번호 (input hidden)
-    if ($('#color_select').length > 0) {
-	    if (!colorMap[productno]) {
-	        alert("먼저 색상을 선택하세요!");
-	        return;
-	    }
-    }
+	    let productno = $('#productno').val(); //해당 제품의 제품번호 (input hidden)
+	    if ($('#color_select').length > 0) {
+		    if (!colorMap[productno]) {
+		        alert("먼저 색상을 선택하세요!");
+		        return;
+		    }
+   		 }
 	//색상 박스가 없을 경우 아래 코드 실행
     //-------------------------------------------------------------------------
 
@@ -84,13 +84,13 @@ $(document).ready(function() {
 	    //console.log("productName: " + productName);
 	    // 중복 확인 후 추가
 	    
-	    let idx = -1;
-	    for(let i=0; i<arr_jjim.length; i++){
-			if(productno == arr_jjim[i]) {
-				idx = i;
-				break;
-			}
-		} 
+        let idx = -1;
+        for(let i=0; i<arr_jjim.length; i++){
+        if(productno == arr_jjim[i]) {
+          idx = i;
+          break;
+        }
+      } 
    
         //alert(idx);   // 0
         //alert(arr_jjim[idx]);  // "새우깡""
@@ -104,6 +104,7 @@ $(document).ready(function() {
           // 업데이트된 배열을 로컬스토리지에 다시 저장
           let str_arr_jjim = JSON.stringify(arr_jjim);
           localStorage.setItem('str_arr_jjim', str_arr_jjim);
+          alert("상품을 위시리스트에 추가하셨습니다.");
           
         } else {
         //console.log("이미 존재하는 상품입니다:", productName);
@@ -133,20 +134,20 @@ $(document).ready(function() {
 			},  // "새우깡,양파링" -->이거 컨트롤러에서 split 해서 in() 으로 sql 조회, ? 위치홀더금지
         dataType: "json",
         success: function (json) {
-		  console.log("AJAX 요청 성공");
+		      console.log("AJAX 요청 성공");
           console.log("응답 데이터:", json);
           let html ='';
           //foreach로 json. ~~ 해서 가져오면 됨         
           // JSON 데이터가 배열이라고 가정하고 루프를 통해 각 항목을 처리
           json.forEach(item => { 
 			    
-			  let itemColor = item.color || 'none'; //색상없을경우 none
-              console.log("foreach 속 item.pdname" + item.pdname);
+			let itemColor = item.color || 'none'; //색상없을경우 none
+            console.log("foreach 속 item.pdname" + item.pdname);
 
             html += `
-              <li id="${item.pdno}" style="position:relative; margin-bottom: 50px;">
-			        <a href="${contextPath}/item/itemDetail.flex?pdno=${item.pdno}" class="list-item">
-			        <input type="hidden" name="${item.pdno}">
+              <li id="${item.pdno}" class="cart-section__li">
+		        <a href="${contextPath}/item/itemDetail.flex?pdno=${item.pdno}" class="list-item">
+		        	<input type="hidden" name="${item.pdno}">
 			        <input class="form-check-input" style="left:0;" type="checkbox" value="${item.pdno}" id="flexCheckDefault">
 			        <img src="${contextPath}/images/product/product_thum/${item.pdimg}" alt="${item.pdname}" class="product__thumb">
 			        <div class="list-item__abstract">
@@ -160,7 +161,7 @@ $(document).ready(function() {
 			            </div>
 			        </div>
 			    </a>
-			    <button type="button" class="btn-del-product" style="position:absolute; top:10px; right:5px;">
+			    <button type="button" class="btn-del-product">
 			        <span class="sr-only">Delete this product</span>
 			        <img src="${contextPath}/images/header/icon-delete.svg" alt="itemdelete" role="presentation">
 			    </button>
@@ -310,7 +311,6 @@ $(document).ready(function() {
 		            let productName = $(this).find('h4').text();
 		            let productPrice = $(this).find('.value__span').text();
 		            let productColor = $(this).find('input.input_color').val();
-		            alert(productColor);
 		            
 		            //let productColor = $(this).find('input[type="hidden"]').text().replace('색상: ', '');
 		       
@@ -341,7 +341,7 @@ $(document).ready(function() {
             success: function(json) {
                 console.log("AJAX 요청 성공:", json);
              
-                if (json.loginRequired) {
+                if (json.loginRequired) { //로그인안을경우
                     alert(json.message);
                     location.href = contextPath + "/login/login.flex"; // 로그인 페이지로 이동
                 } else {

@@ -9,6 +9,10 @@
 <link rel="stylesheet" href="../font/css/all.css">
 <link rel="stylesheet" type="text/css" href="<%= ctx_Path%>/css/itemDetail/itemDetail.css
 " />
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 <%-- 허성심 제작 페이지 --%>
 <jsp:include page="../header1.jsp" />
 <script type="text/javascript">
@@ -149,13 +153,13 @@
               <span class="icon icon-plus" aria-hidden="true"></span>
             </button>
           </div>
-          <button type="button" class="cart-form__add-btn" style="margin-left:2%; width:30%;">
+          <button type="button" class="cart-form__add-btn">
             Add to cart
           </button>
-          <button type="button" class="cart-form__add-btn" style=" min-width: 10%;width:20%; margin-left:2%;">
+          <button type="button" class="cart-form__add-btn">
             구매하기
           </button>
-          <button type="button" class="cart-form__add-btn" id="wish_list" style=" min-width: 10%;width:10%; margin-left:2%;">
+          <button type="button" class="cart-form__add-btn" id="wish_list">
             <span class="icon icon-cart" aria-hidden="true"></span>
           </button>
         </form>
@@ -309,6 +313,17 @@
         <div id="writeReview">
           <a href="#">리뷰쓰기</a>
         </div>
+        <!-- review popup start -->
+        <div id="reviewPopup" class="popup">
+	    <div class="popup-content">
+	        <span class="close">&times;</span>
+	        <h2>Write a Review</h2>
+	        <textarea id="reviewText" rows="4" cols="50" placeholder="Write your review here..."></textarea>
+	        <br>
+	        <button id="submitReviewBtn">Submit Review</button>
+	    </div>
+		</div>
+        <!-- review popup end -->
         <div id="rpageNumber">
           <a href="#">
             <img src="${pageContext.request.contextPath}/images/itemDetail/12345allowleft.png" 

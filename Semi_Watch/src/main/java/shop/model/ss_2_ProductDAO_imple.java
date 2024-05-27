@@ -220,8 +220,26 @@ public List<Product_DetailVO> getWishDetailByPnum(String pdno, String selectedCo
        close();
     }   
     
-    return wishProductDetailList;
+    return wishProductDetailList;		
 
+}
+
+//위시리스트 -> 장바구니 insert 메소드
+@Override
+public int productInsert(String pdDetailNo, String userid, String registerday) throws SQLException {
+	int result = 0; //행이 성공적으로 입력이 되면 1값 반환
+	String sql = "";
+	try {
+		conn = ds.getConnection();
+		sql += " insert into tbl_cart ( cartno , fk_pdno, fk_userid, cart_qty, registerday ) "
+				+ "values (SEQ_TBL_CART_CARTNO.nextval , "+pdDetailNo+" , '"+userid+"' , 1, "+registerday+") ";
+		pstmt = conn.prepareStatement(sql);
+		
+		result = pstmt.executeUpdate();
+	} finally {
+		close();
+	}
+	return result;
 }
 	
 

@@ -316,3 +316,6 @@ WHERE (A.pdno = 95 AND B.color LIKE 'pink')
    OR (A.pdno = 99 AND B.color LIKE 'none');
    
 SELECT * FROM tbl_cart;
+
+insert into tbl_cart(cartno, fk_pdno, fk_userid, cart_qty) 
+       values(person_seq.nextval, ?, ?, ?, ?);

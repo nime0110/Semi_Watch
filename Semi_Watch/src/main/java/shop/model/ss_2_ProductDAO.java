@@ -23,6 +23,9 @@ public interface ss_2_ProductDAO {
 
 	//들어온 컬러 코드와 제품번호로 제품상세번호 가져오는 메소드 
 	List<Product_DetailVO> getWishDetailByPnum(String pdno, String selectedColor) throws SQLException;
+
+	//위시리스트 -> 장바구니 insert 메소드
+	int productInsert(String pdDetailNo, String userid, String registerday) throws SQLException;
 	
 	
 	
