@@ -3,6 +3,8 @@ $(document).ready(function(){
 
     const ctxPath = document.getElementById("ctxPath").value;
 
+    
+
     // 변경 row 안보이게 함
     $("tr#change_password_area").hide();
     $("tr#change_email_area").hide();
@@ -301,6 +303,19 @@ $(document).ready(function(){
 
 
     // === 전화번호 관련 내용 시작 === //
+    // 전화번호 값에 - 추가하기
+    let mobile = $("input#mobile").val();
+
+    const h1 = mobile.slice(0,4);   
+    const h2 = mobile.slice(4,8);   
+    const h3 = mobile.slice(8);
+
+    mobile = h1+"-"+h2+"-"+h3;
+
+    $("span#mobile").text(mobile);
+
+
+
     // 전화번호 변경 버튼 클릭 시
     $("button#change_btn").click(function(){
         $("tr#mobile_area").hide();
