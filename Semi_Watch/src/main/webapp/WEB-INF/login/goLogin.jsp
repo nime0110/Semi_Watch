@@ -31,19 +31,47 @@
 
   /* 체크박스 입력란의 오른쪽 마진 조절 */
   #rememberiddiv .form-check-input {
-    margin-right: 5px;
+  	
+    margin-left: -7%;
+  }
+  
+  div#rememberLogindiv{
+  	border: solid 0px orange;
+  	display : flex;
+  	margin-top : -12%;
   }    
 
 label.form-check-label{
-   border: solid 0px black;
+   width: 70%;
+   border: solid 0px red;
    margin-right: 51%;
 
+}
+
+label#rememberid{
+	border: solid 0px red;
+	width: 500px !important
 }
 
 input.form-check-input{
    margin-bottom: 1.2%;
    margin-right: 1% !important;
+}
+
+#remainLogin {
+	margin-left: 1% !important;
+	
+}
+
+#saveid {
+	margin-left: 1% !important;
+}
+
+label#remainLoginLB {
+	border: solid 0px blue;
+	
 }    
+
 
 </style>
 
@@ -125,10 +153,16 @@ input.form-check-input{
 
                   <div class="form-check d-flex justify-content-center mb-5" id="rememberiddiv">
                     <input class="form-check-input me-2" type="checkbox" value="" id="saveid" />
-                    <label class="form-check-label" for="saveid">
+                    <label class="form-check-label" for="saveid" id="rememberid">
                       Remember ID 
                     </label>
-                    <input type="checkbox" name="loginChk" value="true" >로그인 상태 유지<br/>
+                    
+                  </div>
+                  <div class="form-check d-flex justify-content-center mb-5" id="rememberLogindiv" >
+                    <label class="form-check-label" for="remainLogin" id="remainLoginLB">
+                    로그인 상태 유지
+                    </label>
+                    <input class="form-check-input me-2" type="checkbox" name="loginChk" value="true" id="remainLogin" />   
                   </div>
 
                   <div class="d-grid mb-4">
