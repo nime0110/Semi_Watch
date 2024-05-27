@@ -116,37 +116,37 @@ commit;
 update tbl_review set reviewno='1' where fk_pdno = '5'; 
 
 insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
-values(seq_reviewno.nextval,'5','kimkh','비싼 시계 처음 구입해봤는데 돈값 합니다. 강력 추천합니다! b','5');
+values(seq_reviewno.nextval,'112','kimkh','비싼 시계 처음 구입해봤는데 돈값 합니다. 강력 추천합니다! b','5');
 
 insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
-values(seq_reviewno.nextval,'6','kimkh','비싼 시계 처음 구입해봤는데 돈값 합니다. 강력 추천합니다! b','5');
+values(seq_reviewno.nextval,'112','kimkh23','비싼 시계 처음 구입해봤는데 돈값 합니다. 강력 추천합니다! b','5');
 
 insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
-values(seq_reviewno.nextval,'7','kimkh','시계 멋있습니다. 강력 추천합니다! b','5');
+values(seq_reviewno.nextval,'112','kimkh2','시계 멋있습니다. 강력 추천합니다! b','5');
 
 insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
-values(seq_reviewno.nextval,'8','kimkh','가격에 비해 많이 아쉽습니다!','1');
+values(seq_reviewno.nextval,'112','kimkh3','가격에 비해 많이 아쉽습니다!','1');
 
 insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
-values(seq_reviewno.nextval,'9','kimkh','그냥저냥 쓸만 합니다','3');
+values(seq_reviewno.nextval,'112','kimkh4','그냥저냥 쓸만 합니다','3');
 
 insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
-values(seq_reviewno.nextval,'25','kimkh','그냥저냥 쓸만 합니다','3');
+values(seq_reviewno.nextval,'112','kimkh5','그냥저냥 쓸만 합니다','3');
 
 insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
-values(seq_reviewno.nextval,'26','kimkh','그냥저냥 쓸만 합니다','3');
+values(seq_reviewno.nextval,'112','kimkh6','그냥저냥 쓸만 합니다','3');
 
 insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
-values(seq_reviewno.nextval,'27','kimkh','그냥저냥 쓸만 합니다','3');
+values(seq_reviewno.nextval,'112','kimkh7','그냥저냥 쓸만 합니다','3');
 
 insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
-values(seq_reviewno.nextval,'28','kimkh','그냥저냥 쓸만 합니다','3');
+values(seq_reviewno.nextval,'112','kimkh8','그냥저냥 쓸만 합니다','3');
 
 insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
-values(seq_reviewno.nextval,'29','kimkh','그냥저냥 쓸만 합니다','3');
+values(seq_reviewno.nextval,'112','kimkh','그냥저냥 쓸만 합니다','3');
 
 insert into tbl_review(reviewno, fk_pdno, fk_userid, review_content, starpoint)
-values(seq_reviewno.nextval,'30','kimkh','그냥저냥 쓸만 합니다','3');
+values(seq_reviewno.nextval,'112','kimkh22','그냥저냥 쓸만 합니다','3');
 
 commit;
 
