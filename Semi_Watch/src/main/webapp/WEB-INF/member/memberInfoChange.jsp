@@ -257,7 +257,7 @@ $(document).ready(function() {
 					<tr id="mobile_area">
                         <th scope="row">휴대전화</th>
                         <td>
-							<span>${sessionScope.loginuser.mobile}</span>
+							<span id="mobile"><input id="mobile" type="hidden" value="${sessionScope.loginuser.mobile}"/> </span>
                         </td>
                         <td>
                             <button class="btn btn-sm btn-outline-dark change_btn" type="button" id="change_btn">휴대전화 변경</button>
@@ -297,15 +297,15 @@ $(document).ready(function() {
                         <th scope="row">주소</th>
                         <td>
 							<div class="mb-2 p-flex">
-								<div style="width: 18%;">우편번호</div>
+								<div style="width: 90px;">우편번호</div>
 								<div >${sessionScope.loginuser.postcode}</div>
 							</div>
 							<div class="mb-2 p-flex">
-								<div style="width: 18%;">주소명</div>
+								<div style="width: 90px;">주소명</div>
 								<div >${sessionScope.loginuser.address}&nbsp;${sessionScope.loginuser.extra_address}</div>
 							</div>
 							<div class="mb-2 p-flex">
-								<div style="width: 18%;">상세주소</div>
+								<div style="width: 90px;">상세주소</div>
 								<div >${sessionScope.loginuser.detail_address}</div>
 							</div>
 							

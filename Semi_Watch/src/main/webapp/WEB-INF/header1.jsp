@@ -78,6 +78,7 @@
                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 	                 <a class="dropdown-item text-primary" href="<%=ctxPath%>/member/memberList.flex">회원목록</a>
 	                 <a class="dropdown-item text-primary" href="#">제품등록</a>
+	                 <a class="dropdown-item text-primary" href="<%=ctxPath%>/member/reviewList.flex">리뷰관리</a>
 	                 <div class="dropdown-divider"></div>
 	                 <a class="dropdown-item text-primary" href="#">전체주문내역</a>
               	 </div>

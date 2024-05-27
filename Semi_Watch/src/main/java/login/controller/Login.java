@@ -41,16 +41,16 @@ public class Login extends AbstractController {
                            
                            // 메인 페이지로 리다이렉트
                            System.out.println("쿠키로 로그인: " + userid);
-                           super.setRedirect(true);
-                           super.setViewPage(request.getContextPath() + "/index.flex");
+                           super.setRedirect(true); // setRedirect(true) 는 페이지 전환하는 것
+                           super.setViewPage(request.getContextPath() + "/index.flex"); // 페이지를 보여주기 때문에 절대경로가 필요하다
                            return;
                         }
                     }
                 }
             }
 
-         super.setRedirect(false);
-          super.setViewPage("/WEB-INF/login/goLogin.jsp");
+         super.setRedirect(false); // setRedirect(false) 는 입력된 데이터값과 함께 뷰페이지로 보내주는 것
+          super.setViewPage("/WEB-INF/login/goLogin.jsp"); // 데이터와 함께 jsp로 전환되는 것이다. 
           return;
       } 
       //POST 방식으로 넘어온 것이라면
