@@ -216,7 +216,7 @@ img{
     color: rgba(0,0,0,.7);
     font-weight: 700;
     font-size: 1.10rem;
-    border:1px solid red;
+    border:solid 0px red;
 }
 .nav-btn,
 .user-container,
