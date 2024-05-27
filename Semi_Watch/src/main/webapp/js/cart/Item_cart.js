@@ -8,8 +8,10 @@ $(document).ready(function(){
 			init_sum_real_price += real_price;
 	});	
 	
+
 	// 결제 예정금액에 금액을 초기치로 넣어주기	
 	$("span#sumPrice").html(init_sum_real_price.toLocaleString('en'));
+//	$("span#totalPrice").html(init_total_real_price.toLocaleString('en'));
 		
 	// 주문 수량 바뀌면 주문 금액에 값 바꿔서 넣어주기
 	$(".led").bind("change", function(e){
@@ -44,22 +46,21 @@ $(document).ready(function(){
 			sum_real_price += real_price;
 		});
 	    
+	   /* 
+	    let total_real_price = 0;
+	    
+	    $("span#totalPrice").each(function(index, elmt){
+			const total_real_price = Number($(elmt).text().split(",").join(""));
+			total_real_price += real_price;
+		});
+	   */
+	    
+
 	    // 결제 예정금액에 누적된 금액을 넣어주기
 	    $("span#sumPrice").html(sum_real_price.toLocaleString('en'));
+//	  	$("span#sumPrice").html(total_real_Price.toLocaleStirng('en'));
 	    //////////////////////////////////////////////////////////////////////////
 	});
 		
-	// 각각의 입력된 값 가져오기 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 });

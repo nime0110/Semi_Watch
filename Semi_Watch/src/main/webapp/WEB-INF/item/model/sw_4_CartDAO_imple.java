@@ -50,6 +50,8 @@ public class sw_4_CartDAO_imple implements sw_4_CartDAO {
       } catch(SQLException e) {
          e.printStackTrace();
       }
+
+      
    } // end of private void close() {} 
 	
 	

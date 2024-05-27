@@ -210,26 +210,26 @@ a:hover{
             <div class="row border-bottom">
                 <div class="row align-items-center flex-column">
                 	<%--  <c:set var="sumAmount" value="${sum_amount}" /> --%>
-                	<c:forEach var="pvo" items="${requestScope.productList}" varStatus="">
+                	<c:forEach var="cvo" items="${requestScope.cartList}" varStatus="">
                 		<div class="mb-1 mt-1 pt-5 pb-5" style="display: flex; border-top: 1px solid #ccc; align-items: center;">
 		                	<div class="col-1">
 		                		<input type="checkbox" class="item-checkbox" data-index="0">
 		                	</div>	
 		                	
 		                  	<div class="col-2">
-		                  	  	<img class="img-fluid" src="<%= ctxPath%>/images/product/product_thum/${pvo.pdimg1}" />
+		                  	  	<img class="img-fluid" src="<%= ctxPath%>/images/product/product_thum/${cvo.prod.pdimg1}" />
 		                  	</div>
 		                    <div class="col-3">
-		                        <span class="row text-muted">${pvo.brand}</span>
-		                        <span class="">${pvo.pdname}</span>
+		                        <span class="row text-muted">${cvo.prod.brand}</span>
+		                        <span class="">${cvo.prod.pdname}</span>
 		                    </div>
 		                    <div class="col-3 pt-5">
 		                        <input type="number" min="1" max="5" value="1" class="quantity-input led" data-index="0" size="1">
 		                    </div>
 		                    <div class="col">
-		                    	₩<span id ="item-price"><fmt:formatNumber value="${pvo.price}" pattern="###,###" /></span>
+		                    	₩<span id ="item-price"><fmt:formatNumber value="${cvo.prod.saleprice}" pattern="###,###" /></span>
 		                        <button class="fixed-button">&#10005;</button>
-		                        <div style="display : none;" id = "danga">${pvo.price}</div>
+		                        <div style="display : none;" id = "danga">${cvo.prod.saleprice}</div>
 		                    </div>
 	                    </div>
                   	</c:forEach>
@@ -243,19 +243,19 @@ a:hover{
             <hr>
             <div class="row">
                 <div class="col" style="padding-left:0;">ITEMS 3</div>
-                <div class ="col">₩<span class="col text-right" id="sumPrice" style="padding: 2vh 0;">0</span></div>
+                <div class ="col">₩<span class="col text-right" id="sumPrice">0</span></div>
             </div>
-            <form>
+            <%-- <form>
                 <p>배송비</p>
                 <div id="shippingPay"><option class="text-muted">기본 배송비 - ₩3,000</option></div>
                <!--  <p>GIVE CODE</p>
                 <input id="code" placeholder="Enter your code"> -->
-            </form>
+            </form>--%>
             <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
-                <div class="col" id="totalprice">결제 금액</div>
-                <div class="col text-right">₩ 137.00</div>
+                <div class="col" id="deliveryPrice">결제 금액</div>
+                <div class ="col">₩<span class="col text-right" id="sumPrice">0</span></div>
             </div>
-            <button class="btn" id="go_Pay">결제하기</button>
+            <button class="btn" id="go_Pay">주문하기</button>
         </div>
     </div>
 </div>
