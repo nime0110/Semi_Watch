@@ -54,10 +54,7 @@ public class AddToCartJSON extends AbstractController {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject item = jsonArray.getJSONObject(i);
                 String pdno = item.getString("productno");
-                String pdName = item.getString("productName");
-                String pdPrice = item.getString("productPrice");
                 String pdColor = item.getString("productColor");
-                String pdImage = item.getString("productImage");
                 // 상세번호를 DB에 보내주어야 하므로 들어온 컬러 / 상세번호로 조회 컬러는 없을경우 none으로 넘어옴.
                 
                 //들어온 컬러 코드와 제품번호로 제품상세번호 가져오는 메소드 
@@ -69,17 +66,16 @@ public class AddToCartJSON extends AbstractController {
                         pdDetailNo = pdvo.getPd_detailno();
                     }
                 }
-                System.out.println("============== pdDetailNo: " + pdDetailNo);
+                //System.out.println("============== pdDetailNo: " + pdDetailNo);
                 
                 // --- DB에 해당 제품 장바구니에 insert해주는 메소드
                 // 장바구니 테이블 칼럼 : cartno, fk_pdno, fk_userid, cart_qty, registerday??  -카트 qty 무조건 1개
                 // 세션스코프에 저장된 로그인 유저 불러와서 걔의 유저아이디, 가입일자 가져오고 넣어줌 ( !! 자동로그인 테스트 필요 !!)
                 
                 String userid = loginuser.getUserid();
-                String registerday = loginuser.getRegisterday(); 
-                System.out.println("======= registerday :" + registerday);
+
                 //위시리스트 -> 장바구니 insert 메소드
-                int n = pdao.wishProductInsert(pdDetailNo, userid, registerday);
+                int n = pdao.wishProductInsert(pdDetailNo, userid);
                 if (n != 1) {
                     allSuccess = false;//하나라도 실패시 false
                     break;

@@ -25,7 +25,10 @@ public interface ss_2_ProductDAO {
 	List<Product_DetailVO> getWishDetailByPnum(String pdno, String selectedColor) throws SQLException;
 
 	//위시리스트 -> 장바구니 insert 메소드
-	int wishProductInsert(String pdDetailNo, String userid, String registerday) throws SQLException;
+	int wishProductInsert(String pdDetailNo, String userid) throws SQLException;
+	
+	//상품상세 -> 장바구니 insert 메소드
+	int DetailProductInsert(String pdDetailNo, String userid, String quantity) throws SQLException;
 	
 	
 	

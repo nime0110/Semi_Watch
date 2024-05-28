@@ -226,7 +226,7 @@ public List<Product_DetailVO> getWishDetailByPnum(String pdno, String selectedCo
 
 //위시리스트 -> 장바구니 insert 메소드
 @Override
-public int wishProductInsert(String pdDetailNo, String userid, String registerday) throws SQLException {
+public int wishProductInsert(String pdDetailNo, String userid) throws SQLException {
 	//이미 존재하는 행일 시 업데이트 / 존재하지 않는 행일시 insert
 	
 	
@@ -265,6 +265,50 @@ public int wishProductInsert(String pdDetailNo, String userid, String registerda
 		close();
 	}
 	return n;
+}
+
+//상품상세 -> 장바구니 insert 메소드
+@Override
+public int DetailProductInsert(String pdDetailNo, String userid, String quantity) throws SQLException {
+	//이미 존재하는 행일 시 업데이트 / 존재하지 않는 행일시 insert
+	int n = 0; //행이 성공적으로 입력이 되면 1값 반환
+	String sql = "";
+	try {
+		conn = ds.getConnection();
+		sql = "SELECT cartno "
+				+ "FROM tbl_cart " 
+				+ "WHERE fk_userid = ? AND fk_pd_detailno = ?";
+	    pstmt = conn.prepareStatement(sql);
+	    pstmt.setString(1, userid);
+	    pstmt.setString(2, pdDetailNo);
+	    rs = pstmt.executeQuery();
+
+	    if(rs.next()) {
+	        // 어떤 제품을 추가로 장바구니에 넣고자 하는 경우
+	    	sql = "UPDATE tbl_cart "
+	    	  		+ "SET cart_qty = cart_qty + ? " // 위시리스트에 옮기는거라 무조건 한개
+	    	  		+ "WHERE fk_pd_detailno = ?";
+	    	pstmt = conn.prepareStatement(sql);
+	    	pstmt.setString(1, quantity);
+	    	pstmt.setString(2, pdDetailNo);
+	    	n = pstmt.executeUpdate();
+	    } else {	    	
+	    	// 장바구니에 존재하지 않는 새로운 제품을 넣고자 하는 경우 
+	    	sql = "INSERT INTO tbl_cart (cartno, fk_userid, cart_qty, fk_pd_detailno) "
+	    			+ "VALUES (SEQ_TBL_CART_CARTNO.nextval, ?, ?, ?)";
+	    	pstmt = conn.prepareStatement(sql);
+	    	pstmt.setString(1, userid);
+	    	pstmt.setString(2, quantity);
+	    	pstmt.setString(3, pdDetailNo);
+	    	
+	    	n = pstmt.executeUpdate();
+	    }
+	    
+	} finally {
+		close();
+	}
+	return n;
+	
 }
 	
 
