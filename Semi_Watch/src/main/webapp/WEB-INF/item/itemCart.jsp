@@ -353,14 +353,14 @@ function goOrder(){
 	    console.log("상품별 총 가격 문자열",$("input:hidden[name='str_pdPriceArr']").val());
 	    console.log("상품별 총 포인트 문자열",$("input:hidden[name='str_pdPointArr']").val());
 	    */
-	    <%--
+	    
 	    const frm = document.hidden;
 	    
 	    frm.action = "<%= ctxPath%>/order/checkOut.flex";
 	    frm.method = "post";
 	    
 	    frm.submit();
-		--%>
+		
   
 	} // end of else
 	
