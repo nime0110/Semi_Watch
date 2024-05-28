@@ -297,6 +297,12 @@ function allCheckBox(){
 		                    </div>
 		                    <div class="col-3 pt-5">
 		                        <input type="number" min="1" max="5" value="1" class="quantity-input led" data-index="0" size="1">
+		                         <%-- 잔고량(남은재고량) --%>
+		                         
+                            <input type="text" class="pqty" value="${cart.pdvo.pd_qty}" />
+                            
+                            <%-- 장바구니 테이블에서 특정제품의 현재주문수량을 변경(sql update)하여 적용하려면 먼저 장바구니번호(시퀀스이며 기본키)를 알아야 한다 --%>
+                            <input type="text" class="cartno" value="${cart.cartno}" />
 		                    </div>
 		                    <div class="col">
 		                    	₩<span id ="item-price"><fmt:formatNumber value="${cart.prod.saleprice}" pattern="###,###" /></span>
