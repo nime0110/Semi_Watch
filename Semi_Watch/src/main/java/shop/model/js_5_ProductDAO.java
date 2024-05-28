@@ -82,6 +82,9 @@ public interface js_5_ProductDAO {
 	List<CartVO> selectProductCart(String userid) throws SQLException;
 
 	
+	List<ProductVO> selectCartSumPricePoint(String userid) throws SQLException;
+
+	
 
 
 	

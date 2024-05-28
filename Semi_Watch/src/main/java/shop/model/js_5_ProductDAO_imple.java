@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -1324,7 +1325,55 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 	} // end of public List<CartVO> selectProductCart(String userid) throws SQLException {
 	
 
-
+	// 로그인한 사용자의 장바구니에 담긴 주문총액합계 및 총포인트합계 알아오기 
+		@Override
+		public List<ProductVO> selectCartSumPricePoint(String userid) throws SQLException {
+			
+			List<ProductVO> sum = new ArrayList<>();
+			
+			try {
+				
+				conn = ds.getConnection();
+				
+				String sql = " select nvl(saleprice * cart_qty , 0 ) as SUMTOTALPRICE , "
+						   + " nvl(point * cart_qty , 0 ) as SUMTOTALPOINT "
+						   + " from "
+						   + " ( "
+						   + " select fk_pd_detailno , cart_qty "
+						   + " from tbl_cart "
+						   + " where fk_userid = ? "
+						   + " ) C join tbl_pd_detail D "
+						   + " on C.fk_pd_detailno = D.pd_detailno"
+						   + " join tbl_product P "
+						   + " on D.fk_pdno = P.pdno ";
+				
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setString(1, userid);
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()){
+					
+					ProductVO pvo = new ProductVO();
+					
+					pvo.setTotalPrice(rs.getInt("SUMTOTALPRICE"));
+					pvo.setTotalPoint(rs.getInt("SUMTOTALPOINT"));
+					
+					sum.add(pvo);
+					
+				}
+				
+				
+				
+			} finally {
+				
+				close();
+			}
+			
+			
+			return sum;
+			
+		} // end of public Map<String, String> selectCartSumPricePoint(String userid) throws SQLException {
 
 
 

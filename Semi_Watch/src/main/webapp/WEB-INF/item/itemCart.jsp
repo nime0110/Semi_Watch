@@ -259,97 +259,151 @@ function goOrder(){
 		const allCnt = $("input:checkbox(name='pdno)").length;
 		// 모든 체크박스갯수 세어오기
 		
-		const pdnoArr = new Array();        // 또는 const pnumArr = [];
-	    const oqtyArr = new Array();        // 또는 const oqtyArr = [];
-	    const pqtyArr = new Array();        // 또는 const pqtyArr = [];
-	    const cartnoArr = new Array();
-	    const pd_detailnoArr = new Array();		// 또는 const cartnoArr = [];
-	    const totalPriceArr = new Array();  // 또는 const totalPriceArr = [];
-	    const totalPointArr = new Array();  // 또는 const totalPointArr = [];
+		const pdnoArr = new Array();        // 또는 const pdnoArr = [];
+	    const cart_qtyArr = new Array();        // 또는 const cart_qtyArr = [];
+	    const pd_qtyArr = new Array();        // 또는 const pd_qtyArr = [];
+	    const cartnoArr = new Array();			// 또는 const cartnoArr = [];
+	    const pd_detailnoArr = new Array();		// 또는 const pd_detailnoArr = [];
+	    const pdPriceArr = new Array();  // 또는 const pdPriceArr = [];
+	    const pdPointArr = new Array();  // 또는 const pdPointArr = [];
 		
-	   	for(let i=0; i< allCnt; i++){
-	   		
-	   		if( $("input:checkbox[name='pdno']").eq(i).prop("checked") ){
-	   			
-	   			
-	   			console.log("제품번호 : " , $("input:checkbox[name='pdno']").eq(i).val() ); 
-	            console.log("주문량 : " ,  $("input.oqty").eq(i).val() );
-	            console.log("잔고량 : " ,  $("input.pqty").eq(i).val() );
-	            console.log("삭제해야할 장바구니 번호 : " , $("input.cartno").eq(i).val() ); 
-	            console.log("참조할 상품상세기본키 : " , $("input.pd_detailno").eq(i).val() ); 
-	            console.log("주문한 제품의 개수에 따른 가격합계 : " , $("input.totalPrice").eq(i).val() );
-	            console.log("주문한 제품의 개수에 따른 포인트합계 : " , $("input.totalPoint").eq(i).val() );
-	            console.log("======================================");
-	   			
-	   			
-	   			pdnoArr.push($("input:checkbox[name='pdno']").eq(i).val());
-	   			oqtyArr.push($("input.oqty").eq(i).val());
-	   			pqtyArr.push($("input.pqty").eq(i).val());
-	   			cartnoArr.push($("input.cartno").eq(i).val());
-	   			pd_detailnoArr.push($("input.pd_detailno").eq(i).val());
-	   			totalPriceArr.push($("input.totalPrice").eq(i).val());
-	   			totalPointArr.push($("input.totalPoint").eq(i).val());
-	   			
-	   		} // end of if 체크된 상품정보 읽어오기 for문이라 가능
-	   		
-	   	} // end of for
-
-	   	
-	   	for(let i=0; i<checkCnt; i++) {
-	   		
-	   		if( Number(pqtyArr[i]) < Number(oqtyArr[i]) ){
-	   		// 주문할 제품중 아무거나 하나가 잔고량이 주문량 보다 적을 경우
+	    for(let i = 0; i < allCnt; i++) {
+	        if($("input:checkbox[name='pdno']").eq(i).prop("checked")) {
 	            
-	            alert("제품번호 "+ pdnoArr[i] +" 의 주문개수가 잔고개수 보다 더 커서 진행할 수 없습니다.");
-	            location.href="javascript:history.go(0)";
-	            return; // goOrder 함수 종료	
-	   			
-	   		}
-	   		
-	   	} // end of for
-	   	
-	   	// 배열을 하나의 문자열로 바꿔준다
-	   	const str_pdno = pdnoArr.join(",");
-	   	const str_oqty = oqtyArr.join(",");
+	        	/*
+	        	console.log("제품번호 : ", $("input:checkbox[name='pdno']").eq(i).val());
+	            console.log("주문량 : ", $("input.oqty").eq(i).val());
+	            console.log("잔고량 : ", $("input.pqty").eq(i).val());
+	            console.log("삭제해야할 장바구니 번호 : ", $("input.cartno").eq(i).val());
+	            console.log("참조할 상품상세기본키 : ", $("input.pd_detailno").eq(i).val());
+
+	            console.log("수량별 금액", Number($("input.oqty").eq(i).val()) * Number($("input.saleprice").eq(i).val()));
+				*/
+	            let pdprice = Number($("input.oqty").eq(i).val()) * Number($("input.saleprice").eq(i).val());
+	            let pdpoint = Number($("input.oqty").eq(i).val()) * Number($("input.point").eq(i).val());
+
+	            /*
+	            console.log("pdprice", pdprice);
+	            console.log("pdpoint", pdpoint);
+				*/
+				
+	            $("input.totalPrice").eq(i).val(pdprice);
+	            $("input.totalPoint").eq(i).val(pdpoint);
+
+	            /*
+	            console.log("주문한 제품의 개수에 따른 가격합계 : ", $("input.totalPrice").eq(i).val());
+	            console.log("주문한 제품의 개수에 따른 포인트합계 : ", $("input.totalPoint").eq(i).val());
+	            console.log("======================================");
+				*/
+				
+				
+	            pdnoArr.push($("input:checkbox[name='pdno']").eq(i).val());
+	            cart_qtyArr.push($("input.oqty").eq(i).val());
+	            pd_qtyArr.push($("input.pqty").eq(i).val());
+	            cartnoArr.push($("input.cartno").eq(i).val());
+	            pd_detailnoArr.push($("input.pd_detailno").eq(i).val());
+
+	            pdPriceArr.push($("input.totalPrice").eq(i).val());
+	            pdPointArr.push($("input.totalPoint").eq(i).val());
+	        } // end of if
+	    } // end of for
+
+	    for(let i = 0; i < checkCnt; i++) {
+	        if(Number(pd_qtyArr[i]) < Number(cart_qtyArr[i])) {
+	            // 주문할 제품 중 잔고량이 주문량보다 적을 경우
+	            alert("제품번호 " + pdnoArr[i] + " 의 주문개수가 잔고개수보다 더 커서 진행할 수 없습니다.");
+	            location.href = "javascript:history.go(0)";
+	            return; // goOrder 함수 종료
+	        }
+	    } // end of for
+
+	    // 배열을 하나의 문자열로 변환
+	    const str_pdno = pdnoArr.join(",");
+	    const str_cart_qty = cart_qtyArr.join(",");
 	    const str_cartno = cartnoArr.join(",");
 	    const str_pd_detailno = pd_detailnoArr.join(",");
-	    const str_totalPrice = totalPriceArr.join(",");
-	    
-	    
-	    
-	    const str_totalPoint = totalPointArr.join(",");
-	   	
+	    const str_pdPriceArr = pdPriceArr.join(",");
+	    const str_pdPointArr = pdPointArr.join(",");
+
 	    let n_sum_totalPoint = 0;
 	    
-	    for(let i=0; i<totalPointArr.length; i++){
-	    	
-	    	n_sum_totalPoint += Number(totalPointArr[i]);
-	    	
-	    } // end of for totalpoint
-	    
-	    
-	    console.log("확인용 str_pdno : ", str_pdno);                 // 확인용 str_pnum :  4,36,3
-	    console.log("확인용 str_oqty : ", str_oqty);                 // 확인용 str_oqty :  2,2,5
-	    console.log("확인용 str_cartno : ", str_cartno);             // 확인용 str_cartno :  6,4,3
-	    console.log("확인용 str_pd_detailno : ", str_pd_detailno);     // 확인용 str_totalPrice :  26000,2000000,500
-	    console.log("확인용 str_totalPrice : ", str_totalPrice);     // 제품별구매총액 salprice * 수량  확인용 str_totalPrice :  26000,2000000,50000
-	    
-	   
-	    // 얘만
-	    console.log("확인용 n_sum_totalPoint : ", n_sum_totalPoint); // 확인용 n_sum_totalPoint :  165  // 수량별 상품적립포인트합 (point * 장바구니수량)
-		
-	    
+	    for(let i = 0; i < pdPointArr.length; i++) {
+	        n_sum_totalPoint += Number(pdPointArr[i]);
+	    } // end of for
+		/*
+	    console.log("확인용 str_pdno : ", str_pdno);
+	    console.log("확인용 str_oqty : ", cart_qtyArr);
+	    console.log("확인용 str_cartno : ", pd_qtyArr);
+	    console.log("확인용 str_pd_detailno : ", str_pd_detailno);
+	    console.log("확인용 str_totalPrice : ", str_pdPriceArr);
+	    console.log("확인용 str_totalPoint : ", str_pdPointArr);
+	    console.log("확인용 n_sum_totalPoint : ", n_sum_totalPoint);
+	    */
+	    $("input:hidden[name='str_pdno']").val(str_pdno);
+	    $("input:hidden[name='str_cart_qty']").val(str_cart_qty);
+	    $("input:hidden[name='str_cartno']").val(str_cartno);
+	    $("input:hidden[name='str_pd_detailno']").val(str_pd_detailno);
+	    $("input:hidden[name='str_pdPriceArr']").val(str_pdPriceArr);
+	    $("input:hidden[name='str_pdPointArr']").val(str_pdPointArr);
+	    /*
+	    console.log("상품번호문자열",$("input:hidden[name='str_pdno']").val());
+	    console.log("장바구니주문수량 문자열",$("input:hidden[name='str_cart_qty']").val());
+	    console.log("장바구니 기본키 문자열",$("input:hidden[name='str_cartno']").val());
+	    console.log("상품상세 기본키 문자열",$("input:hidden[name='str_pd_detailno']").val());
+	    console.log("상품별 총 가격 문자열",$("input:hidden[name='str_pdPriceArr']").val());
+	    console.log("상품별 총 포인트 문자열",$("input:hidden[name='str_pdPointArr']").val());
+	    */
+	    <%--
 	    const frm = document.hidden;
 	    
 	    frm.action = "<%= ctxPath%>/order/checkOut.flex";
 	    frm.method = "post";
 	    
 	    frm.submit();
-
+		--%>
   
 	} // end of else
 	
 } // end of function goOrder(){ 
+	
+//=== 장바구니에서 특저어 제품을 비우기 === // 	
+function goDel(cartno){
+	
+	const pdname = $(event.target).parent().parent().find("span.pdname").text(); // 상품명
+	
+	if(confirm(`\${pdname}을(를) 장바구니에서 제거하시겠습니까?`)) {
+		
+		$.ajax({
+			
+			url:"<%= ctxPath%>/item/itemDelete.flex",
+    		type:"post",
+    		data:{"cartno":cartno},
+    		dataType:"json",
+    		success:function(json){
+    			
+    			if(json.n == 1){
+    				
+    				alert("주문수량이 변경되었습니다.");
+    				location.href = "<%= ctxPath%>/item/itemCart.flex";
+    				// 상대 또는 절대 둘다 가능
+    			}
+    		},
+			  	error: function(request, status, error){
+		           alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	        }
+		
+		}); // end of $.ajax	
+		
+	}
+	else {
+			
+		alert(`장바구니에서 \${pname} 제품 삭제를 취소하셨습니다.`);
+		return;
+	}
+
+
+
+} // end of function goDel(cartno){	}	
 
 
 
@@ -406,12 +460,23 @@ function allCheckBox(){
 		                    <div class="col-3">
 		                        <span class="row text-muted">${cart.prod.brand}</span>
 		                        <a href="<%= ctxPath%>/item/itemDetail.flex?pdno=${cart.prod.pdno}">
-		                        <span class="">${cart.prod.pdname}</span>
+		                        <span class="pdname">${cart.prod.pdname}</span>
 		                        </a>
+		                        <span>
+		                        <br>
+		                        <c:choose>
+		                        	<c:when test="${cart.pdvo.color == 'none'}">
+		                        	단일컬러
+		                        	</c:when>
+		                        	<c:otherwise>
+		                        	${cart.pdvo.color}
+		                        	</c:otherwise>
+		                        </c:choose>
+		                        </span>
 		                    </div>
 		                    <div class="col-3 pt-5">
 		                    
-		                        <input type="number" min="1" max="50" value="1" class="quantity-input led oqty" size="1">
+		                        <input type="number" min="1" max="50" value="${cart.cart_qty}" class="quantity-input led oqty" size="1">
 		                         <%-- 잔고량(남은재고량) --%>
 		                         <p>남은재고</p><input type="text" class="pqty" value="${cart.pdvo.pd_qty}" />
                             	
@@ -419,10 +484,15 @@ function allCheckBox(){
                             <%-- 장바구니 테이블에서 특정제품의 현재주문수량을 변경(sql update)하여 적용하려면 먼저 장바구니번호(시퀀스이며 기본키)를 알아야 한다 --%>
                             <p>장바구니기본키</p><input type="text" class="cartno" value="${cart.cartno}" />
                             <p>상품상세기본키</p><input type="text" class="pd_detailno" value="${cart.pdvo.pd_detailno}" />
+                            <p>수량별상품금액</p><input type="text" class="totalPrice" value="" />
+                            <p>수량별상품적립포인트</p><input type="text" class="totalPoint" value="" />
+                            
 		                    </div>
 		                    <div class="col">
 		                    	₩<span id ="item-price"><fmt:formatNumber value="${cart.prod.saleprice}" pattern="###,###" /></span>
-		                        <button class="fixed-button">&#10005;</button>
+		                        <button type="button" class="fixed-button" onclick="goDel(${cart.cartno})">&#10005;</button>
+		                        <input type="hidden" class="saleprice" value="${cart.prod.saleprice}" />
+		                        <input type="hidden" class="point" value="${cart.prod.point}" />
 		                        <div style="display : none;" id = "danga">${cart.prod.saleprice}</div>
 		                    </div>
 	                    </div>
@@ -457,6 +527,14 @@ function allCheckBox(){
             <button class="btn" id="goOrder" onclick="goOrder()")>주문하기</button>
         </div>
     </div>
+    <form name="hidden">
+    	<input type="hidden" name="str_pdno" value="" />
+    	<input type="hidden" name="str_cart_qty" value="" />
+    	<input type="hidden" name="str_cartno" value="" />
+    	<input type="hidden" name="str_pd_detailno" value="" />
+    	<input type="hidden" name="str_pdPriceArr" value="" />
+    	<input type="hidden" name="str_pdPointArr" value="" />
+    </form>
 </div>
 
 <jsp:include page="../footer.jsp"></jsp:include>  
