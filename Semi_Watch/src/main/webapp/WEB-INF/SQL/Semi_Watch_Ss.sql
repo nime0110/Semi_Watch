@@ -37,7 +37,9 @@ commit;
 SELECT userid, username, pwdchangegap, 
 NVL( lastlogingap, trunc(months_between(sysdate,registerday)) ) AS lastlogingap, 
 	                  idle, 
-	                      mobile, email, postcode, address, detail_address, extra_address  FROM 
+	                      mobile, email, postcode, address, detail_address, extra_address,
+                          to_char(registerday, 'yyyy-mm-dd') AS registerday  
+                          FROM 
 	         ( select userid, username,  
 	                    trunc( months_between(sysdate, lastpwdchangedate) ) AS pwdchangegap,
 	                    registerday, idle, 
@@ -307,3 +309,25 @@ where fk_pdno = 99;
 select *
 from tbl_pd_detail;
 
+
+SELECT pd_detailno
+FROM tbl_product A
+JOIN tbl_pd_detail B
+ON A.pdno = B.fk_pdno
+WHERE (A.pdno = 95 AND B.color LIKE 'pink')
+   OR (A.pdno = 99 AND B.color LIKE 'none');
+   
+SELECT * FROM tbl_cart;
+
+insert into tbl_cart(cartno, fk_userid, cart_qty, registerday, fk_pd_detailno ) 
+       values(person_seq.nextval, ?, ?, ?, ?);
+
+select userid, username, email, mobile, postcode, address, detail_address, extra_address, gender 
+		 , birthday, to_char(registerday, 'yyyy-mm-dd') AS registerday 
+from tbl_member;
+
+--------------------------------------------------------------------------------------------
+
+select cartno 
+from tbl_cart 
+where fk_userid = ? and fk_pd_detailno = ? 

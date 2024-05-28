@@ -9,12 +9,17 @@
 <link rel="stylesheet" href="../font/css/all.css">
 <link rel="stylesheet" type="text/css" href="<%= ctx_Path%>/css/itemDetail/itemDetail.css
 " />
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 <%-- 허성심 제작 페이지 --%>
 <jsp:include page="../header1.jsp" />
 <script type="text/javascript">
 /*  아래 코드로 사진 변경 가능 */
   $(document).ready(function() {
 
+	    
 	  
   	 $('ul#choice li button img').on('click',function(){
 	    var i = $(this).attr('src');
@@ -29,17 +34,21 @@
 	  //메뉴 클릭하면 해당 위치 찾아가기
 	  $('.categori ul li a').on('click',function(){
 		//-첫째로 몇번째인지 알아야됨
-		var n = $(this).parent().index();
+		let n = $(this).parent().index();
 		//해당 위치 찾아가기
-		var target =  $('.categori').eq(n).offset().top;
+		let target =  $('.categori').eq(n).offset().top;
 		$('html,body').stop().animate({scrollTop: target},2000);
 		return false;
 	  })
 	  $('.minus-item').click(function() {
-        var quantityInput = $('#product__quantity');
-        var currentValue = parseInt(quantityInput.val());
-        if (currentValue > 0) {
+        let quantityInput = $('#product__quantity');
+        let currentValue = parseInt(quantityInput.val());
+        
+        if (currentValue > 1) {
           quantityInput.val(currentValue - 1);
+        }
+        if(currentValue == 1) {
+        	$(this).prop("disabled"); 
         }
       });
 
@@ -143,19 +152,19 @@
               <span class="icon icon-minus" aria-hidden="true"></span>
             </button>
             <label for="product__quantity" class="sr-only">Set the quantity manually</label>
-            <input type="number" min="0" value="0" id="product__quantity">
+            <input type="number" min="1" value="1" id="product__quantity">
             <button type="button" class="btn-changeValue plus-item">
               <span class="sr-only">Plus one item</span>
               <span class="icon icon-plus" aria-hidden="true"></span>
             </button>
           </div>
-          <button type="button" class="cart-form__add-btn" style="margin-left:2%; width:30%;">
+          <button type="button" class="cart-form__add-btn">
             Add to cart
           </button>
-          <button type="button" class="cart-form__add-btn" style=" min-width: 10%;width:20%; margin-left:2%;">
+          <button type="button" class="cart-form__add-btn">
             구매하기
           </button>
-          <button type="button" class="cart-form__add-btn" id="wish_list" style=" min-width: 10%;width:10%; margin-left:2%;">
+          <button type="button" class="cart-form__add-btn" id="wish_list">
             <span class="icon icon-cart" aria-hidden="true"></span>
           </button>
         </form>
@@ -309,6 +318,17 @@
         <div id="writeReview">
           <a href="#">리뷰쓰기</a>
         </div>
+        <!-- review popup start -->
+        <div id="reviewPopup" class="popup">
+	    <div class="popup-content">
+	        <span class="close">&times;</span>
+	        <h2>Write a Review</h2>
+	        <textarea id="reviewText" rows="4" cols="50" placeholder="Write your review here..."></textarea>
+	        <br>
+	        <button id="submitReviewBtn">Submit Review</button>
+	    </div>
+		</div>
+        <!-- review popup end -->
         <div id="rpageNumber">
           <a href="#">
             <img src="${pageContext.request.contextPath}/images/itemDetail/12345allowleft.png" 

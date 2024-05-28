@@ -8,7 +8,6 @@ div#userInfo{
 }
 
 div#edit {
-	border: solid 1px red;
 	margin-left: auto;
 }
 
@@ -23,7 +22,18 @@ ul#advantage li {
 	list-style: none;
 }
 
-div#productInfo {
+div.productInfo {
 	padding-top: 20px important;
 	border: solid 2px black;
+}
+
+.fixed-size{
+	height: 100px;
+	resize: none;
+}
+
+img#pImage{
+	border: solid 1px blue; 
+	width: 100px; 
+	height: 100px;
 }

@@ -29,13 +29,14 @@ public class WishListAdd extends AbstractController {
 		/* ---------- 위시리스트 관련 코드 ------------*/
 		
 		String pdnos = request.getParameter("pdnos"); 
-		  String selectedColors = request.getParameter("selectedColors"); // 색상 정보를 받음
+		String selectedColors = request.getParameter("selectedColors"); // 색상 정보를 받음
+		// "99", "pink"
 		
-		System.out.println("selectedColors:" + selectedColors);
+		System.out.println("selectedColors:" + selectedColors); // 99:pink
 		//System.out.println(pdnames);
 		String[] no_arr = pdnos.split(",");
-		 String[] color_arr = selectedColors.split(",");
-		//각 문자열에 작은따옴표 추가
+		 String[] color_arr = selectedColors.split(",");  // 99:pink, 112:색상 없음
+		//pdno 문자열에 공백제거
 		for (int i = 0; i < no_arr.length; i++) {
 			no_arr[i] = no_arr[i].trim();
 		}
@@ -47,22 +48,16 @@ public class WishListAdd extends AbstractController {
         
         // 화면에서 찜하기를 눌렀을 때 해당하는 상품의 정보를 VO에 담아서 반환하는 메소드
         List<ProductVO> wishList = pdao.getWishListItem(pdno);
-        
-        //들어온 컬러 코드와 제품번호로 제품상세번호 가져오는 메소드 
-        List<Product_DetailVO> wishDetailList = pdao.getWishDetailByPnum(pdno, selectedColors);
-        
-        System.out.println("1.헤헤헤헤~~~~~~~ pdno : " + pdno);
-        // 1.헤헤헤헤~~~~~~~ pdno : 99
-        
+
         JSONArray jsonArr = new JSONArray();// []
         if(wishList.size() > 0) {
             for (int i = 0; i < wishList.size(); i++) {
                 ProductVO pvo = wishList.get(i);
                 String color = "색상 미선택";
                 
-                for (String colorInfo : color_arr) {
-                    String[] parts = colorInfo.split(":");
-                    if (parts[0].equals(pvo.getPdno())) {
+                for (String colorInfo : color_arr) { //color
+                    String[] parts = colorInfo.split(":"); // 색상의 파츠를 split, 
+                    if (parts[0].equals(pvo.getPdno())) {//pdno 가 0번째 color가 1번째
                         color = parts[1];
                         break;
                     }

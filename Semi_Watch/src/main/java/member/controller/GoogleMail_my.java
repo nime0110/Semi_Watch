@@ -9,7 +9,7 @@ public class GoogleMail_my {
 	public void send_certification_code(String recipient, String email_code) throws Exception { 
 		
 		// 1. 정보를 담기 위한 객체
-		Properties prop = new Properties(); 
+		Properties prop = new Properties();
        
        
 		// 2. SMTP(Simple Mail Transfer Protocoal) 서버의 계정 설정

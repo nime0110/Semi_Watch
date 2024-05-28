@@ -192,17 +192,18 @@
     display: flex;
     justify-content: center;
     padding: 1.15em 1em;
-    min-width: 109px;
     color: var(--white-clr);
     background-color: var(--orange-clr);
     font-weight: 700;
     border: none;
     border-radius: var(--bd-radius);
 }
+.cart-form__add-btn:nth-last-child {
+	width: 15%;
+}
 .cart-form__add-btn .icon-cart{
     min-width: 18px;
     min-height: 18px;
-    margin-right: 1em;
     background-color: white;
 }
 .cart-form__input-container .btn-changeValue{
@@ -296,11 +297,9 @@
 }
 #infobox {
   background-color: rgb(226,226,225);
-  margin-top: 45px;
-  height: 880px;
-  margin-bottom: 186px;
-  padding-top: 50px;
-  padding-left: 58px;
+  margin-top: 2rem;
+  margin-bottom: 5rem;
+  padding: 3rem;
 }
 #infobox h2 {
   font:27px/58px 'NotoSansKR-Medium'; color:rgb(0,0,0);
@@ -312,18 +311,16 @@
   padding-left: 16px;
 }
 #info_leftbox {
-  float: left;
-  width: 538px;
 
 }
 #info_leftbox #infobox1 {
-  height: 220px;
+  margin-bottom: 3rem;
 }
 #info_leftbox #infobox2 {
-  height: 370px;
+  margin-bottom: 3rem;
 }
 #info_leftbox #infobox3 {
-  height: 187px;
+
 }
 #info_rightbox {
   float: left;
@@ -375,7 +372,7 @@ li {
 }
 #normalReview #reviews_ #reviewBoard {
   border-top: 1px solid rgb(139,139,139);
-  width: 1126px;  margin: 0 auto;
+  margin: 0 auto;
 }
 #normalReview #reviews_ #reviewBoard table tr td:first-child{
   width:916px; 
@@ -423,12 +420,12 @@ li {
   margin-top:10px;
 }
 #normalReview #reviews_ #writeReview {
-  width: 1126px; 
   margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
 }
 #normalReview #reviews_ #writeReview a {
-  display: block;
-  float: right;
+  display: inline-block;
   width: 135px; height: 41px;
   padding-left: 46px;
   margin-top: 12px;
@@ -436,9 +433,24 @@ li {
   border: 1px solid black;
   background: url(../../images/itemDetail/reviewicon.png) no-repeat;
   background-position: 25px;
-  font: 17px/41px 'AppleSDGothicNeoL_0'; color:rgb(104,104,104);
+  font: 17px/41px 'AppleSDGothicNeoL_0';
+  color:rgb(104,104,104);
   background-color: white;
-  margin-right: 34px;
+  position: relative;
+  text-decoration: none;
+}
+#normalReview #reviews_ #writeReview a::after {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 0;
+	height: 2px;
+	background-color: #000;
+	transition: width 0.3s ease;
+}
+#normalReview #reviews_ #writeReview a:hover::after {
+	width: 100%;
 }
 #normalReview #reviews_ #rpageNumber {
   margin-top: 70px;
@@ -460,8 +472,19 @@ li {
 
 
 
-
-
+.cart-form__add-btn {
+	margin-left: 0.5rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.cart-form__add-btn .icon-cart{ 
+	min-width: 20px;
+    min-height: 20px;
+}
+#wish_list.cart-form__add-btn{ 
+    text-align: center;
+}
 
 
 
@@ -495,17 +518,17 @@ li {
     .product__content{ margin-top: 1em; }
 }
 @media screen and (min-width: 768px){
-    .default-container{ max-width: 580px;  }
+    .default-container{  }
     .main-nav__content-container{ width: 40%; }
     .top-header{ padding-top: 1em; }
     .top-header__btn-cart{ margin-right: 1.5em; }
     .user-container img{ width: 40px; }
-    .cart-form__add-btn .icon-cart{ 
-        min-width: 20px;
-        min-height: 20px;
-    }
+    
     .cart-section__body.--with-items{
         padding: 1.25em 1em 2em;
+    }
+    .cart-section__body.--with-items::-webkit-scrollbar {
+    	display: none;
     }
     .cart-section__products .list-item{
         grid-template-columns: 17% 65% 10%;
@@ -521,7 +544,9 @@ li {
         margin-bottom: .10em;
     }
     .cart-section__products .btn-del-product{
-        margin: -10px 0 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     .product{ --max-width-box: 455px; }
     .image-box__src,
@@ -543,6 +568,7 @@ li {
         font-size: 1.05rem; 
     }
     .product__content .cart-form{
+    	height: 10vh;
         flex-direction: row;
         justify-content: space-between;
     }
@@ -554,7 +580,7 @@ li {
         padding: 1em 0;
         max-width: 10%;
     }
-    .cart-form__add-btn{ width: 57%; }
+    
 }
 @media screen and (min-width: 992px){
     .default-container{ margin: 0; }
@@ -654,7 +680,6 @@ li {
     }
     .product__content .cart-form{ margin-top: 2.85em; }
     .cart-form__input-container{ width: 35%; }
-    .cart-form__add-btn{ width: 60%; }
 }
 @media screen and (min-width: 1900px){ 
     body{ --max-width: 85%; } 

@@ -192,9 +192,79 @@ public List<String> getColorsByPnum(String pdno) throws SQLException {
 
 //들어온 컬러 코드와 제품번호로 제품상세번호 가져오는 메소드 
 @Override
-public List<Product_DetailVO> getWishDetailByPnum(String pdno, String selectedColor) {
-	// TODO Auto-generated method stub
-	return null;
+public List<Product_DetailVO> getWishDetailByPnum(String pdno, String selectedColor) throws SQLException {
+	List<Product_DetailVO> wishProductDetailList = new ArrayList<>(); 
+    
+    try {
+        conn = ds.getConnection();
+        
+        String sql = " SELECT pd_detailno "
+        		+ " FROM tbl_product A "
+        		+ " JOIN tbl_pd_detail B "
+        		+ " ON A.pdno = B.fk_pdno "
+        		+ " WHERE (A.pdno = ? AND B.color LIKE ? ) "; 
+        
+       pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, pdno);
+		pstmt.setString(2, selectedColor);
+             
+       rs = pstmt.executeQuery();
+                
+       if(rs.next()) {
+    	  Product_DetailVO pdvo = new Product_DetailVO();
+    	  pdvo.setPd_detailno(rs.getString(1));
+    	  wishProductDetailList.add(pdvo);
+       }// end of while(rs.next())----------------------------------
+       
+    } finally {
+       close();
+    }   
+    
+    return wishProductDetailList;		
+
+}
+
+//위시리스트 -> 장바구니 insert 메소드
+@Override
+public int wishProductInsert(String pdDetailNo, String userid, String registerday) throws SQLException {
+	//이미 존재하는 행일 시 업데이트 / 존재하지 않는 행일시 insert
+	
+	
+	int n = 0; //행이 성공적으로 입력이 되면 1값 반환
+	String sql = "";
+	try {
+		conn = ds.getConnection();
+		sql = "SELECT cartno "
+				+ "FROM tbl_cart " 
+				+ "WHERE fk_userid = ? AND fk_pd_detailno = ?";
+	    pstmt = conn.prepareStatement(sql);
+	    pstmt.setString(1, userid);
+	    pstmt.setString(2, pdDetailNo);
+	    rs = pstmt.executeQuery();
+
+	    if(rs.next()) {
+	        // 어떤 제품을 추가로 장바구니에 넣고자 하는 경우
+	    	sql = "UPDATE tbl_cart "
+	    	  		+ "SET cart_qty = cart_qty + 1 " // 위시리스트에 옮기는거라 무조건 한개
+	    	  		+ "WHERE fk_pd_detailno = ?";
+	    	pstmt = conn.prepareStatement(sql);
+	    	pstmt.setString(1, pdDetailNo);
+	    	n = pstmt.executeUpdate();
+	    } else {	    	
+	    	// 장바구니에 존재하지 않는 새로운 제품을 넣고자 하는 경우 
+	    	sql = "INSERT INTO tbl_cart (cartno, fk_userid, cart_qty, fk_pd_detailno) "
+	    			+ "VALUES (SEQ_TBL_CART_CARTNO.nextval, ?, 1, ?)";
+	    	pstmt = conn.prepareStatement(sql);
+	    	pstmt.setString(1, userid);
+	    	pstmt.setString(2, pdDetailNo);
+	    	
+	    	n = pstmt.executeUpdate();
+	    }
+	    
+	} finally {
+		close();
+	}
+	return n;
 }
 	
 
