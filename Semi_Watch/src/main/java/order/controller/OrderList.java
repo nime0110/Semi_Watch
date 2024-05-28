@@ -1,25 +1,17 @@
 package order.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import member.domain.MemberVO;
 
-import member.model.sw_4_MemberDAO_imple;
-import my.util.MyUtil;
 import order.domain.OrderVO;
 import order.model.sw_4_OrderDAO;
 import order.model.sw_4_OrderDAO_imple;
 
 public class OrderList extends AbstractController {
 
-	private static final String String = null;
 	private sw_4_OrderDAO odao = null;
 	
 	public OrderList() {
@@ -34,22 +26,29 @@ public class OrderList extends AbstractController {
 		
 	//	if(super.checkLogin(request)) {
 		
-		 // == 내 아이디로 로그인 했을 때만 회원조회가 가능하도록 해야 한다. == //
-		HttpSession session = request.getSession();
-		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser"); 
+		   // == 내 아이디로 로그인 했을 때만 회원조회가 가능하도록 해야 한다. == //
+		//   HttpSession session = request.getSession();
+		//   MemberVO loginuser = (MemberVO) session.getAttribute("loginuser"); 
 			
-		String userid=loginuser.getUserid();
+		//  String userid = loginuser.getUserid();
 		//	System.out.println("loginuserid : " + userid);
 
 		// 메소드에 넣기
-		List<OrderVO> orderList = odao.orderUserId(userid); // 로그인된 사람의 아이디가 들어옴.
-	//	request.setAttribute("orderList", orderList);
+		// List<OrderVO> orderList = odao.orderUserId(userid); // 로그인된 사람의 아이디가 들어옴.
+		   List<OrderVO> orderList = odao.orderUserId("yuseonwoo"); // 로그인된 사람의 아이디가 들어옴.(임의로 내꺼 넣어줌)
+		 
+		 
+		   for(OrderVO odrvo: orderList) {
+			   System.out.println("~~~ 확인용 odrvo.getOrdercode : " + odrvo.getOrdercode());
+			   System.out.println("~~~ 확인용 odrvo.getOrdercode : " + odrvo.getTotal_price());
+			   System.out.println("~~~ 확인용 odrvo.getOrdercode : " + odrvo.getTotal_orderdate());
+		   }
 		
-		//	orderList = odao.orderUserId(fk_userid);
-		//}
-			super.setRedirect(false);
-			super.setViewPage("/WEB-INF/order/orderList.jsp");
-	
+		
+		   request.setAttribute("orderList", orderList);
+		
+		   super.setRedirect(false);
+		   super.setViewPage("/WEB-INF/order/orderList.jsp");
 		}
 		
 	}

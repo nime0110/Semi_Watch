@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <%
    String ctxPath = request.getContextPath();
 %>
@@ -15,7 +18,18 @@
 <%-- 회원정보수정 관련 css --%>
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/member/memberInfoChange.css" />
 
-
+<style>
+	#OrderTable,
+	#OrderTable td,
+	#OrderTable th{
+		padding-left:0px !important;
+		padding-right:0px !important;
+	}
+	
+	
+	
+	
+</style>
 <script type="text/javascript">
 $(document).ready(function() {
    
@@ -108,7 +122,7 @@ $(document).ready(function() {
          <%-- 왼쪽 사이드 메뉴 끝 --%>
    
          <%-- 내용입력하는 부분 시작 --%>
-         <div class="col-xl-9 mt-4 table-container" style="border:solid 1px red;">
+         <div class="col-xl-9 mt-4" style="border:solid 0px red; padding-left:0px; padding-right:0px;">
           	<table class="table table-bordered" id="OrderTable">
              	<thead class="MyOrderTbl"> 
 			       <tr>
@@ -118,11 +132,11 @@ $(document).ready(function() {
 			       </tr>
 	   			</thead>
 	   			<tbody>
-	   				<c:forEach var="order" item="${requestScope.orderList}">
+	   				<c:forEach var="orderVO" items="${requestScope.orderList}">
 		   				<tr>
-		   					<td align="center">${order.ordercode}</td>
-		   					<td align="center">${order.total_price}</td>
-		   					<td align="center">${order.total_orderdate}</td>
+		   					<td align="center">${orderVO.ordercode}</td>
+		   					<td align="center">${orderVO.total_price}</td>
+		   					<td align="center">${orderVO.total_orderdate}</td>
 		   				</tr>
 					</c:forEach>
 	   			</tbody>

@@ -53,7 +53,7 @@ public class sw_4_OrderDAO_imple implements sw_4_OrderDAO {
       }
    } // end of private void close() {} 
 
-    // 로그인한 아이디 가져오기
+    // 로그인한 아이디에 해당하는 쇼핑내역 가져오기
     @Override
     public List<OrderVO> orderUserId(String userid) throws SQLException {
 	
@@ -64,29 +64,27 @@ public class sw_4_OrderDAO_imple implements sw_4_OrderDAO {
     		
     		String sql = " select ordercode, total_price, total_orderdate "
     				   + " from tbl_order "
-    				   + " where fk_userid = 'yuseonwoo' ";
+    				   + " where fk_userid = ? ";
     		
     		pstmt = conn.prepareStatement(sql);
     		pstmt.setString(1, userid);
     	
-    		//	rs = pstmt.executeQuery();
+    		rs = pstmt.executeQuery();
     		
     		while(rs.next()) {
     			
     			OrderVO odrvo = new OrderVO();
     			odrvo.setOrdercode(rs.getString("ordercode"));
-    			String ordercode = rs.getString("ordercode");
-    			System.out.println("확인용!!!: " + ordercode);
     			odrvo.setTotal_price(rs.getInt("total_price"));
     			odrvo.setTotal_orderdate(rs.getString("total_orderdate"));
     			
     			orderList.add(odrvo);
+    			// add 는 List만 해당 // put은 Map에서 해당. 
     			
     		}// END OF while(rs.next()) {}---------------------------------------------
     		
     	} finally {
     		close();
-    		// add 는 List만 해당 // put은 Map에서 해당. 
     	}
     		
     	return orderList;
