@@ -7,6 +7,8 @@ import java.util.Map;
 import member.domain.MemberVO;
 
 public interface sw_4_MemberDAO {
+	
+	
 
 	
 	

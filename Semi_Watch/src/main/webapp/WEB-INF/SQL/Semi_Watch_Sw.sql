@@ -110,3 +110,33 @@ order by C.cartno desc;
 insert into tbl_cart(cartno, fk_userid, fk_pdno, cart_qty)
 values(seq_tbl_cart_cartno.nextval, 'yuseonwoo', '117' , 1);
 
+commit;
+
+desc tbl_order;
+
+select *
+from tbl_order;
+
+select ordercode, total_price, total_orderdate
+from tbl_order
+where fk_userid = 'yuseonwoo';
+
+select *
+from tbl_product;
+
+select *
+from tbl_order;
+
+--insert into tbl_cart(cartno, fk_userid, fk_pdno, cart_qty)
+--values(seq_tbl_cart_cartno.nextval, 'yuseonwoo', '117' , 1);
+
+insert into tbl_order(ordercode,fk_userid, total_price ,total_orderdate)
+values('1','yuseonwoo',20000, default);
+
+commit;
+
+select *
+from tbl_order
+where fk_userid='yuseonwoo';
+
+

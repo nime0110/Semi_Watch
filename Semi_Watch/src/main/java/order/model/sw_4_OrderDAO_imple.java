@@ -12,6 +12,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import order.domain.OrderVO;
 import shop.domain.ImageVO;
 
 public class sw_4_OrderDAO_imple implements sw_4_OrderDAO {
@@ -51,8 +52,43 @@ public class sw_4_OrderDAO_imple implements sw_4_OrderDAO {
          e.printStackTrace();
       }
    } // end of private void close() {} 
-	
-	
-	
 
+    // 로그인한 아이디 가져오기
+    @Override
+    public List<OrderVO> orderUserId(String userid) throws SQLException {
+	
+    	List<OrderVO> orderList = new ArrayList<>();// 빈상태로 넣어줌
+    	
+    	try {
+    		conn = ds.getConnection();
+    		
+    		String sql = " select ordercode, total_price, total_orderdate "
+    				   + " from tbl_order "
+    				   + " where fk_userid = 'yuseonwoo' ";
+    		
+    		pstmt = conn.prepareStatement(sql);
+    		pstmt.setString(1, userid);
+    	
+    		//	rs = pstmt.executeQuery();
+    		
+    		while(rs.next()) {
+    			
+    			OrderVO odrvo = new OrderVO();
+    			odrvo.setOrdercode(rs.getString("ordercode"));
+    			String ordercode = rs.getString("ordercode");
+    			System.out.println("확인용!!!: " + ordercode);
+    			odrvo.setTotal_price(rs.getInt("total_price"));
+    			odrvo.setTotal_orderdate(rs.getString("total_orderdate"));
+    			
+    			orderList.add(odrvo);
+    			
+    		}// END OF while(rs.next()) {}---------------------------------------------
+    		
+    	} finally {
+    		close();
+    		// add 는 List만 해당 // put은 Map에서 해당. 
+    	}
+    		
+    	return orderList;
+    }
 }

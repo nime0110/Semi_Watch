@@ -66,6 +66,20 @@ public class sw_4_MemberDAO_imple implements sw_4_MemberDAO {
 			}
 	} // end of private void close() {}
 
+	// 주문내역 아이디별로 가져오기
+	public String getOrderUserid(Map<String, String> paraMap) {
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		return null;
+	}
+
 	
 	
 }
