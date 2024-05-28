@@ -435,13 +435,8 @@ $(document).ready(function(){
 						<div class="shop_thumb">
 							<div class="position-relative overflow-hidden">
 								<div class="shop-thumb_img">
-<<<<<<< HEAD
-									<a href=""><img class="img-fluid" name="itemtimg" 
+									<a href="<%= ctxPath%>/item/itemDetail.flex?pdno=${pvo.pdno}"><img class="img-fluid" name="itemtimg" 
 										src="<%= ctxPath%>/images/product/${pvo.pdimg1}" alt=""></a>
-=======
-									<a href="<%= ctxPath%>/item/itemDetail.flex?pdno=${pvo.pdno}"><img class="img-fluid"
-										src="<%= ctxPath%>/images/product/product_thum/${pvo.pdimg1}" alt=""></a>
->>>>>>> refs/heads/ss_2
 								</div>
 							
 							</div>
