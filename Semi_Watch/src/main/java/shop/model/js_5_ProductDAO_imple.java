@@ -1269,7 +1269,7 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 	         conn = ds.getConnection();
 	         
 	         String sql = " select cartno, pdname, brand, pd_detailno, color, saleprice, "
-	         		+ " pd_qty, cart_qty, pdimg1, point, pdno "
+	         		+ " pd_qty, cart_qty, pdimg1, point, pdno  "
 	         		+ " from tbl_cart C join tbl_pd_detail D "
 	         		+ " on C.fk_pd_detailno = D.pd_detailno "
 	         		+ " join tbl_product P on "
@@ -1303,6 +1303,7 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 	        	 
 	        	 pdvo.setColor(rs.getString("color"));
 	        	 pdvo.setPd_qty(rs.getInt("pd_qty"));
+	        	 pdvo.setPd_detailno(rs.getString("pd_detailno"));
 	        	 
 	        	 cart.setProd(pvo);
 	        	 cart.setPdvo(pdvo);

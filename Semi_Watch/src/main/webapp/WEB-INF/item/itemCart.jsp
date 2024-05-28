@@ -195,6 +195,9 @@ a:hover {
 
 $(document).ready(function(){
 	
+	
+	
+	
 	// 제품번호의 모든 체크박스가 체크가 되었다가 그 중 하나만 이라도 체크를 해제하면 전체선택 체크박스에도 체크를 해제하도록 한다. 
 	  $("input:checkbox[name='pdno']").click(function(){
 		 
@@ -235,6 +238,120 @@ $(document).ready(function(){
 	
 	
 });
+	  
+	  
+//=== 장바구니에서 제품 주문하기 === // 	
+function goOrder(){
+	
+//// === 체크박스의 체크된 개수(checked 속성이용) === ////
+	const checkCnt = $("input:checkbox(name='pdno'):checked").length;
+	// 체크박스들 중에서 체크드 된 갯수 알아오기
+	
+	if(checkCnt < 1){
+		
+		alert('주문하실 제품을 선택하세요!!');
+		return;
+	}
+	else{
+		//// === 체크박스의 체크된 value값(checked 속성이용) === ////
+		//// === 체크가 된 것만 읽어와서 배열에 넣어준다. === ////
+	
+		const allCnt = $("input:checkbox(name='pdno)").length;
+		// 모든 체크박스갯수 세어오기
+		
+		const pdnoArr = new Array();        // 또는 const pnumArr = [];
+	    const oqtyArr = new Array();        // 또는 const oqtyArr = [];
+	    const pqtyArr = new Array();        // 또는 const pqtyArr = [];
+	    const cartnoArr = new Array();
+	    const pd_detailnoArr = new Array();		// 또는 const cartnoArr = [];
+	    const totalPriceArr = new Array();  // 또는 const totalPriceArr = [];
+	    const totalPointArr = new Array();  // 또는 const totalPointArr = [];
+		
+	   	for(let i=0; i< allCnt; i++){
+	   		
+	   		if( $("input:checkbox[name='pdno']").eq(i).prop("checked") ){
+	   			
+	   			
+	   			console.log("제품번호 : " , $("input:checkbox[name='pdno']").eq(i).val() ); 
+	            console.log("주문량 : " ,  $("input.oqty").eq(i).val() );
+	            console.log("잔고량 : " ,  $("input.pqty").eq(i).val() );
+	            console.log("삭제해야할 장바구니 번호 : " , $("input.cartno").eq(i).val() ); 
+	            console.log("참조할 상품상세기본키 : " , $("input.pd_detailno").eq(i).val() ); 
+	            console.log("주문한 제품의 개수에 따른 가격합계 : " , $("input.totalPrice").eq(i).val() );
+	            console.log("주문한 제품의 개수에 따른 포인트합계 : " , $("input.totalPoint").eq(i).val() );
+	            console.log("======================================");
+	   			
+	   			
+	   			pdnoArr.push($("input:checkbox[name='pdno']").eq(i).val());
+	   			oqtyArr.push($("input.oqty").eq(i).val());
+	   			pqtyArr.push($("input.pqty").eq(i).val());
+	   			cartnoArr.push($("input.cartno").eq(i).val());
+	   			pd_detailnoArr.push($("input.pd_detailno").eq(i).val());
+	   			totalPriceArr.push($("input.totalPrice").eq(i).val());
+	   			totalPointArr.push($("input.totalPoint").eq(i).val());
+	   			
+	   		} // end of if 체크된 상품정보 읽어오기 for문이라 가능
+	   		
+	   	} // end of for
+
+	   	
+	   	for(let i=0; i<checkCnt; i++) {
+	   		
+	   		if( Number(pqtyArr[i]) < Number(oqtyArr[i]) ){
+	   		// 주문할 제품중 아무거나 하나가 잔고량이 주문량 보다 적을 경우
+	            
+	            alert("제품번호 "+ pdnoArr[i] +" 의 주문개수가 잔고개수 보다 더 커서 진행할 수 없습니다.");
+	            location.href="javascript:history.go(0)";
+	            return; // goOrder 함수 종료	
+	   			
+	   		}
+	   		
+	   	} // end of for
+	   	
+	   	// 배열을 하나의 문자열로 바꿔준다
+	   	const str_pdno = pdnoArr.join(",");
+	   	const str_oqty = oqtyArr.join(",");
+	    const str_cartno = cartnoArr.join(",");
+	    const str_pd_detailno = pd_detailnoArr.join(",");
+	    const str_totalPrice = totalPriceArr.join(",");
+	    
+	    
+	    
+	    const str_totalPoint = totalPointArr.join(",");
+	   	
+	    let n_sum_totalPoint = 0;
+	    
+	    for(let i=0; i<totalPointArr.length; i++){
+	    	
+	    	n_sum_totalPoint += Number(totalPointArr[i]);
+	    	
+	    } // end of for totalpoint
+	    
+	    
+	    console.log("확인용 str_pdno : ", str_pdno);                 // 확인용 str_pnum :  4,36,3
+	    console.log("확인용 str_oqty : ", str_oqty);                 // 확인용 str_oqty :  2,2,5
+	    console.log("확인용 str_cartno : ", str_cartno);             // 확인용 str_cartno :  6,4,3
+	    console.log("확인용 str_pd_detailno : ", str_pd_detailno);     // 확인용 str_totalPrice :  26000,2000000,500
+	    console.log("확인용 str_totalPrice : ", str_totalPrice);     // 제품별구매총액 salprice * 수량  확인용 str_totalPrice :  26000,2000000,50000
+	    
+	   
+	    // 얘만
+	    console.log("확인용 n_sum_totalPoint : ", n_sum_totalPoint); // 확인용 n_sum_totalPoint :  165  // 수량별 상품적립포인트합 (point * 장바구니수량)
+		
+	    
+	    const frm = document.hidden;
+	    
+	    frm.action = "<%= ctxPath%>/order/checkOut.flex";
+	    frm.method = "post";
+	    
+	    frm.submit();
+
+  
+	} // end of else
+	
+} // end of function goOrder(){ 
+
+
 
 //전체선택박스 선택하면 나머지 전체 체크, 눌러서해제되면 전체 해제
 function allCheckBox(){
@@ -248,13 +365,10 @@ function allCheckBox(){
       선택자 $("input:checkbox[id='allCheckOrNone']") 이 체크가 해제되어지면 false를 나타내어주는 것이다.
  	*/
 	
- 	$("input:checkbox(name='pnum')").prop("checked", bool);
+ 	$("input:checkbox(name='pdno')").prop("checked", bool);
     // 전체선택 체크박스결과에따라 나머지 전부 일치시켜줌
 
 } // end of function allCheckBox(){
-
-
-
 
 
 </script>
@@ -296,13 +410,15 @@ function allCheckBox(){
 		                        </a>
 		                    </div>
 		                    <div class="col-3 pt-5">
-		                        <input type="number" min="1" max="5" value="1" class="quantity-input led" data-index="0" size="1">
+		                    
+		                        <input type="number" min="1" max="50" value="1" class="quantity-input led oqty" size="1">
 		                         <%-- 잔고량(남은재고량) --%>
-		                         
-                            <input type="text" class="pqty" value="${cart.pdvo.pd_qty}" />
+		                         <p>남은재고</p><input type="text" class="pqty" value="${cart.pdvo.pd_qty}" />
+                            	
                             
                             <%-- 장바구니 테이블에서 특정제품의 현재주문수량을 변경(sql update)하여 적용하려면 먼저 장바구니번호(시퀀스이며 기본키)를 알아야 한다 --%>
-                            <input type="text" class="cartno" value="${cart.cartno}" />
+                            <p>장바구니기본키</p><input type="text" class="cartno" value="${cart.cartno}" />
+                            <p>상품상세기본키</p><input type="text" class="pd_detailno" value="${cart.pdvo.pd_detailno}" />
 		                    </div>
 		                    <div class="col">
 		                    	₩<span id ="item-price"><fmt:formatNumber value="${cart.prod.saleprice}" pattern="###,###" /></span>
@@ -338,13 +454,12 @@ function allCheckBox(){
                 <div class="col" id="deliveryPrice">결제 금액</div>
                 <div class ="col">₩<span class="col text-right" id="sumPrice">0</span></div>
             </div>
-            <button class="btn" id="go_Pay">주문하기</button>
+            <button class="btn" id="goOrder" onclick="goOrder()")>주문하기</button>
         </div>
     </div>
 </div>
 
 <jsp:include page="../footer.jsp"></jsp:include>  
-
 
 
 

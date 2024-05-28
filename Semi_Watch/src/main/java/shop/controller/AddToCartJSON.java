@@ -32,7 +32,7 @@ public class AddToCartJSON extends AbstractController {
         // === 먼저 로그인 유무 검사하기
         if (!super.checkLogin(request)) {
             // 로그인을 하지 않은 상태라면
-            jsonObj.put("message", "장바구니에 담으려면 먼저 로그인 부터 하세요!!");
+            jsonObj.put("message", "장바구니에 담으려면 로그인이 필요합니다.");
             jsonObj.put("loginRequired", true);
 
             out.print(jsonObj.toString()); //jsonObj에 담은 걸 문자열로바꿔서 출력한뒤에 
@@ -50,6 +50,7 @@ public class AddToCartJSON extends AbstractController {
             */
             // JSON 문자열을 JSONArray로 변환
             JSONArray jsonArray = new JSONArray(cartItems);
+            boolean allSuccess = true;//전부성공여부 파악하기 위한변수
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject item = jsonArray.getJSONObject(i);
                 String pdno = item.getString("productno");
@@ -65,7 +66,6 @@ public class AddToCartJSON extends AbstractController {
                 String pdDetailNo = "";
                 if (!wishDetailList.isEmpty()) {
                     for (Product_DetailVO pdvo : wishDetailList) {
-                    	
                         pdDetailNo = pdvo.getPd_detailno();
                     }
                 }
@@ -77,21 +77,23 @@ public class AddToCartJSON extends AbstractController {
                 
                 String userid = loginuser.getUserid();
                 String registerday = loginuser.getRegisterday(); 
-                
+                System.out.println("======= registerday :" + registerday);
                 //위시리스트 -> 장바구니 insert 메소드
-                int n = pdao.productInsert(pdDetailNo, userid, registerday);
-                
-                if(n == 1) { //위시리스트에 넣는게 성공했다면?
-                    jsonObj.put("message", "상품이 장바구니에 추가되었습니다.");
-                    jsonObj.put("loginRequired", false);
-
-                    out.print(jsonObj.toString());
+                int n = pdao.wishProductInsert(pdDetailNo, userid, registerday);
+                if (n != 1) {
+                    allSuccess = false;//하나라도 실패시 false
+                    break;
                 }
-               // -------
-                // 장바구니에 추가하는 서비스 호출
-                // cartService.addProductToCart(userId, product);
             }
 
+            if (allSuccess) { //성공시 
+                jsonObj.put("message", "상품이 장바구니에 추가되었습니다.");
+                jsonObj.put("loginRequired", false);
+            } else {
+                jsonObj.put("message", "상품을 장바구니에 추가하는 데 실패했습니다.");
+                jsonObj.put("loginRequired", false);
+            }
+            out.print(jsonObj.toString());//해당메시지출력
             // 성공 메시지를 클라이언트로 반환 - 추후 페이지 이동 처리예정(모달창 - confirm? 고민중)
 
         }

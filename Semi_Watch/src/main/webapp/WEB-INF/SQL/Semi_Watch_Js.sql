@@ -365,28 +365,8 @@ commit;
 select * from user_sequences;
 
 select * from tbl_cart;
-select * from tbl_order;
 
-insert into tbl_cart (cartno , fk_pd_detailno , fk_userid, cart_qty  ) values (SEQ_TBL_CART_CARTNO.nextval , 94 , 'admin' , 5);
+insert into tbl_cart (cartno , fk_pdno, fk_userid, cart_qty  ) values (SEQ_TBL_CART_CARTNO.nextval , 116 , 'admin' , 5);
 
-insert into tbl_cart (cartno , fk_pd_detailno, fk_userid, cart_qty  ) values (SEQ_TBL_CART_CARTNO.nextval , 93 , 'admin' , 3);
-
-insert into tbl_cart (cartno , fk_pd_detailno, fk_userid, cart_qty  ) values (SEQ_TBL_CART_CARTNO.nextval , 114 , 'admin' , 1);
-commit;
-
-select * from tbl_pd_detail;
-
-
-alter table tbl_orderdetail add fk_pd_detailno varchar2(30);
-
-alter table tbl_orderdetail drop column fk_pdno;
-
-alter table tbl_orderdetail add constraint orderdetail_fk_pd_detailno  foreign key(fk_pd_detailno) references tbl_pd_detail(pd_detailno);
-
-                select cartno, pdname, brand, pd_detailno, color, saleprice, pd_qty, cart_qty, pdimg1, point
-                from tbl_cart C join tbl_pd_detail D
-                on C.fk_pd_detailno = D.pd_detailno 
-                join tbl_product P on
-                D.fk_pdno = P.pdno
-                where C.fk_userid = 'admin';
+insert into tbl_cart (cartno , fk_pdno, fk_userid, cart_qty  ) values (SEQ_TBL_CART_CARTNO.nextval , 상품번호 , 유저아이디 , 장바구니수량);
 
