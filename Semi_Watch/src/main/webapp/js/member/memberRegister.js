@@ -711,6 +711,4 @@ function goReset(){
     $("span#emailCheckResult").empty();
 }
 
-function goGaib() {
-    alert("회원가입에 대한 유효성검사를 한후에 통과되면 submit 하려고 함");
- } 
+

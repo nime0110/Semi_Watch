@@ -123,7 +123,7 @@ public class Login extends AbstractController {
                // 비밀번호를 변경한지 3개월 이상된 경우 
                     
                   String message = "비밀번호를 변경하신지 3개월이 지났습니다.\\n암호를 변경하는 페이지로 이동합니다!!";
-                  String loc = request.getContextPath()+"/member/memberInfoChange.flex";
+                  String loc = request.getContextPath()+"/member/memberPwdChange.flex";
 
                   
                   request.setAttribute("message", message);

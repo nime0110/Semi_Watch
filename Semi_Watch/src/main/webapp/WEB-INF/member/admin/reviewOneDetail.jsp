@@ -72,7 +72,7 @@
          <tr>
             <td>제품이미지&nbsp;:&nbsp;</td>
             <td>
-            <img src="<%= ctxPath%>/images/product/product_thum/${requestScope.rvo.pvo.pdimg1}" class="img-thumbnail" width="130px" height="100px"/>
+            <img src="<%= ctxPath%>/images/product/${requestScope.rvo.pvo.pdimg1}" class="img-thumbnail" width="130px" height="100px"/>
             </td>
          </tr>
          <tr>
