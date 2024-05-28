@@ -12,6 +12,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import shop.domain.CartVO;
 import shop.domain.ImageVO;
 
 public class jh_3_ProductDAO_imple implements jh_3_ProductDAO {
@@ -42,17 +43,17 @@ public class jh_3_ProductDAO_imple implements jh_3_ProductDAO {
 	
 	
 	// 사용한 자원을 반납하는 close() 메소드 생성하기 
-   private void close() {
-      try {
-         if(rs != null)    {rs.close();    rs=null;}
-         if(pstmt != null) {pstmt.close(); pstmt=null;}
-         if(conn != null)  {conn.close();  conn=null;}
-      } catch(SQLException e) {
-         e.printStackTrace();
-      }
-   } // end of private void close() {} 
-	
-	
+	private void close() {
+		try {
+			if(rs != null)    {rs.close();    rs=null;}
+			if(pstmt != null) {pstmt.close(); pstmt=null;}
+			if(conn != null)  {conn.close();  conn=null;}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+	} // end of private void close() {} 
+
+
 	
 
 }

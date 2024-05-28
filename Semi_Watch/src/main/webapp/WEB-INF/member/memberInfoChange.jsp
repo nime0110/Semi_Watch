@@ -74,7 +74,7 @@ $(document).ready(function() {
 	            	<div>
 				    	<ul class="navbar-nav mt-3" id="menu">
 				    		<li class="mb-1">
-				      			<span class="h5" id="menu_first">나의 쇼핑정보</span>
+				      			<span class="h5" id="menu_first" href="<%=ctxPath%>/order/orderList.flex">나의 쇼핑정보</span>
 				      		</li>
 				      		<li>
 				        		<a class="nav-link" href="#">주문배송조회</a>

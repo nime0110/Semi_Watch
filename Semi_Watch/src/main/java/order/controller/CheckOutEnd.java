@@ -10,57 +10,48 @@ public class CheckOutEnd extends AbstractController {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		/*
-		String totalCost_str = request.getParameter("totalCost");
 		
-		System.out.println("확인용 totalCost_str : "+totalCost_str);
-		
-		int totalCost = Integer.parseInt(totalCost_str);
-		
-		request.setAttribute("totalCost", totalCost);
-		
-		System.out.println("확인용 값넘어오는지? : "+totalCost_str);
-		*/
-		
+		// 테스트용 코드
+		request.setAttribute("userid", "jhknvg123");
 		super.setViewPage("/WEB-INF/order/paymentGateway.jsp");
 		
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		/*	
-		String userid = request.getParameter("userid");	// 임의로 변경 가능한 값
-		String coinmoney = request.getParameter("coinmoney");	// 충전금액
-		String productName = "새우깡";
-		int productPrice = Integer.parseInt(coinmoney);
-		
-		HttpSession session = request.getSession();
-		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
-		
-		if(loginuser.getUserid().equals(userid)) {	// 로그인한 userid 와 url에 보낸 userid 가 같은경우
+		/* 실제 코드
+		if(super.checkLogin(request)) {	// 로그인 여부 확인
 			
-			request.setAttribute("userid", loginuser.getUserid());
-			request.setAttribute("email", loginuser.getEmail());
-			request.setAttribute("name", loginuser.getName());
-			request.setAttribute("mobile", loginuser.getMobile());
-			request.setAttribute("productName", productName);
-			request.setAttribute("productPrice", productPrice);
+			String userid = request.getParameter("userid");
 			
-			// System.out.println("!@!# 확인용 email : "+loginuser.getEmail());
-			// System.out.println("!@!# 확인용 mobile : "+loginuser.getMobile());
+			HttpSession session = request.getSession();
+			MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+			String loginuserid = loginuser.getUserid();
 			
-			super.setViewPage("/WEB-INF/member/paymentGateway.jsp");
+			
+			if(userid.equals(loginuserid)) {
+				
+				request.setAttribute("userid", userid);
+				
+				request.setAttribute("userid", "jhknvg123");
+				super.setViewPage("/WEB-INF/order/paymentGateway.jsp");
+				
+			}
+			else { // 다른사용자꺼 결제시도 하는 경우
+				String message = "다른 사용자의 결제 시도는 불가합니다.!!";
+	            String loc = "javascript:history.back()";
+	            
+	            request.setAttribute("message", message);
+	            request.setAttribute("loc", loc);
+	            
+	            // super.setRedirect(false);
+	            super.setViewPage("/WEB-INF/msg.jsp");
+			}
+			
 			
 		}
 		else {	// 로그인한 사용자가 다른 사용자의 코인을 충전하려고 결제를 시도하는 경우 
-            String message = "다른 사용자의 코인충전 결제 시도는 불가합니다.!!";
-            String loc = "javascript:history.back()";
+            String message = "결제하려면 로그인 먼저 하셔야 합니다.";
+            String loc = request.getContextPath()+"/login/login.flex";
             
             request.setAttribute("message", message);
             request.setAttribute("loc", loc);
@@ -68,8 +59,11 @@ public class CheckOutEnd extends AbstractController {
          // super.setRedirect(false);
             super.setViewPage("/WEB-INF/msg.jsp");
             
-		}// end of if(loginuser.getUserid().equals(userid))-----
+		}
 		*/
+		
+		
+	
 		
 	}// end of public void execute(HttpServletRequest request, HttpServletResponse response)
 

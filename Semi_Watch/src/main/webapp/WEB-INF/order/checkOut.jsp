@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     
 <%
 	String ctxPath = request.getContextPath();
@@ -30,6 +31,25 @@
 
 </style>
 
+<script type="text/javascript">
+	$(document).ready(function(){
+		<%-- 초기 주소록 로그인 정보로 입력 --%>
+		const username = $("input:hidden[name='name']").val();
+	    const useremail= $("input:hidden[name='email']").val();
+	    const usermobile =$("input:hidden[name='mobile']").val();
+	    const userpostcode =$("input:hidden[name='postcode']").val();
+	    const useraddress =$("input:hidden[name='address']").val();
+
+	    $("div#name").text(username);
+	    $("div#email").text(useremail);
+	    $("div#mobile").text(usermobile);
+	    $("div#postcode").text(userpostcode);
+	    $("div#address").text(useraddress);
+	    
+	});// end of $(document).ready(function()------
+	
+</script>
+
 	
 <body>
    
@@ -44,17 +64,17 @@
             <div id="userInfo" style="border: solid 1px black;">
                 <div class="flexcss">
                     <div style="width: 85%;">
-                    	<div class="mb-1" id="name">홍길동</div>
-                        <div class="mb-1" id="email">example@naver.com</div>
-                        <div class="mb-1" id="mobile">010-1234-5678</div>
-                        <div class="mb-1" id="postcode">16555</div>
-                        <div id="address">서울특별시 강남구 도곡7로 47 땡땡아파트 47</div>
+                    	<div class="mb-1" id="name"></div>
+                        <div class="mb-1" id="email"></div>
+                        <div class="mb-1" id="mobile"></div>
+                        <div class="mb-1" id="postcode"></div>
+                        <div id="address"></div>
                         <%-- 넘겨줄 값 저장소 --%>
-                        <input name="name" type="hidden" value="" /><%-- 이름 --%>
-                        <input name="email" type="hidden" value="example@naver.com" /><%-- 이메일 --%>
-                        <input name="mobile" type="hidden" value="" /><%-- 전화번호 --%>
-                        <input name="postcode" type="hidden" value="" /><%-- 우편번호 --%>
-                        <input name="address" type="hidden" value="" /><%-- 주소명 --%>
+                        <input name="name" type="hidden" value="name" /><%-- 이름 --%>
+                        <input name="email" type="hidden" value="email" /><%-- 이메일 --%>
+                        <input name="mobile" type="hidden" value="mobile" /><%-- 전화번호 --%>
+                        <input name="postcode" type="hidden" value="postcode" /><%-- 우편번호 --%>
+                        <input name="address" type="hidden" value="address" /><%-- 주소명 --%>
                     </div>
                     <div id="edit" >
                         <button class="btn btn-md btn-secondary px-4" type="button"  onclick="gochange()">편집</button>
@@ -186,14 +206,77 @@
         
         <div class="col-5 p-3" style="border: solid 1px blue;">
             <div > <%-- 여기는 제품 보여지는 곳 입니다.--%>
+            
+                <%-- 이게 제품정보 상품하나 씩 for 문 돌려야함--%>
                 
-                <%-- 이게 제품 상품하나 씩 for 문 돌려야함--%>
-                <div class="mb-3 flexcss" style="border: solid 1px orange;">
-                    <img id="pImage" />
-                    <div class="productInfo" style="border:solid 1px orange; padding-top:10px; margin: 5% auto 5% 2%; width: 40%;">제품명</div>
-                    <div class="productInfo" style="padding-top:10px; margin: 5% auto;">10<span>개</span></div>
-                    <div class="productInfo" style="padding-top:10px; margin: 5% 2% 5% auto; width: 17%;">$2000000</div>
-                </div>
+
+	                <div class="mb-3 flexcss" name="pInfo" id="pInfo1" style="border: solid 1px orange;">
+	                	<a>
+		                	<img class="pImage" src="<%=ctxPath%>/images/product/product_thum/48_thum_20240524164704617310969644300.png"/>
+		                </a>
+	                    <div class="productInfo pInfo1" >
+	                    	<span>시계1</span>
+	                    	<br>
+	                    	<span>300000</span>
+	                    </div>
+	                    <div class="productInfo pInfo4" >옵션명</div>
+	                    <div class="productInfo pInfo2" ><span name="oqty">3</span>개</div>
+	                    <div class="productInfo pInfo3" >2000000</div>
+	                    
+	                    <%-- 결제후 컨트롤러에 보내줄 값 --%>
+	                    <input type="hidden" class="pnum" value="16" /><%-- 제품번호 --%>
+	                    <input type="hidden" class="pdetail" value="25" /><%-- 제품상세번호 --%>
+	                    <input type="hidden" class="poption" value="none" /><%-- 제품옵션 --%>
+	                    <input type="hidden" class="oqty" value="3"><%-- 주문수량 --%>
+	                    <input type="hidden" class="p_totalPrice" value="2000000"><%-- 상품별총액 --%>
+	                    <input type="hidden" class="cartno" value="1" /><%-- 장바구니번호 삭제용--%>
+	                </div>
+	                
+	                <div class="mb-3 flexcss" name="pInfo" id="pInfo2" style="border: solid 1px orange;">
+	                	<a>
+		                	<img class="pImage" src="<%=ctxPath%>/images/product/product_thum/48_thum_20240524164704617310969644300.png"/>
+		                </a>
+	                    <div class="productInfo pInfo1" >
+	                    	<span>시계2</span>
+	                    	<br>
+	                    	<span>250000</span>
+	                    </div>
+	                    <div class="productInfo pInfo4" >옵션명</div>
+	                    <div class="productInfo pInfo2" ><span name="oqty">1</span>개</div>
+	                    <div class="productInfo pInfo3" >3000000</div>
+	                    
+	                    <%-- 결제후 컨트롤러에 보내줄 값 --%>
+	                    <input type="hidden" class="pnum" value="16" /><%-- 제품번호 --%>
+	                    <input type="hidden" class="pdetail" value="25" /><%-- 제품상세번호 --%>
+	                    <input type="hidden" class="poption" value="none" /><%-- 제품옵션 --%>
+	                    <input type="hidden" class="oqty" value="3"><%-- 주문수량 --%>
+	                    <input type="hidden" class="p_totalPrice" value="3000000"><%-- 상품별총액 --%>
+	                    <input type="hidden" class="cartno" value="1" /><%-- 장바구니번호 삭제용--%>
+	                </div>
+	                <div class="mb-3 flexcss" name="pInfo" id="pInfo3" style="border: solid 1px orange;">
+	                	<a>
+		                	<img class="pImage" src="<%=ctxPath%>/images/product/product_thum/48_thum_20240524164704617310969644300.png"/>
+		                </a>
+	                    <div class="productInfo pInfo1" >
+	                    	<span>시계3</span>
+	                    	<br>
+	                    	<span>15000</span>
+	                    </div>
+	                    <div class="productInfo pInfo4" >옵션명</div>
+	                    <div class="productInfo pInfo2" ><span name="oqty">2</span>개</div>
+	                    <div class="productInfo pInfo3" >8000000</div>
+	                    
+	                    <%-- 결제후 컨트롤러에 보내줄 값 --%>
+	                    <input type="hidden" class="pnum" value="16" /><%-- 제품번호 --%>
+	                    <input type="hidden" class="pdetail" value="25" /><%-- 제품상세번호 --%>
+	                    <input type="hidden" class="poption" value="none" /><%-- 제품옵션 --%>
+	                    <input type="hidden" class="oqty" value="3"><%-- 주문수량 --%>
+	                    <input type="hidden" class="p_totalPrice" value="8000000"><%-- 상품별총액 --%>
+	                    <input type="hidden" class="cartno" value="1" /><%-- 장바구니번호 삭제용--%>
+	                </div>
+	                
+       
+                
             </div>
             
 
@@ -204,7 +287,7 @@
                         총 상품금액
                     </div>
                     <div class="col-lg-6 text-right">
-                        <span>3000</span>
+                        <span class="p_totalPrice"></span>
                     </div>
                 </div>
                 <div class="row">
@@ -212,17 +295,28 @@
                         배송비
                     </div>
                     <div class="col-lg-6 text-right">
-                        <span>+ 3000</span>
+                        <span class="deliveryfeeView"></span>
+                        <input class="deliveryfee" type="hidden" />
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-lg-5">
                         마일리지 사용
                     </div>
-                    <div class="col-lg-6 text-right" style="border:solid 1px red;">
-                        <span id=useEndPoint></span><input type="text" id="useEndPointInput" />
+                    <div class="col text-right">
+                        <span id=useEndPoint></span><input type="hidden" name="useEndPointInput" />
                     </div>
                 </div>
+                <%-- 여기에 구매시 마일리지 확인 --%>
+                <div class="row">
+                    <div class="col-lg-5">
+                        예상 마일리지 적립
+                    </div>
+                    <div class="col text-right">
+                        <span name=pointSave></span><input type="hidden" name="pointSaveInput" />
+                    </div>
+                </div>
+                
                 
 				<br>
 				
