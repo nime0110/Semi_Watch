@@ -172,14 +172,13 @@ public List<String> getColorsByPnum(String pdno) throws SQLException {
 		
 		String sql =  " select color "
 				+ " from tbl_pd_detail "
-				+ " where fk_pdno IN ( " + pdno + " ) ";
-		
+				+ " where fk_pdno IN ( " + pdno + " ) and pd_qty > 0 ";
+		//재고가 있는 상품만 가져오는 조건 추가 (and  pd_qty > 0)
 		pstmt = conn.prepareStatement(sql);
 		
 		rs = pstmt.executeQuery();
 		
 		while(rs.next()) {
-			//추가이미지가 있을 경우
 			colorList.add(rs.getString("color"));
 		 }//end of while(rs.next()) --------------
 		

@@ -35,7 +35,6 @@ public class WishListAdd extends AbstractController {
 		System.out.println("selectedColors:" + selectedColors); // 99:pink
 		//System.out.println(pdnames);
 		String[] no_arr = pdnos.split(",");
-		 String[] color_arr = selectedColors.split(",");  // 99:pink, 112:색상 없음
 		//pdno 문자열에 공백제거
 		for (int i = 0; i < no_arr.length; i++) {
 			no_arr[i] = no_arr[i].trim();
@@ -53,22 +52,14 @@ public class WishListAdd extends AbstractController {
         if(wishList.size() > 0) {
             for (int i = 0; i < wishList.size(); i++) {
                 ProductVO pvo = wishList.get(i);
-                String color = "색상 미선택";
                 
-                for (String colorInfo : color_arr) { //color
-                    String[] parts = colorInfo.split(":"); // 색상의 파츠를 split, 
-                    if (parts[0].equals(pvo.getPdno())) {//pdno 가 0번째 color가 1번째
-                        color = parts[1];
-                        break;
-                    }
-                }
 
                 JSONObject jsonObj = new JSONObject(); 
                 jsonObj.put("pdname", pvo.getPdname());
                 jsonObj.put("pdimg", pvo.getPdimg1());
                 jsonObj.put("pdsaleprice", pvo.getSaleprice());
                 jsonObj.put("pdno", pvo.getPdno());
-                jsonObj.put("color", color);
+                jsonObj.put("color", selectedColors);
                 
                 jsonArr.put(jsonObj); 
             }
