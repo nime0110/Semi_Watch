@@ -99,6 +99,26 @@ from tbl_pd_detail
 where fk_pdno = 95;
 
 
+select *
+from TBL_CART;
 
+select * 
+from TBL_PD_DETAIL;
 
+select cartno, pdname, brand, pd_detailno, color, saleprice, pd_qty, cart_qty, pdimg1, point, pdno
+from tbl_cart C join tbl_pd_detail D
+on C.fk_pd_detailno = D.pd_detailno
+join tbl_product P on
+D.fk_pdno = P.pdno
+where C.fk_userid = 'jhkvng123';
 
+SELECT PDNO, PD_DETAILNO, PDNAME, SALEPRICE, PDIMG1, COLOR
+FROM
+(
+select pdno, pdname, saleprice, pdimg1
+from tbl_product
+where pdno = 117
+) P
+JOIN tbl_pd_detail D
+ON P.pdno = D.fk_pdno
+WHERE D.pd_detailno = 49;

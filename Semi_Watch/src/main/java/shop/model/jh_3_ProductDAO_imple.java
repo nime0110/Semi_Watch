@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -14,6 +15,8 @@ import javax.sql.DataSource;
 
 import shop.domain.CartVO;
 import shop.domain.ImageVO;
+import shop.domain.ProductVO;
+import shop.domain.Product_DetailVO;
 
 public class jh_3_ProductDAO_imple implements jh_3_ProductDAO {
 
@@ -52,6 +55,75 @@ public class jh_3_ProductDAO_imple implements jh_3_ProductDAO {
 			e.printStackTrace();
 		}
 	} // end of private void close() {} 
+
+	
+	
+	// 장바구니에 있는 제품 정보(제품명, 이미지, 가격, 옵션명 등)
+	@Override
+	public List<ProductVO> select_odrProductInfo(Map<String, String[]> paraMap) throws SQLException {
+		List<ProductVO> pvoList = null;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String[] pdnoArr = paraMap.get("pdnoArr");
+			String[] pd_detailnoArr = paraMap.get("pd_detailnoArr");
+			
+			int cnt = 0;
+			for(int i=0; i<pdnoArr.length; i++) {
+				
+				cnt++;
+				
+				if(cnt ==1) {
+					pvoList = new ArrayList<>();
+				}
+				
+				String sql  = " SELECT PDNO, PD_DETAILNO, PDNAME, SALEPRICE, PDIMG1, COLOR "
+							+ " FROM "
+							+ " ( "
+							+ " 	select pdno, pdname, saleprice, pdimg1 "
+							+ " 	from tbl_product "
+							+ " 	where pdno = to_number(?) "
+							+ " ) P "
+							+ " JOIN tbl_pd_detail D "
+							+ " ON P.pdno = D.fk_pdno "
+							+ " WHERE D.pd_detailno = to_number(?) ";
+				
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setString(1, pdnoArr[i]);
+				pstmt.setString(2, pd_detailnoArr[i]);
+				
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()) {
+					
+					ProductVO pvo = new ProductVO();
+					pvo.setPdname(rs.getString("PDNAME"));
+					pvo.setSaleprice(rs.getInt("SALEPRICE"));
+					pvo.setPdimg1(rs.getString("PDIMG1"));
+					
+					
+					Product_DetailVO pdvo = new Product_DetailVO();
+					pdvo.setColor(rs.getString("COLOR"));
+					
+					pvo.setPdvo(pdvo);
+					
+					
+					pvoList.add(pvo);
+					
+				}
+
+			}// end of for------------
+					
+			
+		} finally {
+			close();
+		}
+		
+		return pvoList;
+
+	}// end of public List<ProductVO> select_odrProductInfo(Map<String, String[]> paraMap)----
 
 
 	

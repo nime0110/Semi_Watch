@@ -19,6 +19,7 @@
 /*  아래 코드로 사진 변경 가능 */
   $(document).ready(function() {
 
+	    
 	  
   	 $('ul#choice li button img').on('click',function(){
 	    var i = $(this).attr('src');
@@ -33,17 +34,21 @@
 	  //메뉴 클릭하면 해당 위치 찾아가기
 	  $('.categori ul li a').on('click',function(){
 		//-첫째로 몇번째인지 알아야됨
-		var n = $(this).parent().index();
+		let n = $(this).parent().index();
 		//해당 위치 찾아가기
-		var target =  $('.categori').eq(n).offset().top;
+		let target =  $('.categori').eq(n).offset().top;
 		$('html,body').stop().animate({scrollTop: target},2000);
 		return false;
 	  })
 	  $('.minus-item').click(function() {
-        var quantityInput = $('#product__quantity');
-        var currentValue = parseInt(quantityInput.val());
-        if (currentValue > 0) {
+        let quantityInput = $('#product__quantity');
+        let currentValue = parseInt(quantityInput.val());
+        
+        if (currentValue > 1) {
           quantityInput.val(currentValue - 1);
+        }
+        if(currentValue == 1) {
+        	$(this).prop("disabled"); 
         }
       });
 
@@ -147,7 +152,7 @@
               <span class="icon icon-minus" aria-hidden="true"></span>
             </button>
             <label for="product__quantity" class="sr-only">Set the quantity manually</label>
-            <input type="number" min="0" value="0" id="product__quantity">
+            <input type="number" min="1" value="1" id="product__quantity">
             <button type="button" class="btn-changeValue plus-item">
               <span class="sr-only">Plus one item</span>
               <span class="icon icon-plus" aria-hidden="true"></span>

@@ -509,18 +509,7 @@ function checkOutUpdate(ctxPath, userid, paySuccess){
     
     
     /*   
-   
-    
-    for(let i=0; i<checkCnt; i++){
-        if( Number(pqtyArr[i]) < Number(oqtyArr[i]) ){
-            // 주문할 제품중 아무거나 하나가 잔고량이 주문량 보다 적을 경우
-            
-            alert("제품번호 "+ pnumArr[i] +" 의 주문개수가 잔고개수 보다 더 커서 진행할 수 없습니다.");
-             location.href="javascript:history.go(0)";
-             return; // goOrder 함수 종료
-        
-        }
-    }// end of for-----------------------------------
+
     
     const str_pnum = pnumArr.join(","); // 배열을 하나의 문자열로 만들자. default가 join(",")임. 그냥 join()해도 콤마로 연결됨
     const str_oqty = oqtyArr.join();

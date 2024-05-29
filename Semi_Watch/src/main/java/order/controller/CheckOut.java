@@ -1,14 +1,19 @@
 package order.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import member.domain.MemberVO;
 import member.model.jh_3_MemberDAO;
 import member.model.jh_3_MemberDAO_imple;
 import shop.domain.CartVO;
+import shop.domain.ProductVO;
 import shop.model.jh_3_ProductDAO;
 import shop.model.jh_3_ProductDAO_imple;
 
@@ -23,26 +28,76 @@ public class CheckOut extends AbstractController {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
-		// 가정은 다음과 같다.
 		/*
-			장바구니 or 바로구매 시 값을 넘겨받는다.
-			1. 장바구니
-			- 체크된 제품의 제품코드, 제품상세코드 이거 두개만 받아오면 셀렉해서 값을 띄어주면 된다.
-			- 혹은 장바구니에서 값을 넘겨주는데, 다넘겨주던가 (제품번호, 제품이미지, 제품명, 주문수량, 옵션명, 포인트 까지)
+		// 주소창 장난질 예방
+        String referer = request.getHeader("referer");
+        if (referer == null) {
+            // URL을 통해 직접 접근한 경우 홈 페이지로 리디렉션
+            super.setRedirect(true);
+            super.setViewPage(request.getContextPath() + "/index.flex");
+            return;
+        }
+        */
+		
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+		
+		
+		// 장바구니 또는 제품상세페이지(바로구매)에서 값을 받아온다.
+		String str_pdno = request.getParameter("str_pdno");					// 제품번호
+		String str_cart_qty = request.getParameter("str_cart_qty");			// 구매수량
+		String str_cartno = request.getParameter("str_cartno");				// 장바구니번호
+		String str_pd_detailno = request.getParameter("str_pd_detailno");	// 제품상세번호
 			
-			그래서 받은 값이 복수값이라면, list 로 넘겨주기 때문에 받은값을 받아와서 보여주면된다.
-		*/	
-			// 예시
-			// 상품정보 전달해주기
-			
-			
-			
-			
-		/*	
-			2. 바로구매
-			- 제품번호, 제품명, 주문수량, 옵션명 까지만 받아오면 가능함
-		*/
+		String str_pdPriceArr = request.getParameter("str_pdPriceArr");		// 상품별 총가격(개당단가 * 수량)
+		String str_pdPointArr = request.getParameter("str_pdPointArr");		// 상품별 총포인트(개당포인트 * 수량)
+		
+	/*
+		System.out.println("제품번호"+str_pdno);
+		System.out.println("구매수량"+str_cart_qty);
+		System.out.println("장바구니번호"+str_cartno);
+		System.out.println("제품상세번호"+str_pd_detailno);
+		System.out.println("상품별총가격"+str_pdPriceArr);
+		System.out.println("상품별총포인트"+str_pdPointArr);
+		
+		제품번호 158,153,173,174,170,95
+		구매수량 3,1,6,3,3,5
+		장바구니번호 30,31,28,29,34,35
+		제품상세번호 109,104,124,125,121,16
+		상품별총가격 178560000,118000,488880000,48270000,33000000,350000
+		상품별총포인트 1785600,1180,4888800,482700,330000,3500
+	*/
+		
+		// 받아온 문자열을 배열로 바꿔준다.
+		String[] pdnoArr = str_pdno.split(",");
+		String[] cart_qtyArr = str_cart_qty.split(",");
+		String[] cartnoArr = str_cartno.split(",");
+		String[] pd_detailnoArr = str_pd_detailno.split(",");
+		
+		String[] pdPriceArr = str_pdPriceArr.split(",");
+		String[] pdPointArr = str_pdPointArr.split(",");
+		
+		// 필요한 데이터 가져오기
+		// 제품테이블 : 제품명, 제품이미지, 제품가격
+		// 장바구니 : 필요한건 넘겨받음
+		// 제품상세테이블 : 옵션명
+		
+		Map<String, String[]> paraMap = new HashMap<>();
+		paraMap.put("pdnoArr", pdnoArr);
+		paraMap.put("pd_detailnoArr", pd_detailnoArr);
+		
+		List<ProductVO> pvoList = pdao.select_odrProductInfo(paraMap);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		

@@ -370,3 +370,5 @@ insert into tbl_cart (cartno , fk_pdno, fk_userid, cart_qty  ) values (SEQ_TBL_C
 
 insert into tbl_cart (cartno , fk_pdno, fk_userid, cart_qty  ) values (SEQ_TBL_CART_CARTNO.nextval , 상품번호 , 유저아이디 , 장바구니수량);
 
+
+select * from tbl_pd_detail;
