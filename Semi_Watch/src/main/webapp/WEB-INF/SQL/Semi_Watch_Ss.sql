@@ -351,9 +351,36 @@ from tbl_pd_detail
 
 select pdname, pdimg1, saleprice, pdno 
 from tbl_product A JOIN tbl_pd_detail B
-ON A.pdno = B.fk_pdno;
+ON A.pdno = B.fk_pdno
+where pdno = 172 and color = 'none'
+or pdno = 99 and color = 'white';
 
 select pd_detailno, fk_pdno, color
 from tbl_pd_detail 
 
-		        
+select * from tbl_cart;
+
+DELETE tbl_cart
+WHERE fk_userid = 'jhkvng123'
+    commit;
+
+
+select pdno, pdname, brand, pdimg1, price, saleprice, pd_content, pd_contentimg 
+from tbl_product 
+where pdno = ? 
+
+
+------------------------------------
+--------- 리뷰 -----------------------
+
+select *
+from tbl_review;
+-- review_date 는 sysdate 인듯?
+-- 아이디 / 제품번호 / 내용 / 별점 / 리뷰선정코드
+--일단 넣어줘야할거 : 리뷰번호시퀀스, 아이디,  리뷰내용, 별점, 제품번호
+select * from user_sequences;
+
+INSERT INTO tbl_review
+(reviewno, fk_userid, review_content, starpoint, fk_pdno) 
+VALUES ( SEQ_REVIEWNO.nextval,'nime0110', '시계 괜찮네여', 5, 112);
+rollback;

@@ -106,7 +106,7 @@ $('#wish_list').click(function() {
                     <a href="${contextPath}/item/itemDetail.flex?pdno=${item.pdno}" class="list-item">
                         <input type="hidden" name="${item.pdno}">
                         <input class="form-check-input" style="left:0;" type="checkbox" value="${item.pdno}" id="flexCheckDefault">
-                        <img src="${contextPath}/images/product/product_thum/${item.pdimg}" alt="${item.pdname}" class="product__thumb">
+                        <img src="${contextPath}/images/product/${item.pdimg}" alt="${item.pdname}" class="product__thumb">
                         <div class="list-item__abstract"	>
                             <h4>${item.pdname}</h4>
                             <div class="price-calculation" style="display: flex; justify-content: space-between;">
