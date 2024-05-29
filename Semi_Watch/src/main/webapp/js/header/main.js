@@ -88,7 +88,7 @@ $('#wish_list').click(function() {
         url: "wishListAdd.flex", // 컨트롤러 만들고 
         data: {
             "pdnos": arr_jjim.map(item => item.jepumno).join(","),
-            "selectedColors": selectedColor // 선택된 색상을 함께 전송
+            "selectedColors": arr_jjim.map(item => item.color).join(",") // 선택된 색상을 함께 전송
         }, // "새우깡,양파링" --> 이거 컨트롤러에서 split 해서 in()으로 sql 조회, ? 위치홀더금지
         dataType: "json",
         success: function (json) {
@@ -98,11 +98,11 @@ $('#wish_list').click(function() {
 
             // JSON 데이터가 배열이라고 가정하고 루프를 통해 각 항목을 처리
             json.forEach(item => { 
-                let itemColor = item.color || 'none'; // 색상 없을 경우 none으로 처리 
+                //let itemColor = item.color || 'none'; // 색상 없을 경우 none으로 처리 
                 console.log("foreach 속 item.pdname" + item.pdname);
 
                 html += `
-                <li id="${item.pdno}-${selectedColor}" class="cart-section__li">
+                <li id="${item.pdno}-${item.color}" class="cart-section__li">
                     <a href="${contextPath}/item/itemDetail.flex?pdno=${item.pdno}" class="list-item">
                         <input type="hidden" name="${item.pdno}">
                         <input class="form-check-input" style="left:0;" type="checkbox" value="${item.pdno}" id="flexCheckDefault">
@@ -110,8 +110,8 @@ $('#wish_list').click(function() {
                         <div class="list-item__abstract"	>
                             <h4>${item.pdname}</h4>
                             <div class="price-calculation" style="display: flex; justify-content: space-between;">
-                                <input type="hidden" class="input_color" value="${itemColor}">
-                                <span>색상: ${selectedColor}</span>
+                                <input type="hidden" class="input_color" value="${item.color}">
+                                <span>색상: ${item.color}</span>
                                 <p class="price-calculation__value">
                                     <span class="value__span">${item.pdsaleprice.toLocaleString("ko-KR")}</span>
                                 </p>
@@ -126,8 +126,8 @@ $('#wish_list').click(function() {
                 `
             });
             // 기존 HTML 가져오기 및 추가된 HTML 병합
-            let existingHTML = $("#cart-section > div.cart-section__body > ul").html();
-            html = existingHTML + html;
+/*            let existingHTML = $("#cart-section > div.cart-section__body > ul").html();
+            html = existingHTML + html;*/
             // 위의 li 문 생성 후 ul 안에 li 코드를 넣어서 보여주는 코드
             $("#cart-section > div.cart-section__body > ul").html(html);
             console.log("html", html);

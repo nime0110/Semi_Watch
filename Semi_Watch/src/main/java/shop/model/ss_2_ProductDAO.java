@@ -2,6 +2,7 @@ package shop.model;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import shop.domain.ImageVO;
 import shop.domain.ProductVO;
@@ -29,6 +30,8 @@ public interface ss_2_ProductDAO {
 	
 	//상품상세 -> 장바구니 insert 메소드
 	int DetailProductInsert(String pdDetailNo, String userid, String quantity) throws SQLException;
+
+	List<ProductVO> wishAdd(Map<String, Object> paraMap)  throws SQLException;
 	
 	
 	

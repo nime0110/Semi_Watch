@@ -63,13 +63,11 @@ public class AddToCartDetailJSON extends AbstractController {
 
             //위시리스트 -> 장바구니 insert 메소드
             int n = pdao.DetailProductInsert(pdDetailNo, userid, quantity);
-            if (n == 1) {
-                jsonObj.put("message", "상품이 장바구니에 추가되었습니다. \n장바구니로 이동하시겠습니까?");
-                jsonObj.put("loginRequired", false);
-            } else {
-                jsonObj.put("message", "상품을 장바구니에 추가하는 데 실패했습니다.");
-                jsonObj.put("loginRequired", false);
-            }
+            
+            jsonObj.put("message", "상품이 장바구니에 추가되었습니다. \n장바구니로 이동하시겠습니까?");
+            jsonObj.put("loginRequired", false);
+             
+              
             out.print(jsonObj.toString());
             
         }

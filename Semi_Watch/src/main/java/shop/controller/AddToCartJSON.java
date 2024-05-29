@@ -76,19 +76,11 @@ public class AddToCartJSON extends AbstractController {
 
                 //위시리스트 -> 장바구니 insert 메소드
                 int n = pdao.wishProductInsert(pdDetailNo, userid);
-                if (n != 1) {
-                    allSuccess = false;//하나라도 실패시 false
-                    break;
-                }
-            }
-
-            if (allSuccess) { //성공시 
                 jsonObj.put("message", "상품이 장바구니에 추가되었습니다.");
                 jsonObj.put("loginRequired", false);
-            } else {
-                jsonObj.put("message", "상품을 장바구니에 추가하는 데 실패했습니다.");
-                jsonObj.put("loginRequired", false);
             }
+
+
             out.print(jsonObj.toString());//해당메시지출력
             // 성공 메시지를 클라이언트로 반환 - 추후 페이지 이동 처리예정(모달창 - confirm? 고민중)
 

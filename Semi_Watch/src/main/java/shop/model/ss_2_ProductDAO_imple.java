@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -161,7 +162,7 @@ public List<String> getImagesByPnum(String pdno) throws SQLException {
 }
 
 
-//제품번호를 가지고서 제품의 상세코드 가져오기 
+//제품번호를 가지고서 제품의 색상 가져오기 
 @Override
 public List<String> getColorsByPnum(String pdno) throws SQLException {
 
@@ -309,8 +310,62 @@ public int DetailProductInsert(String pdDetailNo, String userid, String quantity
 	return n;
 	
 }
-	
 
+
+@Override
+public List<ProductVO> wishAdd(Map<String, Object> paraMap) throws SQLException {
+    List<ProductVO> wishProductList = new ArrayList<>();
+
+    try {
+        conn = ds.getConnection();
+
+        String[] pdno_arr = (String[]) paraMap.get("pdnoArray");
+        String[] color_arr = (String[]) paraMap.get("colorsArray");
+
+        String sql = "SELECT pdname, pdimg1, saleprice, pdno, color " +
+                     "FROM tbl_product A JOIN tbl_pd_detail B ON A.pdno = B.fk_pdno " +
+                     "WHERE ";
+
+        // 쿼리 조건 설정
+        for (int i = 0; i < pdno_arr.length; i++) {
+            if (i > 0) {
+                sql += "OR ";
+            }
+            sql += "(pdno = ? AND color = ?) ";
+        }
+
+        pstmt = conn.prepareStatement(sql);
+
+        // PreparedStatement 값 설정
+        int index = 1;
+        for (int i = 0; i < pdno_arr.length; i++) {
+            pstmt.setString(index++, pdno_arr[i]);
+            pstmt.setString(index++, color_arr[i]);
+        }
+
+        rs = pstmt.executeQuery();
+
+        while (rs.next()) {
+            ProductVO pvo = new ProductVO();
+            pvo.setPdname(rs.getString("pdname"));
+            pvo.setPdimg1(rs.getString("pdimg1"));
+            pvo.setSaleprice(rs.getLong("saleprice"));
+            pvo.setPdno(rs.getString("pdno"));
+            
+            Product_DetailVO pdvo = new Product_DetailVO();
+            
+            pdvo.setColor(rs.getString("color"));
+            
+            pvo.setPdvo(pdvo);
+            wishProductList.add(pvo);
+        }
+
+    } finally {
+        close();
+    }
+
+    return wishProductList;
+}
 	
 	
 
