@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -161,7 +162,7 @@ public List<String> getImagesByPnum(String pdno) throws SQLException {
 }
 
 
-//제품번호를 가지고서 제품의 상세코드 가져오기 
+//제품번호를 가지고서 제품의 색상 가져오기 
 @Override
 public List<String> getColorsByPnum(String pdno) throws SQLException {
 
@@ -172,14 +173,13 @@ public List<String> getColorsByPnum(String pdno) throws SQLException {
 		
 		String sql =  " select color "
 				+ " from tbl_pd_detail "
-				+ " where fk_pdno IN ( " + pdno + " ) ";
-		
+				+ " where fk_pdno IN ( " + pdno + " ) and pd_qty > 0 ";
+		//재고가 있는 상품만 가져오는 조건 추가 (and  pd_qty > 0)
 		pstmt = conn.prepareStatement(sql);
 		
 		rs = pstmt.executeQuery();
 		
 		while(rs.next()) {
-			//추가이미지가 있을 경우
 			colorList.add(rs.getString("color"));
 		 }//end of while(rs.next()) --------------
 		
@@ -226,7 +226,7 @@ public List<Product_DetailVO> getWishDetailByPnum(String pdno, String selectedCo
 
 //위시리스트 -> 장바구니 insert 메소드
 @Override
-public int wishProductInsert(String pdDetailNo, String userid, String registerday) throws SQLException {
+public int wishProductInsert(String pdDetailNo, String userid) throws SQLException {
 	//이미 존재하는 행일 시 업데이트 / 존재하지 않는 행일시 insert
 	
 	
@@ -266,8 +266,106 @@ public int wishProductInsert(String pdDetailNo, String userid, String registerda
 	}
 	return n;
 }
-	
 
+//상품상세 -> 장바구니 insert 메소드
+@Override
+public int DetailProductInsert(String pdDetailNo, String userid, String quantity) throws SQLException {
+	//이미 존재하는 행일 시 업데이트 / 존재하지 않는 행일시 insert
+	int n = 0; //행이 성공적으로 입력이 되면 1값 반환
+	String sql = "";
+	try {
+		conn = ds.getConnection();
+		sql = "SELECT cartno "
+				+ "FROM tbl_cart " 
+				+ "WHERE fk_userid = ? AND fk_pd_detailno = ?";
+	    pstmt = conn.prepareStatement(sql);
+	    pstmt.setString(1, userid);
+	    pstmt.setString(2, pdDetailNo);
+	    rs = pstmt.executeQuery();
+
+	    if(rs.next()) {
+	        // 어떤 제품을 추가로 장바구니에 넣고자 하는 경우
+	    	sql = "UPDATE tbl_cart "
+	    	  		+ "SET cart_qty = cart_qty + ? " // 위시리스트에 옮기는거라 무조건 한개
+	    	  		+ "WHERE fk_pd_detailno = ?";
+	    	pstmt = conn.prepareStatement(sql);
+	    	pstmt.setString(1, quantity);
+	    	pstmt.setString(2, pdDetailNo);
+	    	n = pstmt.executeUpdate();
+	    } else {	    	
+	    	// 장바구니에 존재하지 않는 새로운 제품을 넣고자 하는 경우 
+	    	sql = "INSERT INTO tbl_cart (cartno, fk_userid, cart_qty, fk_pd_detailno) "
+	    			+ "VALUES (SEQ_TBL_CART_CARTNO.nextval, ?, ?, ?)";
+	    	pstmt = conn.prepareStatement(sql);
+	    	pstmt.setString(1, userid);
+	    	pstmt.setString(2, quantity);
+	    	pstmt.setString(3, pdDetailNo);
+	    	
+	    	n = pstmt.executeUpdate();
+	    }
+	    
+	} finally {
+		close();
+	}
+	return n;
+	
+}
+
+
+@Override
+public List<ProductVO> wishAdd(Map<String, Object> paraMap) throws SQLException {
+    List<ProductVO> wishProductList = new ArrayList<>();
+
+    try {
+        conn = ds.getConnection();
+
+        String[] pdno_arr = (String[]) paraMap.get("pdnoArray");
+        String[] color_arr = (String[]) paraMap.get("colorsArray");
+
+        String sql = "SELECT pdname, pdimg1, saleprice, pdno, color " +
+                     "FROM tbl_product A JOIN tbl_pd_detail B ON A.pdno = B.fk_pdno " +
+                     "WHERE ";
+
+        // 쿼리 조건 설정
+        for (int i = 0; i < pdno_arr.length; i++) {
+            if (i > 0) {
+                sql += "OR ";
+            }
+            sql += "(pdno = ? AND color = ?) ";
+        }
+
+        pstmt = conn.prepareStatement(sql);
+
+        // PreparedStatement 값 설정
+        int index = 1;
+        for (int i = 0; i < pdno_arr.length; i++) {
+            pstmt.setString(index++, pdno_arr[i]);
+            pstmt.setString(index++, color_arr[i]);
+        }
+
+        rs = pstmt.executeQuery();
+
+        while (rs.next()) {
+            ProductVO pvo = new ProductVO();
+            pvo.setPdname(rs.getString("pdname"));
+            pvo.setPdimg1(rs.getString("pdimg1"));
+            pvo.setSaleprice(rs.getLong("saleprice"));
+            pvo.setPdno(rs.getString("pdno"));
+            
+            Product_DetailVO pdvo = new Product_DetailVO();
+            
+            pdvo.setColor(rs.getString("color"));
+            
+            pvo.setPdvo(pdvo);
+            wishProductList.add(pvo);
+        }
+
+    } finally {
+        close();
+    }
+
+    return wishProductList;
+}
 	
 	
 

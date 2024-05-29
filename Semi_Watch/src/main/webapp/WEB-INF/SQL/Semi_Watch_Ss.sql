@@ -328,6 +328,32 @@ from tbl_member;
 
 --------------------------------------------------------------------------------------------
 
-select cartno 
+select *
 from tbl_cart 
-where fk_userid = ? and fk_pd_detailno = ? 
+where fk_userid = 'nime0110' and fk_pd_detailno = ? 
+
+select * 
+from tbl_pd_detail
+ where fk_pdno IN ( 118 ) and  pd_qty > 0; 
+ 
+ 
+select pdname, pdimg1, saleprice, pdno 
+from tbl_pd_detail 
+ where fk_pdno = 172 and color = 'none';
+ 
+select pdname, pdimg1, saleprice, pdno 
+from tbl_product
+
+select pd_detailno, fk_pdno, color
+from tbl_pd_detail 
+
+---------------------------------
+
+select pdname, pdimg1, saleprice, pdno 
+from tbl_product A JOIN tbl_pd_detail B
+ON A.pdno = B.fk_pdno;
+
+select pd_detailno, fk_pdno, color
+from tbl_pd_detail 
+
+		        

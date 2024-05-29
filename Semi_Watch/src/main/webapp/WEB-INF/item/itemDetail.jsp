@@ -7,59 +7,15 @@
 %>
 
 <link rel="stylesheet" href="../font/css/all.css">
-<link rel="stylesheet" type="text/css" href="<%= ctx_Path%>/css/itemDetail/itemDetail.css
-" />
+<link rel="stylesheet" type="text/css" href="<%= ctx_Path%>/css/itemDetail/itemDetail.css" />
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 <%-- 허성심 제작 페이지 --%>
 <jsp:include page="../header1.jsp" />
-<script type="text/javascript">
-/*  아래 코드로 사진 변경 가능 */
-  $(document).ready(function() {
+<script type="text/javascript" src="<%= ctx_Path%>/js/item/itemDetail.js"></script>
 
-	    
-	  
-  	 $('ul#choice li button img').on('click',function(){
-	    var i = $(this).attr('src');
-		console.log(i);
-	    $('.image-box img').attr('src',i);
-	    return false;
-	  })
-	  
-	  
-	  //첫번째 content로 애니메이트
-	  //$('html,body').stop().animate({scrollTop: 0},2000);
-	  //메뉴 클릭하면 해당 위치 찾아가기
-	  $('.categori ul li a').on('click',function(){
-		//-첫째로 몇번째인지 알아야됨
-		let n = $(this).parent().index();
-		//해당 위치 찾아가기
-		let target =  $('.categori').eq(n).offset().top;
-		$('html,body').stop().animate({scrollTop: target},2000);
-		return false;
-	  })
-	  $('.minus-item').click(function() {
-        let quantityInput = $('#product__quantity');
-        let currentValue = parseInt(quantityInput.val());
-        
-        if (currentValue > 1) {
-          quantityInput.val(currentValue - 1);
-        }
-        if(currentValue == 1) {
-        	$(this).prop("disabled"); 
-        }
-      });
-
-      $('.plus-item').click(function() {
-        var quantityInput = $('#product__quantity');
-        var currentValue = parseInt(quantityInput.val());
-        quantityInput.val(currentValue + 1);
-      });
-	});
-
-</script>
 
   <main>
     <article class="product">
@@ -80,7 +36,7 @@
           </button>
           <%-- <img src="${pageContext.request.contextPath}/images/itemDetail/image-product-1.jpg" alt="Brown and white sneaker" class="image-box__src" data-product-id="item-cart-1" tabindex="0" aria-controls="lightbox" aria-expanded="false"> --%>
           <c:if test="${not empty requestScope.pvo}">
-          		<img src="${pageContext.request.contextPath}/images/product/product_thum/${pvo.pdimg1}" alt="${pvo.pdname}" id="productImage" class="image-box__src" data-product-id="item-cart-1" tabindex="0" aria-controls="lightbox" aria-expanded="false">
+          		<img src="${pageContext.request.contextPath}/images/product/${pvo.pdimg1}" alt="${pvo.pdname}" id="productImage" class="image-box__src" data-product-id="item-cart-1" tabindex="0" aria-controls="lightbox" aria-expanded="false">
         		<!--  /Semi_Watch/images/itemDetail/56_thum.png -->
            </c:if>
         </div>
@@ -90,7 +46,7 @@
 		        <c:forEach var="imgfilename" items="${requestScope.imgList}" varStatus="status">
 		            <li class="thumb-item">
 		                <button type="button" class="thumb-item__btn" aria-label="change to image ${status.index + 1}">
-		                    <img src="${pageContext.request.contextPath}/images/product/product_thum/${imgfilename}" alt="" data-thumb-index="${status.index}" role="presentation">
+		                    <img src="${pageContext.request.contextPath}/images/product/${imgfilename}" alt="" data-thumb-index="${status.index}" role="presentation">
 		                </button>
 		            </li>
 		        </c:forEach>
@@ -158,10 +114,10 @@
               <span class="icon icon-plus" aria-hidden="true"></span>
             </button>
           </div>
-          <button type="button" class="cart-form__add-btn">
+          <button type="button" class="cart-form__add-btn" id="addCart">
             Add to cart
           </button>
-          <button type="button" class="cart-form__add-btn">
+          <button type="button" class="cart-form__add-btn" id="buy">
             구매하기
           </button>
           <button type="button" class="cart-form__add-btn" id="wish_list">
@@ -354,3 +310,4 @@
       </div>
     </div>
   </div>
+<jsp:include page="../footer.jsp" />

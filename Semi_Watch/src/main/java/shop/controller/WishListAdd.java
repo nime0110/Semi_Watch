@@ -1,7 +1,10 @@
 package shop.controller;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,71 +28,46 @@ public class WishListAdd extends AbstractController {
 	}
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	    String pdnos = request.getParameter("pdnos"); // 99, 99, 95
+	    String selectedColors = request.getParameter("selectedColors"); // white, pink, white 그때그때 다르게 들
 
-		/* ---------- 위시리스트 관련 코드 ------------*/
-		
-		String pdnos = request.getParameter("pdnos"); 
-		String selectedColors = request.getParameter("selectedColors"); // 색상 정보를 받음
-		// "99", "pink"
-		
-		System.out.println("selectedColors:" + selectedColors); // 99:pink
-		//System.out.println(pdnames);
-		String[] no_arr = pdnos.split(",");
-		 String[] color_arr = selectedColors.split(",");  // 99:pink, 112:색상 없음
-		//pdno 문자열에 공백제거
-		for (int i = 0; i < no_arr.length; i++) {
-			no_arr[i] = no_arr[i].trim();
-		}
-		
-        String pdno = String.join(", ", no_arr);
-        
-        System.out.println("pdno:" + pdno); // PR-H1000-9DR GPR-H1000-9DR GA-2100-2A2DR
-     // 'PR-H1000-9DR', 'GPR-H1000-9DR' , 'GA-2100-2A2DR'
-        
-        // 화면에서 찜하기를 눌렀을 때 해당하는 상품의 정보를 VO에 담아서 반환하는 메소드
-        List<ProductVO> wishList = pdao.getWishListItem(pdno);
+	    System.out.println("===== selectedColors:" + selectedColors); 
 
-        JSONArray jsonArr = new JSONArray();// []
-        if(wishList.size() > 0) {
-            for (int i = 0; i < wishList.size(); i++) {
-                ProductVO pvo = wishList.get(i);
-                String color = "색상 미선택";
-                
-                for (String colorInfo : color_arr) { //color
-                    String[] parts = colorInfo.split(":"); // 색상의 파츠를 split, 
-                    if (parts[0].equals(pvo.getPdno())) {//pdno 가 0번째 color가 1번째
-                        color = parts[1];
-                        break;
-                    }
-                }
+	    String[] colorSplit = selectedColors.split(",");
+	    String[] pdnoArray = pdnos.replace(" ", "").split(",");
 
-                JSONObject jsonObj = new JSONObject(); 
-                jsonObj.put("pdname", pvo.getPdname());
-                jsonObj.put("pdimg", pvo.getPdimg1());
-                jsonObj.put("pdsaleprice", pvo.getSaleprice());
-                jsonObj.put("pdno", pvo.getPdno());
-                jsonObj.put("color", color);
-                
-                jsonArr.put(jsonObj); 
-            }
-        }//end of  if(wishList.size() > 0) -----------------------------
-        
-        String json = jsonArr.toString(); //문자열로 변환
-        // 데이터가 없을시 "[]"로 된다.
-        
-        // [{"pdname":"새우깡", "color":"빨강"}], [{"pdname":"감자깡", "color":"주황"}]
-        //
+	    Map<String, Object> paraMap = new HashMap<>();
+	    paraMap.put("colorsArray", colorSplit);
+	    paraMap.put("pdnoArray", pdnoArray);
 
-        request.setAttribute("json", json);
-        System.out.println("json:" + json);
-        
-        super.setViewPage("/WEB-INF/jsonview.jsp");
-        
-        
-        /* ---------- 위시리스트 관련 코드 ------------*/
+	    List<ProductVO> wishList = pdao.wishAdd(paraMap);
 
-        
+	    JSONArray jsonArr = new JSONArray();
+	    if (!wishList.isEmpty()) {
+	        for (int i = 0; i < wishList.size(); i++) {
+	            ProductVO pvo = wishList.get(i);
+	            JSONObject jsonObj = new JSONObject();
+	            jsonObj.put("pdname", pvo.getPdname());
+	            jsonObj.put("pdimg", pvo.getPdimg1());
+	            jsonObj.put("pdsaleprice", pvo.getSaleprice());
+	            jsonObj.put("pdno", pvo.getPdno());
+	            jsonObj.put("color", pvo.getPdvo().getColor() ); // 각 상품의 색상을 넣습니다.
+
+	            System.out.println("~~~~~ pdname: " + pvo.getPdname() + ", color: " + colorSplit[i]);
+
+	            jsonArr.put(jsonObj);
+	        }
+	    } else {
+	        System.out.println("wishList is empty.");
+	    }
+
+	    String json = jsonArr.toString();
+	    System.out.println("json: " + json);
+
+	    request.setAttribute("json", json);
+	    super.setViewPage("/WEB-INF/jsonview.jsp");
 	}
+
 
 
 }
