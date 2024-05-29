@@ -112,7 +112,8 @@ join tbl_product P on
 D.fk_pdno = P.pdno
 where C.fk_userid = 'jhkvng123';
 
-SELECT PDNO, PD_DETAILNO, PDNAME, SALEPRICE, PDIMG1, COLOR
+
+SELECT PDNAME, SALEPRICE, PDIMG1, COLOR
 FROM
 (
 select pdno, pdname, saleprice, pdimg1

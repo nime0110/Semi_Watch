@@ -78,7 +78,7 @@ public class jh_3_ProductDAO_imple implements jh_3_ProductDAO {
 					pvoList = new ArrayList<>();
 				}
 				
-				String sql  = " SELECT PDNO, PD_DETAILNO, PDNAME, SALEPRICE, PDIMG1, COLOR "
+				String sql  = " SELECT PDNAME, SALEPRICE, PDIMG1, COLOR "
 							+ " FROM "
 							+ " ( "
 							+ " 	select pdno, pdname, saleprice, pdimg1 "

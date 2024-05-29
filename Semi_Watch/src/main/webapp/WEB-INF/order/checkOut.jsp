@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
     
 <%
 	String ctxPath = request.getContextPath();
@@ -59,7 +60,7 @@
 <div class="container-flude mt-3 container-margin" >
     <div class="h3 text-center mb-3">결제페이지</div>
     <form class="flexcss">
-        <div class="col-7 px-4" style="border: solid 1px green;">
+        <div class="px-4" style="border: solid 1px green; width: 55%;">
             <label class="h4">주문자정보</label>
             <div id="userInfo" style="border: solid 1px black;">
                 <div class="flexcss">
@@ -70,11 +71,12 @@
                         <div class="mb-1" id="postcode"></div>
                         <div id="address"></div>
                         <%-- 넘겨줄 값 저장소 --%>
-                        <input name="name" type="hidden" value="name" /><%-- 이름 --%>
-                        <input name="email" type="hidden" value="email" /><%-- 이메일 --%>
-                        <input name="mobile" type="hidden" value="mobile" /><%-- 전화번호 --%>
-                        <input name="postcode" type="hidden" value="postcode" /><%-- 우편번호 --%>
-                        <input name="address" type="hidden" value="address" /><%-- 주소명 --%>
+                        <c:set var="loginuser" value="${sessionScope.loginuser}"></c:set>
+                        <input name="name" type="hidden" value="${loginuser.username}" /><%-- 이름 --%>
+                        <input name="email" type="hidden" value="${loginuser.email}" /><%-- 이메일 --%>
+                        <input name="mobile" type="hidden" value="${loginuser.mobile}" /><%-- 전화번호 --%>
+                        <input name="postcode" type="hidden" value="${loginuser.postcode}" /><%-- 우편번호 --%>
+                        <input name="address" type="hidden" value="${loginuser.address} ${loginuser.extra_address} ${loginuser.detail_address}" /><%-- 주소명 --%>
                     </div>
                     <div id="edit" >
                         <button class="btn btn-md btn-secondary px-4" type="button"  onclick="gochange()">편집</button>
@@ -204,76 +206,38 @@
 
         
         
-        <div class="col-5 p-3" style="border: solid 1px blue;">
+        <div class="p-3" style="border: solid 1px blue; width: 45%;">
             <div > <%-- 여기는 제품 보여지는 곳 입니다.--%>
             
                 <%-- 이게 제품정보 상품하나 씩 for 문 돌려야함--%>
-                
+                <c:set var="pvoList" value="${requestScope.pvoList}"></c:set>
+				<c:forEach var="no" begin="0" end="${fn:length(pvoList)-1}" varStatus="status" >
+	                <div class="mb-3 flexcss" name="pInfo" id="pInfo${status.index}" style="border: solid 1px orange;">
+	                	<a>
+		                	<img class="pImage" src="<%=ctxPath%>/images/product/${requestScope.pvoList[no].pdimg1}"/>
+		                </a>
+	                    <div class="productInfo pInfo1" >
+	                    	<span>${requestScope.pvoList[no].pdname}</span>
+	                    	<br>
+	                    	<span style="font-size: 10pt; color: blue;">${requestScope.pvoList[no].saleprice}원</span>
+	                    </div>
+	                    
+	                    <div class="productInfo pInfo4" >${requestScope.pvoList[no].pdvo.color}</div>
 
-	                <div class="mb-3 flexcss" name="pInfo" id="pInfo1" style="border: solid 1px orange;">
-	                	<a>
-		                	<img class="pImage" src="<%=ctxPath%>/images/product/product_thum/48_thum_20240524164704617310969644300.png"/>
-		                </a>
-	                    <div class="productInfo pInfo1" >
-	                    	<span>시계1</span>
-	                    	<br>
-	                    	<span>300000</span>
-	                    </div>
-	                    <div class="productInfo pInfo4" >옵션명</div>
-	                    <div class="productInfo pInfo2" ><span name="oqty">3</span>개</div>
-	                    <div class="productInfo pInfo3" >2000000</div>
+	                    <div class="productInfo pInfo2" align="center"><span name="oqty">${requestScope.cart_qtyArr[no]}</span>개</div>
+	                    <div class="productInfo pInfo3 " align="right">${requestScope.pdPriceArr[no]} 원</div>
 	                    
-	                    <%-- 결제후 컨트롤러에 보내줄 값 --%>
-	                    <input type="hidden" class="pnum" value="16" /><%-- 제품번호 --%>
-	                    <input type="hidden" class="pdetail" value="25" /><%-- 제품상세번호 --%>
-	                    <input type="hidden" class="poption" value="none" /><%-- 제품옵션 --%>
-	                    <input type="hidden" class="oqty" value="3"><%-- 주문수량 --%>
-	                    <input type="hidden" class="p_totalPrice" value="2000000"><%-- 상품별총액 --%>
-	                    <input type="hidden" class="cartno" value="1" /><%-- 장바구니번호 삭제용--%>
+						<%-- 결제완료시 업데이트할 때 보내줄 값 저장소 --%>
+	                    <input type="hidden" class="pnum" value="${requestScope.pvoList[no]}" /> <%-- 제품번호 --%>
+	                    <input type="hidden" class="pdetail" value="${requestScope.pvoList[no]}" /> <%-- 제품상세번호 --%>
+	                    <input type="hidden" class="poption" value="${requestScope.pvoList[no]}" /> <%-- 제품옵션 --%>
+	                    <input type="hidden" class="oqty" value="${requestScope.pvoList[no]}"> <%-- 구매수량 --%>
+	                    <input type="hidden" class="p_totalPrice" value="${requestScope.pvoList[no]}"> <%-- 제품별 총포인트 --%>
+	                    <input type="hidden" class="cartno" value="${requestScope.cartnoArr[no]}" /> <%-- 장바구니번호 --%>
 	                </div>
+	           	</c:forEach>     
 	                
-	                <div class="mb-3 flexcss" name="pInfo" id="pInfo2" style="border: solid 1px orange;">
-	                	<a>
-		                	<img class="pImage" src="<%=ctxPath%>/images/product/product_thum/48_thum_20240524164704617310969644300.png"/>
-		                </a>
-	                    <div class="productInfo pInfo1" >
-	                    	<span>시계2</span>
-	                    	<br>
-	                    	<span>250000</span>
-	                    </div>
-	                    <div class="productInfo pInfo4" >옵션명</div>
-	                    <div class="productInfo pInfo2" ><span name="oqty">1</span>개</div>
-	                    <div class="productInfo pInfo3" >3000000</div>
-	                    
-	                    <%-- 결제후 컨트롤러에 보내줄 값 --%>
-	                    <input type="hidden" class="pnum" value="16" /><%-- 제품번호 --%>
-	                    <input type="hidden" class="pdetail" value="25" /><%-- 제품상세번호 --%>
-	                    <input type="hidden" class="poption" value="none" /><%-- 제품옵션 --%>
-	                    <input type="hidden" class="oqty" value="3"><%-- 주문수량 --%>
-	                    <input type="hidden" class="p_totalPrice" value="3000000"><%-- 상품별총액 --%>
-	                    <input type="hidden" class="cartno" value="1" /><%-- 장바구니번호 삭제용--%>
-	                </div>
-	                <div class="mb-3 flexcss" name="pInfo" id="pInfo3" style="border: solid 1px orange;">
-	                	<a>
-		                	<img class="pImage" src="<%=ctxPath%>/images/product/product_thum/48_thum_20240524164704617310969644300.png"/>
-		                </a>
-	                    <div class="productInfo pInfo1" >
-	                    	<span>시계3</span>
-	                    	<br>
-	                    	<span>15000</span>
-	                    </div>
-	                    <div class="productInfo pInfo4" >옵션명</div>
-	                    <div class="productInfo pInfo2" ><span name="oqty">2</span>개</div>
-	                    <div class="productInfo pInfo3" >8000000</div>
-	                    
-	                    <%-- 결제후 컨트롤러에 보내줄 값 --%>
-	                    <input type="hidden" class="pnum" value="16" /><%-- 제품번호 --%>
-	                    <input type="hidden" class="pdetail" value="25" /><%-- 제품상세번호 --%>
-	                    <input type="hidden" class="poption" value="none" /><%-- 제품옵션 --%>
-	                    <input type="hidden" class="oqty" value="3"><%-- 주문수량 --%>
-	                    <input type="hidden" class="p_totalPrice" value="8000000"><%-- 상품별총액 --%>
-	                    <input type="hidden" class="cartno" value="1" /><%-- 장바구니번호 삭제용--%>
-	                </div>
+	                
 	                
        
                 
@@ -313,7 +277,7 @@
                         예상 마일리지 적립
                     </div>
                     <div class="col text-right">
-                        <span name=pointSave></span><input type="hidden" name="pointSaveInput" />
+                        <span name=pointSave>${requestScope.totalPoint}&nbsp;P</span><input type="hidden" name="pointSaveInput" />
                     </div>
                 </div>
                 

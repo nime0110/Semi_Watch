@@ -31,7 +31,7 @@ div.productInfo {
 	border:solid 1px orange; 
 	padding-top:10px; 
 	margin: 5% 0 5% 2%; 
-	width: 35%;
+	width: 33%;
 }
 
 .pInfo4{
@@ -42,13 +42,15 @@ div.productInfo {
 
 .pInfo2{
 	padding-top:10px;
-	margin: 5% auto;
+	margin: 7% auto;
 }
 
 .pInfo3{
 	padding-top:10px;
 	margin: 5% 2% 5% auto;
-	width: 17%;
+	width: 25%;
+	font-size: 12pt;
+	font-weight: bold;
 }
 
 
