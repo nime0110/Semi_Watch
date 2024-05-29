@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -13,6 +14,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import shop.domain.ImageVO;
+import shop.domain.ProductVO;
 
 public class ky_1_ProductDAO_imple implements ky_1_ProductDAO {
 
@@ -51,6 +53,48 @@ public class ky_1_ProductDAO_imple implements ky_1_ProductDAO {
          e.printStackTrace();
       }
    } // end of private void close() {} 
+
+	// 최신 등록순으로 6개의 상품 이미지를 가져오기
+	@Override
+	public List<ProductVO> selectByRegiDate(Map<String, String> paraMap) throws SQLException {
+		
+		List<ProductVO> productList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " SELECT rno, pdno, pdimg1 "
+					+ " FROM "
+					+ " (select row_number() over(order by pdinputdate desc) AS rno, pdno, pdimg1 "
+					+ " from tbl_product) "
+					+ " where rno between ? and ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(paraMap.get("start")) );
+			pstmt.setInt(2, Integer.parseInt(paraMap.get("end")));
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				ProductVO pvo = new ProductVO();
+				
+				pvo.setPdno(rs.getString("pdno"));
+				pvo.setPdimg1(rs.getString("pdimg1"));
+				
+				productList.add(pvo);
+				
+			}// end of while(rs.next()) 
+			
+			// System.out.println("확인용 리스트 사이즈 : "+productList.size());
+			
+		} finally {
+			close();
+		}
+		
+		return productList;
+		
+	}// end of public List<ProductVO> selectByRegiDate(Map<String, String> paraMap) throws SQLException 
 	
 	
 	

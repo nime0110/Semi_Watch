@@ -347,3 +347,22 @@ where reviewno = 41
 fk_pd_detailno
 select *
 from tbl_cart;
+
+
+select count(*) 
+from tbl_product 
+where pdstatus = 1;
+
+select *
+from tbl_product;
+
+SELECT *
+FROM
+(select row_number() over(order by pdinputdate desc) AS rno, pdno, pdimg1, pdinputdate
+from tbl_product)
+where rno between 1 and 6;
+
+
+
+-- pdstatus
+-- pdinputdate

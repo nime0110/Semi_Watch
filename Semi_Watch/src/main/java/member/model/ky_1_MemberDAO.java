@@ -53,6 +53,7 @@ public interface ky_1_MemberDAO {
 	
 	// 사용하고 있는 비밀번호 인지 확인하는 메소드
 	boolean pwdDuplicateCheck_edit(Map<String, String> paraMap) throws SQLException;
+
 	
 	
 
