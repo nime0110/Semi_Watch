@@ -40,7 +40,7 @@ public class sw_4_MemberDAO_imple implements sw_4_MemberDAO {
 		
 		try {
 			Context initContext = new InitialContext();
-		    Context envContext  = (Context)initContext.lookup("java:/comp/env");
+		    Context envContext  = (Context)initContext.lookup("java:/comp/env"); 
 		    ds = (DataSource)envContext.lookup("jdbc/semioracle");
 		    
 		    aes = new AES256(SecrectMyKey.KEY);
@@ -65,6 +65,15 @@ public class sw_4_MemberDAO_imple implements sw_4_MemberDAO {
 				e.printStackTrace();
 			}
 	} // end of private void close() {}
+
+	// 주문내역 아이디별로 가져오기
+	public String getOrderUserid(Map<String, String> paraMap) {
+		
+		
+		
+		
+		return null;
+	}
 
 	
 	

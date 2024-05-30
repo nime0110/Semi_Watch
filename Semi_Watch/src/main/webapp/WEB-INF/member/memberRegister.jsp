@@ -154,6 +154,10 @@ body > div.container {
   span.error {
   	font-weight:bold; 
   }
+  
+  input.form-control{
+
+  }
 
 </style>
 
@@ -169,7 +173,7 @@ body > div.container {
 <fieldset>
 
 <!-- Form Name -->
-<legend>회원가입</legend>
+<legend><br><br>회원가입</legend>
 
 <!-- Text input-->
 

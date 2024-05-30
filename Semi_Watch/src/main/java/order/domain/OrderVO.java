@@ -8,11 +8,8 @@ public class OrderVO {
 	private String fk_userid;	// 아이디(외래키)
 	private int total_price;	// 주문총액
 	private String total_orderdate; // 주문일자
-	
-	
-	
+		
 	private MemberVO mvo; // fk_userid 조회용?
-	
 	
 	
 	public MemberVO getMvo() {

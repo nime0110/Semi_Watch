@@ -48,6 +48,13 @@ public interface ky_1_MemberDAO {
 	// 입력받은 reviewno 를 가지고 리뷰정보를 삭제해주는 메소드
 	int deleteOneReview(String reviewno) throws SQLException;
 	
+	// 입력받은 paraMap 을 통해서 유저의 비밀번호를 변경해주는 메소드
+	int updatePwd(Map<String, String> paraMap) throws SQLException;
+	
+	// 사용하고 있는 비밀번호 인지 확인하는 메소드
+	boolean pwdDuplicateCheck_edit(Map<String, String> paraMap) throws SQLException;
+
+	
 	
 
 	
