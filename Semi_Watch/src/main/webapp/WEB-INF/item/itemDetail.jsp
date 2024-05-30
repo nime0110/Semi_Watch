@@ -8,14 +8,20 @@
 
 <link rel="stylesheet" href="../font/css/all.css">
 <link rel="stylesheet" type="text/css" href="<%= ctx_Path%>/css/itemDetail/itemDetail.css" />
+
+<jsp:include page="../header1.jsp" />
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 <%-- 허성심 제작 페이지 --%>
-<jsp:include page="../header1.jsp" />
-<script type="text/javascript" src="<%= ctx_Path%>/js/item/itemDetail.js"></script>
 
+
+<script type="text/javascript" src="<%= ctx_Path%>/js/item/itemDetail.js"></script>
+<script type="text/javascript">
+
+
+</script>
 
   <main>
     <article class="product">
@@ -56,7 +62,8 @@
           <!-- 라이트박스용 -->
       <section class="product__content default-container" aria-label="Product content">
         <header>
-          <input type="hidden" id="productno" name="pdno" value="${pvo.pdno}">
+    	  <input type="hidden" id="productno" name="pdno" value="${pvo.pdno}">
+          <input type="hidden" id="productpoint" name="point" value="${pvo.point}"> 
           <h2 class="company-name" tabindex="0">${pvo.brand}</h2>
           <p class="product__name" tabindex="0"></p>
           <h3 class="product__title" tabindex="0" id="productName">${pvo.pdname}</h3>
@@ -102,6 +109,8 @@
 		</c:if>
 		<!-- 색상선택끝 -->
         <form action="#" class="cart-form" style="margin-top:30px;">
+         <input type="hidden" id="productno" name="pdno" value="${pvo.pdno}">
+          <input type="hidden" id="productpoint" name="point" value="${pvo.point}">
           <div class="cart-form__input-container" aria-label="Define the product quantity">
             <button type="button" class="btn-changeValue minus-item">
               <span class="sr-only">Minus one item</span>
@@ -126,7 +135,15 @@
         </form>
       </section>
     </article>
-
+    <!-------------------------- 구매하기 폼 보내기 ------------------------------->
+	<form name="buyFrm" >
+    	  <input type="hidden" id="productno" name="str_pdno" value="${pvo.pdno}">
+          <input type="hidden" id="str_cart_qty" name="str_cart_qty" value="">
+          <input type="hidden" id="productpoint" name="productpoint" value="">
+          <input type="hidden" id="str_pd_detailno" name="str_pd_detailno" value="">
+          <input type="hidden" id="str_pdPriceArr" name="str_pdPriceArr" value="">
+          <input type="hidden" id="str_pdPointArr" name="str_pdPointArr" value="">
+	</form>
   </main>
   
   <div class="lightbox" id="lightbox" role="dialog"></div>
@@ -149,8 +166,7 @@
      <h2>${pvo.pdname}</h2>
 
      <div class="mainImg">
-       <img src="${pageContext.request.contextPath}/images/itemDetail/image-product-2.jpg" alt="상세이미지1" />
-       <img src="${pageContext.request.contextPath}/images/itemDetail/image-product-3.jpg" alt="상세이미지2" />
+       <img src="${pageContext.request.contextPath}/images/product/${pvo.pd_contentimg}" alt="상세이미지1" style="width:90em;" />
      </div>
    </div>
  </div>
@@ -212,19 +228,18 @@
       <div id="reviews_">
         <ul id="reviewsel">
           <li><a href="#">베스트리뷰 |</a></li>
-          <li><a href="#">작성일자순 |</a></li>
+          <li><a href="#">오래된순 |</a></li>
           <li><a href="#">최신순 </a></li>
         </ul>
         <div id="reviewBoard">
           <table>
             <tr>
               <td>
-                <p>솔직 구매후기 남깁니다~ 처음 구매해봤어요</p>
-                <a href="#">
+                <p>솔직 구매후기 남깁니다~ 처음 구매해봤어요
+                
                 노래 한곡 한곡 따뜻한 주제가 돋보이는 아름다운 한글가사의 노래를 모아봤어요. 바삐 돌아가는 하루에 빠른비트의 음악들도 좋지만. 가끔은 그 옛날 연필로 가사 ...
                 더미데이터입니다. 더미데이터입니다.더미데이터입니다.더미데이터입니다.더미데이터입니다.더미데이터입니다.더미데이터입니다.더미데이터입니다.더미데이터입니다.더미데이터입니다.
-                
-                </a>
+                </p>
               </td>
               <td>
                 <p>
@@ -275,13 +290,16 @@
           <a href="#">리뷰쓰기</a>
         </div>
         <!-- review popup start -->
-        <div id="reviewPopup" class="popup">
+        
+        <div id="reviewPopup" class="popup" style="display:none;">
 	    <div class="popup-content">
 	        <span class="close">&times;</span>
-	        <h2>Write a Review</h2>
-	        <textarea id="reviewText" rows="4" cols="50" placeholder="Write your review here..."></textarea>
+	        <h2>리뷰 작성하기</h2>
+	        <div id="rateYo"></div>
+			<p>Selected Rating: <span id="ratingValue">0</span></p>
+	        <textarea id="reviewText" rows="4" cols="50" placeholder="리뷰는 20자 이상 작성 가능합니다."></textarea>
 	        <br>
-	        <button id="submitReviewBtn">Submit Review</button>
+	        <button id="submitReviewBtn">리뷰 제출하기</button>
 	    </div>
 		</div>
         <!-- review popup end -->

@@ -49,7 +49,7 @@
       
       
       
-      /* 장바구니로 이동하기 ---> ajax로 보내줄 예정 */
+      /* 장바구니로 이동하기 ----------------------------------- */
       $('#addCart').click(function() {
 		  
         const colorSelect = $('#color_select');
@@ -98,9 +98,160 @@
             }
         });
 
-      });
+      }); // 장바구니로 이동하는 함수 종료
       
-        
+           
+      /* 구매하기로 이동하기 ----------------------------------- */
+      $('#buy').click(function() {
+		  
+        const colorSelect = $('#color_select');
+        if (colorSelect.length > 0 && !selectedColor) {
+			alert("색상을 선택하세요!");
+			return;
+		}
+		if(colorSelect.length == 0) {
+			selectedColor = 'none'; //기본 컬러가 없을 경우 none 으로 설정.
+		}
+		  
+		let productNo = $("input#productno").val(); //제품번호
+		
+		// 제품번호 구매수량 색상 가격 수량 포인트
+		let quantity = $("#product__quantity").val(); //구매수량
+		
+		
+		$("input[name='str_cart_qty']").val(quantity); //구매수량을 input에 넣음
+		$("input[name='selectedColor']").val(selectedColor); //컬러를 input에 넣음
+		
+
+		$.ajax({
+            type: "POST",
+            url: "goCheckOutDetailJSON.flex", 
+            data: {"productNo":productNo,
+            	   "selectedColor":selectedColor,
+            	   "quantity":quantity},
+            dataType: "json",
+            success: function(json) {
+				console.log("ajax 요청 성공~~", json);			
+
+                if (json.loginRequired) { //로그인안했을경우
+                    alert(json.message);
+                    location.href = contextPath + "/login/login.flex"; // 로그인 페이지로 이동
+                } else {
+ 					//console.log("json.str_pdPriceArr:", json.str_pdPriceArr);
+                    
+                    $("input#productpoint").val(json.productpoint);
+                    $("input#str_pd_detailno").val(json.str_pd_detailno);
+                    $("input#str_pdPriceArr").val(json.str_pdPriceArr);
+                    $("input#str_pdPointArr").val(json.str_pdPointArr);
+                    /// ---------------------------------
+				
+					const frm = document.buyFrm;
+					frm.action =  contextPath + "/order/checkOut.flex";
+					frm.method = "post";
+					frm.submit();
+                }
+             },
+            error: function(request, status, error) {
+                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+        });
+
+      }); // 장바구니로 이동하는 함수 종료
       
+      
+      
+      
+      
+    //////////////////////////////////////// 리뷰 작성 js start /////////////////////////////////////////////
+    /* ------------------------------리뷰창-------------------- */
+	let ratingSelect = 5;
+	
+	function initializeRateYo() {
+	    $("#rateYo").rateYo({
+	        rating: ratingSelect, // 초기 별점
+	        fullStar: true, // 별점을 정수로만 설정할 경우
+	        starWidth: "30px", // 별의 크기 조정
+	        ratedFill: "#ff9f00",
+	        normalFill: "#ddd"
+	    }).on("rateyo.set", function (e, data) {
+	        // 사용자가 별점을 선택했을 때 실행되는 이벤트
+	        $("#ratingValue").text(data.rating); // 선택한 별점을 표시
+	        ratingSelect = data.rating;
+	        console.log("The rating is :" + data.rating); // 선택한 별점을 콘솔에 출력
+	    });
+	}
+	initializeRateYo(); // 초기화
+	
+	const writeReview = $('#writeReview a');
+	const reviewPopup = $('#reviewPopup');
+	const closeBtn = $('.close');
+	const submitReviewBtn = $('#submitReviewBtn');
+ 	reviewPopup.hide();
+	
+	writeReview.click(function(e) {
+	    e.preventDefault();
+	    ratingSelect = 5; // 별점을 5점으로 초기화
+	    $("#rateYo").rateYo("option", "rating", ratingSelect); // 별점 설정
+	    reviewPopup.show();
+	});
+	
+	closeBtn.click(function() {
+	    reviewPopup.hide();
+	});
+	
+	$(window).click(function(event) {
+	    if ($(event.target).is(reviewPopup)) {
+	        reviewPopup.hide();
+	    }
+	});
+	
+	submitReviewBtn.click(function() {
+	    const reviewText = $('#reviewText').val().replace(/\s/g, ''); // 공백을 제거한 리뷰 값
+	    let productNo = $("input#productno").val(); //제품번호
+	    if (reviewText.length < 20) {
+	        alert('리뷰는 최소 20글자 이상 작성해야 합니다.');
+	        return;
+	    }
+	
+	    // 리뷰를 제출하는 로직을 여기에 추가
+	    // ajax로 보내야 함 -> 별점 + 리뷰쓰기 내용 + 로그인한 유저 아이디로 ajax로 보내서 컨트롤러에서 받은 값으로 db에 인서트
+	    console.log('리뷰 내용:', $('#reviewText').val());
+	    console.log('별점:', ratingSelect);
+		console.log('해당제품번호:',  productNo);
+	    reviewPopup.hide();
+	
+	    $.ajax({
+	        type: "POST",
+	        url: "reviewJSON.flex",
+	        data: {
+	            'reviewText': reviewText,
+	            'rating': ratingSelect,
+	            'productNo': productNo
+	        },
+	        dataType: "json",
+	        success: function(json) {
+	            console.log("AJAX 요청 성공:", json);
+             
+                if (json.loginRequired) { //로그인안했을경우
+                    alert(json.message);
+                    location.href = contextPath + "/login/login.flex"; // 로그인 페이지로 이동
+                } else {
+					alert(json.message);
+                }
+	        },
+	        error: function(request, status, error) {
+	            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+	        }
+	    });
+	});
+
 });
+	// Getter
+	var normalFill = $("#rateYo").rateYo("option", "fullStar"); //returns true
+	 
+	// Setter
+	$("#rateYo").rateYo("option", "fullStar", true); //returns a jQuery Element
+	
+	
+	
 
