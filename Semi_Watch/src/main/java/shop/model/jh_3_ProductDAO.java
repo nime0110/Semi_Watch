@@ -4,8 +4,6 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-import shop.domain.CartVO;
-import shop.domain.ImageVO;
 import shop.domain.ProductVO;
 
 public interface jh_3_ProductDAO {

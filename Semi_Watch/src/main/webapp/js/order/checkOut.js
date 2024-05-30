@@ -550,13 +550,13 @@ function checkOutUpdate(ctxPath, userid, paySuccess){
             success:function(json){
                 if(json.isSuccess == 1){	// {isSuccess:1} 또는 {isSuccess:0}
                     // 주문이 성공했으므로 주문목록을 보여준다.
-                    //location.href="<%= ctxPath%>/shop/orderList.up";
                     alert("주문이 성공");
+                    location.href=`${json.ctxPath}/index.flex`;
                 }
                 else{
                     // 주문이 실패할 경우
-                    //location.href="<%= ctxPath%>/shop/orderError.up";
                     alert("주문이 실패");
+                    location.href=`${json.ctxPath}/index.flex`;
                 }
             },
             error: function(request, status, error){

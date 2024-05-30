@@ -13,8 +13,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import shop.domain.CartVO;
-import shop.domain.ImageVO;
 import shop.domain.ProductVO;
 import shop.domain.Product_DetailVO;
 
