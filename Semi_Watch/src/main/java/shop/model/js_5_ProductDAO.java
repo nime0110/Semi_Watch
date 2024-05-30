@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import shop.domain.CartVO;
 import shop.domain.ImageVO;
 import shop.domain.ProductVO;
 import shop.domain.Product_DetailVO;
@@ -76,6 +77,12 @@ public interface js_5_ProductDAO {
 
 	// 상품수정페이지에 띄울 상품추가이미지
 	List<ImageVO> extraimgfilename(String pdno) throws SQLException;
+
+	// 로그인한 유저의 장바구니 테이블 불러오기
+	List<CartVO> selectProductCart(String userid) throws SQLException;
+
+	
+	List<ProductVO> selectCartSumPricePoint(String userid) throws SQLException;
 
 	
 

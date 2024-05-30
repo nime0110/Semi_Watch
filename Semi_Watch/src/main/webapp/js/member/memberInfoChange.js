@@ -306,7 +306,7 @@ $(document).ready(function(){
     // 전화번호 값에 - 추가하기
     let mobile = $("input#mobile").val();
 
-    const h1 = mobile.slice(0,4);   
+    const h1 = mobile.slice(0,3);   
     const h2 = mobile.slice(4,8);   
     const h3 = mobile.slice(8);
 

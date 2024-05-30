@@ -27,12 +27,39 @@ div.productInfo {
 	border: solid 2px black;
 }
 
+.pInfo1{
+	border:solid 1px orange; 
+	padding-top:10px; 
+	margin: 5% 0 5% 2%; 
+	width: 33%;
+}
+
+.pInfo4{
+	border:solid 1px orange; 
+	padding-top:10px; 
+	margin: 5% auto 5% 0; 
+}
+
+.pInfo2{
+	padding-top:10px;
+	margin: 7% auto;
+}
+
+.pInfo3{
+	padding-top:10px;
+	margin: 5% 2% 5% auto;
+	width: 25%;
+	font-size: 12pt;
+	font-weight: bold;
+}
+
+
 .fixed-size{
 	height: 100px;
 	resize: none;
 }
 
-img#pImage{
+img.pImage{
 	border: solid 1px blue; 
 	width: 100px; 
 	height: 100px;

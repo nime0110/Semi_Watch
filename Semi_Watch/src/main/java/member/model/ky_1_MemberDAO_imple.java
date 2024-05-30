@@ -503,21 +503,27 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
                     (searchWord != null && !searchWord.trim().isEmpty());
 			
 			String sql = " SELECT rno, reviewno, pdname, userid, username, brand, review_content, starpoint "
+					+ "FROM "
+					+ "( "
+					+ " SELECT rownum AS rno, reviewno, pdname, userid, username, brand, review_content, starpoint "
 					+ " FROM "
 					+ " ( "
-					+ "    SELECT rownum AS rno, TO_NUMBER(R.reviewno) AS reviewno, P.pdname AS pdname, M.userid AS userid, "
-					+ "    M.username AS username, P.brand AS brand, R.review_content AS review_content, R.starpoint AS starpoint "
-					+ "    FROM tbl_review R "
-					+ "    JOIN tbl_product P ON R.fk_pdno = P.pdno "
-					+ "    JOIN tbl_member M ON R.fk_userid = M.userid "
-					+ "    WHERE M.userid != 'admin' ";
+					+ " SELECT TO_NUMBER(R.reviewno) AS reviewno, P.pdname AS pdname, M.userid AS userid, "
+					+ " M.username AS username, P.brand AS brand, R.review_content AS review_content, "
+					+ " R.starpoint AS starpoint "
+					+ " FROM tbl_review R "
+					+ " JOIN tbl_product P ON R.fk_pdno = P.pdno "
+					+ " JOIN tbl_member M ON R.fk_userid = M.userid "
+					+ " WHERE M.userid != 'admin' "
+					+ " ORDER BY reviewno DESC "
+					+ " )"
+					+ ") WHERE ";
 			
 			if(userSearch) {
-				 sql +="AND " + colname + " LIKE '%' || ? || '%' ";
+				 sql += colname + " LIKE '%' || ? || '%' AND ";
 			}
 				
-			sql += " ORDER BY reviewno DESC) "
-			    + " WHERE rno BETWEEN ? AND ? ";
+			sql += " rno BETWEEN ? AND ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			// (10-9) and 10 // => between 1 and 10
@@ -529,11 +535,11 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
 				searchWord = searchWord.toUpperCase();
 				
 				pstmt.setString(1, searchWord);
-				pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));
-				pstmt.setInt(3, (currentShowPageNo * sizePerPage));
+				pstmt.setString(2, Integer.toString((currentShowPageNo * sizePerPage) - (sizePerPage - 1)) );
+				pstmt.setString(3, Integer.toString((currentShowPageNo * sizePerPage)) );
 			} else {
-				pstmt.setInt(1, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));
-				pstmt.setInt(2, (currentShowPageNo * sizePerPage));
+				pstmt.setString(1, Integer.toString((currentShowPageNo * sizePerPage) - (sizePerPage - 1)) );
+				pstmt.setString(2, Integer.toString((currentShowPageNo * sizePerPage)) );
 			}
 			
 			rs = pstmt.executeQuery();
@@ -647,6 +653,10 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
 				ProductVO pvo = new ProductVO();
 				MemberVO mvo = new MemberVO();
 				
+				String img1 = rs.getString("pdimg1");
+				System.out.println("확인용 img1 : " + img1);
+				
+				
 				review.setReviewno(rs.getString("reviewno"));
 				pvo.setBrand(rs.getString("brand"));
 				pvo.setPdname(rs.getString("pdname"));
@@ -659,6 +669,8 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
 				
 				review.setPvo(pvo);
 				review.setMvo(mvo);
+				
+				
 				
 			}
 	
@@ -694,6 +706,65 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
 		
 		return n;
 	}// end of public int deleteOneReview(String reviewno) throws SQLException 
+
+	
+	// 입력받은 paraMap 을 통해서 유저의 비밀번호를 변경해주는 메소드
+	@Override
+	public int updatePwd(Map<String, String> paraMap) throws SQLException {
+		
+		int result = 0;
+		
+		try {	
+			conn = ds.getConnection();
+			
+			String sql = " update tbl_member "
+					+ " set pw = ? "
+					+ ", lastpwdchangedate = sysdate "
+					+ " where userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, Sha256.encrypt(paraMap.get("pw")) );
+			pstmt.setString(2, paraMap.get("userid"));
+			
+			result = pstmt.executeUpdate();	
+		} finally {
+			close();
+		}
+		
+		return result;
+	}// end of public int updatePwd(Map<String, String> paraMap) throws SQLException 
+
+	
+	// 사용하고 있는 비밀번호 인지 확인하는 메소드
+	@Override
+	public boolean pwdDuplicateCheck_edit(Map<String, String> paraMap) throws SQLException {
+		boolean isExists = false;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select pw "
+					   + " from tbl_member "
+					   + " where userid = ? and pw = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, Sha256.encrypt(paraMap.get("password")) );
+			
+			rs = pstmt.executeQuery();
+			
+			isExists = rs.next(); 	// 행이 있으면(현재 사용중인 비밀번호) true,
+									// 행이 없으면(새로운 비밀번호) false
+			
+			
+		} finally {
+			close();
+		}
+		
+		
+		return isExists;
+	} // end of public boolean pwdDuplicateCheck_edit(Map<String, String> paraMap) throws SQLException 
 
 
 	

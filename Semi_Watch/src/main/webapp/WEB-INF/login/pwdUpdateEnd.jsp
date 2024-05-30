@@ -52,22 +52,23 @@
 	               return; // 종료
 	            }
 	            else {
-	            	//암호가 정규표현식에 맞는 경우
+	            	// 암호가 정규표현식과 일치할 경우
+	            	
 	            	const frm = document.pwdUpdateEndFrm;
 	            	frm.action = "<%=ctxPath%>/login/pwdUpdateEnd.flex";
 	            	frm.method = "post"; //암호를 변경해 주는것은 /login/pwdUpdateEnd.up
 	            	frm.submit();
-	            }
-			}
+	            }// end of if(!bool)~else
+			}// end of if(pwd != pwd2)~else
 		}); // end of $("button.btn-success").click(function()
-	});
+	});// end of $(document).ready(function () 
 </script>
 
 <c:if  test="${requestScope.method == 'GET'}">
 	<form name="pwdUpdateEndFrm">
 	   <div class="div_pwd" style="text-align: center;">
 	      <span style="color: blue; font-size: 12pt;">새암호</span><br/> 
-	      <input type="password" name="pwd" size="25" />
+	      <input type="password" name="pwd" id="pwd" size="25" />
 	   </div>
 	   
 	   <div class="div_pwd" style="text-align: center;">
@@ -75,7 +76,7 @@
 	      <input type="password" id="pwd2" size="25" />
 	   </div>
 	   
-	   <input type="hidden" name="userid" value="${requestScope.userid}"/>
+	   <input type="hidden" name="userid" id="userid" value="${requestScope.userid}"/>
 	   
 	   <div style="text-align: center;">
 	      <button type="button" class="btn btn-success">암호변경하기</button>

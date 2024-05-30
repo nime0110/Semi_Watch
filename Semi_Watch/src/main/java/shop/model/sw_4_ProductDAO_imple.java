@@ -233,7 +233,7 @@ public class sw_4_ProductDAO_imple implements sw_4_ProductDAO {
 	            
 	            cvo.setCartno(cartno);
 	            cvo.setFk_userid(fk_userid);
-	            cvo.setFk_pdno(fk_pdno);
+	            //cvo.setFk_pdno(fk_pdno);
 	            cvo.setProd(prodvo);
 	            
 	            cartList.add(cvo);
