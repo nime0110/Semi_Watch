@@ -400,6 +400,10 @@ from tbl_order;
 desc tbl_orderdetail;
 
 select *
+from tbl_member
+where username = '유선우';
+
+select *
 from tbl_orderdetail;
 
 select *
@@ -431,3 +435,34 @@ commit;
 
 select * 
 from tbl_orderdetail;
+
+
+select ordercode, E.fk_userid as fk_userid , total_price, total_orderdate, fk_pdno, color, pdname 
+    				    from 
+    				   ( 
+    				      select ordercode, C.fk_userid, total_price, total_orderdate, fk_pdno, color 
+    				     from 
+    				      ( 
+    				     select ordercode, A.fk_userid, total_price, total_orderdate, fk_pd_detailno 
+    				     from 
+    				     ( 
+    				         select ordercode, fk_userid, total_price, total_orderdate 
+    				         from tbl_order 
+                          ) A 
+    				     join tbl_orderdetail B 
+    				      on A.ordercode = B.fk_ordercode 
+    				   ) C 
+    				   join tbl_pd_detail D 
+    				    on C.fk_pd_detailno = D.pd_detailno 
+    				    ) E 
+    				    join tbl_product F
+    				    on E.fk_pdno = F.pdno;
+                        
+                        
+select username
+from tbl_member
+where userid = ?;
+
+
+
+                        
