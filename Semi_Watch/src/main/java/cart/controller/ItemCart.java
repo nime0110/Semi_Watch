@@ -1,8 +1,8 @@
 package cart.controller;
 
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
+
 
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,18 +10,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import member.domain.MemberVO;
 import shop.domain.CartVO;
-import shop.domain.ProductVO;
 import shop.model.js_5_ProductDAO;
 import shop.model.js_5_ProductDAO_imple;
-import shop.model.sw_4_ProductDAO;
-import shop.model.sw_4_ProductDAO_imple;
+
 
 public class ItemCart extends AbstractController {
 	
-	private js_5_ProductDAO mdao = null;
+	private js_5_ProductDAO pdao = null;
 	
 	public ItemCart() {
-	      mdao = new js_5_ProductDAO_imple();
+	      pdao = new js_5_ProductDAO_imple();
 	}
 
 	@Override
@@ -52,14 +50,8 @@ public class ItemCart extends AbstractController {
         System.out.println("~~~확인용: " +  loginuser.getUserid());
        
         // 로그인한 사용자의 장바구니 정보를 데이터베이스에서 조회
-        List<CartVO> cartList = mdao.selectProductCart(loginuser.getUserid());
-        List<ProductVO> sum = mdao.selectCartSumPricePoint(loginuser.getUserid());
-        
-        // 조회된 정보를 request에 저장
-        
-        request.setAttribute("sum", sum);
-        
-        
+        List<CartVO> cartList = pdao.selectProductCart(loginuser.getUserid());
+   
         request.setAttribute("cartList", cartList);
         // 장바구니 페이지로 이동
         super.setRedirect(false);
@@ -68,43 +60,3 @@ public class ItemCart extends AbstractController {
     }
 }
         
-        
-        
-		/*
-			  String pdname = request.getParameter("pdname");
-			  String brand = request.getParameter("brand");
-			  String price = request.getParameter("price");
-			  String saleprice = request.getParameter("saleprice");
-			  String pdimg1 = request.getParameter("pdimg1");
-			 
-			  Map<String, String> paraMap = new HashMap<>(); // 보내기 위해 담아준것
-			  
-			  paraMap.put("pdname",pdname);
-			  paraMap.put("brand", brand);
-			  paraMap.put("price", price);
-			  paraMap.put("saleprice", saleprice);
-			  paraMap.put("pdimg1", pdimg1);
-		  */
-		///////////////////////////////////////////////////
-		  
-		// mdao.select_product(paraMap);
-		//장바구니에 넣을 성품 select해오기
-	//	List<ProductVO> productList = mdao.select_product(); // proid
-		//장바구니 인서트 dao 만들기
-		
-	/*  == 확인용 ==
-		for(ProductVO pvo : productList) {
-			System.out.println(pvo.getBrand()+", "+pvo.getPdname());
-		}
-	*/
-		
-	/*	
-		request.setAttribute("productList", productList);
-				
-		super.setRedirect(false);
-	    super.setViewPage("/WEB-INF/item/itemCart.jsp");
-	}
-
-}
-
-*/

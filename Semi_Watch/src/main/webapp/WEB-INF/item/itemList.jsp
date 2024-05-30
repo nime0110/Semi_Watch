@@ -61,41 +61,6 @@ String ctxPath = request.getContextPath();
 }
 
 
-.button {
-   border-radius: 10px;
-   border: none;
-   font-size: 15px;
-   width: 35%;
-   height: 30px;
-   transition: all 0.5s;
-   cursor: pointer;
-   margin: 1%;
-}
-
-.button span {
-   cursor: pointer;
-   display: inline-block;
-   position: relative;
-   transition: 0.5s;
-}
-
-.button span:after {
-   content: '\00bb';
-   position: absolute;
-   opacity: 0;
-   top: 0;
-   right: -2%;
-   transition: 0.5s;
-}
-
-.button:hover span {
-   padding-right: 25%;
-}
-
-.button:hover span:after {
-   opacity: 1;
-   right: 0;
-}
 
 /** Shop: Thumbnails **/
 .shop_thumb {
@@ -131,7 +96,7 @@ margin: auto;
 
 
 .shop-thumb_title {
-   color: #00008B;
+   color: black;
    font-size: 16pt;
    font-weight: 600;
    text-decoration: none;
@@ -147,7 +112,7 @@ margin: auto;
 }
 
 .shop-thumb_saleprice {
-   color: blue;
+   color: #3333ff;
    font-size: 11pt;
    font-weight: bolder;
    text-align: right;
@@ -156,7 +121,7 @@ margin: auto;
 
 .shop-thumb_sale {
    
-   color: red;
+   color: #ff884d;
    font-size: 11pt;
    font-weight: bolder;
    text-align: right;
@@ -165,9 +130,10 @@ margin: auto;
 
 
 .shop-thumb_brand{
-   color: green;
+   color: maroon;
    font-size: 14pt;
    font-weight: 600;
+   display: inline-block;
    text-decoration: none;
 }
 
@@ -440,15 +406,12 @@ $(document).ready(function(){
                         </div>
                      
                      </div>
-                     <span class="shop-thumb_brand">${pvo.brand}</span> <br>
+                     <span class="shop-thumb_brand py-1">${pvo.brand}</span> <br>
                      <a href="<%= ctxPath%>/item/itemDetail.flex?pdno=${pvo.pdno}"> <span class="shop-thumb_title">${pvo.pdname}</span>
                      </a>
                      <div class="shop-thumb_price">정가 : <fmt:formatNumber value="${pvo.price}" type="number" groupingUsed="true"/>원</div>
                      <div class="shop-thumb_saleprice">판매가 : <fmt:formatNumber value="${pvo.saleprice}" type="number" groupingUsed="true"/>원</div>
                      <div class="shop-thumb_sale">${pvo.discountPercent}% 할인
-                        <button type="button" class="btn btn-danger" style="margin-left: 3%;">
-                           <i class="fa-solid fa-heart"></i>
-                        </button>
                      </div>
                      <%--<div>
                          

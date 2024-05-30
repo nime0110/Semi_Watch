@@ -318,6 +318,12 @@ COMMENT ON COLUMN tbl_delivery.delivery_msg IS '배송시에 요청하는 배송
     select * from tbl_orderdetail;
   
     
+    select * from tbl_delivery
+    
+    alter table tbl_delivery drop column delivery_email;
+    alter table tbl_delivery drop column delivery_extra_address;
+    alter table tbl_delivery drop column delivery_detail_address;
+    alter table tbl_delivery add delivery_postcode varchar2(10);
     
     select * from tbl_product where pdno = 147 ;
     select * from tbl_pd_detail;
@@ -371,4 +377,22 @@ insert into tbl_cart (cartno , fk_pdno, fk_userid, cart_qty  ) values (SEQ_TBL_C
 insert into tbl_cart (cartno , fk_pdno, fk_userid, cart_qty  ) values (SEQ_TBL_CART_CARTNO.nextval , 상품번호 , 유저아이디 , 장바구니수량);
 
 
-select * from tbl_pd_detail;
+select * from tbl_pd_detail where fk_pdno = 147;
+
+delete from tbl_pd_detail where pd_detailno = 130;
+commit;
+select * from tbl_product;
+update tbl_pd_detail set pd_qty = 12 where pd_detailno =75;
+update tbl_pd_detail set pd_qty = 12 where pd_detailno = 76;
+commit;
+
+select color 
+from tbl_pd_detail
+where fk_pdno in (131) and pd_qty > 0;
+
+
+select * from tbl_cart where fk_userid = 'admin';
+
+select * from tbl_delivery
+
+select * from tbl_order;

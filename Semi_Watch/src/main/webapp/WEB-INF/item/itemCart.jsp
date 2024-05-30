@@ -11,10 +11,13 @@
 
 <jsp:include page="../header1.jsp" />
 
-<script type="text/javascript" src="<%= ctxPath%>/js/cart/Item_cart.js"></script>
 
 
 <style>
+
+body {
+    font-family: Arial, sans-serif; 
+}
 
 .card {
     margin: auto;
@@ -25,11 +28,6 @@
     border: 1px solid #ccc; /* 일정한 border 설정 */
 }
 
-@media (max-width: 767px) {
-    .card {
-        margin: 3vh auto;
-    }
-}
 
 .cart {
     background-color: #fff;
@@ -61,57 +59,11 @@
     }
 }
 
-.summary .col-2 {
-    padding: 0;
+.each{
+
+	height: 150px;
 }
 
-.summary .col-10 {
-    padding: 0;
-}
-
-.row {
-    margin: 0;
-}
-
-.title b {
-    font-size: 1.5rem;
-}
-
-.main {
-    margin: 0;
-    padding: 2vh 0;
-    width: 100%;
-}
-
-.col-2, .col {
-    padding: 0 1vh;
-    vertical-align: middle;
-}
-
-a {
-    padding: 0 1vh;
-}
-
-.close {
-    margin-left: auto;
-    font-size: 0.7rem;
-}
-
-.back-to-shop {
-    margin-top: 4.5rem;
-}
-
-h5 {
-    margin-top: 4vh;
-}
-
-hr {
-    margin-top: 1.25rem;
-}
-
-form {
-    padding: 2vh 0;
-}
 
 select {
     border: 1px solid rgba(0, 0, 0, 0.137);
@@ -122,14 +74,6 @@ select {
     background-color: rgb(247, 247, 247);
 }
 
-input {
-    border: 1px solid rgba(0, 0, 0, 0.137);
-    padding: 1vh;
-    margin-bottom: 4vh;
-    outline: none;
-    width: 100%;
-    background-color: rgb(247, 247, 247);
-}
 
 input:focus::-webkit-input-placeholder {
     color: transparent;
@@ -146,60 +90,30 @@ input:focus::-webkit-input-placeholder {
     border-radius: 0;
 }
 
-.btn:focus {
-    box-shadow: none;
-    outline: none;
-    color: white;
+
+.text-brand {
+color:maroon;
 }
 
-.btn:hover {
-    color: white;
+.text-brand , .text-pdname {
+
+font-size:16px;
+font-weight:bolder;
+
+}
+.text-color{
+font-size:14px;
+font-weight:bolder;
 }
 
-a {
-    color: black;
-}
-
-a:hover {
-    color: black;
-    text-decoration: none;
-}
-
-#code {
-    background-image: linear-gradient(to left, rgba(255, 255, 255, 0.253), rgba(255, 255, 255, 0.185)), url("https://img.icons8.com/small/16/000000/long-arrow-right.png");
-    background-repeat: no-repeat;
-    background-position-x: 95%;
-    background-position-y: center;
-}
-
-#led {
-    width: 50px;
-}
-
-.col {
-    position: relative;
-}
-
-.fixed-button {
-    position: absolute;
-    right: 40%;
-    top: 0;
-}
-
-.quantity-input {
-    width: 30%;
-}
 </style>
 
 <script type="text/javascript">
 
 $(document).ready(function(){
 	
-	
-	
-	
 	// 제품번호의 모든 체크박스가 체크가 되었다가 그 중 하나만 이라도 체크를 해제하면 전체선택 체크박스에도 체크를 해제하도록 한다. 
-	  $("input:checkbox[name='pdno']").click(function(){
+	$("input:checkbox[name='pdno']").click(function(){
 		 
 		  let bFlag = false; // 전체선택버튼을 체크하기 위한 표식
 		  
@@ -225,19 +139,134 @@ $(document).ready(function(){
 		  }
 		  
 		  
-	  }); // end of $("input:checkbox[name='pnum']").click(function(){   }
+	  }); // end of $("input:checkbox[name='pdno']").click(function(){   }
 	
 	
+    // 체크박스와 수량 입력 필드에 이벤트 리스너 추가
+    document.querySelectorAll('.item-checkbox').forEach((checkbox) => {
+    	checkbox.addEventListener('change', updateSumPrice);
+        
+    });
+
+    document.querySelectorAll('.oqty').forEach((input) => {
+    	 input.addEventListener('input', updateSumPrice);
+        
+    });
+
+    function updateSumPrice() {
+    	
+    
+        let totalSumPrice = 0;
+        let totalCount = 0;
+        
+        $('.sumPrice').empty(); // 기존 항목 비우기
+        
+        $('.item-checkbox').each(function(index, checkbox) {
+            const isChecked = $(checkbox).is(':checked');
+            // console.log(`\${index} , \${isChecked}`); // 디버깅 메시지
+            
+            if (isChecked) {
+                const each = $(checkbox).closest('.each');
+                
+                if (each.length > 0) {
+                
+             	    const pdName = each.find('.pdname').text();
+                    // console.log(pdName);
+                    
+                    const price = Number(each.find('.saleprice').val());
+                    // console.log(price);
+                    
+                    const su = Number(each.find('.oqty').val());
+                    // console.log(quantity);
+                    
+                    const itemTotalPrice = price * su;
+                    // console.log(itemTotalPrice);
+                    
+                    totalSumPrice += itemTotalPrice;
+                    totalCount++;
+                    
+                    // 상품명과 수량 곱하기 가격을 .sumPrice에 추가
+                    const sumPriceHtml = `<div class="py-2" id="sumPriceItem\${index}">\${pdName}: ₩\${itemTotalPrice.toLocaleString()}</div>`;
+                    
+                    $('div.sumPrice').append(sumPriceHtml);
+                    
+                    // console.log(`\${pdName}: ₩\${itemTotalPrice.toLocaleString()}`); 
+                }
+            } else {
+                $(`#sumPriceItem\${index}`).remove(); // 체크 해제 시 해당 항목 제거
+                // console.log(`sumPriceItem\${index}`);
+            }
+        });
+
+        // 총 합계 가격 및 선택된 상품 수 업데이트
+        $('.total_sumPrice').text(totalSumPrice.toLocaleString());
+        $('.chkcount').text(totalCount);
+    }
+
+    // 전체 선택 및 선택 해제 함수
+    $('#allCheckOrNone').change(function(e) {
+        const isChecked = $(this).is(':checked');
+        $('.item-checkbox').prop('checked', isChecked);
+        updateSumPrice();
+    });
+    
+    $("input.oqty").spinner({
+        spin: function(event, ui) {
+            if (ui.value > 100) {
+                $(this).spinner("value", 100);
+                return false;
+            } else if (ui.value < 1) {
+                $(this).spinner("value", 1);
+                return false;
+            }
+            updateSumPrice();
+        }
+    });// end of $("input#spinner").spinner({});----------------
+	
+   
+     $("input.oqty").on("spinstop", function(e){
+		
+    	updateSumPrice();
+    	 
+		let cart_qty = $(this).val();
+		//let cartno = $(this).closest().find("input:hidden[class='cartno']").val();
+		//cartnum
+		let cartno = $(this).closest('div').find("input:hidden[class='cartno']").val();
+		
+		// console.log("수량",cart_qty);
+		// console.log("장바구니번호", cartno);
+		
+		$.ajax({
+			
+			url:"<%= ctxPath%>/item/cartUpdate.flex",
+    		type:"post",
+    		data:{"cart_qty":cart_qty,
+    			  "cartno":cartno},
+    		dataType:"json",
+    		success:function(json){
+    			
+    			if(json.n == 1){
+    				
+    				// alert("장바구니수량이 변경되었습니다.");
+    				<%-- location.href = "<%= ctxPath%>/item/itemCart.flex"; --%>
+    				// 상대 또는 절대 둘다 가능
+    			}
+    		},
+			  	error: function(request, status, error){
+		           alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	        }
+		
+		}); // end of $.ajax 
 	
 	
+	}); // end of $("input.oqty").on("blur", function(){
 	
+	  
+	  
+	  
+	  
 	
-	
-	
-	
-	
-	
-});
+}); // end of document
 	  
 	  
 //=== 장바구니에서 제품 주문하기 === // 	
@@ -306,6 +335,7 @@ function goOrder(){
 	            pdPriceArr.push($("input.totalPrice").eq(i).val());
 	            pdPointArr.push($("input.totalPoint").eq(i).val());
 	        } // end of if
+	        
 	    } // end of for
 
 	    for(let i = 0; i < checkCnt; i++) {
@@ -366,7 +396,7 @@ function goOrder(){
 	
 } // end of function goOrder(){ 
 	
-//=== 장바구니에서 특저어 제품을 비우기 === // 	
+//=== 장바구니에서 특정 제품을 비우기 === // 	
 function goDel(cartno){
 	
 	const pdname = $(event.target).parent().parent().find("span.pdname").text(); // 상품명
@@ -375,7 +405,7 @@ function goDel(cartno){
 		
 		$.ajax({
 			
-			url:"<%= ctxPath%>/item/itemDelete.flex",
+			url:"<%= ctxPath%>/item/cartDelete.flex",
     		type:"post",
     		data:{"cartno":cartno},
     		dataType:"json",
@@ -383,7 +413,7 @@ function goDel(cartno){
     			
     			if(json.n == 1){
     				
-    				alert("주문수량이 변경되었습니다.");
+    				alert("장바구니에서 특정상품 삭제완료.");
     				location.href = "<%= ctxPath%>/item/itemCart.flex";
     				// 상대 또는 절대 둘다 가능
     			}
@@ -427,8 +457,7 @@ function allCheckBox(){
 
 </script>
 
-
-<div class="card w-70 pt-3 pb-3 mt-5 mb-5" style="border-radius:10px;">
+<div class="card" style="border-radius:10px;">
     <div class="row">
         <div class="col-md-8 cart">
             <div class="title">
@@ -437,82 +466,84 @@ function allCheckBox(){
                     <c:set var="cartListSize" value="${fn:length(requestScope.cartList)}" />
                     <div class="col align-self-center text-right text-muted">총 ${cartListSize}건</div>
                 </div>
-                <div class="col-1" style="margin: 5% 0 0 0;">
-		             <input type="checkbox" id="allCheckOrNone" class="item-checkbox" onclick="allCheckBox()">
-		             <span style="font-size: 10pt;"><label for="allCheckOrNone">전체선택</label></span>
-		        </div>
-            </div>    
-            <div class="row border-bottom">
-                <div class="row  flex-column">
-                	<%--  <c:set var="sumAmount" value="${sum_amount}" /> --%>
-                	<c:if test="${not empty requestScope.cartList}">
-                	<c:forEach var="cart" items="${requestScope.cartList}" varStatus="status">
-                		<div class="mb-1 mt-1 pt-5 pb-5" style="display: flex; border-top: 1px solid #ccc; align-items: center;">
-		                	<div class="col-1">
-		                		<input type="checkbox" class="item-checkbox" name="pdno" id="pdno${status.count}" value="${cart.prod.pdno}" />&nbsp;<label class="label_pnum" for="pdno${status.count}">${cartv.prod.pdno}</label>
-		                	</div>	
-		                	
-		                  	<div class="col-2">
-		                  		<a href="<%= ctxPath%>/item/itemDetail.flex?pdno=${cart.prod.pdno}">
-		                  	  	<img class="img-fluid" src="<%= ctxPath%>/images/product/${cart.prod.pdimg1}" />
-		                  	  	</a>
-		                  	</div>
-		                    <div class="col-3">
-		                        <span class="row text-muted">${cart.prod.brand}</span>
-		                        <a href="<%= ctxPath%>/item/itemDetail.flex?pdno=${cart.prod.pdno}">
-		                        <span class="pdname">${cart.prod.pdname}</span>
-		                        </a>
-		                        <span>
-		                        <br>
-		                        <c:choose>
-		                        	<c:when test="${cart.pdvo.color == 'none'}">
-		                        	단일컬러
-		                        	</c:when>
-		                        	<c:otherwise>
-		                        	${cart.pdvo.color}
-		                        	</c:otherwise>
-		                        </c:choose>
-		                        </span>
-		                    </div>
-		                    <div class="col-3 pt-5">
-		                    
-		                        <input type="number" min="1" max="50" value="${cart.cart_qty}" class="quantity-input led oqty" size="1">
-		                         <%-- 잔고량(남은재고량) --%>
-		                         <p>남은재고</p><input type="text" class="pqty" value="${cart.pdvo.pd_qty}" />
-                            	
-                            
-                            <%-- 장바구니 테이블에서 특정제품의 현재주문수량을 변경(sql update)하여 적용하려면 먼저 장바구니번호(시퀀스이며 기본키)를 알아야 한다 --%>
-                            <p>장바구니기본키</p><input type="text" class="cartno" value="${cart.cartno}" />
-                            <p>상품상세기본키</p><input type="text" class="pd_detailno" value="${cart.pdvo.pd_detailno}" />
-                            <p>수량별상품금액</p><input type="text" class="totalPrice" value="" />
-                            <p>수량별상품적립포인트</p><input type="text" class="totalPoint" value="" />
-                            
-		                    </div>
-		                    <div class="col">
-		                    	₩<span id ="item-price"><fmt:formatNumber value="${cart.prod.saleprice}" pattern="###,###" /></span>
-		                        <button type="button" class="fixed-button" onclick="goDel(${cart.cartno})">&#10005;</button>
-		                        <input type="hidden" class="saleprice" value="${cart.prod.saleprice}" />
-		                        <input type="hidden" class="point" value="${cart.prod.point}" />
-		                        <div style="display : none;" id = "danga">${cart.prod.saleprice}</div>
-		                    </div>
-	                    </div>
-                  	</c:forEach>
-                  	</c:if>
-                  	<c:if test="${empty requestScope.cartList}">
-                  	
-                  	<div>장바구니에 담긴 상품이 없습니다.</div>
-                  	</c:if>
+                <div class="py-3">
+                    <input type="checkbox" id="allCheckOrNone" class="item-checkbox" onclick="allCheckBox()">
+                    <label for="allCheckOrNone">전체선택</label>
                 </div>
             </div>
-            <div class="back-to-shop"><a href="/Semi_Watch/item/itemList.flex">&leftarrow;</a>
-            <a href="/Semi_Watch/item/itemList.flex" class="text-muted">쇼핑으로 돌아가기</a></div>
+            <div class="row border-bottom">
+                <div class="row flex-column">
+                    <%--  <c:set var="sumAmount" value="${sum_amount}" /> --%>
+                    <c:if test="${not empty requestScope.cartList}">
+                    <c:forEach var="cart" items="${requestScope.cartList}" varStatus="status">
+                        <div class="each" style="display: flex; border-top: 1px solid #ccc; align-items: center;">
+                            <div class="col-1">
+                                <input type="checkbox" class="item-checkbox" name="pdno" id="pdno${status.count}" value="${cart.prod.pdno}" />&nbsp;<label class="label_pnum" for="pdno${status.count}">${cartv.prod.pdno}</label>
+                            </div>
+                            
+                            <div class="col-2">
+                                <a href="<%= ctxPath%>/item/itemDetail.flex?pdno=${cart.prod.pdno}">
+                                    <img class="img-fluid" src="<%= ctxPath%>/images/product/${cart.prod.pdimg1}" />
+                                </a>
+                                
+                            </div>
+                            <div class="col-3">
+                                <span class="row text-brand">${cart.prod.brand}</span>
+                                <a href="<%= ctxPath%>/item/itemDetail.flex?pdno=${cart.prod.pdno}">
+                                    <span class="pdname row text-pdname">${cart.prod.pdname}</span>
+                                </a>
+                                <span>
+                                    <br>
+                                    <c:choose>
+                                        <c:when test="${cart.pdvo.color == 'none'}">
+                                            <span class="row text-color">단일컬러</span>
+                                        </c:when>
+                                        <c:otherwise>
+                                           <span class="row text-color"> ${cart.pdvo.color}</span>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </span>
+                            </div>
+                            <div class="col-3">
+                            
+                                <input id="spinner" min="1" max="50" value="${cart.cart_qty}" class="oqty">
+                                 <%-- 잔고량(남은재고량) <p>남은재고</p> --%>
+                                 <input type="hidden" class="pqty" value="${cart.pdvo.pd_qty}" />
+                                
+                            
+                            <%-- 장바구니 테이블에서 특정제품의 현재주문수량을 변경(sql update)하여 적용하려면 먼저 장바구니번호(시퀀스이며 기본키)를 알아야 한다 --%>
+                            <%--<p>장바구니기본키</p>--%><input type="hidden" id="cartnum" class="cartno" value="${cart.cartno}" />
+                            <%--<p>상품상세기본키</p>--%><input type="hidden" class="pd_detailno" value="${cart.pdvo.pd_detailno}" />
+                            <%--<p>수량별상품금액</p>--%><input type="hidden" class="totalPrice" value="" />
+                            <%--<p>수량별상품적립포인트</p>--%><input type="hidden" class="totalPoint" value="" />
+                            
+                            </div>
+                            <div class="col">
+                                ₩<span id="item-price"><fmt:formatNumber value="${cart.prod.saleprice}" pattern="###,###" /></span>
+                                <button type="button" onclick="goDel(${cart.cartno})">&#10005;</button>
+                                <input type="hidden" class="saleprice" value="${cart.prod.saleprice}" />
+                                <input type="hidden" class="point" value="${cart.prod.point}" />
+                                <div style="display : none;" id = "danga">${cart.prod.saleprice}</div>
+                            </div>
+                        </div>
+                    </c:forEach>
+                    </c:if>
+                    <c:if test="${empty requestScope.cartList}">
+                    
+                    <div>장바구니에 담긴 상품이 없습니다.</div>
+                    </c:if>
+                </div>
+            </div>
+            <div class="back-to-shop pt-3"><a href="/Semi_Watch/item/itemList.flex">&leftarrow;</a>
+            <a href="/Semi_Watch/item/itemList.flex" style="font-size: 14pt; font-weight:bolder; ; color:black;">쇼핑으로 돌아가기</a></div>
         </div>
+        
         <div class="col-md-4 summary">
-            <div><h5><b>결제 예정금액</b></h5></div>
+            <div><h5><b>상품 결제 예정금액</b></h5></div>
             <hr>
             <div class="row">
-                <div class="col" style="padding-left:0;">총 건</div>
-                <div class ="col">₩<span class="col text-right" id="sumPrice">0</span></div>
+                <div class="col" style="padding-left:15px;">선택된 상품 <span class="chkcount">0</span>건</div>
+                
             </div>
             <%-- <form>
                 <p>배송비</p>
@@ -520,24 +551,30 @@ function allCheckBox(){
                <!--  <p>GIVE CODE</p>
                 <input id="code" placeholder="Enter your code"> -->
             </form>--%>
+            <div class="row" style="padding-left: 15px;">
+            
+                10만원 이상 구매시 무료 배송
+                
+            </div>
+            <div class="row">
+                <div class="col sumPrice"></div>
+            </div>
             <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
                 <div class="col" id="deliveryPrice">결제 금액</div>
-                <div class ="col">₩<span class="col text-right" id="sumPrice">0</span></div>
+                <div class="col">₩<span class="col text-right total_sumPrice">0</span></div>
             </div>
-            <button class="btn" id="goOrder" onclick="goOrder()")>주문하기</button>
+            <button class="btn" id="goOrder" onclick="goOrder()">주문하기</button>
         </div>
     </div>
     <form name="hidden">
-    	<input type="hidden" name="str_pdno" value="" />
-    	<input type="hidden" name="str_cart_qty" value="" />
-    	<input type="hidden" name="str_cartno" value="" />
-    	<input type="hidden" name="str_pd_detailno" value="" />
-    	<input type="hidden" name="str_pdPriceArr" value="" />
-    	<input type="hidden" name="str_pdPointArr" value="" />
+        <input type="hidden" name="str_pdno" value="" />
+        <input type="hidden" name="str_cart_qty" value="" />
+        <input type="hidden" name="str_cartno" value="" />
+        <input type="hidden" name="str_pd_detailno" value="" />
+        <input type="hidden" name="str_pdPriceArr" value="" />
+        <input type="hidden" name="str_pdPointArr" value="" />
     </form>
 </div>
 
 <jsp:include page="../footer.jsp"></jsp:include>  
-
-
 

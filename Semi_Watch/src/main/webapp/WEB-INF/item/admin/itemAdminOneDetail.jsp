@@ -39,6 +39,10 @@ div.fileDrop{ display: inline-block;
     div.fileDrop > div.fileList > span.fileSize{padding-right: 20px; float:right;} 
     span.clear{clear: both;} 
     
+tr td:first-child {
+	vertical-align: middle;
+}    
+    
 </style>
 
 <script type="text/javascript">
@@ -429,7 +433,7 @@ $(document).ready(function() {
                     <option value="none">단일컬러</option>
                 </select>
             </td>
-            <td>상품재고수량</td>
+            <td style="font-weight: bold; text-align: right; vertical-align: middle;">상품재고수량</td>
             <td colspan="2">
               <input name="spinnerPqty${status.count}" value="0" style="width: 30px; height: 20px;"> 개
                             
@@ -450,9 +454,9 @@ $(document).ready(function() {
          <tr>
          	<td>상품 대표이미지</td>
          	 
-            <td colspan="2"> <span>등록된 상품 대표이미지</span>
+            <td colspan="2"> <span style="font-weight: bold;">등록된 상품 대표이미지</span>
             <img src="${pageContext.request.contextPath}/images/product/${requestScope.pvo.pdimg1}" style="width:40%;" />
-            <span>등록된 상품 대표이미지 파일명<br>${requestScope.pvo.pdimg1}</span>
+            <span style="font-weight: bold;">등록된 상품 대표이미지 파일명<br></span>${requestScope.pvo.pdimg1}
             </td>
             <td>
                <input type="file" name="pdimg1" class="infoData img_file" accept="image/*" />
@@ -462,7 +466,7 @@ $(document).ready(function() {
          <tr>
             <td>상품 상세정보이미지</td>
             <td colspan="2">
-            	<span>등록된 상세정보이미지 파일명<br>${requestScope.pvo.pd_contentimg}</span>
+            	<span style="font-weight: bold;">등록된 상세정보이미지 파일명<br></span>${requestScope.pvo.pd_contentimg}
             </td>
             <td>
                <input type="file" name="pd_contentimg" class="infoData img_file" accept="image/*" />
@@ -476,13 +480,13 @@ $(document).ready(function() {
                  <div id="fileDrop" class="fileDrop"></div>
              </td>
              <td colspan="2">
-	             <span>등록된 추가이미지 <c:if test="${empty requestScope.imglist}"> 없음</c:if>
+	             <span style="font-weight: bold;">등록된 추가이미지 </span><c:if test="${empty requestScope.imglist}"> 없음</c:if>
 	                 	<c:if test="${not empty requestScope.imglist}">
 	                 		<c:forEach var="img" items="${requestScope.imglist}" varStatus="status">
 	                 			${img.imgfilename}<br>  
 	                 		</c:forEach>
 	                 	</c:if>
-	             </span>
+	             
              </td>
          </tr>
 
@@ -490,7 +494,7 @@ $(document).ready(function() {
          <tr>
              <td class="control-label">이미지파일<br>미리보기</td>
              <td colspan="3">
-                 <img id="previewImg" style="width:40%; height:300px;" src="" />
+                 <img id="previewImg" style="width:40%; height:300px;" src="<%= ctxPath%>/images/no-productimg.png" />
              </td>
          </tr>
          <tr>
@@ -502,9 +506,9 @@ $(document).ready(function() {
       	  <c:set var="pdno" value="${requestScope.pvo.pdno}" />
           <input type="button" id="btnUpdate" value="상품수정하기" class="btn btn-primary">
       
-          <input type="button" id="btnDelete" value="상품삭제하기" onclick="product_delete('${pdno}')" class="btn btn-danger">
+          <input type="button" id="btnDelete" value="상품삭제하기" onclick="product_delete('${pdno}')" class="btn btn-danger mx-5">
       		
-          <input type="button" id="btnCancel" value="상품수정취소" class="btn btn-warning">
+          <input type="button" id="btnCancel" value="상품수정취소" class="btn btn-warning" onclick="window.history.back()">
       </div>
     </form>
 	</c:if>

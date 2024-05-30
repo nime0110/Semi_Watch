@@ -21,7 +21,7 @@
    }
    
    table#productTbl tr.productInfo:hover {
-      background-color: #e6ffe6;
+      background-color: buttonface;
       cursor: pointer;
    }
    
