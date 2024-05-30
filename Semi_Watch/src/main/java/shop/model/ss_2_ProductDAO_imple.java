@@ -99,7 +99,7 @@ public ProductVO selectOneProductBypdno(String pdno) throws SQLException {
 	try {
 		conn = ds.getConnection();
 		
-		String sql = " select pdno, pdname, brand, pdimg1, price, saleprice, pd_content "
+		String sql = " select pdno, pdname, brand, pdimg1, price, saleprice, pd_content, pd_contentimg, point "
 				+ " from tbl_product "
 				+ " where pdno = ? ";
 		
@@ -118,7 +118,9 @@ public ProductVO selectOneProductBypdno(String pdno) throws SQLException {
 			pvo.setPrice(rs.getLong("price"));
 			pvo.setSaleprice(rs.getLong("saleprice"));
 			pvo.setPd_content(rs.getString("pd_content"));
-		
+			pvo.setPd_contentimg(rs.getString("pd_contentimg"));
+			pvo.setPoint(rs.getInt("point"));
+			
 			
 		}//end of while(rs.next()) --------------
 		
@@ -365,6 +367,35 @@ public List<ProductVO> wishAdd(Map<String, Object> paraMap) throws SQLException 
     }
 
     return wishProductList;
+}
+
+
+// 리뷰 테이블에 insert 하는 메소드
+@Override
+public int insertReview(String productNo, String reviewText, String rating, String userid) throws SQLException {
+	int result = 0;
+	
+	try {
+		conn = ds.getConnection();
+		
+		String sql = " INSERT INTO tbl_review "
+				+ " (reviewno, fk_userid, review_content, starpoint, fk_pdno)  "
+				+ " VALUES ( SEQ_REVIEWNO.nextval, ?, ?, ?, ?) ";
+		
+		pstmt = conn.prepareStatement(sql);
+		
+		pstmt.setString(1, userid);
+		pstmt.setString(2, reviewText);
+		pstmt.setString(3, rating);
+		pstmt.setString(4, productNo);
+		
+		result = pstmt.executeUpdate();
+		
+	} finally {
+		close();
+	}
+	
+	return result;
 }
 	
 	

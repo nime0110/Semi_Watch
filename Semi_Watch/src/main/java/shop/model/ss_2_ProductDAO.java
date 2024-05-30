@@ -30,8 +30,12 @@ public interface ss_2_ProductDAO {
 	
 	//상품상세 -> 장바구니 insert 메소드
 	int DetailProductInsert(String pdDetailNo, String userid, String quantity) throws SQLException;
-
+	
+	//선택한 물품 위시리스트에 넣는 메소드
 	List<ProductVO> wishAdd(Map<String, Object> paraMap)  throws SQLException;
+
+	// 리뷰 테이블에 insert 하는 메소드
+	int insertReview(String productNo, String reviewText, String rating, String userid)  throws SQLException;
 	
 	
 	

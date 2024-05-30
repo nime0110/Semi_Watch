@@ -106,7 +106,7 @@ $('#wish_list').click(function() {
                     <a href="${contextPath}/item/itemDetail.flex?pdno=${item.pdno}" class="list-item">
                         <input type="hidden" name="${item.pdno}">
                         <input class="form-check-input" style="left:0;" type="checkbox" value="${item.pdno}" id="flexCheckDefault">
-                        <img src="${contextPath}/images/product/product_thum/${item.pdimg}" alt="${item.pdname}" class="product__thumb">
+                        <img src="${contextPath}/images/product/${item.pdimg}" alt="${item.pdname}" class="product__thumb">
                         <div class="list-item__abstract"	>
                             <h4>${item.pdname}</h4>
                             <div class="price-calculation" style="display: flex; justify-content: space-between;">
@@ -142,7 +142,7 @@ $('#wish_list').click(function() {
 
     // 찜하기 버튼 클릭시에 발생하는 중요 이벤트 end ----------------------------------------------
 
-   //위시리스트가 있는지 확인하고 정렬하는 함수 start -------------------------     
+   //위시리스트가 있는지 확인하고 정렬하는 함수 start, 위시리스트 위 동그라미에 숫자 표시하기!!!  -------------------------     
    function checkWishlist() { 
      let wishlistStr = localStorage.getItem('str_arr_jjim');
      let wishlist = JSON.parse(wishlistStr || '[]'); // JSON으로 파싱, 없는 경우 빈 배열로 초기화 : 위시리스트 위 동그라미에 숫자 표시 위함
