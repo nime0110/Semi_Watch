@@ -169,32 +169,20 @@ $(document).ready(function(){
 
 
 
-    // 상품 총비용 구하기(상품별 총액)
-    let p_totalPrice =0;
-    for(let i=0; i<$("div[name='pInfo']").length; i++){
-        p_totalPrice += Number($("input.p_totalPrice").eq(i).val());
-    }
-    console.log(p_totalPrice);
-    
-    $("span.p_totalPrice").html(p_totalPrice+"원");
+    // 배송비
+    const deliveryfee = $("input.deliveryfee").val();
 
-
-    // 배송비 무료,  처리 상품총금액 10만원 이상
-    if(Number(p_totalPrice) < 100000){
-        $("span.deliveryfeeView").html("+ 5000");
-        $("input.deliveryfee").val("5000");
-    }
-    else{
-        $("span.deliveryfeeView").html("무료");
-        $("input.deliveryfee").val("0");
-    }
+    // 최종결제비용  총비용 구하기(상품별 총액)
+    const totalPrice_ori = $("input#totalPrice").val(); // 초기값
+    $("span#totalCostView").html(`${Number(totalPrice_ori-deliveryfee).toLocaleString('en')} 원`);
+    $("span.totalPrice").html(`${Number(totalPrice_ori).toLocaleString('en')} 원`);
 
 
     // === 마일리지 관련 내용 ===//
     // 처음에 보유 마일리지 출력
-    const userPoint = $("input:hidden[name='userpoint']").val();  // 초기값
-    $("span#userpoint").text(userPoint);    // 보유 값
-    $("span#restpoint").text(userPoint);    // 사용가능 값 초기
+    const userPoint = $("input:text[name='userpoint']").val();  // 초기값
+    $("span#userpoint").text(Number(userPoint).toLocaleString('en'));    // 보유 값
+    $("span#restpoint").text(Number(userPoint).toLocaleString('en'));    // 사용가능 값 초기
 
 
     // 마일리지 사용하기
@@ -212,11 +200,11 @@ $(document).ready(function(){
         // 첫번째 글자가 0 이면 블랭크하도록
         if(usePoint.slice(0,1) == "0"){
             $("span#useEndPoint").empty();
-            $("input#useEndPointInput").val("");
+            $("input:text[name='useEndPointInput']").val("");
             $(this).val("");
             usePoint = "";
-            $("span#restpoint").text(userPoint);
-            $("input:hidden[name='userpoint']").val(userPoint);
+            $("span#restpoint").text(userPoint.toLocaleString('en'));
+            $("input:text[name='userpoint']").val(userPoint);
             
         }
 
@@ -230,10 +218,10 @@ $(document).ready(function(){
         }
 
         // 마일리지 사용비율 상품총금액에 80%만 가능하도록
-        if(Number(usePoint) > Number(p_totalPrice)*0.8 ){
-            $("input#usePoint").val(Number(p_totalPrice)*0.8); //사용 포인트 최대값으로
+        if(Number(usePoint) > Number(totalPrice_ori)*0.8 ){
+            $("input#usePoint").val(Number(totalPrice_ori)*0.8); //사용 포인트 최대값으로
             // $("span#restpoint").text(`${Number(p_totalPrice)*0.8}`); 
-            usePoint = Number(p_totalPrice)*0.8;
+            usePoint = Number(totalPrice_ori)*0.8;
             alert("마일리지는 상품금액에 80%만 사용가능합니다.");
         }
 
@@ -243,31 +231,35 @@ $(document).ready(function(){
         const restPoint = Number(userPoint)-Number(usePoint);
 
         if(restPoint < 0){
-            $("input:hidden[name='userpoint']").val("0");
+            $("input:text[name='userpoint']").val("0");
         }
         else if(isNaN(restPoint)){  // 타입이 숫자가 아니면
             $(this).val("");
             usePoint = "";
-            $("span#restpoint").text(userPoint);
-            $("input:hidden[name='userpoint']").val(userPoint);
+            $("span#restpoint").text(userPoint.toLocaleString('en'));
+            $("input:text[name='userpoint']").val(userPoint);
 
         }
         else{
-            $("input:hidden[name='userpoint']").val(restPoint);
-            $("span#restpoint").text(restPoint);
+            $("input:text[name='userpoint']").val(restPoint);
+            $("span#restpoint").text(restPoint.toLocaleString('en'));
             
         }
 
         // 마지막 사용포인트 값을 결제 영역에 넘겨준다.
         if(usePoint == "" || usePoint == "0"){
             $("span#useEndPoint").empty();
-            $("input:hidden[name='useEndPointInput']").val("");
+            $("input:text[name='useEndPointInput']").val("");
+
+            $("span#totalCostView").html(`${Number(totalPrice_ori).toLocaleString('en')} 원`);
+            $("input#totalPrice").val(totalPrice_ori);
         }
         else{
-            $("span#useEndPoint").html(`- ${usePoint}`);
-            $("input:hidden[name='useEndPointInput']").val(usePoint);
-            
-            
+            $("span#useEndPoint").html(`- ${usePoint.toLocaleString('en')}`);
+            $("input:text[name='useEndPointInput']").val(usePoint);
+
+            $("span#totalCostView").html(`${(totalPrice_ori-usePoint).toLocaleString('en')} 원`);
+            $("input#totalPrice").val(totalPrice_ori-usePoint);
         }
         
 
@@ -275,20 +267,30 @@ $(document).ready(function(){
 
     // 마일리지 모두사용 버튼 클릭 시
     $("button#allUsePoint").click(function(){
-        if(Number(userPoint) > Number(p_totalPrice)*0.8 ){
-            $("input#usePoint").val(Number(p_totalPrice)*0.8); //사용 포인트 최대값으로
+        if(Number(userPoint) > Number(totalPrice_ori)*0.8 ){
+            $("input#usePoint").val(Number(totalPrice_ori)*0.8); //사용 포인트 최대값으로
             // $("span#restpoint").text(`${Number(p_totalPrice)*0.8}`); 
-            const restPoint = Number(userPoint)-(Number(p_totalPrice)*0.8);
+            const restPoint = Number(userPoint)-(Number(totalPrice_ori)*0.8);
             alert("마일리지는 상품금액에 80%만 사용가능합니다.");
-            $("span#restpoint").text(restPoint);
-            $("input:hidden[name='userpoint']").val(restPoint);
-            $("span#useEndPoint").html(`- ${Number(userPoint)-restPoint}`);
+            $("span#restpoint").text(restPoint.toLocaleString('en'));
+            $("input:text[name='userpoint']").val(restPoint);
+            $("span#useEndPoint").html(`- ${(userPoint-restPoint).toLocaleString('en')}`);
+
+            $("input:text[name='useEndPointInput']").val(userPoint-restPoint);
+
+            $("span#totalCostView").html(`${(totalPrice_ori-(totalPrice_ori*0.8)).toLocaleString('en')} 원`);
+            $("input#totalPrice").val(totalPrice_ori-(totalPrice_ori*0.8));
         }
         else{
             $("input#usePoint").val(userPoint);
-            $("input:hidden[name='userpoint']").val("0")  // 보유한 값을 0으로 만든다.
+            $("input:text[name='userpoint']").val("0")  // 보유한 값을 0으로 만든다.
             $("span#restpoint").text("0");
-            $("span#useEndPoint").html(`- ${userPoint}`);
+            $("span#useEndPoint").html(`- ${userPoint.toLocaleString('en')}`);
+
+            $("input:text[name='useEndPointInput']").val(userPoint);
+
+            $("span#totalCostView").html(`${(totalPrice_ori-userPoint).toLocaleString('en')} 원`);
+            $("input#totalPrice").val(totalPrice_ori-userPoint);
         }
 
         
@@ -392,6 +394,12 @@ function gochange_complite(){
 // Function Declaration
 function goCheckOutPayment(ctxPath, userid){
 
+    if($("select#requiremsg").val()=="배송시 요청사항을 선택해 주세요."){
+        alert("배송메시지를 선택하세요.");
+        return;
+    }
+
+
 
     // 가정 1 장바구니 또는 구매할 품목이 없는 경우
     // 상품리스트 페이지로 이동 또는 메인페이지로 이동
@@ -424,20 +432,40 @@ function checkOutUpdate(ctxPath, userid, paySuccess){
 
     // 결제가 성공했을 경우
     if(paySuccess){
+        
+        // 업데이트시 필요한내용 정리
+    /*
+        1. 주문자정보 => 로그인한 유저의 정보로 대체
+        2. 배송정보 (수취인성명, 연락처, 우편코드, 주소명, 배송메세지)
+        3. 제품정보 (제품번호, 제품상세번호, 옵션명, 주문수량)
+        4. 결제정보 (결제금액, 포인트(적립포인트+(기존보유포인트-사용포인트)))
+    */
+
+        // 2. 배송정보
+        const name = $("input:hidden[name='name']").val().trim();
+        const email = $("input:hidden[name='email']").val().trim();
+        const mobile = $("input:hidden[name='mobile']").val().trim();
+        const postcode = $("input:hidden[name='postcode']").val().trim();
+        const address = $("input:hidden[name='address']").val().trim();
+        let deliverymsg = $("select#requiremsg").val();
+
+        if(deliverymsg == "직접입력"){
+            deliverymsg = $("textarea#comment").val().trim();
+        }
+
         // 제품개수 알아오기
         const productCnt = $("div[name='pInfo']").length;
 
         // console.log("체크아웃 제품 개수 : "+productCnt);
         // 체크아웃 제품 개수 : 3
 
+        // 3. 제품정보
         const pnumArr = new Array();        // 또는 const pnumArr = []; 가능    // pnum 배열
         const pdetailArr = new Array();     // 주문상세번호 배열
-        const poptionArr = new Array();        // 주문옵션 배열
+        const poptionArr = new Array();     // 주문옵션 배열
         const oqtyArr = new Array();        // 주문수량 배열
-        // const pqtyArr = new Array();     // 재고수량 배열
         const cartnoArr = new Array();      // 장바구니번호 배열
         const ptotalPriceArr = new Array(); // 제품별 제품가격총액 배열
-        // const totalPointArr = new Array();  // 제품별 적립포인트총액 배열
         
 
         // 보여지는 상품만큼 반복
@@ -447,52 +475,94 @@ function checkOutUpdate(ctxPath, userid, paySuccess){
             console.log("제품상세번호 : " , $("input.pdetail").eq(i).val() );
             console.log("제품옵션 : " , $("input.poption").eq(i).val() );
             console.log("주문량 : " ,  $("input.oqty").eq(i).val() );
-            // console.log("잔고량 : " ,  $("input.pqty").eq(i).val() );
             console.log("삭제해야할 장바구니 번호 : " , $("input.cartno").eq(i).val() ); 
-            console.log("주문한 제품의 개수에 따른 가격합계 : " , $("input.p_totalPrice").eq(i).val() );
-            // console.log("주문한 제품의 개수에 따른 포인트합계 : " , $("input.totalPoint").eq(i).val() );
-            console.log("======================================");
-
-            /*
-                제품번호 :  16
-                제품상세번호 :  25
-                제품옵션 :  none
-                주문량 :  3
-                삭제해야할 장바구니 번호 :  1
-                주문한 제품의 개수에 따른 가격합계 :  300000
-            */
-        
+            console.log("주문한 제품의 개수에 따른 가격합계 : " , $("input.ptotalPrice").eq(i).val() );
+            console.log("======================================"); 
             
-            pnumArr.push( $("input.pnum").eq(i).val() );
-            pdetailArr.push( $("input.pdetail").eq(i).val() );
-            poptionArr.push( $("input.poption").eq(i).val() );
-            oqtyArr.push( $("input.oqty").eq(i).val() );
-            cartnoArr.push( $("input.p_totalPrice").eq(i).val() );
-            ptotalPriceArr.push( $("input.cartno").eq(i).val() );
+            pnumArr.push($("input.pnum").eq(i).val());
+            pdetailArr.push($("input.pdetail").eq(i).val());
+            poptionArr.push($("input.poption").eq(i).val());
+            oqtyArr.push($("input.oqty").eq(i).val());
+            cartnoArr.push($("input.cartno").eq(i).val());
+            ptotalPriceArr.push($("input.ptotalPrice").eq(i).val());
                  
-        }// end of for---------------------.
+        }// end of for---------------------
 
 
         // 확인용
-        for(let i=0; i<checkCnt; i++) {
+        for(let i=0; i<productCnt; i++) {
             console.log("확인용 제품번호: " + pnumArr[i] + ", 제품상세번호: " + pdetailArr[i] + ", 제품옵션: " + poptionArr[i] + ", 주문수량 : " + oqtyArr[i] + ", 장바구니번호: " + cartnoArr[i] + ", 제품별 가격총액: " + ptotalPriceArr[i]);
     
         }// end of for(let i=0; i<checkCnt; i++) {}-------------
-
-        const str_pnum = pnumArr.join(); // 배열을 하나의 문자열로 만들자. default가 join(",")임. 그냥 join()해도 콤마로 연결됨
+        
+        const str_pnum = pnumArr.join(); // 배열을 하나의 문자열변경
         const str_pdetail = pdetailArr.join();
         const str_poption = poptionArr.join();
         const str_oqty = oqtyArr.join();
         const str_cartno = cartnoArr.join();
         const str_ptotalPrice = ptotalPriceArr.join();
 
+        // 4. 결제정보 (결제금액, 포인트(적립포인트+(기존보유포인트-사용포인트)))
+        const paymentTotalPrice = $("input#totalPrice").val();
+        const savePoint = Number($("input:hidden[name='pointSaveInput']").val());
+        let useEndPointInput = $("input:text[name='useEndPointInput']").val();  // 사용포인트
+        const userpoint = Number($("input:text[name='userpoint']").val()); // 사용하고 남은 포인트
+
+        if(useEndPointInput == ""){
+            useEndPointInput = 0;
+        }
+        else{
+            useEndPointInput = Number(useEndPointInput);
+        }
+
+        console.log("확인용 savePoint : "+ savePoint);
+        console.log("확인용 useEndPointInput : "+ useEndPointInput);
+        console.log("확인용 userpoint : "+ userpoint );
+
+    
+
+        console.log("확인용 타입 : "+ typeof(useEndPointInput));
+
+        const updatePoint = savePoint+userpoint-useEndPointInput;
+
+        console.log("확인용 타입2 : "+typeof(updatePoint));
+
+        console.log("확인용 업데이트포인트 : "+ Number(updatePoint));
 
 
-
-
-
-
-
+        $.ajax({
+            url:"checkOutUpdate.flex",
+            type:"post",
+            data:{"name" : name,
+                  "mobile" : mobile,
+                  "postcode":postcode,
+                  "address":address,
+                  "deliverymsg":deliverymsg,
+                  "str_pnum_join":str_pnum, // 요거 쓸데가 없음
+                  "str_pdetail_join":str_pdetail,
+                  "str_poption_join":str_poption,
+                  "str_oqty_join":str_oqty,
+                  "str_cartno_join":str_cartno,
+                  "str_ptotalPrice_join":str_ptotalPrice,
+                  "paymentTotalPrice":paymentTotalPrice,
+                  "updatePoint":updatePoint},
+            dataType:"json",
+            success:function(json){
+                if(json.isSuccess == 1){	// {isSuccess:1} 또는 {isSuccess:0}
+                    // 주문이 성공했으므로 주문목록을 보여준다.
+                    //location.href="<%= ctxPath%>/shop/orderList.up";
+                    alert("주문이 성공");
+                }
+                else{
+                    // 주문이 실패할 경우
+                    //location.href="<%= ctxPath%>/shop/orderError.up";
+                    alert("주문이 실패");
+                }
+            },
+            error: function(request, status, error){
+                    alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+            }
+        });// end of  $.ajax({
 
     }
     else{

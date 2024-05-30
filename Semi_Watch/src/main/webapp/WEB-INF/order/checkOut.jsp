@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt"  uri="http://java.sun.com/jsp/jstl/fmt"%>
     
 <%
 	String ctxPath = request.getContextPath();
@@ -143,7 +144,7 @@
 	                                <option>배송전에 연락 주세요.</option>
 	                                <option id="ownWrite">직접입력</option>
                                 </select>
-                                <textarea class="form-control fixed-size" id="comment" maxlength="30">안녕</textarea>
+                                <textarea class="form-control fixed-size" id="comment" maxlength="30"></textarea>
                             </div>
                         </td>
                     </tr>
@@ -167,7 +168,7 @@
                         </th>
                         <td>
                         	<div class="flexcss">
-	                        	<input type="text" class="form-control mr-3" id="usePoint" style=" width: 40%;"/>
+	                        	<input type="text" class="form-control mr-3" id="usePoint" style=" width: 40%;" value="0"/>
 	                            <button type="button" class="btn btn-sm btn-dark" id="allUsePoint">모두사용</button>
 	                            
                         	</div>
@@ -176,7 +177,7 @@
                                 <div style="font-size: 10pt;">사용가능&nbsp;<span id="userpoint"></span>&nbsp;P</div>
                                 <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
                                 <div style="font-size: 10pt;">보유&nbsp;<span id="restpoint"></span>&nbsp;P</div>
-                                <input name="userpoint" type="hidden" value="5000" /><%-- 보유한 마일리지 값 --%>
+                                <input name="userpoint" type="text" value="5000" style="border: solid 1px red;"/><%-- 보유한 마일리지 값 --%>
                             </div>
                             
                         </td>
@@ -217,7 +218,7 @@
 		                	<img class="pImage" src="<%=ctxPath%>/images/product/${requestScope.pvoList[no].pdimg1}"/>
 		                </a>
 	                    <div class="productInfo pInfo1" >
-	                    	<span>${requestScope.pvoList[no].pdname}</span>
+	                    	<span id="pname${status.index}">${requestScope.pvoList[no].pdname}</span>
 	                    	<br>
 	                    	<span style="font-size: 10pt; color: blue;">${requestScope.pvoList[no].saleprice}원</span>
 	                    </div>
@@ -228,56 +229,58 @@
 	                    <div class="productInfo pInfo3 " align="right">${requestScope.pdPriceArr[no]} 원</div>
 	                    
 						<%-- 결제완료시 업데이트할 때 보내줄 값 저장소 --%>
-	                    <input type="hidden" class="pnum" value="${requestScope.pvoList[no]}" /> <%-- 제품번호 --%>
-	                    <input type="hidden" class="pdetail" value="${requestScope.pvoList[no]}" /> <%-- 제품상세번호 --%>
-	                    <input type="hidden" class="poption" value="${requestScope.pvoList[no]}" /> <%-- 제품옵션 --%>
-	                    <input type="hidden" class="oqty" value="${requestScope.pvoList[no]}"> <%-- 구매수량 --%>
-	                    <input type="hidden" class="p_totalPrice" value="${requestScope.pvoList[no]}"> <%-- 제품별 총포인트 --%>
+	                    <input type="hidden" class="pnum" value="${requestScope.pdnoArr[no]}" /> <%-- 제품번호 --%>
+	                    <input type="hidden" class="pdetail" value="${requestScope.pd_detailnoArr[no]}" /> <%-- 제품상세번호 --%>
+	                    <input type="hidden" class="poption" value="${requestScope.pvoList[no].pdvo.color}" /> <%-- 제품옵션 --%>
+	                    <input type="hidden" class="oqty" value="${requestScope.cart_qtyArr[no]}"> <%-- 구매수량 --%>
+	                    <input type="hidden" class="ptotalPrice" value="${requestScope.pdPriceArr[no]}"> <%-- 제품별 총금액 --%>
 	                    <input type="hidden" class="cartno" value="${requestScope.cartnoArr[no]}" /> <%-- 장바구니번호 --%>
 	                </div>
 	           	</c:forEach>     
-	                
-	                
-	                
-       
-                
             </div>
             
 
             <%-- 여기는 총가격이 보여지는 곳입니다.--%>
             <div>
-                <div class="row">
+                <div class="row mb-1">
                     <div class="col-lg-6">
                         총 상품금액
                     </div>
                     <div class="col-lg-6 text-right">
-                        <span class="p_totalPrice"></span>
+                        <span class="totalPrice"></span>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mb-1">
                     <div class="col-lg-6">
                         배송비
                     </div>
                     <div class="col-lg-6 text-right">
-                        <span class="deliveryfeeView"></span>
-                        <input class="deliveryfee" type="hidden" />
+                    	<c:if test="${requestScope.totalPrice >= 100000}">
+                    		<span class="deliveryfeeView">무료</span>
+                    		<input class="deliveryfee" type="hidden" value="0"/>
+                    	</c:if>
+                    	<c:if test="${requestScope.totalPrice < 100000}">
+                    		<span class="deliveryfeeView">5000</span>
+                    		<input class="deliveryfee" type="hidden" value="5000"/>
+                    	</c:if>
+                        
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mb-1">
                     <div class="col-lg-5">
                         마일리지 사용
                     </div>
                     <div class="col text-right">
-                        <span id=useEndPoint></span><input type="hidden" name="useEndPointInput" />
+                        <span id=useEndPoint></span><input type="text" name="useEndPointInput" value="0"/>
                     </div>
                 </div>
                 <%-- 여기에 구매시 마일리지 확인 --%>
-                <div class="row">
+                <div class="row mb-1">
                     <div class="col-lg-5">
                         예상 마일리지 적립
                     </div>
                     <div class="col text-right">
-                        <span name=pointSave>${requestScope.totalPoint}&nbsp;P</span><input type="hidden" name="pointSaveInput" />
+                        <span name="pointSave"><fmt:formatNumber value="${requestScope.totalPoint}" pattern="###,###" /> &nbsp;P</span><input type="hidden" name="pointSaveInput" value="${requestScope.totalPoint}"/>
                     </div>
                 </div>
                 
@@ -285,18 +288,18 @@
 				<br>
 				
                 <div class="row h4">
-                    <div class="col-lg-6">
+                    <div class="col-lg-4 pt-1">
                         총 결제비용
                     </div>
-                    <div class="col-lg-6 text-right">
+                    <div class="col-lg-8 text-right">
                     	<%-- js 에서 보내준다. --%>
-                    	<span id="totalCostView"></span>
-                        <input type="hidden" id="totalCost" value="3000"/>
+                    	<span id="totalCostView" style="font-size: 25pt;"></span>
+                        <input type="hidden" id="totalPrice" value="${requestScope.totalPrice}"/>
                     </div>
                 </div>
 
                 <div class="mt-3" align="center">
-                    <button type="button" class="btn btn-lg btn-dark form-control" style="width: 80%;" onclick="goCheckOutPayment('<%=ctxPath%>','jhkvng123')">결제하기</button>
+                    <button type="button" class="btn btn-lg btn-dark form-control" style="width: 80%;" onclick="goCheckOutPayment('<%=ctxPath%>','${requestScope.userid}')">결제하기</button>
                 </div>
 
             </div>

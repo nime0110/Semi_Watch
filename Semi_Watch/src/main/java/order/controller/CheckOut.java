@@ -84,6 +84,13 @@ public class CheckOut extends AbstractController {
 				totalPoint += Integer.parseInt(pdPointArr[i]);
 			}
 			
+			// 구매시 총 제품구매가격 합계
+			int totalPrice = 0;
+			for(int i=0; i<pdPriceArr.length; i++) {
+				totalPrice += Integer.parseInt(pdPriceArr[i]);
+			}
+			
+			
 			System.out.println("확인용 포인트 합계 : "+totalPoint);
 			
 			// === 장바구니테이블(tbl_cart)에 delete 할 데이터 ===
@@ -112,7 +119,7 @@ public class CheckOut extends AbstractController {
 			
 			request.setAttribute("pdPriceArr", pdPriceArr);
 			request.setAttribute("totalPoint", totalPoint);
-			
+			request.setAttribute("totalPrice", totalPrice);
 			
 	     	
 			super.setRedirect(false);

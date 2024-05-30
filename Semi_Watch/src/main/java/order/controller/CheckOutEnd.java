@@ -10,29 +10,33 @@ public class CheckOutEnd extends AbstractController {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
+		/*
 		// 테스트용 코드
 		request.setAttribute("userid", "jhknvg123");
 		super.setViewPage("/WEB-INF/order/paymentGateway.jsp");
+		*/
 		
+		// 주소창 장난질 예방
+        String referer = request.getHeader("referer");
+        if (referer == null) {
+            // URL을 통해 직접 접근한 경우 홈 페이지로 리디렉션
+            super.setRedirect(true);
+            super.setViewPage(request.getContextPath() + "/index.flex");
+            return;
+        }
+        
 		
-		
-		
-		/* 실제 코드
+		// 실제 코드
 		if(super.checkLogin(request)) {	// 로그인 여부 확인
 			
 			String userid = request.getParameter("userid");
 			
 			HttpSession session = request.getSession();
 			MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
-			String loginuserid = loginuser.getUserid();
 			
-			
-			if(userid.equals(loginuserid)) {
+			if(userid.equals(loginuser.getUserid())) {
 				
 				request.setAttribute("userid", userid);
-				
-				request.setAttribute("userid", "jhknvg123");
 				super.setViewPage("/WEB-INF/order/paymentGateway.jsp");
 				
 			}
@@ -60,7 +64,7 @@ public class CheckOutEnd extends AbstractController {
             super.setViewPage("/WEB-INF/msg.jsp");
             
 		}
-		*/
+		
 		
 		
 	
