@@ -535,11 +535,11 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
 				searchWord = searchWord.toUpperCase();
 				
 				pstmt.setString(1, searchWord);
-				pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));
-				pstmt.setInt(3, (currentShowPageNo * sizePerPage));
+				pstmt.setString(2, Integer.toString((currentShowPageNo * sizePerPage) - (sizePerPage - 1)) );
+				pstmt.setString(3, Integer.toString((currentShowPageNo * sizePerPage)) );
 			} else {
-				pstmt.setInt(1, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));
-				pstmt.setInt(2, (currentShowPageNo * sizePerPage));
+				pstmt.setString(1, Integer.toString((currentShowPageNo * sizePerPage) - (sizePerPage - 1)) );
+				pstmt.setString(2, Integer.toString((currentShowPageNo * sizePerPage)) );
 			}
 			
 			rs = pstmt.executeQuery();

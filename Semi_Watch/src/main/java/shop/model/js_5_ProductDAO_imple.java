@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import shop.domain.CartVO;
 import shop.domain.ImageVO;
 import shop.domain.ProductVO;
 import shop.domain.Product_DetailVO;
@@ -1255,9 +1257,123 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 		return imglist;
 		
 	} // end of public List<ImageVO> extraimgfilename(String pdno) throws SQLException {
+
+
+	// 로그인한 유저의 장바구니 테이블 불러오기
+	@Override
+	public List<CartVO> selectProductCart(String userid) throws SQLException {
+		
+		List<CartVO> cartlist = new ArrayList<>();
+		
+		try {
+			
+	         conn = ds.getConnection();
+	         
+	         String sql = " select cartno, pdname, brand, pd_detailno, color, saleprice, "
+	         		+ " pd_qty, cart_qty, pdimg1, point, pdno  "
+	         		+ " from tbl_cart C join tbl_pd_detail D "
+	         		+ " on C.fk_pd_detailno = D.pd_detailno "
+	         		+ " join tbl_product P on "
+	         		+ " D.fk_pdno = P.pdno "
+	         		+ " where C.fk_userid = ? "; 
+	        	           
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setString(1, userid);
+	        
+	         rs = pstmt.executeQuery();
+	         
+	         while(rs.next()) {
+	        	 
+	        	 CartVO cart = new CartVO();
+	        	 
+	        	 cart.setCartno(rs.getString("cartno"));
+	        	 cart.setCart_qty(rs.getInt("cart_qty"));
+	        	 cart.setFk_pd_detailno(rs.getString("pd_detailno"));
+	        	 
+	        	 ProductVO pvo = new ProductVO();
+	        	 
+	        	 pvo.setPdno(rs.getString("pdno"));
+	        	 pvo.setPdname(rs.getString("pdname"));
+	        	 pvo.setBrand(rs.getString("brand"));
+	        	 pvo.setPdimg1(rs.getString("pdimg1"));
+	        	 pvo.setPoint(rs.getInt("point"));
+	        	 pvo.setSaleprice(rs.getLong("saleprice"));
+	        	 
+	        	 Product_DetailVO pdvo = new Product_DetailVO();
+	        	 
+	        	 pdvo.setColor(rs.getString("color"));
+	        	 pdvo.setPd_qty(rs.getInt("pd_qty"));
+	        	 pdvo.setPd_detailno(rs.getString("pd_detailno"));
+	        	 
+	        	 cart.setProd(pvo);
+	        	 cart.setPdvo(pdvo);
+	        	 
+	        	 
+	        	 cartlist.add(cart);
+	        	 
+	        	
+	         } // end of if(rs.next())-------------------
+	         
+	      } finally {
+	    	  
+	         close();
+	      }
+		
+		return cartlist;
+		
+	} // end of public List<CartVO> selectProductCart(String userid) throws SQLException {
 	
 
-
+	// 로그인한 사용자의 장바구니에 담긴 주문총액합계 및 총포인트합계 알아오기 
+		@Override
+		public List<ProductVO> selectCartSumPricePoint(String userid) throws SQLException {
+			
+			List<ProductVO> sum = new ArrayList<>();
+			
+			try {
+				
+				conn = ds.getConnection();
+				
+				String sql = " select nvl(saleprice * cart_qty , 0 ) as SUMTOTALPRICE , "
+						   + " nvl(point * cart_qty , 0 ) as SUMTOTALPOINT "
+						   + " from "
+						   + " ( "
+						   + " select fk_pd_detailno , cart_qty "
+						   + " from tbl_cart "
+						   + " where fk_userid = ? "
+						   + " ) C join tbl_pd_detail D "
+						   + " on C.fk_pd_detailno = D.pd_detailno"
+						   + " join tbl_product P "
+						   + " on D.fk_pdno = P.pdno ";
+				
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setString(1, userid);
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()){
+					
+					ProductVO pvo = new ProductVO();
+					
+					pvo.setTotalPrice(rs.getInt("SUMTOTALPRICE"));
+					pvo.setTotalPoint(rs.getInt("SUMTOTALPOINT"));
+					
+					sum.add(pvo);
+					
+				}
+				
+				
+				
+			} finally {
+				
+				close();
+			}
+			
+			
+			return sum;
+			
+		} // end of public Map<String, String> selectCartSumPricePoint(String userid) throws SQLException {
 
 
 
