@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,9 +57,9 @@ public class ky_1_ProductDAO_imple implements ky_1_ProductDAO {
 
 	// 최신 등록순으로 6개의 상품 이미지를 가져오기
 	@Override
-	public List<ProductVO> selectByRegiDate(Map<String, String> paraMap) throws SQLException {
+	public List<Map<String, String>> selectByRegiDate() throws SQLException {
 		
-		List<ProductVO> productList = new ArrayList<>();
+		List<Map<String, String>> productList = new ArrayList<>();
 		
 		try {
 			conn = ds.getConnection();
@@ -67,22 +68,21 @@ public class ky_1_ProductDAO_imple implements ky_1_ProductDAO {
 					+ " FROM "
 					+ " (select row_number() over(order by pdinputdate desc) AS rno, pdno, pdimg1 "
 					+ " from tbl_product) "
-					+ " where rno between ? and ? ";
+					+ " where rno between 1 and 6 ";
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, Integer.parseInt(paraMap.get("start")) );
-			pstmt.setInt(2, Integer.parseInt(paraMap.get("end")));
 			
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
 				
-				ProductVO pvo = new ProductVO();
+				Map<String, String> paraMap = new HashMap<>(); 
 				
-				pvo.setPdno(rs.getString("pdno"));
-				pvo.setPdimg1(rs.getString("pdimg1"));
 				
-				productList.add(pvo);
+				paraMap.put("pdno", rs.getString("pdno"));
+				paraMap.put("pdimg1", rs.getString("pdimg1"));
+				
+				productList.add(paraMap);
 				
 			}// end of while(rs.next()) 
 			

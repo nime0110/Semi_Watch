@@ -362,7 +362,8 @@ FROM
 from tbl_product)
 where rno between 1 and 6;
 
-
+select *
+from tbl_map;
 
 -- pdstatus
 -- pdinputdate

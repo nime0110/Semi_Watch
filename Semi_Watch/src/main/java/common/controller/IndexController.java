@@ -2,6 +2,9 @@ package common.controller;
 
 
 
+import java.util.List;
+import java.util.Map;
+
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -52,6 +55,10 @@ public class IndexController extends AbstractController {
 		            }
 		        }
 		    }
+		    
+		    
+		    List<Map<String, String>> Carousel_List = pdao.selectByRegiDate();
+		    request.setAttribute("Carousel_List", Carousel_List);
 		    
 		    
 			super.setRedirect(false);
