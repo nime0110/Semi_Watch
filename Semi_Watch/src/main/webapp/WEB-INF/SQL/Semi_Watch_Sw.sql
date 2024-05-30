@@ -97,6 +97,8 @@ ORDER BY C.cartno DESC;
 select * 
 from tbl_cart;
 
+desc tbl_cart;
+
 select C.cartno, C.fk_userid, C.fk_pdno, C.cart_qty, P.pdname, P.pdimg1, P.saleprice 
 FROM 
 (   select cartno, fk_userid, fk_pdno, cart_qty , registerday
@@ -129,9 +131,11 @@ from tbl_order;
 
 --insert into tbl_cart(cartno, fk_userid, fk_pdno, cart_qty)
 --values(seq_tbl_cart_cartno.nextval, 'yuseonwoo', '117' , 1);
+desc tbl_cart;
 
-insert into tbl_order(ordercode,fk_userid, total_price ,total_orderdate)
-values('1','yuseonwoo',20000, default);
+
+--insert into tbl_order(ordercode,fk_userid, total_price ,total_orderdate)
+--values('1','yuseonwoo',20000, default);
 
 commit;
 
@@ -139,4 +143,291 @@ select *
 from tbl_order
 where fk_userid='yuseonwoo';
 
+select *
+from tbl_orderdetail;
 
+select C.cartno, C.fk_userid, C.fk_pdno, C.cart_qty, P.pdname, P.pdimg1, P.saleprice 
+FROM 
+(   select cartno, fk_userid, fk_pdno, cart_qty , registerday
+    from tbl_cart
+    where fk_userid = 'yuseonwoo' 
+)C 
+JOIN tbl_product P 
+on C.fk_pdno = P.pdno
+order by C.cartno desc;
+
+-- 주문 코드, 주문 가격, 주문갯수, 총 금액, 주문 날짜. 
+-- 주문내역 1차로 조인한 것
+SELECT ORDERCODE, ORDER_PRICE, ORDER_QTY, TOTAL_PRICE, TOTAL_ORDERDATE
+from 
+(
+select *
+from tbl_order
+where fk_userid='yuseonwoo'
+)O
+JOIN tbl_orderdetail D
+on O.fk_userid = D.fk_userid;
+------------------------------------------------------------------------------
+
+---------------tbl_orderdetail이랑 tbl_pd_detail 조인해온것임 여기서
+-- 상품상세번호, 상품 번호, 컬러 가져올 수 있음 2차 조인
+select pd_detailno, fk_pdno, color
+from 
+(
+select *
+from tbl_pd_detail 
+) T
+JOIN tbl_orderdetail D
+ON D.fk_pd_detailno = T.pd_detailno;
+
+-- tbl_product 랑 tbl_pd_detail
+-- 조인한것 3차 조인
+select pdno, pdname, saleprice
+from 
+(
+select *
+from tbl_pd_detail
+) T
+join tbl_product U
+on T.fk_pdno = U.pdno;
+
+
+----- 조인 (주문상세 / 상품상세 조인)
+
+DESC tbl_orderdetail;
+DESC tbl_pd_detail;
+
+select fk_pdno, color
+from 
+(
+select * 
+from tbl_orderdetail
+)A
+JOIN tbl_pd_detail B
+ON A.FK_PD_DETAILNO = B.PD_DETAILNO;
+
+-- tbl_pd_detail 이랑 tbl_product 조인
+
+select pdname, pdno, saleprice
+from
+(
+select *
+from tbl_pd_detail
+)B
+join tbl_product C
+on B.fk_pdno = C.pdno;
+
+
+SELECT B.pdname, B.pdno, B.saleprice, A.color
+FROM 
+(
+    SELECT * 
+    FROM tbl_orderdetail
+) A
+JOIN tbl_pd_detail C ON A.FK_PD_DETAILNO = C.PD_DETAILNO
+JOIN tbl_product B ON C.fk_pdno = B.pdno;
+
+-- tbl_product / tbl_pd_detail / tbl_orderdetail 합친거
+SELECT B.pdname, B.pdno, B.saleprice, C.color
+FROM 
+(
+    SELECT * 
+    FROM tbl_orderdetail
+) A
+JOIN tbl_pd_detail C ON A.FK_PD_DETAILNO = C.PD_DETAILNO
+JOIN tbl_product B ON C.fk_pdno = B.pdno;
+
+
+
+
+
+
+desc tbl_order;
+desc tbl_orderdetail;
+desc tbl_pd_detail;
+desc tbl_product;
+
+------------------------------------------------------------------------------------------------------------------
+-- 주문내역에서 최종적으로 들어와야 하는 컬럼들(조인 끝남)
+select ordercode, total_price, total_orderdate, fk_pdno, color, pdname 
+from 
+(
+    select ordercode, total_price, total_orderdate, fk_pdno, color
+    from 
+    (
+    select ordercode, total_price, total_orderdate, fk_pd_detailno
+    from 
+    (
+        select ordercode, total_price, total_orderdate  
+        from tbl_order
+        where fk_userid = 'yuseonwoo'
+    ) A
+    join tbl_orderdetail B
+    on A.ordercode = B.fk_ordercode
+) C
+join tbl_pd_detail D
+on C.fk_pd_detailno = D.pd_detailno
+) E 
+join tbl_product F
+on E.fk_pdno = F.pdno;
+
+----------------------------------------------------------------------------------------------------
+
+desc tbl_order;
+desc tbl_orderdetail;
+desc tbl_pd_detail;
+desc tbl_product;
+
+select *
+from tbl_order;
+
+select *
+from tbl_orderdetail;
+
+select *
+from tbl_product;
+
+select *
+from tbl_pd_detail;
+
+desc tbl_order;
+
+
+--insert into tbl_order(ordercode,fk_userid, total_price ,total_orderdate)
+--values('1','yuseonwoo',20000, default);
+insert into tbl_order(ordercode,fk_userid, total_price ,total_orderdate)
+values('2','yuseonwoo',30000, default);
+
+insert into tbl_order(ordercode,fk_userid, total_price ,total_orderdate)
+values('3','yuseonwoo',40000, default);
+
+insert into tbl_order(ordercode,fk_userid, total_price ,total_orderdate)
+values('4','yuseonwoo',50000, default);
+
+
+insert into tbl_order(ordercode,fk_userid, total_price ,total_orderdate)
+values('5','yuseonwoo',60000, default);
+
+
+insert into tbl_order(ordercode,fk_userid, total_price ,total_orderdate)
+values('6','yuseonwoo',70000, default);
+
+insert into tbl_order(ordercode,fk_userid, total_price ,total_orderdate)
+values('7','yuseonwoo',80000, default);
+
+insert into tbl_order(ordercode,fk_userid, total_price ,total_orderdate)
+values('8','yuseonwoo',90000, default);
+
+insert into tbl_order(ordercode,fk_userid, total_price ,total_orderdate)
+values('9','yuseonwoo',100000, default);
+
+insert into tbl_order(ordercode,fk_userid, total_price ,total_orderdate)
+values('10','yuseonwoo',110000, default);
+
+commit;
+
+select *
+from tbl_order;
+----------------------------------------------------tbl_order 예시 인서트 끝------------------------
+
+desc tbl_orderdetail;
+
+select *
+from tbl_order;
+
+delete from tbl_order
+where fk_userid='yuseonwoo';
+
+commit;
+
+select *
+from user_sequences;
+ 
+
+
+select*
+from tbl_orderdetail;
+
+select*
+from tbl_pd_detail;
+
+select *
+from tbl_product;
+
+select *
+from tbl_member;
+--------------------------------------------------------------------------------------------------------------------
+select *
+from user_sequences;
+
+--insert into tbl_cart(cartno, fk_userid, fk_pdno, cart_qty)
+--values(seq_tbl_cart_cartno.nextval, 'yuseonwoo', '117' , 1);
+
+
+
+insert into tbl_order(ordercode, fk_userid, total_price, total_orderdate)
+values(seq_tbl_order_ordercode.nextval, 'yuseonwoo', 100000, default);
+
+select * 
+from tbl_order;
+
+insert into tbl_order(ordercode, fk_userid, total_price, total_orderdate)
+values(seq_tbl_order_ordercode.nextval, 'yuseonwoo', 100000, default);-- insert
+
+insert into tbl_order(ordercode, fk_userid, total_price, total_orderdate)
+values(seq_tbl_order_ordercode.nextval, 'yuseonwoo', 200000, default);
+
+insert into tbl_order(ordercode, fk_userid, total_price, total_orderdate)
+values(seq_tbl_order_ordercode.nextval, 'yuseonwoo', 300000, default);
+
+insert into tbl_order(ordercode, fk_userid, total_price, total_orderdate)
+values(seq_tbl_order_ordercode.nextval, 'yuseonwoo', 400000, default);
+
+insert into tbl_order(ordercode, fk_userid, total_price, total_orderdate)
+values(seq_tbl_order_ordercode.nextval, 'yuseonwoo', 500000, default);
+
+commit;
+
+
+select *
+from tbl_order;
+
+
+----------------------------------------------------------- tbl_order다시 삽입---------------------------
+
+--insert into tbl_cart(cartno, fk_userid, fk_pdno, cart_qty)
+--values(seq_tbl_cart_cartno.nextval, 'yuseonwoo', '117' , 1);
+desc tbl_orderdetail;
+
+select *
+from tbl_orderdetail;
+
+select *
+from user_sequences;
+
+select *
+from tbl_order
+
+select *
+from tbl_pd_detail;
+
+
+insert into tbl_orderdetail(order_detailno, fk_userid, fk_ordercode, order_qty, delivery_status, delivery_date, order_price, fk_pd_detailno)
+values(seq_tbl_od_odno.nextval, 'yuseonwoo', '1', 1, null, default, 1000,'48'); -- 삽입성공
+
+insert into tbl_orderdetail(order_detailno, fk_userid, fk_ordercode, order_qty, delivery_status, delivery_date, order_price, fk_pd_detailno)
+values(seq_tbl_od_odno.nextval, 'yuseonwoo', '2', 2, null, default, 2000,'49');
+
+insert into tbl_orderdetail(order_detailno, fk_userid, fk_ordercode, order_qty, delivery_status, delivery_date, order_price, fk_pd_detailno)
+values(seq_tbl_od_odno.nextval, 'yuseonwoo', '3', 3, null, default, 3000,'50');
+
+insert into tbl_orderdetail(order_detailno, fk_userid, fk_ordercode, order_qty, delivery_status, delivery_date, order_price, fk_pd_detailno)
+values(seq_tbl_od_odno.nextval, 'yuseonwoo', '4', 4, null, default, 4000,'51');
+
+insert into tbl_orderdetail(order_detailno, fk_userid, fk_ordercode, order_qty, delivery_status, delivery_date, order_price, fk_pd_detailno)
+values(seq_tbl_od_odno.nextval, 'yuseonwoo', '5', 5, null, default, 5000,'52');
+
+commit;
+
+select * 
+from tbl_orderdetail;

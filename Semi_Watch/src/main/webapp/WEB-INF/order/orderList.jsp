@@ -124,19 +124,35 @@ $(document).ready(function() {
          <%-- 내용입력하는 부분 시작 --%>
          <div class="col-xl-9 mt-4" style="border:solid 0px red; padding-left:0px; padding-right:0px;">
           	<table class="table table-bordered" id="OrderTable">
-             	<thead class="MyOrderTbl"> 
-			       <tr>
-			          <td align="center">주문코드</td>
-			          <td align="center">주문총액</td>
-			          <td align="center">주문일자</td>
-			       </tr>
-	   			</thead>
+				<div class="my-3">
+				    <c:set var="userid" value="${(requestScope.loginuser).userid}" />
+				       	<c:if test='${userid eq "admin"}'>
+					       		<p class="h4 text-center">&raquo;&nbsp;&nbsp;전 회원 주문내역보기&nbsp;&nbsp;&laquo;</p>
+				       	</c:if>  	
+				       	
+				       	<c:if test='${userid ne "admin"}'>
+				       		<p class="h4 text-center">&raquo;&nbsp;&nbsp;${(requestScope.loginuser).name} 님[ ${userid} ] 주문내역 목록&nbsp;&nbsp;&laquo;</p> 
+				       	</c:if>
+				  </div>
+				       	
+				          <td align="center">주문코드</td>
+				          <td align="center">상품번호</td>
+				          <td align="center">상품이름</td>
+				          <td align="center">상품색상</td>
+				          <td align="center">총 결제금액</td>
+				          <td align="center">주문일자</td>
+				       </tr>
+		   			</thead>
+		   		
 	   			<tbody>
-	   				<c:forEach var="orderVO" items="${requestScope.orderList}">
+	   				<c:forEach var="odrMapList" items="${requestScope.order_map_List}">
 		   				<tr>
-		   					<td align="center">${orderVO.ordercode}</td>
-		   					<td align="center">${orderVO.total_price}</td>
-		   					<td align="center">${orderVO.total_orderdate}</td>
+		   					<td align="center">${odrMapList.ordercode}</td>
+		   					<td align="center">${odrMapList.fk_pdno}</td>
+		   					<td align="center">${odrMapList.pdname}</td>
+		   					<td align="center">${odrMapList.color}</td>
+		   					<td align="center">${odrMapList.total_price}</td>
+		   					<td align="center">${odrMapList.total_orderdate}</td>
 		   				</tr>
 					</c:forEach>
 	   			</tbody>

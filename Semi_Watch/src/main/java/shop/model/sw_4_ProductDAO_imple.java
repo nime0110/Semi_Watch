@@ -250,11 +250,8 @@ public class sw_4_ProductDAO_imple implements sw_4_ProductDAO {
 	}// end of public List<shop.domain.CartVO> selectProductCart(String userid) throws SQLException {}----------------------------
 
 
-	@Override
-	public Map<String, String> selectCartSumPricePoint(String userid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+
 
 
 

@@ -51,11 +51,11 @@ public class ItemCart extends AbstractController {
         
         // 로그인한 사용자의 장바구니 정보를 데이터베이스에서 조회
         List<CartVO> cartList = mdao.selectProductCart(loginuser.getUserid());
-        Map<String, String> sumMap = mdao.selectCartSumPricePoint(loginuser.getUserid());
+       // Map<String, String> sumMap = mdao.selectCartSumPricePoint(loginuser.getUserid());
         
         // 조회된 정보를 request에 저장
         request.setAttribute("cartList", cartList);
-        request.setAttribute("sumMap", sumMap);
+       // request.setAttribute("sumMap", sumMap);
         
         // 장바구니 페이지로 이동
         super.setRedirect(false);
