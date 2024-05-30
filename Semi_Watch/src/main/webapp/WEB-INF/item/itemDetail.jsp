@@ -62,7 +62,8 @@
           <!-- 라이트박스용 -->
       <section class="product__content default-container" aria-label="Product content">
         <header>
-          <input type="hidden" id="productno" name="pdno" value="${pvo.pdno}">
+    	  <input type="hidden" id="productno" name="pdno" value="${pvo.pdno}">
+          <input type="hidden" id="productpoint" name="point" value="${pvo.point}"> 
           <h2 class="company-name" tabindex="0">${pvo.brand}</h2>
           <p class="product__name" tabindex="0"></p>
           <h3 class="product__title" tabindex="0" id="productName">${pvo.pdname}</h3>
@@ -108,6 +109,8 @@
 		</c:if>
 		<!-- 색상선택끝 -->
         <form action="#" class="cart-form" style="margin-top:30px;">
+         <input type="hidden" id="productno" name="pdno" value="${pvo.pdno}">
+          <input type="hidden" id="productpoint" name="point" value="${pvo.point}">
           <div class="cart-form__input-container" aria-label="Define the product quantity">
             <button type="button" class="btn-changeValue minus-item">
               <span class="sr-only">Minus one item</span>
@@ -132,7 +135,15 @@
         </form>
       </section>
     </article>
-
+    <!-------------------------- 구매하기 폼 보내기 ------------------------------->
+	<form name="buyFrm" >
+    	  <input type="hidden" id="productno" name="str_pdno" value="${pvo.pdno}">
+          <input type="hidden" id="str_cart_qty" name="str_cart_qty" value="">
+          <input type="hidden" id="productpoint" name="productpoint" value="">
+          <input type="hidden" id="str_pd_detailno" name="str_pd_detailno" value="">
+          <input type="hidden" id="str_pdPriceArr" name="str_pdPriceArr" value="">
+          <input type="hidden" id="str_pdPointArr" name="str_pdPointArr" value="">
+	</form>
   </main>
   
   <div class="lightbox" id="lightbox" role="dialog"></div>

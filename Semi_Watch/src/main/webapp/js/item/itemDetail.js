@@ -49,7 +49,7 @@
       
       
       
-      /* 장바구니로 이동하기 ---> ajax로 보내줄 예정 */
+      /* 장바구니로 이동하기 ----------------------------------- */
       $('#addCart').click(function() {
 		  
         const colorSelect = $('#color_select');
@@ -91,6 +91,64 @@
 					}
                     
                     /// ---------------------------------
+                }
+             },
+            error: function(request, status, error) {
+                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+        });
+
+      }); // 장바구니로 이동하는 함수 종료
+      
+           
+      /* 구매하기로 이동하기 ----------------------------------- */
+      $('#buy').click(function() {
+		  
+        const colorSelect = $('#color_select');
+        if (colorSelect.length > 0 && !selectedColor) {
+			alert("색상을 선택하세요!");
+			return;
+		}
+		if(colorSelect.length == 0) {
+			selectedColor = 'none'; //기본 컬러가 없을 경우 none 으로 설정.
+		}
+		  
+		let productNo = $("input#productno").val(); //제품번호
+		
+		// 제품번호 구매수량 색상 가격 수량 포인트
+		let quantity = $("#product__quantity").val(); //구매수량
+		
+		
+		$("input[name='str_cart_qty']").val(quantity); //구매수량을 input에 넣음
+		$("input[name='selectedColor']").val(selectedColor); //컬러를 input에 넣음
+		
+
+		$.ajax({
+            type: "POST",
+            url: "goCheckOutDetailJSON.flex", 
+            data: {"productNo":productNo,
+            	   "selectedColor":selectedColor,
+            	   "quantity":quantity},
+            dataType: "json",
+            success: function(json) {
+				console.log("ajax 요청 성공~~", json);			
+
+                if (json.loginRequired) { //로그인안했을경우
+                    alert(json.message);
+                    location.href = contextPath + "/login/login.flex"; // 로그인 페이지로 이동
+                } else {
+ 					//console.log("json.str_pdPriceArr:", json.str_pdPriceArr);
+                    
+                    $("input#productpoint").val(json.productpoint);
+                    $("input#str_pd_detailno").val(json.str_pd_detailno);
+                    $("input#str_pdPriceArr").val(json.str_pdPriceArr);
+                    $("input#str_pdPointArr").val(json.str_pdPointArr);
+                    /// ---------------------------------
+				
+					const frm = document.buyFrm;
+					frm.action =  contextPath + "/order/checkOut.flex";
+					frm.method = "post";
+					frm.submit();
                 }
              },
             error: function(request, status, error) {

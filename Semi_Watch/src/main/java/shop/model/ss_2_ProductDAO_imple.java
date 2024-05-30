@@ -99,7 +99,7 @@ public ProductVO selectOneProductBypdno(String pdno) throws SQLException {
 	try {
 		conn = ds.getConnection();
 		
-		String sql = " select pdno, pdname, brand, pdimg1, price, saleprice, pd_content, pd_contentimg "
+		String sql = " select pdno, pdname, brand, pdimg1, price, saleprice, pd_content, pd_contentimg, point "
 				+ " from tbl_product "
 				+ " where pdno = ? ";
 		
@@ -119,7 +119,8 @@ public ProductVO selectOneProductBypdno(String pdno) throws SQLException {
 			pvo.setSaleprice(rs.getLong("saleprice"));
 			pvo.setPd_content(rs.getString("pd_content"));
 			pvo.setPd_contentimg(rs.getString("pd_contentimg"));
-		
+			pvo.setPoint(rs.getInt("point"));
+			
 			
 		}//end of while(rs.next()) --------------
 		

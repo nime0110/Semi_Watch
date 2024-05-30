@@ -59,8 +59,6 @@ public class ReviewJSON extends AbstractController {
                 jsonObj.put("loginRequired", false);
                 	
             }
-            
-             
               
             out.print(jsonObj.toString());
             
