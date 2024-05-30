@@ -43,7 +43,7 @@ $(document).ready(function() {
 
    <%-- 상단 바 시작 --%>
    <div class="pt-3" id="topBar">
-      <div >
+      <div>
          <h2 id="myPage">My Page</h2> 
       </div>
       <div class="row text-center" style="padding: 10px 0 20px 0;">
@@ -79,7 +79,7 @@ $(document).ready(function() {
    </div>
    <%-- 상단 바 끝 --%>
 
-   
+  <c:if test='${userid ne "admin"}'> 
    <div class="container-fluid">
       <div class="row">
          <%-- 왼쪽 사이드 메뉴 시작--%>
@@ -120,21 +120,23 @@ $(document).ready(function() {
                </nav>
            </div>
          <%-- 왼쪽 사이드 메뉴 끝 --%>
+   </c:if>
+   
    
          <%-- 내용입력하는 부분 시작 --%>
-         <div class="col-xl-9 mt-4" style="border:solid 0px red; padding-left:0px; padding-right:0px;">
+         <div class="col-xl-9 mt-4" style="border:solid 0 px red; margin: 0 auto;" >
           	<table class="table table-bordered" id="OrderTable">
 				<div class="my-3">
-				    <c:set var="userid" value="${(requestScope.loginuser).userid}" />
+				    <c:set var="userid" value="${requestScope.userid}" />
 				       	<c:if test='${userid eq "admin"}'>
 					       		<p class="h4 text-center">&raquo;&nbsp;&nbsp;전 회원 주문내역보기&nbsp;&nbsp;&laquo;</p>
 				       	</c:if>  	
 				       	
 				       	<c:if test='${userid ne "admin"}'>
-				       		<p class="h4 text-center">&raquo;&nbsp;&nbsp;${(requestScope.loginuser).name} 님[ ${userid} ] 주문내역 목록&nbsp;&nbsp;&laquo;</p> 
+				       		<p class="h4 text-center">&raquo;&nbsp;&nbsp;${userid} 님[ ${userid} ] 주문내역 목록&nbsp;&nbsp;&laquo;</p> 
 				       	</c:if>
 				  </div>
-				       	
+				       	<tr>
 				          <td align="center">주문코드</td>
 				          <td align="center">상품번호</td>
 				          <td align="center">상품이름</td>

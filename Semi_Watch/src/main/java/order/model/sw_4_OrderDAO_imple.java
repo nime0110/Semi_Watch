@@ -66,16 +66,16 @@ public class sw_4_OrderDAO_imple implements sw_4_OrderDAO {
 		try {
     		conn = ds.getConnection();
     		
-    		String sql = " select ordercode, total_price, total_orderdate, fk_pdno, color, pdname "
+    		String sql = " select ordercode, E.fk_userid as fk_userid , total_price, total_orderdate, fk_pdno, color, pdname "
     				   + " from "
     				   + " ( "
-    				   + "    select ordercode, total_price, total_orderdate, fk_pdno, color "
+    				   + "    select ordercode, C.fk_userid, total_price, total_orderdate, fk_pdno, color "
     				   + "    from "
     				   + "    ( "
-    				   + "    select ordercode, total_price, total_orderdate, fk_pd_detailno "
+    				   + "    select ordercode, A.fk_userid, total_price, total_orderdate, fk_pd_detailno "
     				   + "    from "
     				   + "    ( "
-    				   + "        select ordercode, total_price, total_orderdate "
+    				   + "        select ordercode, fk_userid, total_price, total_orderdate "
     				   + "        from tbl_order ";
     		
     		if(!"admin".equals(userid)) {
@@ -104,7 +104,7 @@ public class sw_4_OrderDAO_imple implements sw_4_OrderDAO {
     		
 			while(rs.next()) {
 				
-				String odrcode = rs.getString("ordercode");
+				String ordercode = rs.getString("ordercode");
 				// String fk_userid = rs.getString("fk_userid");
 				String total_price = rs.getString("total_price");
 				String total_orderdate = rs.getString("total_orderdate");
@@ -113,7 +113,7 @@ public class sw_4_OrderDAO_imple implements sw_4_OrderDAO {
 				String pdname = rs.getString("pdname");
 				
 				Map<String,String> odrmap = new HashMap<>();
-				odrmap.put("odrcode", odrcode);
+				odrmap.put("ordercode", ordercode);
 				// odrmap.put("fk_userid", fk_userid);
 				odrmap.put("total_price", total_price);
 				odrmap.put("total_orderdate", total_orderdate);
@@ -129,6 +129,25 @@ public class sw_4_OrderDAO_imple implements sw_4_OrderDAO {
 		}	
 	
 		return order_map_List;
+		
+	}
+
+
+	@Override
+	public String getorderName(String userid) throws SQLException {
+		
+		String getorderName = new String();
+		
+		try {
+    		conn = ds.getConnection();
+    		
+    		String sql = ""; 
+		
+		}finally {
+			
+			
+		}
+		return null;
 		
 	}
 

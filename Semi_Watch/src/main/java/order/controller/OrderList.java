@@ -58,7 +58,7 @@ public class OrderList extends AbstractController {
 			String userid = loginuser.getUserid();
 		 // System.out.println("loginuserid : " + userid);
 			List<Map<String, String>> order_map_List = odao.getOrderList(userid);
-			
+			String orderName = odao.getorderName(userid);
 		
 		
 			// 메소드에 넣기
@@ -75,7 +75,8 @@ public class OrderList extends AbstractController {
 		*/
 		   System.out.println("사이즈"+order_map_List.size());
 		   request.setAttribute("order_map_List", order_map_List);
-		   
+		   request.setAttribute("userid", userid);
+		    
 		}
 		   super.setRedirect(false);
 		   super.setViewPage("/WEB-INF/order/orderList.jsp");

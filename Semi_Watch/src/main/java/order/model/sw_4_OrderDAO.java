@@ -13,6 +13,9 @@ public interface sw_4_OrderDAO {
 	//     관리자로 로그인을 했을 경우에는 모든 사용자들의 주문내역을 페이징 처리하여 조회해온다.
 	List<Map<String, String>> getOrderList(String userid) throws SQLException;
 	
+	// 로그인한 회원의 이름을 가져오기 
+	String getorderName(String userid) throws SQLException;
+	
 	
 	
 	
