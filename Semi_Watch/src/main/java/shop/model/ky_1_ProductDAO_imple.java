@@ -95,6 +95,45 @@ public class ky_1_ProductDAO_imple implements ky_1_ProductDAO {
 		return productList;
 		
 	}// end of public List<ProductVO> selectByRegiDate(Map<String, String> paraMap) throws SQLException 
+
+	
+	// tbl_map(위, 경도) 테이블에 있는 정보를 가져오기(select)
+	@Override
+	public List<Map<String, String>> selectCenterMap() throws SQLException {
+		
+		List<Map<String, String>> centerMapList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select storeID, storeName, storeUrl, storeImg, storeAddress, lat, lng, zindex " +
+						 " from tbl_map " +
+						 " order by zindex asc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				Map<String, String> centerMap = new HashMap<>();
+				centerMap.put("STOREID", rs.getString("STOREID"));
+				centerMap.put("STORENAME", rs.getString("STORENAME"));
+				centerMap.put("STOREURL", rs.getString("STOREURL"));
+				centerMap.put("STOREIMG", rs.getString("STOREIMG"));
+				centerMap.put("STOREADDRESS", rs.getString("STOREADDRESS"));
+				centerMap.put("LAT", rs.getString("LAT"));
+				centerMap.put("LNG", rs.getString("LNG"));
+				centerMap.put("ZINDEX", rs.getString("ZINDEX"));
+				
+				centerMapList.add(centerMap);
+			}
+					
+		} finally {
+			close();
+		}
+				
+		return centerMapList;
+	}// end of public List<Map<String, String>> selectCenterMap() throws SQLException 
 	
 	
 	
