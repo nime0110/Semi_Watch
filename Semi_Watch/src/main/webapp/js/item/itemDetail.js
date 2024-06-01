@@ -9,7 +9,13 @@
 	    var i = $(this).attr('src');
 		console.log(i);
 	    $('.image-box img').attr('src',i);
+	    $('ul#choice li button').removeClass("color_clicked");
+	    $(this).closest("button").addClass("color_clicked");
+	    
+	    let button = $(this).closest();
+	    console.log(button);
 	    return false;
+	    /* css 효과 주기*/
 	  })
 	  
 	  

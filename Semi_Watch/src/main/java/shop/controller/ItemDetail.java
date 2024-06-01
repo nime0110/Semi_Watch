@@ -74,9 +74,6 @@ public class ItemDetail extends AbstractController {
 		}
 	    
 
-	
-	      
-	      
 	      
 		
 		request.setAttribute("pvo", pvo);
