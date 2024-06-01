@@ -597,7 +597,7 @@ textarea {
 
 div#reviewcate {
 	height: 53px;
-    border: 1px solid darkcyan;
+
 }
 
 div#normalReview {
@@ -643,7 +643,10 @@ div#ratingDiv {
 }
 /*---------------- 리뷰 목록 별점표시 끝----------------*/
 
-
+.active a{
+    font-weight: bold !important;
+    color: black; /* 진하게 표시될 색상 */
+}
 
 
 

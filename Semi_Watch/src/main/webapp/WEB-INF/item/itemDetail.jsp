@@ -158,7 +158,7 @@
      <ul>
        <li><a href="#iteminfo">상품상세정보</a></li>
        <li><a href="#finalbox">배송/교환/반품</a></li>
-       <li><a href="#bestReview">리뷰 &#40;20&#41;</a></li>
+       <li><a href="#bestReview">리뷰 &#40;<span class="reviewCountli"></span>&#41;</a></li>
      </ul>
    </div>
    
@@ -175,7 +175,7 @@
       <ul>
         <li><a href="#iteminfo">상품상세정보</a></li>
         <li><a href="#finalbox">배송/교환/반품</a></li>
-        <li><a href="#normalReview">리뷰 &#40;${rvMapList[0].reviewcount}&#41;</a></li>
+        <li><a href="#normalReview">리뷰 &#40;<span class="reviewCountli"></span>&#41;</a></li>
       </ul>
     </div>
     <div id="infobox">
@@ -219,24 +219,24 @@
       <ul>
         <li><a href="#iteminfo">상품상세정보</a></li>
         <li><a href="#finalbox">배송/교환/반품</a></li>
-        <li><a href="#bestReview">리뷰 &#40;${rvMapList[0].reviewcount}&#41;</a></li>
+        <li><a href="#bestReview">리뷰 &#40;<span class="reviewCountli"></span>&#41;</a></li>
       </ul>
     </div>
 
 <!-- 리뷰란 -->
     <div id="normalReview">
       <div id="reviews_">
-      	<c:if test="${not empty requestScope.rvMapList}">
+
 	      	<div id="rateAndCount">
 	      		<div id="rateView">
 	      			<span></span>
 					<div id="avgRateYo" data-rateyo-read-only="true"></div>
-					<h4>평균별점 <span>${rvMapList[0].avg_starpoint}</span></h4>
+					<h4>평균별점 <span></span></h4>
 	      		</div>
-				<h4>전체 리뷰수 <span>${rvMapList[0].reviewcount}</span></h4>
+				<h4>전체 리뷰수 <span></span></h4>
 			</div>
-		</c:if>
-		<c:if test="${empty requestScope.rvMapList}">
+
+<%-- 		<c:if test="${empty requestScope.rvMapList}">
 			<div id="rateAndCount">
 	      		<div id="rateView">
 					<div id="rateYozero" data-rateyo-read-only="true"></div>
@@ -244,43 +244,15 @@
 	      		</div>
 				<h4>전체 리뷰수 <span>0</span></h4>
 			</div>
-		</c:if>
+		</c:if> --%>
         <ul id="reviewsel">
           <li><a href="#">베스트리뷰 |</a></li>
           <li><a href="#">오래된순 |</a></li>
           <li><a href="#">최신순 </a></li>
         </ul>
         <div id="reviewBoard">
-          <table>
-	          <c:if test="${not empty requestScope.rvMapList}">
-		       <c:forEach var="rvMap" items="${requestScope.rvMapList}">
-			       <tr>
-		              <td>
-			            <div id="ratingDiv">
-			              <div class="rateYoOne" data-rating="${rvMap.starpoint}"></div>
-						  <p class="ratingCount">별점 <span class="ratingOneSpan">${rvMap.starpoint}</span>점</p>
-			            </div>
-		                <p>${rvMap.review_content}</p>
-		              </td>
-		              <td>
-		                <p>
-		                  <span>작성일자</span>
-		                  ${rvMap.review_date}
-		                </p>
-		                <p>
-		                  <span>작성자</span>
-		                  ${rvMap.fk_usermask}
-		                </p>
-		              </td>
-		            </tr> 
-	            </c:forEach>
-	            </c:if>
-	            <c:if test="${empty requestScope.rvMapList}">
-		            <div id="notReviewDiv">
-			            <p id="notReviewP"> 아직 상품 리뷰가 작성되지 않은 상품입니다. <br>
-			            	첫 상품 리뷰 작성자가 되어보세요!</p>
-		            </div>
-	            </c:if>
+          <table style="width:100%;">
+	          <!-- js에서 생성 -->
           </table>
         </div>
         <div id="writeReview">
@@ -323,9 +295,7 @@
 	            alt="오른쪽 화살표">
 	          </a>
            </li> --%>
-           	
-			${requestScope.pageBar}
-			
+			 <!-- js에서 생성 -->
         </ul>
       </div>
     </div>
