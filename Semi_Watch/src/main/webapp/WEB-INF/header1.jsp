@@ -77,10 +77,12 @@
                 </a>
                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item text-primary" href="<%=ctxPath%>/member/memberList.flex">회원목록</a>
-                    <a class="dropdown-item text-primary" href="#">제품등록</a>
                     <a class="dropdown-item text-primary" href="<%=ctxPath%>/member/reviewList.flex">리뷰관리</a>
+                    <a class="dropdown-item text-primary" href="<%=ctxPath%>/admin/itemRegister.flex">상품등록</a>
+                    <a class="dropdown-item text-primary" href="<%=ctxPath%>/admin/itemUpdateList.flex">상품수정</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item text-primary" href="#">전체주문내역</a>
+                    <a class="dropdown-item text-primary" href="<%=ctxPath%>/order/orderList.flex">전체주문내역</a>
+                    <a class="dropdown-item text-primary" href="<%=ctxPath%>/admin/chart.flex">통계내역</a>
                   </div>
               </li>
              </c:if>
