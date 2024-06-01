@@ -250,20 +250,13 @@
 	/* 리뷰 보여주기 ----------*/
    // ------------------ 리뷰가 있을때의 평균별점 --------------------------
 
-	let avgRating = $("#rateView > h4 > span").text();
-
-	
-	  $("#rateYo").rateYo({
-		    rating: avgRating,
-		    readOnly: true
-		  });
-	
-	
-	// Getter
-	var readOnly = $("#rateYo").rateYo("option", "readOnly"); //returns true
-	
-	// Setter
-	//$("#rateYo").rateYo("option", "readOnly", false); //returns a jQuery Element
+  	 let avgRating = parseFloat($("#rateView > h4 > span").text());
+    // Getter
+    $("#avgRateYo").rateYo({
+        rating: avgRating,
+        readOnly: true
+    });
+    
 
 	// ------------------ 리뷰가 없을때의 평균 별점 --------------------------
 	$("#rateYozero").rateYo({
@@ -271,16 +264,9 @@
 		    readOnly: true
 		  });
 	
-	
-	// Getter
-	var readOnly = $("#rateYozero").rateYo("option", "readOnly"); //returns true
-	
-	// Setter
-	$("#rateYozero").rateYo("option", "readOnly", false); //returns a jQuery Element
 
+// -----------------------------------------------------------------------
 
-	let ratingOne = "";
-	
 	console.log("avgRating:" + avgRating);
 	
  	$(".rateYoOne").each(function() {
@@ -302,13 +288,6 @@
 
 
 });
-/*
-	// Getter
-	var normalFill = $("#rateYo").rateYo("option", "fullStar"); //returns true
-	 
-	// Setter
-	$("#rateYo").rateYo("option", "fullStar", true); //returns a jQuery Element
-	*/
-	
+
 	
 

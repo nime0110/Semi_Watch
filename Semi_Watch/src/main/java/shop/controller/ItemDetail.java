@@ -140,7 +140,7 @@ public class ItemDetail extends AbstractController {
 	       if(pageNo <= totalPage) {         
 	         pageBar += "<li class='page-item'><a class='page-link' href='itemDetail.flex?sizePerPage="+sizePerPage+"&currentShowPageNo="+pageNo+"'>[다음]</a></li>";
 	       }
-	       pageBar += "<li class='page-item'><a class='page-link' href='itemDetail.flex?pdno="+pdno+"sizePerPage="+sizePerPage+"&currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+	       pageBar += "<li class='page-item'><a class='page-link' href='itemDetail.flex?pdno="+pdno+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
 
 	      
 	      

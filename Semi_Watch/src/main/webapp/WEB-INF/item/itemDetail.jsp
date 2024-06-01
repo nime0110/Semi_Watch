@@ -230,8 +230,8 @@
 	      	<div id="rateAndCount">
 	      		<div id="rateView">
 	      			<span></span>
-					<div id="rateYo"></div>
-					<h4>평균별점 5/<span>${rvMapList[0].avg_starpoint}</span></h4>
+					<div id="avgRateYo" data-rateyo-read-only="true"></div>
+					<h4>평균별점 <span>${rvMapList[0].avg_starpoint}</span></h4>
 	      		</div>
 				<h4>전체 리뷰수 <span>${rvMapList[0].reviewcount}</span></h4>
 			</div>
@@ -239,7 +239,7 @@
 		<c:if test="${empty requestScope.rvMapList}">
 			<div id="rateAndCount">
 	      		<div id="rateView">
-					<div id="rateYozero"></div>
+					<div id="rateYozero" data-rateyo-read-only="true"></div>
 					<h4>평균별점 <span>0</span></h4>
 	      		</div>
 				<h4>전체 리뷰수 <span>0</span></h4>
@@ -287,12 +287,12 @@
           <a href="#">리뷰쓰기</a>
         </div>
         <!-- review popup start -->
-        
+        <!--
         <div id="reviewPopup" class="popup" style="display:none;">
 	    <div class="popup-content">
 	        <span class="close">&times;</span>
 	        <h2>리뷰 작성하기</h2>
-	        <div id="rateYo"></div>
+	        <div id="rateYo" ></div>
 			<p>Selected Rating: <span id="ratingValue">0</span></p>
 	        <textarea id="reviewText" rows="4" cols="50" placeholder="리뷰는 20자 이상 작성 가능합니다."></textarea>
 	        <br>
