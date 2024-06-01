@@ -11,12 +11,6 @@
 <jsp:include page="../header1.jsp"></jsp:include>
 
 
-<%-- 회원정보수정 관련 js --%>
-<script type="text/javascript" src="<%= ctxPath%>/js/member/memberInfoChange.js"></script>
-<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-
-<%-- 회원정보수정 관련 css --%>
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/member/memberInfoChange.css" />
 
 <style>
 	#OrderTable,
@@ -65,7 +59,7 @@ justify-content: center;
     pointer-e
 }    	
 
-.userod {
+.cen {
 
 	vertical-align: middle !important;
 }	
@@ -84,7 +78,7 @@ $(document).ready(function() {
 	
 	$("td.detail_ordercode").click(function(e){
 	
-		// alert($(e.target).text());
+		//alert($(e.target).text());
 		
 		const odrcode = $(e.target).text();
 		
@@ -160,6 +154,13 @@ function deliveryComplete(ordercode){
 	<c:set var="userid" value="${requestScope.userid}" />
    <%-- 상단 바 시작 --%>
    <c:if test='${userid ne "admin"}'> 
+   
+<%-- 회원정보수정 관련 js --%>
+<script type="text/javascript" src="<%= ctxPath%>/js/member/memberInfoChange.js"></script>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+<%-- 회원정보수정 관련 css --%>
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/member/memberInfoChange.css" />
    <div class="pt-3" id="topBar">
       <div>
          <h2 id="myPage">My Page</h2> 
@@ -238,61 +239,66 @@ function deliveryComplete(ordercode){
          <%-- 왼쪽 사이드 메뉴 끝 --%>
          <fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" />
 		<fmt:parseNumber var="sizePerPage" value="${requestScope.sizePerPage}" />
-      <div class="pt-4 col-md-8" style="border:solid 0 px red; margin: 0 auto;">
-			<p class="h4 text-center">&raquo;&nbsp;&nbsp;${loginuser.username} 님[ ${userid} ] 주문내역 목록&nbsp;&nbsp;&laquo;</p>
-			<table class="table table-bordered" id="OrderTable">
-	      		
-	       <tr>
-	          <td align="center">주문번호</td>
-	          <td align="center">상품이미지</td>
-	          <td align="center">상품명</td>
-	          <td align="center">총결제금액</td>
-	          <td align="center">주문일자</td>
-	          <td align="center">상품상태</td>
-	          <td align="center">배송확인</td>
-
-	       </tr>
-	        <c:forEach var="odr" items="${requestScope.order_map_List}">
-	          <tr>
-	          
-	             <td class="userod detail_ordercode" align="center"><a href="<%= ctxPath%>/order/orderListDetail.flex?odrcode=${odr.ordercode}">${odr.ordercode}</a></td>
-	             <td class="userod" align="center"><img style="width: 70px; height:70px;"src="<%= ctxPath%>/images/product/${odr.pdimg1}"/></td>
-	             <td class="userod" align="center">${odr.pdname}
-	             <c:choose>
-                  	<c:when test="${odr.cnt>1}"> 외 ${odr.cnt-1}건</c:when>
-                  	<c:otherwise></c:otherwise>
-                  </c:choose> 
-	             </td>
-	             <td class="userod" align="center">총 <fmt:formatNumber value="${odr.total_price}" type="number" groupingUsed="true" />원</td>
-	             <td class="userod" align="center">${odr.total_orderdate}</td>
-	             <td class="userod" align="center">${odr.delivery_status}</td>
-	             <td class="userod" align="center">
-	             <c:choose>
-	             	<c:when test="${odr.delivery_status eq '배송중'}">
-	             		<button class="btn btn-dark" type="button" onclick="deliveryComplete('${odr.ordercode}')" >구매확정</button>
-	             	</c:when>
-	             	<c:when test="${odr.delivery_status eq '주문완료'}">
-	             		배송대기중
-	             	</c:when>
-	             	<c:when test="${odr.delivery_status eq '배송완료'}">
-	             		구매확정완료
-	             	</c:when>
-	             </c:choose>
-	             </td>
-	          </tr>
-	       </c:forEach>
-	       </table>
-	       		<div id="pageBar">
-				    <nav>
-				       <ul class="pagination">
-				      	<li>${requestScope.pageBar}</li>
-				       </ul>
-				    </nav>
-		    	</div>
-		</div>
-   
-         </div>
-      </div>
+      <div class="col-md-8 mx-auto">
+        <p class="h4 text-center">&raquo;&nbsp;&nbsp;${loginuser.username} 님[ ${userid} ] 주문내역 목록&nbsp;&nbsp;&laquo;</p>
+        <table class="table table-bordered table-responsive">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col" class="text-center">주문번호</th>
+                    <th scope="col" class="text-center">상품이미지</th>
+                    <th scope="col" class="text-center">상품명</th>
+                    <th scope="col" class="text-center">총결제금액</th>
+                    <th scope="col" class="text-center">주문일자</th>
+                    <th scope="col" class="text-center">상품상태</th>
+                    <th scope="col" class="text-center">배송확인</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="odr" items="${requestScope.order_map_List}">
+                    <tr>
+                        <td class="cen detail_ordercode text-center">
+                            <a href="<%= ctxPath%>/order/orderListDetail.flex?odrcode=${odr.ordercode}">${odr.ordercode}</a>
+                        </td>
+                        <td class="cen text-center">
+                            <img class="img-fluid" style="width: 70px; height:70px;" src="<%= ctxPath%>/images/product/${odr.pdimg1}" />
+                        </td>
+                        <td class="cen text-center">
+                            ${odr.pdname}
+                            <c:choose>
+                                <c:when test="${odr.cnt>1}"> 외 ${odr.cnt-1}건</c:when>
+                                <c:otherwise></c:otherwise>
+                            </c:choose>
+                        </td>
+                        <td class="cen text-center">총 <fmt:formatNumber value="${odr.total_price}" type="number" groupingUsed="true" />원</td>
+                        <td class="cen text-center">${odr.total_orderdate}</td>
+                        <td class="cen text-center">${odr.delivery_status}</td>
+                        <td class="cen text-center">
+                            <c:choose>
+                                <c:when test="${odr.delivery_status eq '배송중'}">
+                                    <button class="btn btn-dark" type="button" onclick="deliveryComplete('${odr.ordercode}')">구매확정</button>
+                                </c:when>
+                                <c:when test="${odr.delivery_status eq '주문완료'}">
+                                    배송대기중
+                                </c:when>
+                                <c:when test="${odr.delivery_status eq '배송완료'}">
+                                    구매확정완료
+                                </c:when>
+                            </c:choose>
+                        </td>
+                    </tr>
+                </c:forEach>
+            	</tbody>
+        	</table>
+        	<div id="pageBar" class="d-flex justify-content-center">
+            <nav>
+                <ul class="pagination">
+                    <li>${requestScope.pageBar}</li>
+                </ul>
+            </nav>
+        	</div>
+    	</div>
+    </div>
+   </div> 
      </c:if>   
    
    
@@ -301,62 +307,62 @@ function deliveryComplete(ordercode){
 		
 			         
 			       
-         <c:if test='${userid eq "admin"}'>
-         <fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" />
-		 <fmt:parseNumber var="sizePerPage" value="${requestScope.sizePerPage}" />
-            <div class="pt-4 col-md-8" style="border:solid 0 px red; margin: 0 auto;">
-            	<p class="h4 text-center">&raquo;&nbsp;&nbsp;전 회원 주문내역보기&nbsp;&nbsp;&laquo;</p>
-               	<p class="text-left">상세정보를 보려면 주문코드를 클릭하세요</p>
-   				
-   				<table class="table table-bordered" id="OrderTable">
-                <tr>
-                  <td align="center">주문코드</td>
-                  <td align="center">아이디</td>
-                  <td align="center">상품이름</td>
-                  <td align="center">구매금액</td>
-                  <td align="center">주문일자</td>
-                  <td align="center">주문상품상태</td>
-                  <td align="center">배송변경</td>
-               </tr>
-               <c:forEach var="odr" items="${requestScope.order_list_admin}">
-               <tr>
-                  <td align="center" style="cursor: pointer;"class="detail_ordercode">${odr.ordercode}</td>
-                  <td align="center">${odr.fk_userid}</td>
-                  <td align="center">${odr.pdname}
-                  <c:choose>
-                  	<c:when test="${odr.cnt>1}"> 외 ${odr.cnt-1}건</c:when>
-                  	<c:otherwise></c:otherwise>
-                  </c:choose> 
-                  </td>
-                  <td align="center">총 <fmt:formatNumber value="${odr.total_price}" type="number" groupingUsed="true" />원</td>
-                  <td align="center">${odr.total_orderdate}</</td>
-                  <td align="center">${odr.delivery_status}</td>
-                  <td align="center">
-                  	<select name="deliveryType" style="width:18%;">
-                  		<option value="">선택하세요</option>
-                  		<option value="1">주문완료</option>
-                  		<option value="2">배송출발</option>
-                  		<option value="3">배송완료</option>
-                  	</select>
-                  	<input name="ordercode" type="hidden" value="${odr.ordercode}" />
-                 </td>
-               </tr>
-               </c:forEach> 
-                            
-               </table>
-			   	<div class="row justify-content-center pt-3">
-            
-		            <div id="pageBar">
-		                <nav>
-		                   <ul class="pagination">
-		                      <li>${requestScope.pageBar}</li>
-		                   </ul>
-		                </nav>
-		             </div>
-            
-         </div>
-			</div>
-            </c:if>
+        <c:if test='${userid eq "admin"}'>
+        <fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" />
+        <fmt:parseNumber var="sizePerPage" value="${requestScope.sizePerPage}" />
+        <div class="col-md-8 mx-auto pt-4">
+            <p class="h4 text-center">&raquo;&nbsp;&nbsp;전 회원 주문내역보기&nbsp;&nbsp;&laquo;</p>
+            <p class="text-left py-3">상세정보를 보려면 주문코드를 클릭하세요</p>
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col" class="text-center">주문코드</th>
+                        <th scope="col" class="text-center">아이디</th>
+                        <th scope="col" class="text-center">상품이름</th>
+                        <th scope="col" class="text-center">구매금액</th>
+                        <th scope="col" class="text-center">주문일자</th>
+                        <th scope="col" class="text-center">주문상품상태</th>
+                        <th scope="col" class="text-center">배송변경</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="odr" items="${requestScope.order_list_admin}">
+                        <tr>
+                            <td class="cen text-center detail_ordercode" style="cursor: pointer;">${odr.ordercode}</td>
+                            <td class="cen text-center">${odr.fk_userid}</td>
+                            <td class="cen text-center">${odr.pdname}
+                                <c:choose>
+                                    <c:when test="${odr.cnt>1}"> 외 ${odr.cnt-1}건</c:when>
+                                    <c:otherwise></c:otherwise>
+                                </c:choose>
+                            </td>
+                            <td class="cen text-center">총 <fmt:formatNumber value="${odr.total_price}" type="number" groupingUsed="true" />원</td>
+                            <td class="cen text-center">${odr.total_orderdate}</td>
+                            <td class="cen text-center">${odr.delivery_status}</td>
+                            <td class="cen text-center">
+                                <select name="deliveryType" class="form-control d-inline-block w-auto">
+                                    <option value="">선택하세요</option>
+                                    <option value="1">주문완료</option>
+                                    <option value="2">배송출발</option>
+                                    <option value="3">배송완료</option>
+                                </select>
+                                <input name="ordercode" type="hidden" value="${odr.ordercode}" />
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-center pt-3">
+                <div id="pageBar">
+                    <nav>
+                        <ul class="pagination">
+                            <li>${requestScope.pageBar}</li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    	</c:if>
 			            
 			            
 			            
@@ -365,7 +371,7 @@ function deliveryComplete(ordercode){
 			   		
          <%-- 내용입력하는 부분 끝 --%>
        	<form name="hidden">
-       		<input name="odrcode" type="hidden" value="" />
+       		<input name="odrcode" type="hidden" value="${odr.ordercode}" />
        	</form>
 
 <%-- 회원내용 정보 끝 --%>

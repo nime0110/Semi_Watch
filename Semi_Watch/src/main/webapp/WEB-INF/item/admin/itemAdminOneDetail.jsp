@@ -43,6 +43,11 @@ tr td:first-child {
 	vertical-align: middle;
 }    
     
+.sha{
+	font-size : 16px;
+	background-color:#c0c0c0
+
+}    
 </style>
 
 <script type="text/javascript">
@@ -343,23 +348,26 @@ $(document).ready(function() {
 	</c:if>
 	
 	<c:if test="${not empty requestScope.pvo}">
-		<p class="h3 text-center mt-5 mb-4">${requestScope.pvo.pdno}번의 상품 상세정보</p>
+		<div class="pt-2"></div>
+		<div style="display: flex; justify-content: center; align-items: center; height: 100px;" class="sha">
+		    <p class="h3 text-center mt-2 mb-2" style="font-size: 30px;">${requestScope.pvo.pdno}번의 상품 상세정보</p>
+		</div>
 	 <form name="inputitem" enctype="multipart/form-data">
 		<table class="table table-bordered" style="margin: 0 auto;">
          <tr>
-            <td>상품번호</td>
+            <td class="sha">상품번호</td>
             <td colspan="3">${requestScope.pvo.pdno}
             <input type="hidden" name="pdno" value="${requestScope.pvo.pdno}" /></td>
          </tr>
          <tr>
-            <td>상품명</td>
+            <td class="sha">상품명</td>
             <td colspan="3">
                 <input type="text" name="pdname" id="pdname" maxlength="30" class="requiredInfo" value="${requestScope.pvo.pdname}" />
                 <span class="error">상품명은 필수입력 사항입니다.</span>
             </td>
          </tr>
          <tr>
-            <td>상품브랜드</td>
+            <td class="sha">상품브랜드</td>
             <td colspan="3">
                 <select name="brand" class="infoData form-control" style="width:20%;">
                     <option value="${requestScope.pvo.brand}">${requestScope.pvo.brand}</option>
@@ -372,28 +380,28 @@ $(document).ready(function() {
             </td>
          </tr>
          <tr>
-            <td>상품정가</td>
+            <td class="sha">상품정가</td>
             <td colspan="3">
             	<input type="text" name="price" id="price" maxlength="30" class="requiredInfo" value="${requestScope.pvo.price}" />&nbsp;원
                 <span class="error">상품정가는 필수입력 사항입니다.</span>
             </td>
          </tr>
          <tr>
-            <td>판매가</td>
+            <td class="sha">판매가</td>
             <td colspan="3">
             	<input type="text" name="saleprice" id="saleprice" maxlength="30" class="requiredInfo sal" value="${requestScope.pvo.saleprice}" />&nbsp;원
                 <span class="error">판매가는 필수입력 사항입니다.</span>
             </td>
          </tr>
          <tr>
-            <td>적립 포인트</td>
+            <td class="sha">적립 포인트</td>
             <td colspan="3">
                <input type="text" name="point" id="point" maxlength="30" class="requiredInfo" value="${requestScope.pvo.point}" />&nbsp; Point
                <span class="error">적립 포인트는 필수입력 사항입니다.</span>
             </td>
          </tr>
          <tr>
-            <td>상품 구분 설정</td>
+            <td class="sha">상품 구분 설정</td>
             <td colspan="3">
               	<select name="pdstatus" class="infoData form-control" style="width:20%;">
                  	<option value="${requestScope.pvo.pdstatus}">
@@ -409,15 +417,32 @@ $(document).ready(function() {
             </td>
          </tr>
          <tr>
-            <td>상품 설명</td>
+            <td class="sha">상품 설명</td>
             <td colspan="3">
                <textarea name="pdcontent" rows="5" class="form-control" style="width:50%;">${requestScope.pvo.pd_content}</textarea>
                <span class="error">상품 설명은 필수입력 사항입니다.</span>
             </td>
          </tr>
          <c:forEach begin="1" end="3" varStatus="status">
+         <c:if test="${status.count == 1}">
+	        <tr>
+	            <td class="text-center sha" colspan="4">
+	            	
+	            	<p>현재색상별 재고</p><br>
+	            	<c:choose>
+	            		<c:when test="${not empty requestScope.pdlist}">
+	            		<c:forEach var="pd" items="${requestScope.pdlist}">
+		                  <p> ${pd.color} : ${pd.pd_qty}개</p>
+		                </c:forEach>
+	            		</c:when>
+	            		<c:otherwise> 없음</c:otherwise>
+	            	</c:choose>
+	              
+	            </td>
+	        </tr>
+	    </c:if>
          <tr id="inputDiv${status.count}" style="${status.count > 1 ? 'display:none;' : ''}">
-         	<td>컬러명</td>
+         	<td class="sha">컬러명</td>
             <td>
                 <select name="color_select${status.count}" class="infoData form-control" style="width:70%;">
                  	<option value="">컬러를 선택하세요</option>
@@ -452,7 +477,7 @@ $(document).ready(function() {
          </c:forEach>
          
          <tr>
-         	<td>상품 대표이미지</td>
+         	<td class="sha">상품 대표이미지</td>
          	 
             <td colspan="2"> <span style="font-weight: bold;">등록된 상품 대표이미지</span>
             <img src="${pageContext.request.contextPath}/images/product/${requestScope.pvo.pdimg1}" style="width:40%;" />
@@ -464,7 +489,7 @@ $(document).ready(function() {
             </td>
          </tr>
          <tr>
-            <td>상품 상세정보이미지</td>
+            <td class="sha">상품 상세정보이미지</td>
             <td colspan="2">
             	<span style="font-weight: bold;">등록된 상세정보이미지 파일명<br></span>${requestScope.pvo.pd_contentimg}
             </td>
@@ -474,7 +499,7 @@ $(document).ready(function() {
             </td>
          </tr>
          <tr>
-             <td class="control-label">추가이미지파일(선택)</td>
+             <td class="control-label sha">추가이미지파일(선택)</td>
              <td colspan="3" class="input-group">
                  <span>파일을 1개씩 마우스로 끌어 오세요</span>
                  <div id="fileDrop" class="fileDrop"></div>
@@ -492,23 +517,23 @@ $(document).ready(function() {
 
          <!-- 이미지파일 미리보기 -->
          <tr>
-             <td class="control-label">이미지파일<br>미리보기</td>
+             <td class="control-label sha">이미지파일<br>미리보기</td>
              <td colspan="3">
                  <img id="previewImg" style="width:40%; height:300px;" src="<%= ctxPath%>/images/no-productimg.png" />
              </td>
          </tr>
          <tr>
-            <td>상품등록일자</td>
+            <td class="sha">상품등록일자</td>
             <td colspan="3">${requestScope.pvo.pdinputdate}</td>
          </tr>
       </table>
-      <div class="text-center mt-4">
+      <div class="text-center mt-4 pb-3">
       	  <c:set var="pdno" value="${requestScope.pvo.pdno}" />
-          <input type="button" id="btnUpdate" value="상품수정하기" class="btn btn-primary">
+          <input type="button" id="btnUpdate" value="상품수정하기" class="btn btn-dark">
       
           <input type="button" id="btnDelete" value="상품삭제하기" onclick="product_delete('${pdno}')" class="btn btn-danger mx-5">
       		
-          <input type="button" id="btnCancel" value="상품수정취소" class="btn btn-warning" onclick="window.history.back()">
+          <input type="button" id="btnCancel" value="상품수정취소" class="btn btn-light" onclick="window.history.back()">
       </div>
     </form>
 	</c:if>

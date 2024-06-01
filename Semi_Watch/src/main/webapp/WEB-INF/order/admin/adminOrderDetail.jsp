@@ -26,6 +26,8 @@
     	font-weight : normal;
     }
     .info-section {
+    	font-weight : bold;
+    	font-size: 20px;
         margin: 2% 0;
     }
     .info-section hr {
@@ -103,13 +105,13 @@
                             <img class="pimg" src="<%= ctxPath%>/images/product/${list.pdimg1}" alt="상품 이미지" />
                         </a>
                         <div class="ml-4">
-                            <p>브랜드 : ${list.brand}</p>
-                            <p>상품명 : ${list.pdname}</p>
-                            <p>상품코드 : ${list.pdno}</p>
-                            <p>컬러명 : ${list.color}<span>/ 구매수량 : ${list.order_qty}</span></p>
-                            <p>상품상세코드 : ${list.pd_detailno}<span>/ 남은재고수량 : ${list.pd_qty}</span></p>
-                            <p>개당가격 : <fmt:formatNumber value="${list.saleprice}" type="number" groupingUsed="true" /></p>
-                            <p>개당적립포인트 : <fmt:formatNumber value="${list.point}" type="number" groupingUsed="true" /></p>
+                            <p class="py-1">브랜드 : ${list.brand}</p>
+                            <p class="py-1">상품명 : ${list.pdname}</p>
+                            <p class="py-1">상품코드 : ${list.pdno}</p>
+                            <p class="py-1">컬러명 : ${list.color}<span> / 구매수량 : ${list.order_qty}개</span></p>
+                            <p class="py-1">상품상세코드 : ${list.pd_detailno}<span> / 남은재고수량 : ${list.pd_qty}개</span></p>
+                            <p class="py-1">개당가격 : <fmt:formatNumber value="${list.saleprice}" type="number" groupingUsed="true" />원</p>
+                            <p class="py-1">개당적립포인트 : <fmt:formatNumber value="${list.point}" type="number" groupingUsed="true" />Point</p>
                         </div>
                     </td>
                     <td class="text-center align-middle">

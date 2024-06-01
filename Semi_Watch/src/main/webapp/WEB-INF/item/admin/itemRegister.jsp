@@ -10,47 +10,35 @@ String ctxPath = request.getContextPath();
 <jsp:include page="../../header1.jsp" />
 
 <style>
-body {
-  
- font-family: 'Montserrat', sans-serif;
-}
+	body {
+		font-family: 'Montserrat', sans-serif;
+	}
 
+	.container {
+		margin: 2% auto;
+		z-index: 1;
+	}
 
-body > div.container {
-    margin: 2% auto;
-    z-index: 1;
-}
+	#whole {
+		display: flex;
+		background-color: #e6e6e6;
+	}
 
-#whole {
-    display: flex;
-    background-color: #e6e6e6;
-}
+	#img {
+		padding-top: 15%;
+		width: 70%;
+	}
 
-#img {
-    padding-top: 15%;
-   
-    width: 100%;
-  
-}
+	img#previewImg {
+		position: absolute;
+		width: 250px;
+		height: 250px;
+		top: 25px;
+	}
 
-img#previewImg{
-	
-    position: absolute;
-    width:250px;
-    height: 250px;
-    top: 25px;
-
-}
-
-.container {
-    margin: 2% auto;
-}
-
-form {
-    margin-top: 20px;
-}
-
-
+	.form-group {
+		margin-bottom: 20px;
+	}
 
 .error {
     display: none;
@@ -65,46 +53,34 @@ div.fileDrop{ display: inline-block;
                   background-color: #fff;
                   padding-left: 10px;}
                  
-    div.fileDrop > div.fileList > span.delete{display:inline-block; width: 20px; border: solid 1px gray; text-align: center;} 
-    div.fileDrop > div.fileList > span.delete:hover{background-color: #000; color: #fff; cursor: pointer;}
-    div.fileDrop > div.fileList > span.fileName{padding-left: 10px;}
-    div.fileDrop > div.fileList > span.fileSize{padding-right: 20px; float:right;} 
-    span.clear{clear: both;} 
+ div.fileDrop > div.fileList > span.delete{display:inline-block; width: 20px; border: solid 1px gray; text-align: center;} 
+ div.fileDrop > div.fileList > span.delete:hover{background-color: #000; color: #fff; cursor: pointer;}
+ div.fileDrop > div.fileList > span.fileName{padding-left: 10px;}
+ div.fileDrop > div.fileList > span.fileSize{padding-right: 20px; float:right;} 
+ span.clear{clear: both;} 
 
-span {
-	align-self: center;
+	td.control-label {
+		font-weight: bold;
+		vertical-align: middle;
+		text-align: right;
+	}
 
+	td.input-group {
+		display: flex;
+		align-items: center;
+		padding-left: 5%;
+	}
 
-}
+	td.input-group input,
+	td.input-group select {
+		width: 100%;
+		text-align: center;
+	}
 
-td.control-label {
-
-    height: 50px;
-	font-weight: bolder;
-
-	margin: 5% 0 5% 0;    
-
-}
-
-td.input-group {
-	display: flex;
-    vertical-align: middle;
-    height: 50px;
-    align-content: center;
-    padding-left: 5%;
-   
-}
-
-
-td.input-group input,
-td.input-group select {
-    height: 30px;
-    width: 100%;
-    text-align: center;
-    z-index: 1;
-    float: right;
-}
-
+	#previewImg {
+		max-width: 250px;
+		max-height: 250px;
+	}
 
 
 
@@ -408,126 +384,116 @@ $(document).ready(function(){
 
 
 
-
-
 <div id="whole">
-    <div id="img">
-        <img alt="" src="/Semi_Watch/images/FY7ZMP0WYAA0Icg.png" />
-    </div>
+	<div id="img">
+		<img alt="" src="/Semi_Watch/images/FY7ZMP0WYAA0Icg.png" />
+	</div>
 
-    <div class="container">
-        <h2 class="py-3 pl-4">상품등록</h2>
+	<div class="container">
+		<h2 class="py-3 pl-5">상품등록</h2>
 
-        <form name="inputitem" enctype="multipart/form-data">
-            <table id="tblProdInput">
-                <!-- 상품명 -->
-                <tr class="form-group">
-                    <td class="control-label">상품명</td>
-                    <td class="input-group" style="width: 80% !important;">
-                        <input name="pdname" placeholder="상품명을 입력하세요." class="form-control" type="text" />
-                        <span class="error">상품명은 필수입력 사항입니다.</span>
-                    </td>
-                </tr>
+		<form name="inputitem" enctype="multipart/form-data">
+			<table id="tblProdInput" class="table">
+				<tr class="form-group">
+					<td class="control-label">상품명</td>
+					<td class="input-group" style="width:60%;">
+						<input name="pdname" placeholder="상품명을 입력하세요." class="form-control infoData" type="text" />
+						<span class="error">상품명은 필수입력 사항입니다.</span>
+					</td>
+				</tr>
 
-                <!-- 상품브랜드 -->
-                <tr class="form-group">
-                    <td class="control-label">상품브랜드</td>
-                    <td class="input-group" style="width: 50% !important;">
-                        <select name="brand" class="infoData form-control"  >
-                            <option value="">선택하세요</option>
-                            <option value="G-SHOCK">G-SHOCK</option>
-                            <option value="롤렉스">롤렉스</option>
-                            <option value="세이코">세이코</option>
-                            <option value="카시오">카시오</option>
-                        </select>
-                        <span class="error">필수선택</span>
-                    </td>
-                </tr>
+				<tr class="form-group">
+					<td class="control-label">상품브랜드</td>
+					<td class="input-group" style="width:60%;">
+						<select name="brand" class="form-control infoData">
+							<option value="">선택하세요</option>
+							<option value="G-SHOCK">G-SHOCK</option>
+							<option value="롤렉스">롤렉스</option>
+							<option value="세이코">세이코</option>
+							<option value="카시오">카시오</option>
+						</select>
+						<span class="error">필수선택</span>
+					</td>
+				</tr>
 
-                <!-- 상품 대표이미지 -->
-                <tr class="form-group">
-                    <td class="control-label">상품 대표이미지</td>
-                    <td class="input-group">
-                        <input type="file" name="pdimg1" class="infoData img_file" accept="image/*" />
-                        <span class="error">필수입력</span>
-                    </td>
-                </tr>
+				<tr class="form-group">
+					<td class="control-label">상품 대표이미지</td>
+					<td class="input-group" >
+						<input type="file" name="pdimg1" class="form-control-file infoData img_file" accept="image/*" />
+						<span class="error">필수입력</span>
+					</td>
+				</tr>
 
-                
-                <!-- 제품정가 -->
-                <tr class="form-group">
-                    <td class="control-label">상품 정가</td>
-                    <td class="input-group" style="width: 50% !important;">
-                        <input type="text" name="price"  class="form-control"/> <span>&nbsp;원</span>
-                        <span class="error">필수입력</span>
-                    </td>
-                </tr>
+				<tr class="form-group">
+					<td class="control-label">상품 정가</td>
+					<td class="input-group" style="width:60%;">
+						<input type="text" name="price" class="form-control" />
+						<span>&nbsp;원</span>
+						<span class="error">필수입력</span>
+					</td>
+				</tr>
 
-                <!-- 제품판매가 -->
-                <tr class="form-group">
-                    <td class="control-label">상품 판매가</td>
-                    <td class="input-group" style="width: 50% !important;">
-                        <input type="text" name="saleprice" class="form-control sal"/> <span>&nbsp;원</span>
-                        <span class="error">필수입력</span>
-                    </td>
-                </tr>
-                
-                <!-- 제품설명 -->
-                <tr class="form-group" style="height:170px;">
-                    <td class="control-label" >제품설명</td>
-                    <td class="input-group" style="position:relative;">
-                        <textarea name="pdcontent" rows="5" class="form-control" style="position:absolute; width:300px; top:30px;"></textarea>
-                    </td>
-                </tr>
-                
-                <!-- 상품 대표이미지 -->
-                <tr class="form-group">
-                    <td class="control-label">상품 상세이미지</td>
-                    <td class="input-group">
-                        <input type="file" name="pd_contentimg" class="infoData img_file" accept="image/*" />
-                        <span class="error">필수입력</span>
-                    </td>
-                </tr>
+				<tr class="form-group">
+					<td class="control-label">상품 판매가</td>
+					<td class="input-group" style="width:60%;">
+						<input type="text" name="saleprice" class="form-control sal" />
+						<span>&nbsp;원</span>
+						<span class="error">필수입력</span>
+					</td>
+				</tr>
 
-                <!-- 제품포인트 -->
-                <tr class="form-group">
-                    <td class="control-label">상품 구매시 적립 포인트</td>
-                    <td class="input-group" style="width: 50% !important;">
-                        <input type="text" name="point" class="form-control" /><span>&nbsp;POINT</span> 
-                        <span class="error">필수입력</span>
-                    </td>
-                </tr>
+				<tr class="form-group" style="height: 170px;">
+					<td class="control-label">제품설명</td>
+					<td class="input-group" style="width:60%;">
+						<textarea name="pdcontent" rows="5" class="form-control"></textarea>
+					</td>
+				</tr>
 
-                <!-- 추가이미지파일 -->
-                <tr class="form-group">
-                    <td class="control-label">추가이미지파일(선택)</td>
-                    <td class="input-group" style="height:150px">
-                        <span class="pb-2">파일을 1개씩 마우스로 끌어 오세요</span>
-                        <div id="fileDrop" class="fileDrop"></div>
-                    </td>
-                </tr>
+				<tr class="form-group">
+					<td class="control-label">상품 상세이미지</td>
+					<td class="input-group">
+						<input type="file" name="pd_contentimg" class="form-control-file infoData img_file" accept="image/*" />
+						<span class="error">필수입력</span>
+					</td>
+				</tr>
 
-                <!-- 이미지파일 미리보기 -->
-                <tr class="form-group">
-                    <td class="control-label" style="height:300px;">이미지파일<br>미리보기</td>
-                    <td class="input-group" style="position:relative;">
-                        <img id="previewImg"/>
-                    </td>
-                </tr>
+				<tr class="form-group">
+					<td class="control-label">상품 구매시 적립 포인트</td>
+					<td class="input-group" style="width:60%;">
+						<input type="text" name="point" class="form-control" />
+						<span>&nbsp;POINT</span>
+						<span class="error">필수입력</span>
+					</td>
+				</tr>
 
-                <!-- 버튼 -->
-                <tr class="form-group" style="text-align: center;">
-                    <td colspan="2">
-                        <input type="button" value="제품등록" id="btnRegister" class="btn btn-info btn-lg" /> 
-                        <input type="reset" value="취소" class="btn btn-danger btn-lg" style="margin-left: 5%;" />
-                    </td>
-                </tr>
-            </table>
-        </form>
-        <form name="hiddenitemSet">
-        	<input name="setpdno" type="hidden" value=""/>
-        </form>
-    </div>
+				<tr class="form-group">
+					<td class="control-label">추가이미지파일(선택)</td>
+					<td class="input-group" style="width:60%;">
+						<span class="pb-2">파일을 1개씩 마우스로 끌어 오세요</span>
+						<div id="fileDrop" class="fileDrop"></div>
+					</td>
+				</tr>
+
+				<tr class="form-group" style="height: 300px;">
+					<td class="control-label">이미지파일 미리보기</td>
+					<td class="input-group">
+						<img id="previewImg" />
+					</td>
+				</tr>
+
+				<tr class="form-group">
+					<td colspan="2" style="text-align: center;">
+						<input type="button" value="제품등록" id="btnRegister" class="btn btn-info btn-lg mr-5" />
+						<input type="reset" value="취소" class="btn btn-danger btn-lg" />
+					</td>
+				</tr>
+			</table>
+		</form>
+
+		<form name="hiddenitemSet">
+			<input name="setpdno" type="hidden" value="" />
+		</form>
+	</div>
 </div>
 
 <jsp:include page="../../footer.jsp" />

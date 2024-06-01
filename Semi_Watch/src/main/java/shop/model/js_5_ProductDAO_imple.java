@@ -1177,7 +1177,8 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 			
 	         conn = ds.getConnection();
 	         
-	         String sql = " select color, pd_qty from tbl_pd_detail where fk_pdno = ? "; 
+	         String sql = " select decode(color, 'none' , '단일색상' , color) as color ,"
+	         		+ " pd_qty from tbl_pd_detail where fk_pdno = ? "; 
 	        	           
 	         pstmt = conn.prepareStatement(sql);
 	         
