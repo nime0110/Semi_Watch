@@ -31,15 +31,15 @@ $(document).ready(function() {
         // alert("확인용 제품갯수 : "+odrCount);
 		// 확인용 제품개수 : 2
 		
-		const firstpname = $(window.opener.document).find("span#pname1").text();
+		const firstpname = $(window.opener.document).find("span#pname0").text();
 		// alert("확인용 첫번째 제품명 : "+firstpname);
 		
 		let odrPname = firstpname;
-		//alert("확인용 첫번째 제품명 : "+odrPname);
+		// alert("확인용 첫번째 제품명 : "+odrPname);
 		
 		if(odrCount > 1){
 			odrPname = firstpname+" 외 "+Number(odrCount-1);
-			//alert("확인용 첫번째 제품명 : "+odrPname);
+			// alert("확인용 첫번째 제품명 : "+odrPname);
 		}
 		
 		

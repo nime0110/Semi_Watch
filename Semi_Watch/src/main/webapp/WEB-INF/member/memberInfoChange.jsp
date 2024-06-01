@@ -98,9 +98,6 @@ $(document).ready(function() {
 				      		<li>
 				        		<a class="nav-link" href="#">마일리지</a>
 				      		</li>
-				      		<li>
-				        		<a class="nav-link" href="<%=ctxPath%>/login/logout.flex">로그아웃</a>
-				      		</li>
 				    	</ul>
 				  	</div>
 	            </nav>

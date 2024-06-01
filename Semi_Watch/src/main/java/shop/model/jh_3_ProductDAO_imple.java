@@ -353,6 +353,46 @@ public class jh_3_ProductDAO_imple implements jh_3_ProductDAO {
 		
 	}// end of public int checkOutUpdate(Map<String, Object> paraMap)
 
+	
+	
+	// 주문한 제품에 대해 email 보내기시 email 내용에 넣을 주문한 제품번호들에 대한 제품정보를 얻어오는 것.
+	@Override
+	public List<ProductVO> getordProductList(String pnums) throws SQLException {
+		
+		List<ProductVO> productInfoList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+	     
+			String sql = " select PDNAME, BRAND, SALEPRICE, PDIMG1 "
+		               + " from tbl_product "
+		               + " where pdno in("+ pnums +") ";
+	     
+			pstmt = conn.prepareStatement(sql);
+	     
+			rs = pstmt.executeQuery();
+	     
+			while(rs.next()) {
+	        
+				ProductVO pvo = new ProductVO();
+	        
+		        pvo.setPdname(rs.getString("PDNAME"));      // 제품명
+		        pvo.setBrand(rs.getString("BRAND"));     	// 제조회사명
+		        pvo.setSaleprice(rs.getInt("SALEPRICE"));   // 제품 판매가(할인해서 팔 것이므로)
+		        pvo.setPdimg1(rs.getString("PDIMG1"));      // 제품이미지1   이미지파일명
+		        
+		        productInfoList.add(pvo);
+	        
+			}// end of while(rs.next())-------------------------
+
+		} finally {
+			close();
+		}
+		
+		return productInfoList;
+		
+	}// end of public List<ProductVO> getordProductList ----
+
 
 	
 
