@@ -178,6 +178,38 @@
   border: 1px solid transparent;
 }
 
+/* 캐러셀 슬라이드 start */
+
+     .carousel-inner .carousel-item.active,
+      .carousel-inner .carousel-item-next,
+      .carousel-inner .carousel-item-prev {
+        display: flex;
+      }
+      
+      .carousel-inner .carousel-item-right.active,
+      .carousel-inner .carousel-item-next {
+      /* transform: translate(25%, 0); */
+      /* 또는 */
+         transform: translateX(25%);
+         
+      /* transform: translate(0, 25%);
+         또는
+         transform: translateY(25%); */  
+      }
+      
+      .carousel-inner .carousel-item-left.active, 
+      .carousel-inner .carousel-item-prev {
+         transform: translateX(-25%); 
+      }
+        
+      .carousel-inner .carousel-item-right,
+      .carousel-inner .carousel-item-left{ 
+         transform: translateX(0);
+      }
+
+/* 캐러셀 슬라이드 end */
+
+
 /* footer */
 footer {
   padding: 2rem 0;

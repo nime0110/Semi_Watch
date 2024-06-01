@@ -39,10 +39,8 @@ function goLogin() {
   }
 
   if($("input:checkbox[id='saveid']").prop("checked")) {
-    alert("아이디 저장 체크를 하셨습니다.");
     localStorage.setItem('saveid', $("input:text[id='loginUserid']").val());
   } else {
-    alert("아이디 저장 체크를 해제하셨습니다.");
     localStorage.removeItem('saveid');
   }
   
