@@ -181,7 +181,7 @@ $(document).ready(function(){
         $.ajax({
             url:"sendEmailCode.flex",
             data:{"newEmail":$("input#newEmail").val()
-                 ,"userid":$("input:hidden[id='userid']").val()
+                 ,"userid":$("td#userid]").text()
                  ,"username":$("td#username").text()},
 
             type:"post",

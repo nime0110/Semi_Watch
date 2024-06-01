@@ -19,8 +19,6 @@ public interface sw_4_ProductDAO {
 	// 로그인한 사용자의 이름으로 된 장바구니 조회해오기.
 	List<CartVO> selectProductCart(String userid) throws SQLException;
 	
-	// 포인트 업데이트 시키기 (우리 장바구니에서는 필요 없음)
-	Map<String, String> selectCartSumPricePoint(String userid);
 
 	
 	

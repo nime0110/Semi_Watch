@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONObject;
@@ -12,7 +13,9 @@ import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import login.controller.GoogleMail;
 import member.domain.MemberVO;
+import shop.domain.ProductVO;
 import shop.model.jh_3_ProductDAO;
 import shop.model.jh_3_ProductDAO_imple;
 
@@ -83,7 +86,7 @@ public class CheckOutUpdate extends AbstractController {
 			String updatePoint = request.getParameter("updatePoint");
 			
 			
-			System.out.println("확인용 str_pnum_join : " + str_pnum_join);
+			// System.out.println("확인용 str_pnum_join : " + str_pnum_join);
 			
 			// 담을 그릇
 			Map<String, Object> paraMap = new HashMap<>();
@@ -113,7 +116,7 @@ public class CheckOutUpdate extends AbstractController {
 			paraMap.put("ptotalPriceArr", ptotalPriceArr);
 			
 			// 장바구니 삭제할 데이터가 있는 경우(장바구니에서 주문하는 경우만)
-			if(str_cartno_join != null) {
+			if(str_cartno_join != null && str_cartno_join != "" ) {
 				String[] cartnoArr = str_cartno_join.split(",");
 				paraMap.put("cartnoArr", cartnoArr);
 			}
@@ -131,11 +134,43 @@ public class CheckOutUpdate extends AbstractController {
          	
          	if(isSuccess == 1) {
          		System.out.println("업데이트 성공");
+         		
+         		// 유저포인트 갱신 및 주문메일 발송
+         		loginuser.setMileage(Integer.parseInt(updatePoint));
+         		
+         		// ==== 메일보내기 시작 ==== //
+         		GoogleMail mail = new GoogleMail();
+         		
+         		String pnums = "'"+String.join("','", pnumArr)+"'";
+         		
+         		System.out.println("확인용 주문한 제품번호 pnumes : " + pnums);
+         		
+         		// 주문한 제품에 대해 email 보내기시 email 내용에 넣을 주문한 제품번호들에 대한 제품정보를 얻어오는 것.
+	         	List<ProductVO> ordProductList = pdao.getordProductList(pnums);
+         		
+	         	StringBuilder sb = new StringBuilder();
+	         	sb.append("주문코드번호 : <span style='color: blue; font-weight: bold;'>"+ordcode+"</span><br/><br/>");
+	         	sb.append("<주문상품><br/>");
+	         	
+	         	for(int i=0; i<ordProductList.size(); i++) {
+	         		// jumunProductList.size() 와 oqty_arr.length 와 같다.
+	         		sb.append(ordProductList.get(i).getPdname()+"&nbsp;옵션명: "+poptionArr[i]+"&nbsp;구매수량 :"+oqtyArr[i]+"개&nbsp;<br>");
+	         		sb.append("<img src='http://127.0.0.1:9090/MyMVC/images/"+ordProductList.get(i).getPdimg1()+"' />");	// 구글메일은 127.0.0.1 은 허락하지않는다.
+
+	         	}// end of for-----
+	         	
+	         	sb.append("<br>");
+         		sb.append("<br/>이용해 주셔서 감사합니다.");
+	         	
+	         	String emailContents = sb.toString();
+	         	
+	         	
+	         	mail.sendmail_checkOutFinish(loginuser.getEmail(), loginuser.getUsername(), emailContents);
+         		
+         		
+         		// ==== 메일보내기 끝 ==== //
+         		
          	}
-         	else {
-         		System.out.println("업데이트 실패");
-         	}
-			
 			
          	JSONObject jsobj = new JSONObject();
          	jsobj.put("ctxPath", ctxPath);	// success 시 사용하려고 보냄

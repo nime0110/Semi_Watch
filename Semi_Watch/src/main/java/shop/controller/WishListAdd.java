@@ -51,7 +51,7 @@ public class WishListAdd extends AbstractController {
 	            jsonObj.put("pdimg", pvo.getPdimg1());
 	            jsonObj.put("pdsaleprice", pvo.getSaleprice());
 	            jsonObj.put("pdno", pvo.getPdno());
-	            jsonObj.put("color", pvo.getPdvo().getColor() ); // 각 상품의 색상을 넣습니다.
+	            jsonObj.put("color", pvo.getPdvo().getColor() );
 
 	            System.out.println("~~~~~ pdname: " + pvo.getPdname() + ", color: " + colorSplit[i]);
 

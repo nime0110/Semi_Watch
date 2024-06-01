@@ -80,7 +80,7 @@ insert into TBL_CART(cartno, fk_pdno, fk_userid, cart_qty, registerday)
 -- 생성된 시퀀스 조회 --
 
 
-select color 
+select * 
 from tbl_pd_detail
 where fk_pdno = 95;
 
@@ -189,7 +189,7 @@ where cartno in (1,2,3);
 
 
 -- 유저포인트 업데이트 sql 시작
-select *
+select username, mileage
 from tbl_member;
 
 update tbl_member set MILEAGE = ?
@@ -197,6 +197,65 @@ where userid = ?;
 
 
 -- 유저포인트 업데이트 sql 끝
+
+
+-- 이메일에 보낼 제품 정보 가져오기
+select PDNAME, BRAND, SALEPRICE, PDIMG1
+from tbl_product;
+
+
+select *
+from tbl_product;
+
+
+select *
+from tbl_order
+where ordercode = 't20240530-43';
+
+
+-- 주문상세 리스트 sql
+WITH
+O AS(
+    select ordercode, fk_userid, total_price, total_orderdate
+    from tbl_order
+)
+,
+OD AS(
+    select order_detailno, fk_pd_detailno, fk_ordercode, order_qty, delivery_status
+    from tbl_orderdetail
+)
+SELECT BRAND, PDIMG1, PDNAME, COLOR, SALEPRICE, ORDER_QTY, TOTAL_PRICE, TOTAL_ORDERDATE -- 브랜드, 이미지, 제품명, 옵션명, 개당할인가, 주문수량, 주문일자
+       , DELIVERY_STATUS, DELIVERY_NAME, DELIVERY_POSTCODE, DELIVERY_ADDRESS, DELIVERY_MOBILE, DELIVERY_MSG -- 배송상태, 이름, 우편번호, 주소명, 연락처, 배송메시지
+       , PDNO, PD_DETAILNO -- 리뷰용 제품번호, 제품상세번호
+FROM O JOIN OD
+ON O.ordercode = OD.fk_ordercode
+JOIN tbl_delivery D
+ON OD.fk_ordercode = D.ordercode
+JOIN tbl_pd_detail PD
+ON OD.fk_pd_detailno = PD.pd_detailno
+JOIN tbl_product P
+ON PD.fk_pdno = P.pdno
+WHERE O.ordercode = 't20240530-43';
+
+-- 주문결제, 배송지 정보
+WITH
+O AS(
+    select ordercode, fk_userid, total_price, total_orderdate
+    from tbl_order
+)
+,
+D AS(
+    select ordercode, delivery_name, delivery_mobile, delivery_postcode, delivery_address, delivery_msg
+    from tbl_delivery
+)
+SELECT TOTAL_PRICE, TOTAL_ORDERDATE, DELIVERY_NAME, DELIVERY_MOBILE, DELIVERY_POSTCODE, DELIVERY_ADDRESS, DELIVERY_MSG
+FROM O JOIN D
+ON O.ordercode = D.ordercode
+WHERE O.ordercode = 't20240530-43';
+    
+
+
+
 
 
 
