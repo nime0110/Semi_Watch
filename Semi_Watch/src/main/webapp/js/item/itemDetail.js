@@ -164,6 +164,7 @@
       
     //////////////////////////////////////// 리뷰 작성 js start /////////////////////////////////////////////
     /* ------------------------------리뷰창-------------------- */
+    
 	let ratingSelect = 5;
 	
 	function initializeRateYo() {
@@ -205,6 +206,7 @@
 	    }
 	});
 	
+	//리뷰 제출 폼 클릭 -> 구매한 유저가, 자신이구매한 상품에만 후기를 남길 수 있다.
 	submitReviewBtn.click(function() {
 	    const reviewText = $('#reviewText').val().replace(/\s/g, ''); // 공백을 제거한 리뷰 값
 	    let productNo = $("input#productno").val(); //제품번호
@@ -244,14 +246,69 @@
 	        }
 	    });
 	});
+	
+	/* 리뷰 보여주기 ----------*/
+   // ------------------ 리뷰가 있을때의 평균별점 --------------------------
+
+	let avgRating = $("#rateView > h4 > span").text();
+
+	
+	  $("#rateYo").rateYo({
+		    rating: avgRating,
+		    readOnly: true
+		  });
+	
+	
+	// Getter
+	var readOnly = $("#rateYo").rateYo("option", "readOnly"); //returns true
+	
+	// Setter
+	//$("#rateYo").rateYo("option", "readOnly", false); //returns a jQuery Element
+
+	// ------------------ 리뷰가 없을때의 평균 별점 --------------------------
+	$("#rateYozero").rateYo({
+		    rating: 0,
+		    readOnly: true
+		  });
+	
+	
+	// Getter
+	var readOnly = $("#rateYozero").rateYo("option", "readOnly"); //returns true
+	
+	// Setter
+	$("#rateYozero").rateYo("option", "readOnly", false); //returns a jQuery Element
+
+
+	let ratingOne = "";
+	
+	console.log("avgRating:" + avgRating);
+	
+ 	$(".rateYoOne").each(function() {
+      var ratingOne = $(this).data("rating");
+      $(this).rateYo({
+        rating: ratingOne,
+        readOnly: true
+      });
+    });
+// ------------------ 리뷰 글 하나하나의 별점 --------------------------
+	
+	
+	// Getter
+	var readOnly = $(".rateYoOne").rateYo("option", "readOnly"); //returns true
+	
+	// Setter
+	//$(".rateYoOne").rateYo("option", "readOnly", false); //returns a jQuery Element
+
+
 
 });
+/*
 	// Getter
 	var normalFill = $("#rateYo").rateYo("option", "fullStar"); //returns true
 	 
 	// Setter
 	$("#rateYo").rateYo("option", "fullStar", true); //returns a jQuery Element
-	
+	*/
 	
 	
 

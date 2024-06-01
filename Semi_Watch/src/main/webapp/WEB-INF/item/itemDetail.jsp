@@ -7,7 +7,6 @@
 %>
 
 <link rel="stylesheet" href="../font/css/all.css">
-<link rel="stylesheet" type="text/css" href="<%= ctx_Path%>/css/itemDetail/itemDetail.css" />
 
 <jsp:include page="../header1.jsp" />
 <!-- Latest compiled and minified CSS -->
@@ -15,11 +14,12 @@
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 <%-- 허성심 제작 페이지 --%>
+<link rel="stylesheet" type="text/css" href="<%= ctx_Path%>/css/itemDetail/itemDetail.css" />
 
 
 <script type="text/javascript" src="<%= ctx_Path%>/js/item/itemDetail.js"></script>
 <script type="text/javascript">
-
+	
 
 </script>
 
@@ -175,7 +175,7 @@
       <ul>
         <li><a href="#iteminfo">상품상세정보</a></li>
         <li><a href="#finalbox">배송/교환/반품</a></li>
-        <li><a href="#normalReview">리뷰 &#40;20&#41;</a></li>
+        <li><a href="#normalReview">리뷰 &#40;${rvMapList[0].reviewcount}&#41;</a></li>
       </ul>
     </div>
     <div id="infobox">
@@ -215,17 +215,36 @@
 	</div>
 </div>
   <div id="review" class="container">
-<!-- 리뷰란 -->
     <div id="reviewcate" class="categori">
       <ul>
         <li><a href="#iteminfo">상품상세정보</a></li>
         <li><a href="#finalbox">배송/교환/반품</a></li>
-        <li><a href="#bestReview">리뷰 &#40;20&#41;</a></li>
+        <li><a href="#bestReview">리뷰 &#40;${rvMapList[0].reviewcount}&#41;</a></li>
       </ul>
     </div>
 
+<!-- 리뷰란 -->
     <div id="normalReview">
       <div id="reviews_">
+      	<c:if test="${not empty requestScope.rvMapList}">
+	      	<div id="rateAndCount">
+	      		<div id="rateView">
+	      			<span></span>
+					<div id="rateYo"></div>
+					<h4>평균별점 5/<span>${rvMapList[0].avg_starpoint}</span></h4>
+	      		</div>
+				<h4>전체 리뷰수 <span>${rvMapList[0].reviewcount}</span></h4>
+			</div>
+		</c:if>
+		<c:if test="${empty requestScope.rvMapList}">
+			<div id="rateAndCount">
+	      		<div id="rateView">
+					<div id="rateYozero"></div>
+					<h4>평균별점 <span>0</span></h4>
+	      		</div>
+				<h4>전체 리뷰수 <span>0</span></h4>
+			</div>
+		</c:if>
         <ul id="reviewsel">
           <li><a href="#">베스트리뷰 |</a></li>
           <li><a href="#">오래된순 |</a></li>
@@ -233,57 +252,35 @@
         </ul>
         <div id="reviewBoard">
           <table>
-            <tr>
-              <td>
-                <p>솔직 구매후기 남깁니다~ 처음 구매해봤어요
-                
-                노래 한곡 한곡 따뜻한 주제가 돋보이는 아름다운 한글가사의 노래를 모아봤어요. 바삐 돌아가는 하루에 빠른비트의 음악들도 좋지만. 가끔은 그 옛날 연필로 가사 ...
-                더미데이터입니다. 더미데이터입니다.더미데이터입니다.더미데이터입니다.더미데이터입니다.더미데이터입니다.더미데이터입니다.더미데이터입니다.더미데이터입니다.더미데이터입니다.
-                </p>
-              </td>
-              <td>
-                <p>
-                  <span>작성일자</span>
-                  2024.05.15
-                </p>
-                <p>
-                  <span>작성자</span>
-                  nva_1**
-                </p>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <p>솔직 구매후기 남깁니다~ 처음 구매해봤어요</p>
-                <a href="#">...더보기</a>
-              </td>
-              <td>
-                <p>
-                  <span>작성일자</span>
-                  2021.02.24
-                </p>
-                <p>
-                  <span>작성자</span>
-                  nva_1**
-                </p>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <p>솔직 구매후기 남깁니다~ 처음 구매해봤어요</p>
-                <a href="#">...더보기</a>
-              </td>
-              <td>
-                <p>
-                  <span>작성일자</span>
-                  2021.02.24
-                </p>
-                <p>
-                  <span>작성자</span>
-                  nva_1**
-                </p>
-              </td>
-            </tr>
+	          <c:if test="${not empty requestScope.rvMapList}">
+		       <c:forEach var="rvMap" items="${requestScope.rvMapList}">
+			       <tr>
+		              <td>
+			            <div id="ratingDiv">
+			              <div class="rateYoOne" data-rating="${rvMap.starpoint}"></div>
+						  <p class="ratingCount">별점 <span class="ratingOneSpan">${rvMap.starpoint}</span>점</p>
+			            </div>
+		                <p>${rvMap.review_content}</p>
+		              </td>
+		              <td>
+		                <p>
+		                  <span>작성일자</span>
+		                  ${rvMap.review_date}
+		                </p>
+		                <p>
+		                  <span>작성자</span>
+		                  ${rvMap.fk_usermask}
+		                </p>
+		              </td>
+		            </tr> 
+	            </c:forEach>
+	            </c:if>
+	            <c:if test="${empty requestScope.rvMapList}">
+		            <div id="notReviewDiv">
+			            <p id="notReviewP"> 아직 상품 리뷰가 작성되지 않은 상품입니다. <br>
+			            	첫 상품 리뷰 작성자가 되어보세요!</p>
+		            </div>
+	            </c:if>
           </table>
         </div>
         <div id="writeReview">
@@ -301,30 +298,35 @@
 	        <br>
 	        <button id="submitReviewBtn">리뷰 제출하기</button>
 	    </div>
-		</div>
+		</div> 
         <!-- review popup end -->
-        <div id="rpageNumber">
-          <a href="#">
-            <img src="${pageContext.request.contextPath}/images/itemDetail/12345allowleft.png" 
-            alt="왼쪽 화살표">
-          </a>
-          <span>
-            <a href="#">1</a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            <a href="#">4</a>
-            <a href="#">5</a>
-            <a href="#">6</a>
-            <a href="#">7</a>
-            <a href="#">8</a>
-            <a href="#">9</a>
-            <a href="#">10</a>
-          </span>
-          <a href="#">
-            <img src="${pageContext.request.contextPath}/images/itemDetail/12345allowright.png" 
-            alt="오른쪽 화살표">
-          </a>
-        </div>
+        <ul id="rpageNumber" class="pagination">
+        <%-- 	<li>	        	
+	          <a href="#">
+	            <img src="${pageContext.request.contextPath}/images/itemDetail/12345allowleft.png" 
+	            alt="왼쪽 화살표">
+	          </a>
+        	</li>
+            <li><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">6</a></li>
+            <li><a href="#">7</a></li>
+            <li><a href="#">8</a></li>
+            <li><a href="#">9</a></li>
+            <li><a href="#">10</a></li>
+            <li>	
+	          <a href="#">
+	            <img src="${pageContext.request.contextPath}/images/itemDetail/12345allowright.png" 
+	            alt="오른쪽 화살표">
+	          </a>
+           </li> --%>
+           	
+			${requestScope.pageBar}
+			
+        </ul>
       </div>
     </div>
   </div>

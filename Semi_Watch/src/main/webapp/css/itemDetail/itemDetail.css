@@ -468,9 +468,10 @@ li {
 	width: 100%;
 }
 #normalReview #reviews_ #rpageNumber {
-  margin-top: 70px;
-  margin-left: 15%;
-  overflow: hidden;
+    margin-top: 70px;
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
 }
 #normalReview #reviews_ #rpageNumber span a {
   float: left;  
@@ -582,6 +583,9 @@ textarea {
     stroke: #ff9f00;
     stroke-width: 2;
 }
+#rateyo {
+	padding-bottom: 2vh;
+}
 
 .rateyo .rateyo-path-background {
     stroke-linecap: round;
@@ -590,6 +594,57 @@ textarea {
     stroke: #ddd;
     stroke-width: 2;
 }
+
+div#reviewcate {
+	height: 53px;
+    border: 1px solid darkcyan;
+}
+
+div#normalReview {
+    height: 150vh;
+}
+
+/*---------------- 리뷰 목록 별점표시 시작----------------*/
+
+/*기본설정값 zindex 수정*/
+.jq-ry-container>.jq-ry-group-wrapper>.jq-ry-group.jq-ry-rated-group,
+.jq-ry-container>.jq-ry-group-wrapper>.jq-ry-group {
+	 z-index: 0 !important;
+}
+
+
+
+div#rateAndCount {
+	display: flex;
+    align-items: center;
+    justify-content: space-around;
+	width: 100%;
+    height: 30vh;
+    background-color: #f4f4f4;
+}
+
+
+div#notReviewDiv {
+	background-color: #f4f4f4;
+    height: 45vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+p.ratingCount {	
+    font: 15px / 21px 'AppleSDGothicNeoM_0' !important;
+    color: rgb(191, 191, 191) !important;
+}
+
+div#ratingDiv {
+	display: flex;
+	
+}
+/*---------------- 리뷰 목록 별점표시 끝----------------*/
+
+
+
 
 
 

@@ -356,4 +356,50 @@ ON A.pdno = B.fk_pdno;
 select pd_detailno, fk_pdno, color
 from tbl_pd_detail 
 
-		        
+select *
+from tbl_review;
+
+select fk_pdno, fk_userid, review_content, starpoint, review_date		        
+from tbl_review 
+where fk_pdno = 112;
+
+select fk_pdno, fk_userid, review_content, starpoint		        
+from tbl_review 
+where fk_pdno = 112;
+
+SELECT fk_pdno, AVG(starpoint) 
+FROM tbl_review
+GROUP BY fk_pdno;
+
+----------------------
+      
+select fk_pdno, fk_userid, review_content, starpoint		        
+from tbl_review A
+where fk_pdno = 112;
+
+SELECT fk_pdno, AVG(starpoint) 
+FROM tbl_review B
+GROUP BY fk_pdno;      
+
+-------------------------------------------------
+
+select A.fk_pdno, A.fk_userid, A.review_content, A.starpoint, B.avg_starpoint, B.reviewcount, to_char(to_date(A.review_date, 'yyyy-mm-dd'),'yy-mm-dd')     
+from tbl_review A
+JOIN
+(SELECT fk_pdno, trunc(AVG(starpoint),1) as avg_starpoint, COUNT(review_content) as reviewcount
+FROM tbl_review 
+GROUP BY fk_pdno) B
+ON A.fk_pdno = B.fk_pdno
+where A.fk_pdno = 112;
+
+select * from tbl_product
+where pdno = 112;
+
+------- 리뷰 페이징 처리 ----- 3명씩 보이게 함
+select ceil(count(*)/3) 
+from tbl_review;
+ 
+
+   
+
+                
