@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import review.domain.ReviewVO;
 import shop.domain.ImageVO;
 import shop.domain.ProductVO;
 import shop.domain.Product_DetailVO;
@@ -36,7 +37,13 @@ public interface ss_2_ProductDAO {
 
 	// 리뷰 테이블에 insert 하는 메소드
 	int insertReview(String productNo, String reviewText, String rating, String userid)  throws SQLException;
-	
+
+	// 제품번호로 리뷰를 가져오는 메소드
+	public List<Map<String, String>> getReviewsBypnum(Map<String, String> paraMap) throws SQLException;
+
+	// 페이지 바 만들기 - 페이징 처리를 위한 리뷰에 대한 총페이지 수를 알아와야 한다.
+	int getTotalPage(Map<String, String> paraMap) throws SQLException;
+
 	
 	
 	

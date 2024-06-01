@@ -82,8 +82,6 @@ public class AddToCartJSON extends AbstractController {
 
 
             out.print(jsonObj.toString());//해당메시지출력
-            // 성공 메시지를 클라이언트로 반환 - 추후 페이지 이동 처리예정(모달창 - confirm? 고민중)
-
         }
 	}
 }
