@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -13,6 +15,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import shop.domain.ImageVO;
+import shop.domain.ProductVO;
 
 public class ky_1_ProductDAO_imple implements ky_1_ProductDAO {
 
@@ -51,6 +54,86 @@ public class ky_1_ProductDAO_imple implements ky_1_ProductDAO {
          e.printStackTrace();
       }
    } // end of private void close() {} 
+
+	// 최신 등록순으로 6개의 상품 이미지를 가져오기
+	@Override
+	public List<Map<String, String>> selectByRegiDate() throws SQLException {
+		
+		List<Map<String, String>> productList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " SELECT rno, pdno, pdimg1 "
+					+ " FROM "
+					+ " (select row_number() over(order by pdinputdate desc) AS rno, pdno, pdimg1 "
+					+ " from tbl_product) "
+					+ " where rno between 1 and 6 ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				Map<String, String> paraMap = new HashMap<>(); 
+				
+				
+				paraMap.put("pdno", rs.getString("pdno"));
+				paraMap.put("pdimg1", rs.getString("pdimg1"));
+				
+				productList.add(paraMap);
+				
+			}// end of while(rs.next()) 
+			
+			// System.out.println("확인용 리스트 사이즈 : "+productList.size());
+			
+		} finally {
+			close();
+		}
+		
+		return productList;
+		
+	}// end of public List<ProductVO> selectByRegiDate(Map<String, String> paraMap) throws SQLException 
+
+	
+	// tbl_map(위, 경도) 테이블에 있는 정보를 가져오기(select)
+	@Override
+	public List<Map<String, String>> selectCenterMap() throws SQLException {
+		
+		List<Map<String, String>> centerMapList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select storeID, storeName, storeUrl, storeImg, storeAddress, lat, lng, zindex " +
+						 " from tbl_map " +
+						 " order by zindex asc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				Map<String, String> centerMap = new HashMap<>();
+				centerMap.put("STOREID", rs.getString("STOREID"));
+				centerMap.put("STORENAME", rs.getString("STORENAME"));
+				centerMap.put("STOREURL", rs.getString("STOREURL"));
+				centerMap.put("STOREIMG", rs.getString("STOREIMG"));
+				centerMap.put("STOREADDRESS", rs.getString("STOREADDRESS"));
+				centerMap.put("LAT", rs.getString("LAT"));
+				centerMap.put("LNG", rs.getString("LNG"));
+				centerMap.put("ZINDEX", rs.getString("ZINDEX"));
+				
+				centerMapList.add(centerMap);
+			}
+					
+		} finally {
+			close();
+		}
+				
+		return centerMapList;
+	}// end of public List<Map<String, String>> selectCenterMap() throws SQLException 
 	
 	
 	

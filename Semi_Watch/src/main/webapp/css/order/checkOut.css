@@ -12,7 +12,6 @@ div#edit {
 }
 
 
-
 div#shouldmsg{
 	font-size: 10pt;
 	color: red;
@@ -24,16 +23,61 @@ ul#advantage li {
 
 div.productInfo {
 	padding-top: 20px important;
-	border: solid 2px black;
 }
+
+.payArea {
+	border: solid 3px black;
+	border-radius: 10px;
+	
+}
+
+.pInfoArea{
+	padding-bottom: 5px;
+	border-bottom: double 4px gray;
+}
+
+
+.pInfo1{
+	padding-top:10px; 
+	margin: 5% 0 5% 2%; 
+	width: 33%;
+}
+
+.pInfo4{
+	padding-top:10px; 
+	margin: 5% auto 5% 1%;
+	width: 8%;
+}
+
+.pInfo2{
+	padding-top:10px;
+	margin: 5% auto;
+	width: 10%;
+}
+
+.pInfo3{
+	padding-top:10px;
+	margin: 5% 2% 5% auto;
+	width: 25%;
+	font-size: 12pt;
+	font-weight: bold;
+}
+
 
 .fixed-size{
 	height: 100px;
 	resize: none;
 }
 
-img#pImage{
-	border: solid 1px blue; 
+img.pImage{
 	width: 100px; 
 	height: 100px;
+	/*margin: auto;*/
+  	object-fit: cover;
 }
+
+span#totalCostView{
+	font-size: 25pt;
+	color: #ff8000;
+}
+

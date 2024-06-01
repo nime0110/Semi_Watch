@@ -181,7 +181,7 @@ $(document).ready(function(){
         $.ajax({
             url:"sendEmailCode.flex",
             data:{"newEmail":$("input#newEmail").val()
-                 ,"userid":$("input:hidden[id='userid']").val()
+                 ,"userid":$("td#userid]").text()
                  ,"username":$("td#username").text()},
 
             type:"post",
@@ -306,7 +306,7 @@ $(document).ready(function(){
     // 전화번호 값에 - 추가하기
     let mobile = $("input#mobile").val();
 
-    const h1 = mobile.slice(0,4);   
+    const h1 = mobile.slice(0,3);   
     const h2 = mobile.slice(4,8);   
     const h3 = mobile.slice(8);
 

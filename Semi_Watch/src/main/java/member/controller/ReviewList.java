@@ -69,7 +69,11 @@ public class ReviewList extends AbstractController {
 
 	      Map<String, String> paraMap = new HashMap<>();
 	      paraMap.put("searchType", searchType);
-	      paraMap.put("searchWord", searchWord);
+	      paraMap.put("searchWord", searchWord.toUpperCase());
+	      
+	      if("userid".equals(searchType)) {
+	    	  paraMap.put("searchWord", searchWord);
+	      }
 
 
 	      paraMap.put("currentShowPageNo", currentShowPageNo); // 현재 내가 보고자 하는 페이지 번호
