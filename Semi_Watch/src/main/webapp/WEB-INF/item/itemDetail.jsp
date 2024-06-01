@@ -8,13 +8,13 @@
 
 <link rel="stylesheet" href="../font/css/all.css">
 
+<jsp:include page="../header1.jsp" />
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 <%-- 허성심 제작 페이지 --%>
 <link rel="stylesheet" type="text/css" href="<%= ctx_Path%>/css/itemDetail/itemDetail.css" />
-<jsp:include page="../header1.jsp" />
 
 
 <script type="text/javascript" src="<%= ctx_Path%>/js/item/itemDetail.js"></script>
@@ -244,10 +244,6 @@
 	          <%-- js에서 생성 --%>
           </table>
         </div>
-        <div id="writeReview">
-          <a href="#">리뷰쓰기</a>
-        </div>
-
         <!-- review popup end -->
         <ul id="rpageNumber" class="pagination">
 			 <%-- js에서 생성 --%>
