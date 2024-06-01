@@ -255,7 +255,7 @@ function deliveryComplete(ordercode){
 	        <c:forEach var="odr" items="${requestScope.order_map_List}">
 	          <tr>
 	          
-	             <td class="userod detail_ordercode" align="center"><a href="">${odr.ordercode}</a></td>
+	             <td class="userod detail_ordercode" align="center"><a href="<%= ctxPath%>/order/orderListDetail.flex?odrcode=${odr.ordercode}">${odr.ordercode}</a></td>
 	             <td class="userod" align="center"><img style="width: 70px; height:70px;"src="<%= ctxPath%>/images/product/${odr.pdimg1}"/></td>
 	             <td class="userod" align="center">${odr.pdname}
 	             <c:choose>

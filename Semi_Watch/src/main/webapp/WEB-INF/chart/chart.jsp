@@ -649,146 +649,134 @@ div#table_container table {width: 100%}
 	            
 			case "purchase_byMonth_byvisit": // 월별 방문자 통계
 			
-			$.ajax({
-	               url:"<%= ctxPath%>/admin/purchase_byMonthvisit_JSON.flex",
-	               data:{"userid":"${sessionScope.loginuser.userid}"},
-	               dataType:"JSON",
-	               success:function(json){
-	            
-	                   console.log(JSON.stringify(json));
-	                   /*
-	                    [{"m_11":"0","m_01":"0","m_12":"0","m_10":"0","m_04":"0","sumpay_pct":"95.06","m_05":"0","m_02":"0","m_03":"1000000","cname":"전자제품","cnt":"1","m_08":"0","m_09":"0","m_06":"0","m_07":"0","sumpay":"1000000"}
-	                    ,{"m_11":"0","m_01":"52000","m_12":"0","m_10":"0","m_04":"0","sumpay_pct":"4.94","m_05":"0","m_02":"0","m_03":"0","cname":"의류","cnt":"1","m_08":"0","m_09":"0","m_06":"0","m_07":"0","sumpay":"52000"}]
-	                   */
-	                  $("div#chart_container").empty();
-	                  $("div#table_container").empty();
-	                  $("div.highcharts-data-table").empty();
-	                                                      
-	                  var resultArr = [];
-	               
-	                  
-	                  for(var i=0; i<json.length; i++) {
-	                     var month_arr = [];
-	                     month_arr.push(Number(json[i].m_01));
-	                     month_arr.push(Number(json[i].m_02));
-	                     month_arr.push(Number(json[i].m_03));
-	                     month_arr.push(Number(json[i].m_04));
-	                     month_arr.push(Number(json[i].m_05));
-	                     month_arr.push(Number(json[i].m_06));
-	                     month_arr.push(Number(json[i].m_07));
-	                     month_arr.push(Number(json[i].m_08));
-	                     month_arr.push(Number(json[i].m_09));
-	                     month_arr.push(Number(json[i].m_10));
-	                     month_arr.push(Number(json[i].m_11));
-	                     month_arr.push(Number(json[i].m_12));
-	                     var obj= {name: json[i].totalvisit_cnt, 
-	                             data: month_arr};
-	                     
-	                     resultArr.push(obj); // 배열속에 객체를 넣기 
-	                  }// end of for--------------------------
-	                  
-	                  ////////////////////////////////////////////////////////
-	                  Highcharts.chart('chart_container', {
-	                      
-	                      title: {
-	                          text: new Date().getFullYear()+'년 월별 방문 통계'
-	                      },
-	                      
-	                      subtitle: {
-	                          text: 'Source: <a href="http://localhost:9090/board/emp/empList.action" target="_blank">HR.employees</a>'
-	                      },
+				$.ajax({
+				    url: "<%= ctxPath%>/admin/purchase_byMonthvisit_JSON.flex",
+				    data: { "userid": "${sessionScope.loginuser.userid}" },
+				    dataType: "JSON",
+				    success: function (json) {
+				        console.log(JSON.stringify(json));
+				        /*
+				        [{"m_11":"0","m_01":"0","m_12":"0","m_10":"0","m_04":"0","sumpay_pct":"95.06","m_05":"0","m_02":"0","m_03":"1000000","cname":"전자제품","cnt":"1","m_08":"0","m_09":"0","m_06":"0","m_07":"0","sumpay":"1000000"}
+				        ,{"m_11":"0","m_01":"52000","m_12":"0","m_10":"0","m_04":"0","sumpay_pct":"4.94","m_05":"0","m_02":"0","m_03":"0","cname":"의류","cnt":"1","m_08":"0","m_09":"0","m_06":"0","m_07":"0","sumpay":"52000"}]
+				        */
+				        $("div#chart_container").empty();
+				        $("div#table_container").empty();
+				        $("div.highcharts-data-table").empty();
 
-	                      yAxis: {
-	                          title: {
-	                              text: '방문 횟수'
-	                          }
-	                      },
+				        var month_arr = new Array(12).fill(0);
 
-	                      xAxis: {
-	                          accessibility: {
-	                              rangeDescription: '범위: 1 to 12'
-	                          }
-	                      },
+				        for (var i = 0; i < json.length; i++) {
+				            month_arr[0] += Number(json[i].m_01);
+				            month_arr[1] += Number(json[i].m_02);
+				            month_arr[2] += Number(json[i].m_03);
+				            month_arr[3] += Number(json[i].m_04);
+				            month_arr[4] += Number(json[i].m_05);
+				            month_arr[5] += Number(json[i].m_06);
+				            month_arr[6] += Number(json[i].m_07);
+				            month_arr[7] += Number(json[i].m_08);
+				            month_arr[8] += Number(json[i].m_09);
+				            month_arr[9] += Number(json[i].m_10);
+				            month_arr[10] += Number(json[i].m_11);
+				            month_arr[11] += Number(json[i].m_12);
+				        }
 
-	                      legend: {
-	                          layout: 'vertical',
-	                          align: 'right',
-	                          verticalAlign: 'middle'
-	                      },
+				        var resultArr = [{
+				            name: '방문횟수',
+				            data: month_arr
+				        }];
 
-	                      plotOptions: {
-	                          series: {
-	                              label: {
-	                                  connectorAllowed: false
-	                              },
-	                              pointStart: 1
-	                          }
-	                      },
-	                      
-	                      series: resultArr,
-	                      
-	                      responsive: {
-	                          rules: [{
-	                              condition: {
-	                                  maxWidth: 500
-	                              },
-	                              chartOptions: {
-	                                  legend: {
-	                                      layout: 'horizontal',
-	                                      align: 'center',
-	                                      verticalAlign: 'bottom'
-	                                  }
-	                              }
-	                          }]
-	                      }
-	                      
-	                  });
-	                  ////////////////////////////////////////////////////////   
-	                  
-	                  var html =  "<table>";
-	                           html += "<tr>" +
-	                                     "<th>방문횟수</th>" +
-	                                     "<th>01월</th>" +
-	                                     "<th>02월</th>" +
-	                                     "<th>03월</th>" +
-	                                     "<th>04월</th>" +
-	                                     "<th>05월</th>" +
-	                                     "<th>06월</th>" +
-	                                     "<th>07월</th>" +
-	                                     "<th>08월</th>" +
-	                                     "<th>09월</th>" +
-	                                     "<th>10월</th>" +
-	                                     "<th>11월</th>" +
-	                                     "<th>12월</th>" +
-	                                   "</tr>";
-	                  
-	                       $.each(json, function(index, item){
-	                          html += "<tr>" +
-	                                      "<td>방문횟수</td>" +
-	                                      "<td>"+ Number(item.m_01).toLocaleString('en') +"</td>" +
-	                                      "<td>"+ Number(item.m_02).toLocaleString('en') +"</td>" +
-	                                      "<td>"+ Number(item.m_03).toLocaleString('en') +"</td>" +
-	                                      "<td>"+ Number(item.m_04).toLocaleString('en') +"</td>" +
-	                                      "<td>"+ Number(item.m_05).toLocaleString('en') +"</td>" +
-	                                      "<td>"+ Number(item.m_06).toLocaleString('en') +"</td>" +
-	                                      "<td>"+ Number(item.m_07).toLocaleString('en') +"</td>" +
-	                                      "<td>"+ Number(item.m_08).toLocaleString('en') +"</td>" +
-	                                      "<td>"+ Number(item.m_09).toLocaleString('en') +"</td>" +
-	                                      "<td>"+ Number(item.m_10).toLocaleString('en') +"</td>" +
-	                                      "<td>"+ Number(item.m_11).toLocaleString('en') +"</td>" +
-	                                      "<td>"+ Number(item.m_12).toLocaleString('en') +"</td>" +
-	                                  "</tr>";
-	                       });        
-	                               
-	                       html += "</table>";
-	                       
-	                       $("div#table_container").html(html);
-	               },
-	               error: function(request, status, error){
-	                  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-	               }
-	               
-	            }); // end of $.ajax
+				        ////////////////////////////////////////////////////////
+				        Highcharts.chart('chart_container', {
+				            title: {
+				                text: new Date().getFullYear() + '년 월별 방문 통계'
+				            },
+				            subtitle: {
+				                text: 'Source: <a href="http://localhost:9090/board/emp/empList.action" target="_blank">HR.employees</a>'
+				            },
+				            yAxis: {
+				                title: {
+				                    text: '방문 횟수'
+				                }
+				            },
+				            xAxis: {
+				                accessibility: {
+				                    rangeDescription: '범위: 1 to 12'
+				                }
+				            },
+				            legend: {
+				                layout: 'vertical',
+				                align: 'right',
+				                verticalAlign: 'middle'
+				            },
+				            plotOptions: {
+				                series: {
+				                    label: {
+				                        connectorAllowed: false
+				                    },
+				                    pointStart: 1
+				                }
+				            },
+				            series: resultArr,
+				            responsive: {
+				                rules: [{
+				                    condition: {
+				                        maxWidth: 500
+				                    },
+				                    chartOptions: {
+				                        legend: {
+				                            layout: 'horizontal',
+				                            align: 'center',
+				                            verticalAlign: 'bottom'
+				                        }
+				                    }
+				                }]
+				            }
+				        });
+				        ////////////////////////////////////////////////////////
+
+				        var html = "<table>";
+				        html += "<tr>" +
+				            "<th>방문횟수</th>" +
+				            "<th>01월</th>" +
+				            "<th>02월</th>" +
+				            "<th>03월</th>" +
+				            "<th>04월</th>" +
+				            "<th>05월</th>" +
+				            "<th>06월</th>" +
+				            "<th>07월</th>" +
+				            "<th>08월</th>" +
+				            "<th>09월</th>" +
+				            "<th>10월</th>" +
+				            "<th>11월</th>" +
+				            "<th>12월</th>" +
+				            "</tr>";
+
+				        html += "<tr>" +
+				            "<td>방문횟수</td>" +
+				            "<td>" + month_arr[0].toLocaleString('en') + "</td>" +
+				            "<td>" + month_arr[1].toLocaleString('en') + "</td>" +
+				            "<td>" + month_arr[2].toLocaleString('en') + "</td>" +
+				            "<td>" + month_arr[3].toLocaleString('en') + "</td>" +
+				            "<td>" + month_arr[4].toLocaleString('en') + "</td>" +
+				            "<td>" + month_arr[5].toLocaleString('en') + "</td>" +
+				            "<td>" + month_arr[6].toLocaleString('en') + "</td>" +
+				            "<td>" + month_arr[7].toLocaleString('en') + "</td>" +
+				            "<td>" + month_arr[8].toLocaleString('en') + "</td>" +
+				            "<td>" + month_arr[9].toLocaleString('en') + "</td>" +
+				            "<td>" + month_arr[10].toLocaleString('en') + "</td>" +
+				            "<td>" + month_arr[11].toLocaleString('en') + "</td>" +
+				            "</tr>";
+
+				        html += "</table>";
+
+				        $("div#table_container").html(html);
+				    },
+				    error: function (request, status, error) {
+				        alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
+				    }
+
+				}); // end of $.ajax
+
 		
 			
 			break;    
