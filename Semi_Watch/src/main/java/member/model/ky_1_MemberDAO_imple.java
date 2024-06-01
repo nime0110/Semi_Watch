@@ -446,7 +446,7 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
 			 
 			conn = ds.getConnection();
 			
-			String sql = " select ceil(count(*)/?) "
+			String sql = " select ceil(count(*)/?) as cnt "
 					+ " from tbl_review R JOIN tbl_product P "
 					+ " on R.fk_pdno = P.pdno "
 					+ " where fk_userid != 'admin' ";
@@ -454,12 +454,22 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
 			String colname = paraMap.get("searchType");
 			String searchWord = paraMap.get("searchWord");
 			
+			
+			
 			//유저가 검색했다면 true;
 		    boolean userSearch = (colname != null && !colname.trim().isEmpty()) && 
                     (searchWord != null && !searchWord.trim().isEmpty());
 			
+		    
+		    
 			if(userSearch) {
-				 sql += " and " + colname + " like '%' || ? || '%' ";
+				
+				if(colname.equals("userid")) {
+			    	colname = "fk_userid";
+			    }
+				
+				// System.out.println("확인용 colname : " + colname);
+				 sql += " and "+colname+" like '%' || ? || '%' ";
 			}
 			
 			pstmt = conn.prepareStatement(sql);
@@ -475,8 +485,7 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
 			rs.next();
 			
 			totalPage = rs.getInt(1); //ceil(count(*)/?)
-			} catch (SQLException e) {
-				e.printStackTrace();
+			
 			} finally {
 				close();
 			}
@@ -514,16 +523,24 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
 					+ " FROM tbl_review R "
 					+ " JOIN tbl_product P ON R.fk_pdno = P.pdno "
 					+ " JOIN tbl_member M ON R.fk_userid = M.userid "
-					+ " WHERE M.userid != 'admin' "
-					+ " ORDER BY reviewno DESC "
-					+ " )"
-					+ ") WHERE ";
+					+ " WHERE R.fk_userid != 'admin' ";
+			
 			
 			if(userSearch) {
-				 sql += colname + " LIKE '%' || ? || '%' AND ";
+				
+				if("userid".equals(colname)) {
+					colname = "fk_userid";
+				}
+				
+				System.out.println("확인용 colname : " + colname);
+				
+				 sql += " and "+colname+" LIKE '%' || ? || '%' ";
 			}
 				
-			sql += " rno BETWEEN ? AND ? ";
+			sql += " ORDER BY reviewno DESC "
+					+ ")"
+					+ ")"
+					+ "WHERE rno BETWEEN ? AND ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			// (10-9) and 10 // => between 1 and 10
@@ -532,11 +549,17 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
 			int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage")); //1페이지당 보여지는 회원명수			
 			
 			if(userSearch) {
-				searchWord = searchWord.toUpperCase();
+				
+				String start = Integer.toString((currentShowPageNo * sizePerPage) - (sizePerPage - 1));
+				String end = Integer.toString((currentShowPageNo * sizePerPage)); 
+				
+				System.out.println("start 와 end 는? : " +start +","+end);
 				
 				pstmt.setString(1, searchWord);
 				pstmt.setString(2, Integer.toString((currentShowPageNo * sizePerPage) - (sizePerPage - 1)) );
 				pstmt.setString(3, Integer.toString((currentShowPageNo * sizePerPage)) );
+				
+				System.out.println(" searchWord는? : " + searchWord);
 			} else {
 				pstmt.setString(1, Integer.toString((currentShowPageNo * sizePerPage) - (sizePerPage - 1)) );
 				pstmt.setString(2, Integer.toString((currentShowPageNo * sizePerPage)) );
@@ -598,6 +621,11 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
                     (searchWord != null && !searchWord.trim().isEmpty());
 			
 			if(userSearch) {
+				
+				if(colname.equals("userid")) {
+			    	colname = "fk_userid";
+			    }
+				
 				 sql += " and " + colname + " like '%' || ? || '%' ";
 			}
 				

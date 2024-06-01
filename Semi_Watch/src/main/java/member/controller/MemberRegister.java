@@ -29,7 +29,7 @@ public class MemberRegister extends AbstractController {
 			super.setViewPage("/WEB-INF/member/memberRegister.jsp");
 		}
 		
-		else {
+		else { // "post" 방식일 경우
 			String username = request.getParameter("username");
 			String userid = request.getParameter("userid");
 			String pw = request.getParameter("pw");

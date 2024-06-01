@@ -69,6 +69,8 @@ UPDATE tbl_member
 SET lastpwdchangedate = ADD_MONTHS(SYSDATE, -4)
 WHERE userid = 'kimkh3';
 
+commit;
+
 update tbl_member
 set pw = '9695b88a59a1610320897fa84cb7e144cc51f2984520efb77111d94b402a8382'
 where userid = 'kimkh3';
@@ -399,6 +401,61 @@ insert into tbl_map(storeID, storeName, storeUrl, storeImg, storeAddress, lat, l
 values('store3','세이코1','https://place.map.kakao.com/m/27105799', 'place.png', '서울 중구 세종대로 64 (T)02-754-1068', 37.561973319432, 126.976696252264, 3);
 
 commit;
+
+
+ select * 
+from tbl_review R JOIN tbl_product P 
+on R.fk_pdno = P.pdno 
+where fk_userid != 'admin'
+ and fk_userid like '%' || 'ni' || '%' 
+
+select *
+from tbl_review
+
+select *
+from tbl_product
+
+
+ SELECT rno, reviewno, pdname, userid, username, brand, review_content, starpoint 
+					FROM 
+					( 
+					SELECT rownum AS rno, reviewno, pdname, userid, username, brand, review_content, starpoint 
+					FROM 
+					( 
+					SELECT TO_NUMBER(R.reviewno) AS reviewno, P.pdname AS pdname, M.userid AS userid, 
+					M.username AS username, P.brand AS brand, R.review_content AS review_content, 
+					R.starpoint AS starpoint 
+					FROM tbl_review R 
+					JOIN tbl_product P ON R.fk_pdno = P.pdno 
+					JOIN tbl_member M ON R.fk_userid = M.userid 
+					WHERE M.userid != 'admin' 
+					 ORDER BY reviewno DESC)
+                     )
+                    where UPPER(pdname) like '%' || UPPER('l') || '%'
+                    and rno between 1 and 10;
+
+
+SELECT rno, reviewno, pdname, userid, username, brand, review_content, starpoint 
+FROM 
+( 
+SELECT rownum AS rno, reviewno, pdname, userid, username, brand, review_content, starpoint 
+FROM 
+( 
+SELECT TO_NUMBER(R.reviewno) AS reviewno, P.pdname AS pdname, M.userid AS userid, 
+ M.username AS username, P.brand AS brand, R.review_content AS review_content, 
+R.starpoint AS starpoint 
+FROM tbl_review R 
+JOIN tbl_product P ON R.fk_pdno = P.pdno 
+JOIN tbl_member M ON R.fk_userid = M.userid 
+WHERE R.fk_userid != 'admin'
+and P.pdname LIKE '%' || 'L' || '%'
+ORDER BY reviewno DESC 
+)
+)
++ "WHERE rno BETWEEN ? AND ? 
+
+
+
 
 -- pdstatus
 -- pdinputdate

@@ -39,7 +39,7 @@ public interface ky_1_MemberDAO {
 	// 페이징 처리를 한 모든 리뷰 또는 검색한 리뷰 목록 보여주기 
 	List<ReviewVO> select_review_paging(Map<String, String> paraMap) throws SQLException;
 	
-	// 뷰단(memberList.jsp)에서 "페이징 처리시 보여주는 순번 공식" 에서 사용하기 위해 검색이 있는 또는 검색이 없는 회원의 총개수 알아오기 시작
+	// 뷰단(reviewList.jsp)에서 "페이징 처리시 보여주는 순번 공식" 에서 사용하기 위해 검색이 있는 또는 검색이 없는 회원의 총개수 알아오기 시작
 	int getTotalReviewCount(Map<String, String> paraMap) throws SQLException;
 	
 	// 입력받은 reviewno 를 가지고 하나의 리뷰정보를 리턴시켜주는 메소드

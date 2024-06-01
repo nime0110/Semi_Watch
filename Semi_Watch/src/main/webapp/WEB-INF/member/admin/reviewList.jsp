@@ -95,6 +95,7 @@
 
 		
 		const frm = document.review_search_frm;
+		frm.action = "${pageContext.request.contextPath}/member/reviewList.flex";
 		frm.submit();
 	} // end of goSearch()--------------
 	
