@@ -1,10 +1,13 @@
 package shop.model;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +16,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import member.domain.MemberVO;
+import review.domain.ReviewVO;
 import shop.domain.ImageVO;
 import shop.domain.ProductVO;
 import shop.domain.Product_DetailVO;
@@ -396,6 +401,110 @@ public int insertReview(String productNo, String reviewText, String rating, Stri
 	}
 	
 	return result;
+}
+
+// 제품번호로 리뷰를 가져오는 메소드
+@Override
+public List<Map<String, String>> getReviewsBypnum(Map<String, String> paraMap) throws SQLException {
+    List<Map<String, String>> reviewMapList = new ArrayList<>();
+
+    try {
+        conn = ds.getConnection();
+
+        String sql = "SELECT rno, fk_pdno, fk_userid, review_content, starpoint, avg_starpoint, reviewcount, review_date "
+                   + "FROM ( "
+                   + "  SELECT rownum AS rno, fk_pdno, fk_userid, review_content, starpoint, avg_starpoint, reviewcount, review_date "
+                   + "  FROM ( "
+                   + "    SELECT A.fk_pdno, A.fk_userid, A.review_content, A.starpoint, B.avg_starpoint, B.reviewcount, "
+                   + "           TO_CHAR(TO_DATE(A.review_date, 'yyyy-mm-dd'), 'yy-mm-dd') AS review_date "
+                   + "    FROM tbl_review A "
+                   + "    JOIN ( "
+                   + "      SELECT fk_pdno, TRUNC(AVG(starpoint), 1) AS avg_starpoint, COUNT(review_content) AS reviewcount "
+                   + "      FROM tbl_review "
+                   + "      GROUP BY fk_pdno "
+                   + "    ) B ON A.fk_pdno = B.fk_pdno "
+                   + "    WHERE A.fk_pdno = ? "
+                   + "    ORDER BY A.review_date DESC "  // 정렬 추가
+                   + "  ) "
+                   + ") "
+                   + "WHERE rno BETWEEN ? AND ?";
+
+        pstmt = conn.prepareStatement(sql);
+        
+        // fk_pdno 설정
+        pstmt.setString(1, paraMap.get("pdno"));
+        
+        int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo")); // 현재 페이지위치
+        int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage")); //1페이지당 보여지는 회원명수
+
+        // BETWEEN 절의 시작값과 끝값 설정
+        pstmt.setInt(2, (currentShowPageNo - 1) * sizePerPage + 1); // 시작 rownum
+        pstmt.setInt(3, currentShowPageNo * sizePerPage); // 끝 rownum
+
+        rs = pstmt.executeQuery();
+
+        while (rs.next()) {
+            String fk_pdno = rs.getString("fk_pdno");
+            String fk_userid = rs.getString("fk_userid");
+            String review_content = rs.getString("review_content");
+            String starpoint = rs.getString("starpoint");
+            String avg_starpoint = rs.getString("avg_starpoint");
+            String reviewcount = rs.getString("reviewcount");
+            String review_date = rs.getString("review_date");
+
+            // 사용자 ID 마스킹 처리
+            String fk_usermask = fk_userid.replaceAll("(?<=.{3}).", "*");
+
+            Map<String, String> map = new HashMap<>();
+            map.put("fk_pdno", fk_pdno);
+            map.put("fk_usermask", fk_usermask);
+            map.put("review_content", review_content);
+            map.put("starpoint", starpoint);
+            map.put("avg_starpoint", avg_starpoint);
+            map.put("reviewcount", reviewcount);
+            map.put("review_date", review_date);
+
+            reviewMapList.add(map);
+        }
+
+    } finally {
+        close();
+    }
+
+    return reviewMapList;
+}
+
+// 페이지 바 만들기 - 페이징 처리를 위한 리뷰에 대한 총페이지 수를 알아와야 한다.
+@Override
+public int getTotalPage(Map<String, String> paraMap) throws SQLException {
+	int totalPage = 0;
+	
+	List<MemberVO> memberList = new ArrayList<>();
+	try {
+		 
+		conn = ds.getConnection();
+		
+		String sql = " select ceil(count(*)/?) "
+				+ " from tbl_review  "
+				+ " where fk_pdno = ? ";
+		
+		
+		pstmt = conn.prepareStatement(sql);
+
+		pstmt.setInt(1, Integer.parseInt(paraMap.get("sizePerPage")));
+		pstmt.setInt(2, Integer.parseInt(paraMap.get("pdno")));
+
+		
+		rs = pstmt.executeQuery();
+		
+		rs.next();
+		
+		totalPage = rs.getInt(1); //ceil(count(*)/?)
+		} finally {
+			close();
+		}
+	
+	return totalPage;
 }
 	
 	
