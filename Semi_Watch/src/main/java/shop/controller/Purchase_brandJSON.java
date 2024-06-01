@@ -1,0 +1,74 @@
+package shop.controller;
+
+import java.util.List;
+import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import common.controller.AbstractController;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import shop.model.js_5_ProductDAO;
+import shop.model.js_5_ProductDAO_imple;
+
+public class Purchase_brandJSON extends AbstractController {
+	
+	private js_5_ProductDAO pdao = null;
+	
+	public Purchase_brandJSON() {
+	      pdao = new js_5_ProductDAO_imple();
+	}
+
+	@Override
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		
+		String userid = request.getParameter("userid");
+        
+      
+        if(!"admin".equals(userid)) {
+           request.setAttribute("message", "통계는 관리자만 접근 가능합니다!!");
+           request.setAttribute("loc", "javascript:history.back()"); 
+         
+           super.setRedirect(false);
+           super.setViewPage("/WEB-INF/msg.jsp");
+           return;
+        }
+      
+        else {
+         // 로그인을 했을 경우
+        	
+        	// System.out.println("userid"+userid);
+        	 
+            List<Map<String, String>> Purchase_map_List = pdao.Purchase_byBrand(userid);
+        	
+            JSONArray json_arr = new JSONArray();
+            
+            if(Purchase_map_List.size() > 0) {
+            	
+                for(Map<String, String> map : Purchase_map_List) {
+                	
+                   JSONObject json_obj = new JSONObject();
+                   
+                   json_obj.put("brand", map.get("brand"));
+                   json_obj.put("cnt", map.get("cnt"));
+                   json_obj.put("sumpay", map.get("sumpay"));
+                   json_obj.put("sumpay_pct", map.get("sumpay_pct"));
+                   
+                   json_arr.put(json_obj);
+                   
+                }// end of for--------------
+                
+            } // end of if
+            
+            request.setAttribute("json", json_arr.toString());
+            
+            super.setRedirect(false);
+            super.setViewPage("/WEB-INF/jsonview.jsp");
+            
+        } // end of else
+
+	}
+
+}

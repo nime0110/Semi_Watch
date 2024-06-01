@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -641,7 +642,7 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
          
 			String sql = " select ceil(count(*)/?) as pagecnt "
 					   + " from tbl_product "
-					   + " where pdstatus != -1 ";
+					   + " where pdstatus != 0 ";
 			
 			String colname = paraMap.get("searchType");
 			String searchWord = paraMap.get("searchWord");
@@ -1365,6 +1366,317 @@ public class js_5_ProductDAO_imple implements js_5_ProductDAO {
 		return n;
 		
 	} // end of public int updateCart(Map<String, String> paraMap) throws SQLException { 
+
+
+	
+	// 관리자가 보는 브랜드별 주문 통계
+	@Override
+	public List<Map<String, String>> Purchase_byBrand(String userid) throws SQLException {
+		
+		List<Map<String,String>> Purchase_map_List = new ArrayList<>(); 
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select BRAND, count(brand) as CNT, "
+					+ " sum(D.order_qty * D.order_price) as SUMPAY , "
+					+ " round( sum(D.order_qty * D.order_price) / (select sum(order_qty * order_price) from tbl_orderdetail  ) * 100 , 2) as SUMPAY_PCT "
+					+ " from tbl_order O join "
+					+ " tbl_orderdetail D "
+					+ " on O.ordercode = D.fk_ordercode "
+					+ " join tbl_pd_detail E "
+					+ " on E.pd_detailno = D.fk_pd_detailno "
+					+ " join tbl_product P "
+					+ " on E.fk_pdno = P.pdno "
+					+ " group by brand "
+					+ " order by sumpay desc ";
+			
+			pstmt = conn.prepareStatement(sql);
+
+			rs = pstmt.executeQuery();
+	                  
+	        while(rs.next()) {
+	            String brand = rs.getString("BRAND");
+	            String cnt = rs.getString("CNT");
+	            String sumpay = rs.getString("SUMPAY");
+	            String sumpay_pct = rs.getString("SUMPAY_PCT");
+	            
+	            Map<String, String> map = new HashMap<>();
+	            map.put("brand", brand);
+	            map.put("cnt", cnt);
+	            map.put("sumpay", sumpay);
+	            map.put("sumpay_pct", sumpay_pct);
+	            
+	            Purchase_map_List.add(map);
+	            
+	        } // end of while----------------------------------
+			
+		}finally {
+			
+			close();
+			
+		}
+		
+		return Purchase_map_List;
+		
+	} // end of public List<Map<String, String>> Purchase_byCategory(String userid) throws SQLException
+
+
+	
+	// 관리자가 보는 브랜드별 주문건수 통계
+	@Override
+	public List<Map<String, String>> Purchase_byBrandCnt(String userid) throws SQLException  {
+		
+		List<Map<String,String>> Purchase_map_List = new ArrayList<>(); 
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select brand, count(brand) as cnt, "
+					+ " sum(D.order_qty * D.order_price) as sumpay , "
+					+ " round( sum(D.order_qty ) / (select sum(order_qty) from tbl_orderdetail  ) * 100 , 2) as order_pct "
+					+ " from tbl_order O join "
+					+ " tbl_orderdetail D "
+					+ " on O.ordercode = D.fk_ordercode "
+					+ " join tbl_pd_detail E "
+					+ " on E.pd_detailno = D.fk_pd_detailno "
+					+ " join tbl_product P "
+					+ " on E.fk_pdno = P.pdno "
+					+ " group by brand "
+					+ " order by sumpay desc ";
+			
+			pstmt = conn.prepareStatement(sql);
+
+			rs = pstmt.executeQuery();
+	                  
+	        while(rs.next()) {
+	            String brand = rs.getString("BRAND");
+	            String cnt = rs.getString("CNT");
+	            String sumpay = rs.getString("SUMPAY");
+	            String order_pct = rs.getString("ORDER_PCT");
+	            
+	            Map<String, String> map = new HashMap<>();
+	            map.put("brand", brand);
+	            map.put("cnt", cnt);
+	            map.put("sumpay", sumpay);
+	            map.put("order_pct", order_pct);
+	            
+	            Purchase_map_List.add(map);
+	            
+	        } // end of while----------------------------------
+			
+		}finally {
+			
+			close();
+			
+		}
+		
+		return Purchase_map_List;
+	}
+
+
+	
+	// 관리자가 보는 브랜드 월별 주문총액 통계
+	@Override
+	public List<Map<String, String>> Purchase_byMonth(String userid) throws SQLException {
+		
+		List<Map<String, String>> myPurchase_map_List = new ArrayList<>();
+	      
+	      try {
+	    	  
+	         conn = ds.getConnection();
+	         
+	         String sql = " WITH "
+	         		+ " O AS "
+	         		+ " (SELECT ordercode, total_orderdate "
+	         		+ " FROM tbl_order "
+	         		+ " WHERE to_char(total_orderdate, 'yyyy') = to_char(sysdate, 'yyyy') "
+	         		+ " ) "
+	         		+ " , "
+	         		+ " OD AS "
+	         		+ " (SELECT fk_ordercode, fk_pd_detailno, order_qty, order_price "
+	         		+ " FROM tbl_orderdetail "
+	         		+ " ) "
+	         		+ " SELECT brand "
+	         		+ "      , COUNT(brand) AS CNT "
+	         		+ "      , SUM(OD.order_qty * OD.order_price) AS SUMPAY "
+	         		+ "      , round( SUM(OD.order_qty * OD.order_price)/( SELECT SUM(OD.order_qty * OD.order_price) "
+	         		+ "									            FROM O JOIN OD "
+	         		+ "                                             ON O.ordercode = OD.fk_ordercode)*100, 2) AS SUMPAY_PCT "
+	         		+ "       , SUM( decode( to_char(O.total_orderdate,'mm'), '01', OD.order_qty * OD.order_price, 0) ) AS M_01 "
+	         		+ "       , SUM( decode( to_char(O.total_orderdate,'mm'), '02', OD.order_qty * OD.order_price, 0) ) AS M_02 "
+	         		+ "       , SUM( decode( to_char(O.total_orderdate,'mm'), '03', OD.order_qty * OD.order_price, 0) ) AS M_03 "
+	         		+ "       , SUM( decode( to_char(O.total_orderdate,'mm'), '04', OD.order_qty * OD.order_price, 0) ) AS M_04 "
+	         		+ "       , SUM( decode( to_char(O.total_orderdate,'mm'), '05', OD.order_qty * OD.order_price, 0) ) AS M_05 "
+	         		+ "       , SUM( decode( to_char(O.total_orderdate,'mm'), '06', OD.order_qty * OD.order_price, 0) ) AS M_06 "
+	         		+ "       , SUM( decode( to_char(O.total_orderdate,'mm'), '07', OD.order_qty * OD.order_price, 0) ) AS M_07 "
+	         		+ "       , SUM( decode( to_char(O.total_orderdate,'mm'), '08', OD.order_qty * OD.order_price, 0) ) AS M_08 "
+	         		+ "       , SUM( decode( to_char(O.total_orderdate,'mm'), '09', OD.order_qty * OD.order_price, 0) ) AS M_09 "
+	         		+ "       , SUM( decode( to_char(O.total_orderdate,'mm'), '10', OD.order_qty * OD.order_price, 0) ) AS M_10 "
+	         		+ "       , SUM( decode( to_char(O.total_orderdate,'mm'), '11', OD.order_qty * OD.order_price, 0) ) AS M_11 "
+	         		+ "       , SUM( decode( to_char(O.total_orderdate,'mm'), '12', OD.order_qty * OD.order_price, 0) ) AS M_12 "
+	         		+ "  FROM O JOIN OD "
+	         		+ "  ON O.ordercode = OD.fk_ordercode "
+	         		+ "  JOIN tbl_pd_detail D "
+	         		+ "  ON OD.fk_pd_detailno = D.pd_detailno "
+	         		+ "  join tbl_product P "
+	         		+ "  on D.fk_pdno = P.pdno "
+	         		+ "  GROUP BY brand "
+	         		+ "  ORDER BY 3 desc ";
+	         
+	         pstmt = conn.prepareStatement(sql);
+	   
+	         rs = pstmt.executeQuery();
+	                  
+	         while(rs.next()) {
+	            String brand = rs.getString("Brand");
+	            String cnt = rs.getString("CNT");
+	            String sumpay = rs.getString("SUMPAY");
+	            String sumpay_pct = rs.getString("SUMPAY_PCT");
+	            String m_01 = rs.getString("M_01");
+	            String m_02 = rs.getString("M_02");
+	            String m_03 = rs.getString("M_03");
+	            String m_04 = rs.getString("M_04");
+	            String m_05 = rs.getString("M_05");
+	            String m_06 = rs.getString("M_06");
+	            String m_07 = rs.getString("M_07");
+	            String m_08 = rs.getString("M_08");
+	            String m_09 = rs.getString("M_09");
+	            String m_10 = rs.getString("M_10");
+	            String m_11 = rs.getString("M_11");
+	            String m_12 = rs.getString("M_12");
+	            
+	            Map<String, String> map = new HashMap<>();
+	            map.put("brand", brand);
+	            map.put("cnt", cnt);
+	            map.put("sumpay", sumpay);
+	            map.put("sumpay_pct", sumpay_pct);
+	            map.put("m_01", m_01);
+	            map.put("m_02", m_02);
+	            map.put("m_03", m_03);
+	            map.put("m_04", m_04);
+	            map.put("m_05", m_05);
+	            map.put("m_06", m_06);
+	            map.put("m_07", m_07);
+	            map.put("m_08", m_08);
+	            map.put("m_09", m_09);
+	            map.put("m_10", m_10);
+	            map.put("m_11", m_11);
+	            map.put("m_12", m_12);
+	            
+	            myPurchase_map_List.add(map);
+	         } // end of while----------------------------------
+	                  
+	      } finally {
+	         close();
+	      }
+	      
+	      return myPurchase_map_List;
+	      
+	}// end ofpublic List<Map<String, String>> Purchase_byMonth(String userid) throws SQLException {
+
+
+	
+	// 관리자가 보는 월별 주문건수 통계
+	@Override
+	public List<Map<String, String>> Purchase_byMonthCnt(String userid) throws SQLException {
+		
+		List<Map<String, String>> myPurchase_map_List = new ArrayList<>();
+	      
+	      try {
+	    	  
+	         conn = ds.getConnection();
+	         
+	         String sql = " WITH "
+	         		+ "  O AS "
+	         		+ "  (SELECT ordercode, total_orderdate "
+	         		+ "   FROM tbl_order "
+	         		+ "   WHERE to_char(total_orderdate, 'yyyy') = to_char(sysdate, 'yyyy') "
+	         		+ "  ) "
+	         		+ "  , "
+	         		+ "  OD AS "
+	         		+ "  (SELECT fk_ordercode, fk_pd_detailno, order_qty, order_price "
+	         		+ "   FROM tbl_orderdetail "
+	         		+ "  ) "
+	         		+ "  SELECT brand "
+	         		+ "       , COUNT(brand) AS CNT "
+	         		+ "       , SUM(OD.order_qty) AS SUMPAY "
+	         		+ "       , round( SUM(OD.order_qty)/( SELECT SUM(OD.order_qty) "
+	         		+ "                                             FROM O JOIN OD "
+	         		+ "                                             ON O.ordercode = OD.fk_ordercode)*100, 2) AS ORDER_PCT "
+	         		+ "       , SUM( decode( to_char(O.total_orderdate,'mm'), '01', OD.order_qty, 0) ) AS M_01 "
+	         		+ "       , SUM( decode( to_char(O.total_orderdate,'mm'), '02', OD.order_qty, 0) ) AS M_02 "
+	         		+ "       , SUM( decode( to_char(O.total_orderdate,'mm'), '03', OD.order_qty, 0) ) AS M_03 "
+	         		+ "       , SUM( decode( to_char(O.total_orderdate,'mm'), '04', OD.order_qty, 0) ) AS M_04 "
+	         		+ "       , SUM( decode( to_char(O.total_orderdate,'mm'), '05', OD.order_qty , 0) ) AS M_05 "
+	         		+ "       , SUM( decode( to_char(O.total_orderdate,'mm'), '06', OD.order_qty, 0) ) AS M_06 "
+	         		+ "       , SUM( decode( to_char(O.total_orderdate,'mm'), '07', OD.order_qty, 0) ) AS M_07 "
+	         		+ "       , SUM( decode( to_char(O.total_orderdate,'mm'), '08', OD.order_qty, 0) ) AS M_08 "
+	         		+ "       , SUM( decode( to_char(O.total_orderdate,'mm'), '09', OD.order_qty, 0) ) AS M_09 "
+	         		+ "       , SUM( decode( to_char(O.total_orderdate,'mm'), '10', OD.order_qty, 0) ) AS M_10 "
+	         		+ "       , SUM( decode( to_char(O.total_orderdate,'mm'), '11', OD.order_qty, 0) ) AS M_11 "
+	         		+ "       , SUM( decode( to_char(O.total_orderdate,'mm'), '12', OD.order_qty, 0) ) AS M_12 "
+	         		+ "  FROM O JOIN OD "
+	         		+ "  ON O.ordercode = OD.fk_ordercode "
+	         		+ "  JOIN tbl_pd_detail D "
+	         		+ "  ON OD.fk_pd_detailno = D.pd_detailno "
+	         		+ "  join tbl_product P "
+	         		+ "  on D.fk_pdno = P.pdno "
+	         		+ "  GROUP BY brand "
+	         		+ "  ORDER BY 3 desc ";
+	         
+	         pstmt = conn.prepareStatement(sql);
+	   
+	         rs = pstmt.executeQuery();
+	                  
+	         while(rs.next()) {
+	            String brand = rs.getString("Brand");
+	            String cnt = rs.getString("CNT");
+	            String sumpay = rs.getString("SUMPAY");
+	            String order_pct = rs.getString("ORDER_PCT");
+	            String m_01 = rs.getString("M_01");
+	            String m_02 = rs.getString("M_02");
+	            String m_03 = rs.getString("M_03");
+	            String m_04 = rs.getString("M_04");
+	            String m_05 = rs.getString("M_05");
+	            String m_06 = rs.getString("M_06");
+	            String m_07 = rs.getString("M_07");
+	            String m_08 = rs.getString("M_08");
+	            String m_09 = rs.getString("M_09");
+	            String m_10 = rs.getString("M_10");
+	            String m_11 = rs.getString("M_11");
+	            String m_12 = rs.getString("M_12");
+	            
+	            Map<String, String> map = new HashMap<>();
+	            map.put("brand", brand);
+	            map.put("cnt", cnt);
+	            map.put("sumpay", sumpay);
+	            map.put("order_pct", order_pct);
+	            map.put("m_01", m_01);
+	            map.put("m_02", m_02);
+	            map.put("m_03", m_03);
+	            map.put("m_04", m_04);
+	            map.put("m_05", m_05);
+	            map.put("m_06", m_06);
+	            map.put("m_07", m_07);
+	            map.put("m_08", m_08);
+	            map.put("m_09", m_09);
+	            map.put("m_10", m_10);
+	            map.put("m_11", m_11);
+	            map.put("m_12", m_12);
+	            
+	            myPurchase_map_List.add(map);
+	         } // end of while----------------------------------
+	                  
+	      } finally {
+	         close();
+	      }
+	      
+	      return myPurchase_map_List;
+	      
+	} // end of public List<Map<String, String>> Purchase_byMonthCnt(String userid) throws SQLException {
 
 	
 	

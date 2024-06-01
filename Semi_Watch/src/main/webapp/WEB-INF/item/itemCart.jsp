@@ -504,9 +504,9 @@ function allCheckBox(){
                                     </c:choose>
                                 </span>
                             </div>
-                            <div class="col-3">
+                            <div class="col-2">
                             
-                                <input id="spinner" min="1" max="50" value="${cart.cart_qty}" class="oqty">
+                                <input id="spinner" min="1" max="50" value="${cart.cart_qty}" class="oqty" style="width:20%;" />
                                  <%-- 잔고량(남은재고량) <p>남은재고</p> --%>
                                  <input type="hidden" class="pqty" value="${cart.pdvo.pd_qty}" />
                                 
@@ -520,7 +520,7 @@ function allCheckBox(){
                             </div>
                             <div class="col">
                                 ₩<span id="item-price"><fmt:formatNumber value="${cart.prod.saleprice}" pattern="###,###" /></span>
-                                <button type="button" onclick="goDel(${cart.cartno})">&#10005;</button>
+                                <button type="button" style="border:none;" onclick="goDel(${cart.cartno})">&#10005;</button>
                                 <input type="hidden" class="saleprice" value="${cart.prod.saleprice}" />
                                 <input type="hidden" class="point" value="${cart.prod.point}" />
                                 <div style="display : none;" id = "danga">${cart.prod.saleprice}</div>

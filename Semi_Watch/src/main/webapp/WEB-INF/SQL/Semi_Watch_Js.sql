@@ -393,6 +393,284 @@ where fk_pdno in (131) and pd_qty > 0;
 
 select * from tbl_cart where fk_userid = 'admin';
 
-select * from tbl_delivery
+select * from tbl_delivery;
 
 select * from tbl_order;
+select * from tbl_orderdetail;
+
+select brand, count(brand) as cnt,
+       sum(D.order_qty * D.order_price) as sumpay ,
+       round( sum(D.order_qty ) / (select sum(order_qty) from tbl_orderdetail  ) * 100 , 2) as sumpay_pct
+from tbl_order O join
+tbl_orderdetail D
+on O.ordercode = D.fk_ordercode
+join tbl_pd_detail E
+on E.pd_detailno = D.fk_pd_detailno
+join tbl_product P
+on E.fk_pdno = P.pdno
+group by brand
+order by sumpay desc;
+
+
+WITH 
+  O AS 
+  (SELECT ordercode, total_orderdate 
+   FROM tbl_order 
+   WHERE to_char(total_orderdate, 'yyyy') = to_char(sysdate, 'yyyy') 
+  ) 
+  ,
+  OD AS 
+  (SELECT fk_ordercode, fk_pd_detailno, order_qty, order_price
+   FROM tbl_orderdetail 
+  ) 
+  SELECT brand
+       , COUNT(brand) AS CNT 
+       , SUM(OD.order_qty * OD.order_price) AS SUMPAY 
+       , round( SUM(OD.order_qty * OD.order_price)/( SELECT SUM(OD.order_qty * OD.order_price) 
+                                             FROM O JOIN OD 
+                                             ON O.ordercode = OD.fk_ordercode)*100, 2) AS SUMPAY_PCT 
+       , SUM( decode( to_char(O.total_orderdate,'mm'), '01', OD.order_qty * OD.order_price, 0) ) AS M_01 
+       , SUM( decode( to_char(O.total_orderdate,'mm'), '02', OD.order_qty * OD.order_price, 0) ) AS M_02
+       , SUM( decode( to_char(O.total_orderdate,'mm'), '03', OD.order_qty * OD.order_price, 0) ) AS M_03 
+       , SUM( decode( to_char(O.total_orderdate,'mm'), '04', OD.order_qty * OD.order_price, 0) ) AS M_04 
+       , SUM( decode( to_char(O.total_orderdate,'mm'), '05', OD.order_qty * OD.order_price, 0) ) AS M_05 
+       , SUM( decode( to_char(O.total_orderdate,'mm'), '06', OD.order_qty * OD.order_price, 0) ) AS M_06 
+       , SUM( decode( to_char(O.total_orderdate,'mm'), '07', OD.order_qty * OD.order_price, 0) ) AS M_07 
+       , SUM( decode( to_char(O.total_orderdate,'mm'), '08', OD.order_qty * OD.order_price, 0) ) AS M_08 
+       , SUM( decode( to_char(O.total_orderdate,'mm'), '09', OD.order_qty * OD.order_price, 0) ) AS M_09 
+       , SUM( decode( to_char(O.total_orderdate,'mm'), '10', OD.order_qty * OD.order_price, 0) ) AS M_10
+       , SUM( decode( to_char(O.total_orderdate,'mm'), '11', OD.order_qty * OD.order_price, 0) ) AS M_11 
+       , SUM( decode( to_char(O.total_orderdate,'mm'), '12', OD.order_qty * OD.order_price, 0) ) AS M_12 
+  FROM O JOIN OD 
+  ON O.ordercode = OD.fk_ordercode
+  JOIN tbl_pd_detail D
+  ON OD.fk_pd_detailno = D.pd_detailno 
+  join tbl_product P
+  on D.fk_pdno = P.pdno
+  GROUP BY brand 
+  ORDER BY 3 desc;
+
+
+WITH 
+  O AS 
+  (SELECT ordercode, total_orderdate 
+   FROM tbl_order 
+   WHERE to_char(total_orderdate, 'yyyy') = to_char(sysdate, 'yyyy') 
+  ) 
+  ,
+  OD AS 
+  (SELECT fk_ordercode, fk_pd_detailno, order_qty, order_price
+   FROM tbl_orderdetail 
+  ) 
+  SELECT brand
+       , COUNT(brand) AS CNT 
+       , SUM(OD.order_qty) AS SUMPAY 
+       , round( SUM(OD.order_qty)/( SELECT SUM(OD.order_qty) 
+                                             FROM O JOIN OD 
+                                             ON O.ordercode = OD.fk_ordercode)*100, 2) AS ORDER_PCT 
+       , SUM( decode( to_char(O.total_orderdate,'mm'), '01', OD.order_qty, 0) ) AS M_01 
+       , SUM( decode( to_char(O.total_orderdate,'mm'), '02', OD.order_qty, 0) ) AS M_02
+       , SUM( decode( to_char(O.total_orderdate,'mm'), '03', OD.order_qty, 0) ) AS M_03 
+       , SUM( decode( to_char(O.total_orderdate,'mm'), '04', OD.order_qty, 0) ) AS M_04 
+       , SUM( decode( to_char(O.total_orderdate,'mm'), '05', OD.order_qty , 0) ) AS M_05 
+       , SUM( decode( to_char(O.total_orderdate,'mm'), '06', OD.order_qty, 0) ) AS M_06 
+       , SUM( decode( to_char(O.total_orderdate,'mm'), '07', OD.order_qty, 0) ) AS M_07 
+       , SUM( decode( to_char(O.total_orderdate,'mm'), '08', OD.order_qty, 0) ) AS M_08 
+       , SUM( decode( to_char(O.total_orderdate,'mm'), '09', OD.order_qty, 0) ) AS M_09 
+       , SUM( decode( to_char(O.total_orderdate,'mm'), '10', OD.order_qty, 0) ) AS M_10
+       , SUM( decode( to_char(O.total_orderdate,'mm'), '11', OD.order_qty, 0) ) AS M_11 
+       , SUM( decode( to_char(O.total_orderdate,'mm'), '12', OD.order_qty, 0) ) AS M_12 
+  FROM O JOIN OD 
+  ON O.ordercode = OD.fk_ordercode
+  JOIN tbl_pd_detail D
+  ON OD.fk_pd_detailno = D.pd_detailno 
+  join tbl_product P
+  on D.fk_pdno = P.pdno
+  GROUP BY brand 
+  ORDER BY 3 desc;
+  
+  select count(fk_userid) AS TOTALVISIT_CNT
+       , SUM( decode( to_char(logindate,'mm'), '01', 1 , 0) ) AS M_01 
+       , SUM( decode( to_char(logindate,'mm'), '02', 1 , 0) ) AS M_02
+       , SUM( decode( to_char(logindate,'mm'), '03', 1 , 0) ) AS M_03 
+       , SUM( decode( to_char(logindate,'mm'), '04', 1, 0) ) AS M_04 
+       , SUM( decode( to_char(logindate,'mm'), '05', 1, 0) ) AS M_05 
+       , SUM( decode( to_char(logindate,'mm'), '06', 1, 0) ) AS M_06 
+       , SUM( decode( to_char(logindate,'mm'), '07', 1, 0) ) AS M_07 
+       , SUM( decode( to_char(logindate,'mm'), '08', 1, 0) ) AS M_08 
+       , SUM( decode( to_char(logindate,'mm'), '09', 1, 0) ) AS M_09 
+       , SUM( decode( to_char(logindate,'mm'), '10', 1, 0) ) AS M_10
+       , SUM( decode( to_char(logindate,'mm'), '11', 1, 0) ) AS M_11 
+       , SUM( decode( to_char(logindate,'mm'), '12', 1, 0) ) AS M_12 
+  from tbl_loginhistory
+  where to_char(logindate,'yyyy') = to_char(sysdate,'yyyy') AND
+        fk_userid != 'admin'
+  group by to_char(logindate,'mm');
+  
+  select fk_userid, logindate
+  from tbl_loginhistory;
+
+
+
+SELECT 
+  fk_userid,
+  TO_CHAR(logindate, 'MM') AS month,
+  COUNT(*) AS login_count
+FROM 
+  tbl_loginhistory
+GROUP BY 
+  fk_userid,
+  TO_CHAR(logindate, 'MM');
+  
+  
+  select O.ordercode , count(O.ordercode) as cnt
+  from tbl_order O
+  join tbl_orderdetail OD
+  on O.ordercode = OD.fk_ordercode
+  join tbl_pd_detail D 
+  on OD.fk_pd_detailno = D.pd_detailno
+  join tbl_product P
+  on D.fk_pdno = P.pdno
+  group by O.ordercode;
+
+
+
+
+    
+    
+    with
+    od1
+    as
+    (
+    select fk_ordercode, count(fk_ordercode) as cnt
+    from tbl_orderdetail
+    group by fk_ordercode 
+    )
+    ,
+    od2
+    as
+    (
+    select fk_ordercode, fk_pd_detailno, delivery_status
+    from tbl_orderdetail
+    )
+    select od1.fk_ordercode, od1.cnt , o.fk_userid, o.total_price, o.total_orderdate, pdname , od2.delivery_status
+    from od1 join od2
+    on od1.fk_ordercode = od2.fk_ordercode
+    join tbl_order o
+    on od2.fk_ordercode = o.ordercode
+    join tbl_pd_detail D
+    on od2.fk_pd_detailno = D.pd_detailno
+    join tbl_product P
+    on D.fk_pdno = P.pdno;
+
+
+    with
+    od1 as 
+    (
+        select fk_ordercode, count(fk_ordercode) as cnt
+        from tbl_orderdetail
+        group by fk_ordercode 
+    ),
+    od2 as 
+    (
+        select fk_ordercode, fk_pd_detailno, delivery_status
+        from tbl_orderdetail
+    ),
+    od3 as 
+    (
+    select od1.fk_ordercode, od1.cnt, o.fk_userid,
+           o.total_price, o.total_orderdate, pdname,
+           od2.delivery_status, pdimg1 ,
+           row_number() over (partition by od1.fk_ordercode order by o.total_orderdate desc) as rn
+    from od1 join od2 
+    on od1.fk_ordercode = od2.fk_ordercode
+    join tbl_order o 
+    on od2.fk_ordercode = o.ordercode
+    join tbl_pd_detail d 
+    on od2.fk_pd_detailno = d.pd_detailno
+    join tbl_product p 
+    on d.fk_pdno = p.pdno
+    )
+    select
+    fk_ordercode, pdimg1 , cnt, fk_userid, total_price,
+    total_orderdate, pdname, 
+    case delivery_status when 1 then '주문완료'
+    when 2 then '배송중'
+    when 3 then '배송완료' end as delivery_status
+    from od3
+    where rn = 1 and fk_userid = 'jhkvng123'
+    order by total_orderdate desc;
+    
+    
+    
+    
+select * from tbl_order;
+select * from tbl_orderdetail;
+select * from tbl_product;
+    
+    
+select total_orderdate,  pdimg1, brand ,  pdname , 
+decode (color ,'none' ,'단일색상' ,color) as color , order_qty, order_price, total_price,  fk_pdno , ordercode, fk_pd_detailno
+from 
+(
+select pdname
+from tbl_product
+group by pdname
+( 
+select ordercode,  total_price, total_orderdate, fk_pdno, color ,order_price, fk_pd_detailno , order_qty
+from 
+( 
+select ordercode,  total_price, total_orderdate, fk_pd_detailno , order_price , order_qty
+from 
+( 
+select ordercode,  total_price, total_orderdate 
+from tbl_order 
+where fk_userid = 'jhkvng123'   				      
+) A 
+join tbl_orderdetail B 
+on A.ordercode = B.fk_ordercode 
+) C 
+join tbl_pd_detail D 
+on C.fk_pd_detailno = D.pd_detailno 
+) E 
+join tbl_product F 
+on E.fk_pdno = F.pdno 
+order by total_orderdate desc;
+ 
+
+select order_qty , pdname , pdno,  brand, decode(color, 'none', '단일색상', color) as color ,
+        saleprice, pd_qty , pd_detailno
+from tbl_orderdetail od
+join tbl_pd_detail d on
+od.fk_pd_detailno = d.pd_detailno
+join tbl_product p
+on d.fk_pdno = p.pdno
+where fk_ordercode = 't20240530-43';
+
+with
+V
+as
+(
+select fk_userid, ordercode, total_price, total_orderdate
+from tbl_order
+where ordercode = 't20240530-43'
+)
+,
+M
+as
+(
+select userid, username, mobile, email
+from tbl_member 
+)
+select M.username, M.userid, V.ordercode, V.total_price, V.total_orderdate,
+       M.mobile, M.email, D.delivery_name , D.delivery_mobile, D.delivery_postcode ,
+       D.delivery_address, D.delivery_msg, 
+       case delivery_status when 1 then '주문완료'
+        when 2 then '배송중'
+        when 3 then '배송완료' end as delivery_status
+from M join V
+on M.userid = V.fk_userid
+join tbl_delivery D
+on V.ordercode = D.ordercode
+join tbl_orderdetail OD
+on V.ordercode = OD.fk_ordercode;
