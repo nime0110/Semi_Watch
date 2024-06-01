@@ -8,13 +8,13 @@
 
 <link rel="stylesheet" href="../font/css/all.css">
 
-<jsp:include page="../header1.jsp" />
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 <%-- 허성심 제작 페이지 --%>
 <link rel="stylesheet" type="text/css" href="<%= ctx_Path%>/css/itemDetail/itemDetail.css" />
+<jsp:include page="../header1.jsp" />
 
 
 <script type="text/javascript" src="<%= ctx_Path%>/js/item/itemDetail.js"></script>
@@ -23,7 +23,7 @@
 
 </script>
 
-  <main>
+  <main style="margin-top:10vh;">
     <article class="product">
   <!-- 라이트박스용, 아직 미작성 -->
       <section class="product__slider default-container" aria-label="Product preview">
@@ -226,7 +226,6 @@
 <!-- 리뷰란 -->
     <div id="normalReview">
       <div id="reviews_">
-
 	      	<div id="rateAndCount">
 	      		<div id="rateView">
 	      			<span></span>
@@ -235,16 +234,6 @@
 	      		</div>
 				<h4>전체 리뷰수 <span></span></h4>
 			</div>
-
-<%-- 		<c:if test="${empty requestScope.rvMapList}">
-			<div id="rateAndCount">
-	      		<div id="rateView">
-					<div id="rateYozero" data-rateyo-read-only="true"></div>
-					<h4>평균별점 <span>0</span></h4>
-	      		</div>
-				<h4>전체 리뷰수 <span>0</span></h4>
-			</div>
-		</c:if> --%>
         <ul id="reviewsel">
           <li><a href="#">베스트리뷰 |</a></li>
           <li><a href="#">오래된순 |</a></li>
@@ -252,50 +241,16 @@
         </ul>
         <div id="reviewBoard">
           <table style="width:100%;">
-	          <!-- js에서 생성 -->
+	          <%-- js에서 생성 --%>
           </table>
         </div>
         <div id="writeReview">
           <a href="#">리뷰쓰기</a>
         </div>
-        <!-- review popup start -->
-        <!--
-        <div id="reviewPopup" class="popup" style="display:none;">
-	    <div class="popup-content">
-	        <span class="close">&times;</span>
-	        <h2>리뷰 작성하기</h2>
-	        <div id="rateYo" ></div>
-			<p>Selected Rating: <span id="ratingValue">0</span></p>
-	        <textarea id="reviewText" rows="4" cols="50" placeholder="리뷰는 20자 이상 작성 가능합니다."></textarea>
-	        <br>
-	        <button id="submitReviewBtn">리뷰 제출하기</button>
-	    </div>
-		</div> 
+
         <!-- review popup end -->
         <ul id="rpageNumber" class="pagination">
-        <%-- 	<li>	        	
-	          <a href="#">
-	            <img src="${pageContext.request.contextPath}/images/itemDetail/12345allowleft.png" 
-	            alt="왼쪽 화살표">
-	          </a>
-        	</li>
-            <li><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">6</a></li>
-            <li><a href="#">7</a></li>
-            <li><a href="#">8</a></li>
-            <li><a href="#">9</a></li>
-            <li><a href="#">10</a></li>
-            <li>	
-	          <a href="#">
-	            <img src="${pageContext.request.contextPath}/images/itemDetail/12345allowright.png" 
-	            alt="오른쪽 화살표">
-	          </a>
-           </li> --%>
-			 <!-- js에서 생성 -->
+			 <%-- js에서 생성 --%>
         </ul>
       </div>
     </div>

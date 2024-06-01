@@ -14,38 +14,6 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="<%= ctxPath%>/js/index/swiper.js"></script>
 
-<style type="text/css">
-
-    /* ==== 추가이미지 캐러젤로 보여주기 시작 ==== */
-      .carousel-inner .carousel-item.active,
-      .carousel-inner .carousel-item-next,
-      .carousel-inner .carousel-item-prev {
-        display: flex;
-      }
-      
-      .carousel-inner .carousel-item-right.active,
-      .carousel-inner .carousel-item-next {
-      /* transform: translate(25%, 0); */
-      /* 또는 */
-         transform: translateX(25%);
-         
-      /* transform: translate(0, 25%);
-         또는
-         transform: translateY(25%); */  
-      }
-      
-      .carousel-inner .carousel-item-left.active, 
-      .carousel-inner .carousel-item-prev {
-         transform: translateX(-25%); 
-      }
-        
-      .carousel-inner .carousel-item-right,
-      .carousel-inner .carousel-item-left{ 
-         transform: translateX(0);
-      }
-   /* ==== 추가이미지 캐러젤로 보여주기 끝 ==== */
-
-</style>
 
 
 <script type="text/javascript">
@@ -149,16 +117,6 @@ $(document).ready(function(){
     </figure>
     <!-- banner // E -->
     
-    <!-- video 1 // S -->
-    <section class="video_wrap">
-      <video src="videos/ROLEX_CUT_02.mp4" autoplay muted loop></video>
-      <div class="title_wrap">
-        <h3 class="title">스타일로 완성하는 여름</h3>
-        <p class="sub_title">타임리스 스타일링과 함께 나만의 스타일로 여름을 즐겨보세요.</p>
-        <div class="title_btn"><a href="<%= ctxPath%>/item/itemList.flex?brand=롤렉스&sort=신상품순&searchWord=">자세히 보기</a></div>
-      </div>
-    </section>
-    <!-- video 1 // E -->
 
     <!-- collaboration // S -->
     <section class="product_list_wrap">
@@ -201,10 +159,9 @@ $(document).ready(function(){
 
     <!-- video 2 // S -->
     <section class="video_wrap">
-      <video src="videos/ROLEX_CUT_01.mp4" autoplay muted loop></video>
+      <video src="videos/ROLEX_CUT_02.mp4" autoplay muted loop></video>
       <div class="title_wrap">
-        <h3 class="title">스타일로 완성하는 여름</h3>
-        <p class="sub_title">타임리스 스타일링과 함께 나만의 스타일로 여름을 즐겨보세요.</p>
+        <h3 class="title">세계의 운명을 결정짓는 사람들은 롤렉스를 착용합니다.</h3>
         <div class="title_btn"><a href="<%= ctxPath%>/item/itemList.flex?brand=롤렉스&sort=신상품순&searchWord=">자세히 보기</a></div>
       </div>
     </section>
@@ -215,7 +172,7 @@ $(document).ready(function(){
       <div class="product_list_title_wrap">
         <div>
           <h2 class="title">평범한 일상, 특별한 스타일🎈</h2>
-          <p class="sub_title">타임리스의 다양한 콜라보 제품들을 확인해 보세요.</p>
+          <p class="sub_title">타임리스의 다양한 신제품들을 확인해 보세요.</p>
         </div>
         <div class="title_btn"><a href="<%= ctxPath%>/item/itemList.flex?brand=G-SHOCK&sort=신상품순&searchWord=">자세히 보기</a></div>
       </div>
