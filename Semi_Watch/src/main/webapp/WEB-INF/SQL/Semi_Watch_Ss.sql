@@ -397,9 +397,37 @@ where pdno = 112;
 
 ------- 리뷰 페이징 처리 ----- 3명씩 보이게 함
 select ceil(count(*)/3) 
-from tbl_review;
+from tbl_review 
+where fk_pdno = 112;
+;
  
 
+
+select rno, userid, username, email, gender 
+from (
+    select rownum AS rno, userid, username, email, gender 
+    from (
+        select userid, username, email, gender 
+        from tbl_review 
+        where userid != 'admin' 
+        order by registerday desc
+    ) V
+) T
+where T.rno between 6 and 10;
    
+
+SELECT rno, fk_pdno, fk_userid, review_content, starpoint, avg_starpoint, reviewcount, review_date
+FROM (
+    SELECT rownum AS rno, A.fk_pdno, A.fk_userid, A.review_content, A.starpoint, B.avg_starpoint, B.reviewcount, 
+           TO_CHAR(TO_DATE(A.review_date, 'yyyy-mm-dd'), 'yy-mm-dd') AS review_date
+    FROM tbl_review A
+    JOIN (
+        SELECT fk_pdno, TRUNC(AVG(starpoint), 1) AS avg_starpoint, COUNT(review_content) AS reviewcount
+        FROM tbl_review 
+        GROUP BY fk_pdno
+    ) B ON A.fk_pdno = B.fk_pdno
+    WHERE A.fk_pdno = 112
+) T
+WHERE T.rno BETWEEN 1 AND 3;
 
                 
