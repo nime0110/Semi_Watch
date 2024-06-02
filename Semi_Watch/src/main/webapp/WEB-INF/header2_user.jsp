@@ -61,9 +61,6 @@
 				      		<li>
 				        		<a class="nav-link" href="<%=ctxpath %>/order/orderList.flex">주문배송조회</a>
 				      		</li>
-				      		<li class="mb-4">
-				        		<a class="nav-link" href="#">상품 리뷰</a>
-				      		</li>
 
 				      		<li>
 				      			<span class="h5" id="menu_first">나의 계정설정</span>

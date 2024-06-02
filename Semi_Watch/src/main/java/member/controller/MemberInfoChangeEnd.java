@@ -49,7 +49,7 @@ public class MemberInfoChangeEnd extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String method = request.getMethod();
-		System.out.println("MemberInfoChangeEnd 클래스 작동!");
+		// System.out.println("MemberInfoChangeEnd 클래스 작동!");
 		
 		String message = "";
 		String loc = "";
@@ -74,7 +74,7 @@ public class MemberInfoChangeEnd extends AbstractController {
 				
 				if("img".equals(infoUpdate)) {
 					
-					System.out.println("사진변경 컨트롤러 옴");
+					// System.out.println("사진변경 컨트롤러 옴");
 					// 유저 이미지 관련 내용
 					// 1. 첨부되어진 파일을 디스크의 어느 경로에 업로드 할 것인지 경로를 설정
 					ServletContext svlCtx = session.getServletContext();
@@ -119,13 +119,13 @@ public class MemberInfoChangeEnd extends AbstractController {
 		            	}
 		            	else { // form 태그에서 전송되어온 것이 파일이 아닐 경우 (프로젝트때는 하지말래)
 	                        String formValue = request.getParameter(part.getName());
-	                        System.out.printf("파일이 아닌 경우 파라미터(name)명 : %s, value : %s \n"
-	                                        , part.getName(), formValue);
+	                        // System.out.printf("파일이 아닌 경우 파라미터(name)명 : %s, value : %s \n"
+	                        //                , part.getName(), formValue);
 	                    }
 		            	
 		            }// end of for(Part part : parts) {----
 		            
-		            System.out.println("사진변경 파일명 확인 : "+userimg);
+		            // System.out.println("사진변경 파일명 확인 : "+userimg);
 		            
 		            // userimg 값 넣기
 		            paraMap.put("userimg", userimg);
@@ -136,7 +136,7 @@ public class MemberInfoChangeEnd extends AbstractController {
 		            // 정상작동할때만 json 업데이트로 간다.
 		            if(result == 1) {
 		            	
-		            	System.out.println("확인용 result: "+result);
+		            	// System.out.println("확인용 result: "+result);
     		            
 			            JSONObject jsonObj = new JSONObject();
 		                
@@ -160,12 +160,12 @@ public class MemberInfoChangeEnd extends AbstractController {
 				
 				if("pwd".equals(infoUpdate)){	// 비밀번호 변경일 경우에만
 					String newPassword = request.getParameter("newPassword");
-					System.out.println("비밀번호 변경 에 들어옴");
+					// System.out.println("비밀번호 변경 에 들어옴");
 					
 					if(newPassword == null) {
 						System.out.println("비밀번호 값 null 임");
 					}
-					System.out.println(newPassword);
+					// System.out.println(newPassword);
 					
 					paraMap.put("newPassword", newPassword);
 					
