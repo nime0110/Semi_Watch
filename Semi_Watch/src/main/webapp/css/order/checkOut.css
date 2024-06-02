@@ -36,6 +36,10 @@ div.productInfo {
 	border-bottom: double 4px gray;
 }
 
+div.deliverArr{
+	margin-top: 5%;
+}
+
 
 .pInfo1{
 	padding-top:10px; 
@@ -52,7 +56,7 @@ div.productInfo {
 .pInfo2{
 	padding-top:10px;
 	margin: 5% auto;
-	width: 10%;
+	width: 8%;
 }
 
 .pInfo3{

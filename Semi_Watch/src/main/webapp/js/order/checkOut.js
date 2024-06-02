@@ -175,7 +175,7 @@ $(document).ready(function(){
 
     // 최종결제비용  총비용 구하기(상품별 총액)
     const totalPrice_ori = $("input#totalPrice").val(); // 초기값
-    $("span#totalCostView").html(`${Number(totalPrice_ori-deliveryfee).toLocaleString('en')} 원`);
+    $("span#totalCostView").html(`${(Number(totalPrice_ori)+Number(deliveryfee)).toLocaleString('en')} 원`);
     $("span.totalPrice").html(`${Number(totalPrice_ori).toLocaleString('en')} 원`);
 
 
@@ -268,6 +268,16 @@ $(document).ready(function(){
 
     // 마일리지 모두사용 버튼 클릭 시
     $("button#allUsePoint").click(function(){
+
+        // 보유한 포인트가 0 일 경우 return
+        const userpoint_ori = $("span#userpoint").text();
+        if( userpoint_ori == "0" ){
+            // alert("포인트 0");
+            return;
+        }
+
+
+
         if(Number(userPoint) > Number(totalPrice_ori)*0.8 ){
             $("input#usePoint").val(Number(totalPrice_ori)*0.8); //사용 포인트 최대값으로
             // $("span#restpoint").text(`${Number(p_totalPrice)*0.8}`); 
@@ -336,7 +346,7 @@ function gochange_cancel(){
 function gochange_complite(){
 
     const ch_name = $("input#ch_name").val().trim();
-    const ch_mobile = $("input#ch_mobile").val().trim();
+    let ch_mobile = $("input#ch_mobile").val().trim();
     const ch_postcode = $("input#ch_postcode").val().trim();
     const ch_address = $("input#ch_address").val().trim();
     const ch_detailAddress = $("input#ch_detailAddress").val().trim();
@@ -369,11 +379,20 @@ function gochange_complite(){
         $("input:hidden[name='postcode']").val(ch_postcode);
         $("input:hidden[name='address']").val(ch_address+ch_detailAddress);
 
+        // 전화번호 (-) 추가
+        const h_ch1 = ch_mobile.slice(0,3);   
+        const h_ch2 = ch_mobile.slice(3,7);   
+        const h_ch3 = ch_mobile.slice(7);
+
+        ch_mobile = h_ch1+"-"+h_ch2+"-"+h_ch3;
+
         // 보여지는 곳을 바꾸어 준다.
         $("div#name").text(ch_name);
         $("div#mobile").text(ch_mobile);
         $("div#postcode").text(ch_postcode);
         $("div#address").text(ch_address+"  "+ch_detailAddress);
+
+        
         
         // 값을 초기화
         $("#chageInfo input").val('');

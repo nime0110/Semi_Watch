@@ -11,6 +11,8 @@
 
 <jsp:include page="../header1.jsp"></jsp:include>
 
+<jsp:include page="../header2_user.jsp"></jsp:include>
+
 <style type="text/css">
 
 tr.subject{
@@ -77,15 +79,99 @@ div.heightP{
 	border-right: solid 2px #A9A9A9;
 }
 
+/* ---------------리뷰 팝업 스타일-------------------- */
+.popup {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s;
+    text-align: center; /* 텍스트 중앙 정렬 */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.popup-content > *:not(:last-child) {
+    margin-bottom: 20px; /* 요소들 사이에 간격 추가 */
+}
+
+.close {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+h2 {
+    margin: 0; /* 이미 margin-bottom이 추가됨 */
+}
+
+textarea {
+    box-sizing: border-box;
+}
+
+#rateYo {
+    display: flex;
+    justify-content: center;
+}
+
+
+/* 둥근 별 모양을 위한 추가 스타일 */
+.rateyo {
+    --rateyo-star-width: 30px; /* 별의 크기 조정 */
+}
+
+.rateyo .rateyo-path {
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    stroke: #ff9f00;
+    stroke-width: 2;
+}
+
+.rateyo .rateyo-path-background {
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    stroke: #ddd;
+    stroke-width: 2;
+}
 
 </style>
 
-<%-- 회원정보수정 관련 js --%>
-<script type="text/javascript" src="<%= ctxPath%>/js/member/memberInfoChange.js"></script>
-<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-
-<%-- 회원정보수정 관련 css --%>
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/member/memberInfoChange.css" />
+<script type="text/javascript" src="<%= ctxPath%>/js/order/orderListDetail.js"></script>
 
 <script type="text/javascript">
 $(document).ready(function() {
@@ -93,7 +179,7 @@ $(document).ready(function() {
 	let mobile = $("div#mobile").text();
 	
 	const h1 = mobile.slice(0,3);   
-    const h2 = mobile.slice(4,8);   
+    const h2 = mobile.slice(3,8);   
     const h3 = mobile.slice(8);
     
     mobile = h1+"-"+h2+"-"+h3;
@@ -105,7 +191,7 @@ $(document).ready(function() {
     let userMobile = $("div#userMobile").text();
     
     const h1 = mobile.slice(0,3);   
-    const h2 = mobile.slice(4,8);   
+    const h2 = mobile.slice(3,8);   
     const h3 = mobile.slice(8);
     
     userMobile = h1+"-"+h2+"-"+h3;
@@ -118,86 +204,6 @@ $(document).ready(function() {
 	
 </script>
 
-<%-- 회원정보 내용 시작 --%>
-<body>
-	<%-- 상단 바 시작 --%>
-	<div class="pt-3" id="topBar">
-		<div >
-			<h2 id="myPage">My Page</h2> 
-		</div>
-		<div class="row text-center" style="padding: 10px 0 20px 0;">
-			<div class="col-xl-5" style="border: solid 1px blue; padding: 20px 0;">
-				회원아이디
-			</div>
-			<div class="col" style="border: solid 1px blue;">
-				<a class="nav-link" href="#" style="color: white;">
-					장바구니
-					<div>5 건</div>
-				</a> 
-			</div>
-			<div class="col" style="border: solid 1px blue;">
-				<a class="nav-link" href="#" style="color: white;">
-					포인트
-					<div>3000</div>
-				</a>
-			</div>
-			<div class="col" style="border: solid 1px blue; ">
-				<a class="nav-link" href="#" style="color: white;">
-					쿠폰
-					<div>5 개</div>
-				</a>
-			</div>
-			<div class="col" style="border: solid 1px blue;">
-				<a class="nav-link" href="#" style="color: white;">
-					후기
-					<div>5 개</div>
-				</a>
-			</div>
-			
-		</div>
-	</div>
-	<%-- 상단 바 끝 --%>
-
-	
-	<div class="container-fluid" style="margin-bottom:5%;">
-		<div class="row">
-			<%-- 왼쪽 사이드 메뉴 시작--%>
-	        <div class="col-xl-2" id="subject" >
-	            <nav class="navbar sticky-top">
-	            	<div>
-				    	<ul class="navbar-nav mt-3" id="menu">
-				    		<li class="mb-1">
-				      			<span class="h5" id="menu_first" href="<%=ctxPath%>/order/orderList.flex">나의 쇼핑정보</span>
-				      		</li>
-				      		<li>
-				        		<a class="nav-link" href="#">주문배송조회</a>
-				      		</li>
-				      		<li>
-				        		<a class="nav-link" href="#">취소/교환/반품 내역</a>
-				      		</li>
-				      		<li class="mb-4">
-				        		<a class="nav-link" href="#">상품 리뷰</a>
-				      		</li>
-
-				      		<li>
-				      			<span class="h5" id="menu_first">나의 계정설정</span>
-				      		</li>
-				      		<li>
-				        		<a class="nav-link" href="#">회원정보수정</a>
-				      		</li>
-				      		<li>
-				        		<a class="nav-link" href="#">쿠폰</a>
-				      		</li>
-				      		<li>
-				        		<a class="nav-link" href="#">마일리지</a>
-				      		</li>
-				    	</ul>
-				  	</div>
-	            </nav>
-	        </div>
-			<%-- 왼쪽 사이드 메뉴 끝 --%>
-
-			<div class="col-xl-9 mt-4">
 				<div>
 	            	<div class="d_subject">주문상품정보</div>
                		<hr class="lineS">
@@ -232,6 +238,7 @@ $(document).ready(function() {
 									<p>${ordList.pdname}</p>
 									<p>${ordList.color} <span>구매수량 : ${ordList.order_qty}</span></p>
 									<p><fmt:formatNumber pattern="###,###" value="${ordList.saleprice}"/>&nbsp;원</p>
+									<input type="hidden" value="${ordList.pdno}"/>
 								</div>
 							</td>
 	                        <td id="deliverS" align="center" style="border: solid 1px red;">  
@@ -242,21 +249,45 @@ $(document).ready(function() {
 	            				</c:choose>
 	                        </td>
 	                        <td class="text-center" style="border: solid 1px blue;">
-	                            <button class="btn btn-sm btn-outline-dark change_btn" type="button" id="change_btn">리뷰 작성</button>
+	                        
+<%---------------------------------------------성심 작업 시작 --------------------------------------------------------------------------------------------------------------------------------------%>
+					            
+					            <c:choose>
+					                <c:when test="${ordList.isReviewExists == 'false'}">
+					                    <button class="btn btn-sm btn-outline-dark" id="revieWrite" type="button" data-productno="${ordList.pdno}">리뷰 작성</button>
+					                </c:when>
+					                <c:otherwise>
+					                    <button class="btn btn-sm btn-outline-dark" id="reviewChange" type="button" data-productno="${ordList.pdno}">리뷰 수정</button>
+					                    <button class="btn btn-sm btn-outline-dark" id="reviewDelete" type="button" data-productno="${ordList.pdno}">리뷰 삭제</button>
+					                </c:otherwise>
+					            </c:choose>
 	                        </td>
 	                    </tr>
-	                    
-	                    <%-- 일단 숨김 성심님이 만든거 적용한다함
-	                    <tr id="writeReviewArr">
-	                    	<td scope="row" colspan="2">
-	                    		<textarea class="form-control text-left" maxlength="40" style="resize: none;"></textarea>
-	                    	</td>
-	                    	<td class="text-center">
-	                    		<button class="btn btn-sm btn-outline-secondary twobtn" type="reset" id="cancle">취소</button>
-								<button class="btn btn-sm btn-outline-dark twobtn" type="button" id="saveReview">저장</button>
-	                    	</td>
-	                    </tr>
-	                     --%>
+	      <%-- review popup start --%>
+        
+				        <div id="reviewPopup" class="popup" style="display:none;">
+						    <div class="popup-content">
+						        <span class="close">&times;</span>
+						        <h2>리뷰 작성하기</h2>
+						        <div id="rateYo"></div>
+						        <textarea id="reviewText" rows="4" cols="50" placeholder="리뷰는 20자 이상 작성 가능합니다."></textarea>
+						        <br>
+						        <button id="submitReviewBtn">리뷰 제출하기</button>
+						    </div>
+						</div>
+						
+				        <div id="reviewUpdatePopup" class="popup" style="display:none;">
+						    <div class="popup-content">
+						        <span class="close">&times;</span>
+						        <h2>리뷰 수정하기</h2>
+						        <div id="rateYoUpdate"  data-rating="${ordList.starpoint}"></div>
+						        <textarea id="reviewUpdateText" rows="4" cols="50" placeholder="리뷰는 20자 이상 작성 가능합니다.">${ordList.review_content}</textarea>
+						        <br>
+						        <button id="submitReviewUpdateBtn">리뷰 수정하기</button>
+						    </div>
+						</div>
+						<%---------------------------------------------성심 작업 끝 ------------------------------------------------------%>
+		 <%-- review popup end --%>
 	                     
 	                    <%-- 공백 --%>
                     	<tr>
@@ -283,13 +314,13 @@ $(document).ready(function() {
                     		<hr class="lineS">
                     		<div class="heightC tableLineB">
                     			<div class="col-2">이름</div>
-                    			<div class="col-4 tableLineR">${sessionScope.loginuesr.username}</div>
+                    			<div class="col-4 tableLineR">${sessionScope.loginuser.username}</div>
                     			<div class="col-2 text-center">연락처</div>
-                    			<div class="col-4" id="userMobile">${sessionScope.loginuesr.mobile}</div>
+                    			<div class="col-4" id="userMobile">${sessionScope.loginuser.mobile}</div>
                     		</div>
                     		<div class="heightC tableLineB">
                     			<div class="col-2">이메일</div>
-                    			<div class="col">${sessionScope.loginuesr.email}</div>
+                    			<div class="col">${sessionScope.loginuser.email}</div>
                     		</div>
                     	</td>
                     </tr>
@@ -346,11 +377,8 @@ $(document).ready(function() {
                     	</td>
                     </tr>
 				</table>
-			</div>
-	    </div>
-	</div>
-
-<%-- 회원정보 내용 시작 --%>
+				
+<jsp:include page="../footer2_user.jsp"></jsp:include>
 
 
 <jsp:include page="../footer.jsp"></jsp:include>

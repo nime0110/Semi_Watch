@@ -53,6 +53,9 @@ div.loader {
 
 }
 
+div.font12{
+	font-size: 13pt;
+}
 
 
 /* Safari */
@@ -75,10 +78,17 @@ div.loader {
 		<%-- 초기 주소록 로그인 정보로 입력 --%>
 		const username = $("input:hidden[name='name']").val();
 	    const useremail= $("input:hidden[name='email']").val();
-	    const usermobile =$("input:hidden[name='mobile']").val();
+	    let usermobile =$("input:hidden[name='mobile']").val();
 	    const userpostcode =$("input:hidden[name='postcode']").val();
 	    const useraddress =$("input:hidden[name='address']").val();
-
+		<%-- 여기까지 함 이제 전화번호 (-)추가해야함 --%>
+		
+		const h1 = usermobile.slice(0,3);   
+        const h2 = usermobile.slice(3,7);   
+        const h3 = usermobile.slice(7);
+		
+        usermobile = h1+"-"+h2+"-"+h3;
+		
 	    $("div#name").text(username);
 	    $("div#email").text(useremail);
 	    $("div#mobile").text(usermobile);
@@ -100,18 +110,18 @@ div.loader {
 <%-- 결제페이지 시작 --%>
 
 <div class="container-flude mt-3 container-margin" >
-    <div class="h3 text-center mb-3">결제페이지</div>
+    <div class="h3 text-center mb-4">ORDER</div>
     <form class="flexcss">
         <div class="px-4" style="width: 55%;">
             <label class="h4">주문자정보</label>
             <div id="userInfo" style="border: solid 1px black;">
                 <div class="flexcss">
                     <div style="width: 85%;">
-                    	<div class="mb-1" id="name"></div>
-                        <div class="mb-1" id="email"></div>
-                        <div class="mb-1" id="mobile"></div>
-                        <div class="mb-1" id="postcode"></div>
-                        <div id="address"></div>
+                    	<div class="mb-1 font12" id="name"></div>
+                        <div class="mb-1 font12" id="email"></div>
+                        <div class="mb-1 font12" id="mobile"></div>
+                        <div class="mb-1 font12" id="postcode"></div>
+                        <div class="font12" id="address"></div>
                         <%-- 넘겨줄 값 저장소 --%>
                         <c:set var="loginuser" value="${sessionScope.loginuser}"></c:set>
                         <input name="name" type="hidden" value="${loginuser.username}" /><%-- 이름 --%>
@@ -162,7 +172,7 @@ div.loader {
 
 
             <%-- 배송 요청사항 부분 --%>
-            <div >
+            <div class="deliverArr">
                 <label class="h4 mt-4">배송요청사항</label>
                 <table class="table" style="width: 100%;">
                     <colgroup>
@@ -264,7 +274,12 @@ div.loader {
 	                    	<span style="font-size: 10pt; color: blue;"><fmt:formatNumber pattern="###,###" value="${requestScope.pvoList[no].saleprice}"/>원</span>
 	                    </div>
 	                    
-	                    <div class="productInfo pInfo4" >${requestScope.pvoList[no].pdvo.color}</div>
+	                    <div class="productInfo pInfo4" >
+	                    	<c:choose >
+	                    		<c:when test="${requestScope.pvoList[no].pdvo.color eq 'none'}">단일색상</c:when>
+	                    		<c:otherwise>${requestScope.pvoList[no].pdvo.color}</c:otherwise>
+	                    	</c:choose>
+	                    </div>
 
 	                    <div class="productInfo pInfo2" align="center"><span name="oqty">${requestScope.cart_qtyArr[no]}</span>개</div>
 	                    <div class="productInfo pInfo3 " align="right"><fmt:formatNumber pattern="###,###" value="${requestScope.pdPriceArr[no]}"/> 원</div>
@@ -301,7 +316,7 @@ div.loader {
                     		<input class="deliveryfee" type="hidden" value="0"/>
                     	</c:if>
                     	<c:if test="${requestScope.totalPrice < 100000}">
-                    		<span class="deliveryfeeView">5000</span>
+                    		<span class="deliveryfeeView">5000&nbsp;원</span>
                     		<input class="deliveryfee" type="hidden" value="5000"/>
                     	</c:if>
                         

@@ -28,6 +28,10 @@ public interface jh_3_MemberDAO {
 	int updatePost(Map<String, String> paraMap) throws SQLException;
 
 	
+	// 개인정보 상단 장바구니, 리뷰 건수
+	Map<String, String> get_cart_review_cnt(String userid) throws SQLException;
+
+	
 	
 	
 	
