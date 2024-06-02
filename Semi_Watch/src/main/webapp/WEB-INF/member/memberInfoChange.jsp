@@ -27,6 +27,34 @@ img.userimg_size{
 
 <script type="text/javascript" src="<%= ctxPath%>/js/member/memberInfoChange.js"></script>
 
+<script type="text/javascript">
+
+$(document).ready(function(){
+	//사진 변경 버튼 누르면
+	$("button#change_img").click(function(){
+	    
+	    $("tr#profile_image_area").hide();
+	    $("tr#change_profile_image_area").show();
+
+	    document.getElementById("previewImg").src = "<%= ctxPath%>/images/member/${sessionScope.loginuser.userimg}";
+
+	}); // end of $("button#change_img").click(function() -------
+
+
+	// 사진 변경 취소 버튼 누르면
+	$("button:reset[id='imgcancle']").click(function(){
+
+	    $("tr#change_profile_image_area").hide();
+	    $("tr#profile_image_area").show();
+
+	});
+	
+	
+});// end of $(document).ready(function()--------------
+
+
+</script>
+
 				<div class="mb-3">
 	            	<span class="h4" style="font-weight: bold;">기본회원정보</span>&nbsp;&nbsp;<span class="h5" style="font-weight: bold; color: #69707a;">필수</span>
 	            </div>
@@ -44,7 +72,7 @@ img.userimg_size{
 						<th scope="row">사진</th>
                         <td>  
 							<div class="mb-2">
-								<img class="userimg_size" src="<%= ctxPath%>/images/member/usernormal.jpg" />
+								<img class="userimg_size" src="<%= ctxPath%>/images/member/${sessionScope.loginuser.userimg}" />
 							</div>
                             
                             <p>회원님을 알릴 수 있는 사진을 등록해 주세요.</p>
@@ -59,14 +87,13 @@ img.userimg_size{
                         <td>
                         	<form name="imgForm">
 	                            <div class="mb-2">
-									<img class="userimg_size" src="<%= ctxPath%>/images/member/usernormal.jpg" />
+									<img class="userimg_size previewImg" id="previewImg" />
 								</div>
 	                            
 	                            <p class="mb-2">회원님을 알릴 수 있는 사진을 등록해 주세요.</p>
 	                            <div class="mb-3">
-	                                <label class="btn btn-sm btn-outline-secondary selectPicture" for="profile-image" id="selectPicture">사진 선택</label>
-	                                <input id="profile-image" name="userimg" type="file" accept='image/jpeg, image/png, .jpg, .png' style="display: none;">
-	                                <button class="btn btn-sm btn-outline-secondary" type="button" id="base_userimg">기본이미지로 변경</button>
+	                                <label class="btn btn-sm btn-outline-secondary selectPicture" for="profile_image" id="selectPicture">사진 선택</label>
+	                                <input class="previewImg" id="profile_image" name="userimg" type="file" accept='image/jpeg, image/png, .jpg, .png' style="display: none;">
 	                            </div>
 	                            <input name="infoUpdate" value="img" type="hidden"/>
 								<input name="userid" value="${sessionScope.loginuser.userid}" type="hidden" />
