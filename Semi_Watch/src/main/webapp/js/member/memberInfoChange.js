@@ -47,7 +47,7 @@ $(document).ready(function(){
         $("tr#password_area").hide();
         $("tr#change_password_area").show();
 
-    }); // end of $("button#change_btn").click(function() -------
+    }); // end of $("button#change_pwd").click(function() -------
 
     
     // 신규비밀번호가 양식에 맞는지 확인
@@ -307,8 +307,8 @@ $(document).ready(function(){
     let mobile = $("input#mobile").val();
 
     const h1 = mobile.slice(0,3);   
-    const h2 = mobile.slice(4,8);   
-    const h3 = mobile.slice(8);
+    const h2 = mobile.slice(3,7);   
+    const h3 = mobile.slice(7);
 
     mobile = h1+"-"+h2+"-"+h3;
 
@@ -317,7 +317,7 @@ $(document).ready(function(){
 
 
     // 전화번호 변경 버튼 클릭 시
-    $("button#change_btn").click(function(){
+    $("button#change_mobile").click(function(){
         $("tr#mobile_area").hide();
         $("tr#change_mobile_area").show();
         $("div#mobile_authTemp").hide();

@@ -224,13 +224,10 @@ OD AS(
     select order_detailno, fk_pd_detailno, fk_ordercode, order_qty, delivery_status
     from tbl_orderdetail
 )
-SELECT BRAND, PDIMG1, PDNAME, COLOR, SALEPRICE, ORDER_QTY, TOTAL_PRICE, TOTAL_ORDERDATE -- 브랜드, 이미지, 제품명, 옵션명, 개당할인가, 주문수량, 주문일자
-       , DELIVERY_STATUS, DELIVERY_NAME, DELIVERY_POSTCODE, DELIVERY_ADDRESS, DELIVERY_MOBILE, DELIVERY_MSG -- 배송상태, 이름, 우편번호, 주소명, 연락처, 배송메시지
+SELECT BRAND, PDIMG1, PDNAME, COLOR, SALEPRICE, ORDER_QTY, DELIVERY_STATUS -- 브랜드, 이미지, 제품명, 옵션명, 개당할인가, 주문수량, 주문일자
        , PDNO, PD_DETAILNO -- 리뷰용 제품번호, 제품상세번호
 FROM O JOIN OD
 ON O.ordercode = OD.fk_ordercode
-JOIN tbl_delivery D
-ON OD.fk_ordercode = D.ordercode
 JOIN tbl_pd_detail PD
 ON OD.fk_pd_detailno = PD.pd_detailno
 JOIN tbl_product P
