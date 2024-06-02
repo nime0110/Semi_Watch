@@ -236,9 +236,7 @@
 				<h4>전체 리뷰수 <span></span></h4>
 			</div>
         <ul id="reviewsel">
-          <li><a href="#">베스트리뷰 |</a></li>
-          <li><a href="#">오래된순 |</a></li>
-          <li><a href="#">최신순 </a></li>
+
         </ul>
         <div id="reviewBoard">
           <table style="width:100%;">
