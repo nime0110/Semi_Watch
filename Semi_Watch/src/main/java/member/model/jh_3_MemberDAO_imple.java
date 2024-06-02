@@ -258,5 +258,32 @@ public class jh_3_MemberDAO_imple implements jh_3_MemberDAO {
 	}// end of public Map<String, String> get_cart_review_cnt(String userid)-----
 
 	
+	// 프로필 이미지 업데이트
+	@Override
+	public int updateIMG(Map<String, String> paraMap) throws SQLException {
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql  = " update tbl_member "
+						+ " set userimg = ? "
+						+ " where userid = ? ";
+			pstmt = conn.prepareStatement(sql); 
+			pstmt.setString(1, paraMap.get("userimg"));
+			pstmt.setString(2, paraMap.get("userid"));
+			
+			result = pstmt.executeUpdate();
+			
+
+		} finally {
+			close();
+		}
+		
+		return result;
+		
+	}// end of public int updateIMG(Map<String, String> paraMap)-----
+
+	
 	
 }

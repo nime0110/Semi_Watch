@@ -267,4 +267,10 @@ group by reviewno;
 select userid, userimg
 from tbl_member
 
+update tbl_member
+set userimg = 'usee.jpg'
+where userid = 'jhkvng123';
+
+rollback;
+
 

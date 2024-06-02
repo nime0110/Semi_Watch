@@ -1,7 +1,7 @@
 
 $(document).ready(function(){
 
-    const ctxPath = document.getElementById("ctxPath").value;
+    const ctxPath = $("input#ctxPath").val();
 
     
 
@@ -40,6 +40,37 @@ $(document).ready(function(){
         }
     });
     
+
+    // ==== 프로필이미지 관련 내용  시작 === //
+
+    // 사진 변경 버튼 누르면
+    $("button#change_img").click(function(){
+        
+        $("tr#profile_image_area").hide();
+        $("tr#change_profile_image_area").show();
+
+    }); // end of $("button#change_img").click(function() -------
+
+
+    // 사진 변경 취소 버튼 누르면
+    $("button:reset[id='imgcancle']").click(function(){
+
+        $("tr#change_profile_image_area").hide();
+        $("tr#profile_image_area").show();
+
+    });
+
+
+
+    // ==== 프로필이미지 관련 내용  끝 === //
+    
+
+
+
+
+
+
+    // ==== 비밀번호 관련 내용  시작 === //
 
     // 비밀번호 변경 버튼 누르면
     $("button#change_pwd").click(function(){
@@ -576,6 +607,55 @@ $(document).ready(function(){
 // 다 안에 넣움
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// 사진 변경 완료 버튼 눌르면
+function imgUP(){
+    const newImg = $("input:file[name='userimg']").val().trim();
+	
+    alert("확인용 img + "+newImg);
+
+    if(newImg == ""){
+        alert("사진을 선택해주세요.");
+        
+        return;	// 종료
+    }
+
+    var formData = new FormData($("form[name='imgForm']").get(0)); 
+
+    $.ajax({
+           url : "/member/memberInfoChangeEnd.flex",
+           type : "post",
+           data : formData,
+           
+           // 파일 전송할때 필수로 입력해야함 (default true)
+           processData:false,  // 파일 전송시 설정 
+           contentType:false,  // 파일 전송시 설정
+     
+           dataType:"json",
+           success:function(json){
+              
+                     
+              console.log("~~~ 확인용 : " + JSON.stringify(json));
+               // ~~~ 확인용 : {"result":1}
+               if(json.result == 1) {
+                    alert("사진을 변경하였습니다.");
+                    location.href="javascript:history.go(0)";
+               }
+               else{
+                    alert("사진변경 실패");
+               }
+               
+           },
+           error: function(request, status, error){
+           // alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+              alert("첨부된 파일의 크기의 총합이 20MB 를 초과하여 제품등록이 실패했습니다.ㅜㅜ");
+            } 
+     
+     
+     }); // end of .ajax
+    
+}// end of function imglUP()----
+
 
 // 비밀번호 변경 완료 버튼 눌렀을 경우 호출되는 함수
 function pwdUP(){

@@ -30,6 +30,10 @@ public interface jh_3_MemberDAO {
 	
 	// 개인정보 상단 장바구니, 리뷰 건수
 	Map<String, String> get_cart_review_cnt(String userid) throws SQLException;
+	
+	
+	// 프로필 이미지 변경
+	int updateIMG(Map<String, String> paraMap) throws SQLException;
 
 	
 	
