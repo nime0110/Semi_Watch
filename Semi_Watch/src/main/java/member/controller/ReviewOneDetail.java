@@ -37,6 +37,10 @@ public class ReviewOneDetail extends AbstractController {
 				
 				ReviewVO rvo = mdao.selectOneReview(reviewno);
 				
+				//String pdno = rvo.getPvo().getPdno();
+				
+				//System.out.println("확인용 pdno : " + pdno);
+				
 				request.setAttribute("rvo", rvo);
 				request.setAttribute("goBackURL", goBackURL);
 				

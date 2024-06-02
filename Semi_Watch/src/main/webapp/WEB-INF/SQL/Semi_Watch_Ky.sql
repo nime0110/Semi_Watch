@@ -457,5 +457,13 @@ ORDER BY reviewno DESC
 
 
 
+ SELECT R.reviewno AS reviewno, P.brand AS brand, P.pdno AS pdno, P.pdname AS pdname, P.pdimg1 AS pdimg1, M.userid AS userid, M.username AS username, R.review_content AS review_content, R.starpoint AS starpoint, R.review_date AS review_date 
+FROM tbl_review R JOIN tbl_product P 
+ON R.fk_pdno = P.pdno JOIN tbl_member M 
+on R.fk_userid = M.userid 
+where reviewno = 60
+
+
+
 -- pdstatus
 -- pdinputdate
