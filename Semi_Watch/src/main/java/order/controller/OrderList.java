@@ -110,6 +110,9 @@ public class OrderList extends AbstractController {
 				paraMap.put("startDate", monDate3);
 				paraMap.put("endDate", currentDate);
 				
+				startDate = monDate3;
+				endDate = currentDate;
+				
 			}
 			
 			

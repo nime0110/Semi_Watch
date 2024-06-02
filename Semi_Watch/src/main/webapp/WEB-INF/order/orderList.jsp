@@ -14,6 +14,8 @@
 
 
 
+
+
 <style>
 	#OrderTable,
 	#OrderTable td,
@@ -156,94 +158,20 @@ function deliveryComplete(ordercode){
 	<c:set var="userid" value="${requestScope.userid}" />
    <%-- 상단 바 시작 --%>
    <c:if test='${userid ne "admin"}'> 
-   
+   <jsp:include page="../header2_user.jsp"></jsp:include>
 <%-- 회원정보수정 관련 js --%>
 <script type="text/javascript" src="<%= ctxPath%>/js/member/memberInfoChange.js"></script>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <%-- 회원정보수정 관련 css --%>
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/member/memberInfoChange.css" />
-   <div class="pt-3" id="topBar">
-      <div>
-         <h2 id="myPage">My Page</h2> 
-      </div>
-      <div class="row text-center" style="padding: 10px 0 20px 0;">
-         <div class="col-xl-5" style="border: solid 1px blue; padding: 20px 0;">
-            회원아이디
-         </div>
-         <div class="col" style="border: solid 1px blue;">
-            <a class="nav-link" href="#" style="color: white;">
-               장바구니
-               <div>5 건</div>
-            </a> 
-         </div>
-         <div class="col" style="border: solid 1px blue;">
-            <a class="nav-link" href="#" style="color: white;">
-               포인트
-               <div>3000</div>
-            </a>
-         </div>
-         <div class="col" style="border: solid 1px blue; ">
-            <a class="nav-link" href="#" style="color: white;">
-               쿠폰
-               <div>5 개</div>
-            </a>
-         </div>
-         <div class="col" style="border: solid 1px blue;">
-            <a class="nav-link" href="#" style="color: white;">
-               후기
-               <div>5 개</div>
-            </a>
-         </div>
-         
-      </div>
-   </div>
-  
-   <div class="container-fluid">
-      <div class="row">
-         <%-- 왼쪽 사이드 메뉴 시작--%>
-           <div class="col-xl-2" id="subject" >
-               <nav class="navbar sticky-top">
-                  <div>
-                   <ul class="navbar-nav mt-3" id="menu">
-                      <li class="mb-1">
-                           <span class="h5" id="menu_first">나의 쇼핑정보</span>
-                        </li>
-                        <li>
-                          <a class="nav-link" href="#">주문배송조회</a>
-                        </li>
-                        <li>
-                          <a class="nav-link" href="#">취소/교환/반품 내역</a>
-                        </li>
-                        <li class="mb-4">
-                          <a class="nav-link" href="#">상품 리뷰</a>
-                        </li>
 
-                        <li>
-                           <span class="h5" id="menu_first">나의 계정설정</span>
-                        </li>
-                        <li>
-                          <a class="nav-link" href="#">회원정보수정</a>
-                        </li>
-                        <li>
-                          <a class="nav-link" href="#">쿠폰</a>
-                        </li>
-                        <li>
-                          <a class="nav-link" href="#">마일리지</a>
-                        </li>
-                        <li>
-                          <a class="nav-link" href="<%=ctxPath%>/login/logout.flex">로그아웃</a>
-                        </li>
-                   </ul>
-                 </div>
-               </nav>
-           </div>
          <%-- 왼쪽 사이드 메뉴 끝 --%>
          <fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" />
 		<fmt:parseNumber var="sizePerPage" value="${requestScope.sizePerPage}" />
-      <div class="col-md-8 mx-auto">
-        <p class="h4 text-center">&raquo;&nbsp;&nbsp;${loginuser.username} 님[ ${userid} ] 주문내역 목록&nbsp;&nbsp;&laquo;</p>
-        <table class="table table-bordered table-responsive">
+      <div class="col-md-10 mx-auto">
+        <p class="h4 text-center py-3">&raquo;&nbsp;&nbsp;${loginuser.username} 님[ ${userid} ] 주문내역 목록&nbsp;&nbsp;&laquo;</p>
+        <table class="table table-bordered">
             <thead class="thead-light">
                 <tr>
                     <th scope="col" class="text-center">주문번호</th>

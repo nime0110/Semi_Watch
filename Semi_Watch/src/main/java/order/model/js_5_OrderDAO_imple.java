@@ -561,6 +561,65 @@ public class js_5_OrderDAO_imple implements js_5_OrderDAO {
 		
 	} // end of public List<Map<String, String>> adminGetOrderInfo(String odrcode) throws SQLException {
 
+
+	// 관리자가 조회하는 주문상세 작성리뷰확인
+	@Override
+	public Map<String, String> AdminOneReview(Map<String, String> paraMap) throws SQLException {
+		
+		Map<String, String> rmap = null;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select reviewno, fk_userid, username , fk_pdno , review_content ,"
+					+ " starpoint , review_date , pdname "
+					+ " from tbl_review R join tbl_member M "
+					+ " on R.fk_userid = M.userid "
+					+ " join tbl_product P"
+					+ " on R.fk_pdno = P.pdno "
+					+ " where fk_userid = ? and fk_pdno = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			// System.out.println(paraMap.get("ruserid"));
+			// System.out.println(paraMap.get("rpdno"));
+		
+			String ruserid = paraMap.get("ruserid");
+			String rpdno = paraMap.get("rpdno");
+			
+			pstmt.setString(1, ruserid);
+			pstmt.setString(2, rpdno);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				
+				rmap = new HashMap<>();
+				
+				rmap.put("reviewno", rs.getString("reviewno"));
+				rmap.put("fk_pdno", rs.getString("fk_pdno"));
+				rmap.put("pdname", rs.getString("pdname"));
+				rmap.put("fk_userid", rs.getString("fk_userid"));
+				rmap.put("username", rs.getString("username"));
+				rmap.put("review_content", rs.getString("review_content"));
+				rmap.put("starpoint", rs.getString("starpoint"));
+				rmap.put("review_date", rs.getString("review_date"));
+				
+			}
+			
+		}finally {
+			
+			close();
+			
+		}
+		
+		
+		
+		return rmap;
+		
+	} // end of public List<Map<String, String>> AdminOneReview(Map<String, String> paraMap) throws SQLException {
+
 	
 
 }
