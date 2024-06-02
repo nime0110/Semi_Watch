@@ -133,22 +133,22 @@ $(document).ready(function(){
         <div class="swiper-wrapper">
           <!-- Slides -->
           <div class="swiper-slide">
-            <a href="<%= ctxPath%>/item/itemDetail.flex?pdno=146"><img src="${pageContext.request.contextPath}/images/index/9512_detail_010.jpg" alt="product1" /></a>
+            <a href="<%= ctxPath%>/item/itemDetail.flex?pdno=177"><img src="${pageContext.request.contextPath}/images/index/9512_detail_010.jpg" alt="product1" /></a>
           </div>
           <div class="swiper-slide">
-            <a href="<%= ctxPath%>/item/itemDetail.flex?pdno=147"><img src="${pageContext.request.contextPath}/images/index/10819_detail_069.png" alt="product2" /></a>
+            <a href="<%= ctxPath%>/item/itemDetail.flex?pdno=178"><img src="${pageContext.request.contextPath}/images/index/10819_detail_069.png" alt="product2" /></a>
           </div>
           <div class="swiper-slide">
-            <a href="<%= ctxPath%>/item/itemDetail.flex?pdno=144"><img src="${pageContext.request.contextPath}/images/index/9945_detail_089.png" alt="product3" /></a>
+            <a href="<%= ctxPath%>/item/itemDetail.flex?pdno=176"><img src="${pageContext.request.contextPath}/images/index/9945_detail_089.png" alt="product3" /></a>
           </div>
           <div class="swiper-slide">
-            <a href="<%= ctxPath%>/item/itemDetail.flex?pdno=99"><img src="${pageContext.request.contextPath}/images/index/image-product-4-thumbnail.jpg" alt="product4" /></a>
+            <a href="<%= ctxPath%>/item/itemDetail.flex?pdno=175"><img src="${pageContext.request.contextPath}/images/index/image-product-4-thumbnail.jpg" alt="product4" /></a>
           </div>
           <div class="swiper-slide">
-            <a href="<%= ctxPath%>/item/itemDetail.flex?pdno=99"><img src="${pageContext.request.contextPath}/images/index/image-product-1-thumbnail.jpg" alt="product1" /></a>
+            <a href="<%= ctxPath%>/item/itemDetail.flex?pdno=175"><img src="${pageContext.request.contextPath}/images/index/image-product-1-thumbnail.jpg" alt="product1" /></a>
           </div>
           <div class="swiper-slide">
-            <a href="<%= ctxPath%>/item/itemDetail.flex?pdno=144"><img src="${pageContext.request.contextPath}/images/index/image-product-2-thumbnail.jpg" alt="product2" /></a>
+            <a href="<%= ctxPath%>/item/itemDetail.flex?pdno=175"><img src="${pageContext.request.contextPath}/images/index/image-product-2-thumbnail.jpg" alt="product2" /></a>
           </div>
         </div>
         <!-- scrollbar -->
