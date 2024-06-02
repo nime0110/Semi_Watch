@@ -35,9 +35,6 @@ public interface ss_2_ProductDAO {
 	//선택한 물품 위시리스트에 넣는 메소드
 	List<ProductVO> wishAdd(Map<String, Object> paraMap)  throws SQLException;
 
-	// 리뷰 테이블에 insert 하는 메소드
-	int insertReview(String productNo, String reviewText, String rating, String userid)  throws SQLException;
-
 	// 제품번호로 리뷰를 가져오는 메소드
 	public List<Map<String, String>> getReviewsBypnum(Map<String, String> paraMap) throws SQLException;
 

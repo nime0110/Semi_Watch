@@ -430,4 +430,18 @@ FROM (
 ) T
 WHERE T.rno BETWEEN 1 AND 3;
 
+select reviewno from tbl_review
+where fk_pdno = 132 and fk_userid = 'nime0110';
+
+delete from tbl_review where fk_pdno = 132 and fk_userid = 'nime0110';
+commit;
+
+select * from tbl_review;
+
+--- 리뷰수정 쿼리 ---
+UPDATE tbl_review
+   SET review_content = '엥? 시계 별론데요',
+       starpoint = 1
+ WHERE fk_pdno = 178 and fk_userid = 'nime0110';
+ commit;
                 

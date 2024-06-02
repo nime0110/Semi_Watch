@@ -1,4 +1,4 @@
-package shop.controller;
+package order.controller;
 
 import java.io.PrintWriter;
 import java.util.List;
@@ -11,15 +11,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import member.domain.MemberVO;
+import order.model.ss_2_OrderDAO;
+import order.model.ss_2_OrderDAO_imple;
 import shop.domain.Product_DetailVO;
-import shop.model.ss_2_ProductDAO;
-import shop.model.ss_2_ProductDAO_imple;
 
-public class ReviewJSON extends AbstractController {
-	private ss_2_ProductDAO pdao = null;
+
+public class ReviewUpdateJSON extends AbstractController {
+	private ss_2_OrderDAO odao = null;
 	
-	public ReviewJSON() {
-		pdao = new ss_2_ProductDAO_imple();
+	public ReviewUpdateJSON() {
+		odao = new ss_2_OrderDAO_imple();
 	}
 
 	@Override
@@ -47,15 +48,16 @@ public class ReviewJSON extends AbstractController {
         	String productNo = request.getParameter("productNo"); //제품번호
         	
         	String userid = loginuser.getUserid();
-        	
-        	// 리뷰 테이블에 insert 
-            int result = pdao.insertReview(productNo, reviewText, rating, userid);
+        	            
+        	// 리뷰 테이블 update 
+            int result = odao.updateReview(productNo, reviewText, rating, userid);
             
-            jsonObj.put("message", "리뷰가 등록되었습니다.");
+            
+            jsonObj.put("message", "리뷰가 수정되었습니다.");
             jsonObj.put("loginRequired", false);
             
             if(result != 1) {
-            	jsonObj.put("message", "리뷰등록에 실패했습니다.");
+            	jsonObj.put("message", "리뷰수정에 실패했습니다.");
                 jsonObj.put("loginRequired", false);
                 	
             }
