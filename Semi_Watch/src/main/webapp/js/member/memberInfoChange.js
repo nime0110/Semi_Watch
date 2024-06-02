@@ -645,7 +645,7 @@ function imgUP(){
                // ~~~ 확인용 : {"result":1}
                if(json.result == 1) {
                     alert("사진을 변경하였습니다.");
-                    location.href="javascript:history.go(0)";
+                    location.href="javascript:location.reload(true)";
                }
                else{
                     alert("사진 변경을 실패하였습니다.");
