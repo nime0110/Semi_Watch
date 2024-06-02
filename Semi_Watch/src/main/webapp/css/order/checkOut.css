@@ -41,6 +41,7 @@ div.productInfo {
 	padding-top:10px; 
 	margin: 5% 0 5% 2%; 
 	width: 33%;
+	border: solid 1px red;
 }
 
 .pInfo4{
@@ -52,7 +53,8 @@ div.productInfo {
 .pInfo2{
 	padding-top:10px;
 	margin: 5% auto;
-	width: 10%;
+	width: 8%;
+	border: solid 1px blue;
 }
 
 .pInfo3{

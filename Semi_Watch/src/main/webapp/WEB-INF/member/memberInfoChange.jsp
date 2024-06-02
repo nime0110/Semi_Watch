@@ -257,7 +257,7 @@ $(document).ready(function() {
 							<span id="mobile"><input id="mobile" type="hidden" value="${sessionScope.loginuser.mobile}"/> </span>
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-outline-dark change_btn" type="button" id="change_btn">휴대전화 변경</button>
+                            <button class="btn btn-sm btn-outline-dark change_btn" type="button" id="change_mobile">휴대전화 변경</button>
                         </td>
                     </tr>
                     <%-- 전화번호 변경 파트 --%>

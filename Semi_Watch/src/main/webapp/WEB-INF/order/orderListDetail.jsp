@@ -93,7 +93,7 @@ $(document).ready(function() {
 	let mobile = $("div#mobile").text();
 	
 	const h1 = mobile.slice(0,3);   
-    const h2 = mobile.slice(4,8);   
+    const h2 = mobile.slice(3,8);   
     const h3 = mobile.slice(8);
     
     mobile = h1+"-"+h2+"-"+h3;
@@ -105,7 +105,7 @@ $(document).ready(function() {
     let userMobile = $("div#userMobile").text();
     
     const h1 = mobile.slice(0,3);   
-    const h2 = mobile.slice(4,8);   
+    const h2 = mobile.slice(3,8);   
     const h3 = mobile.slice(8);
     
     userMobile = h1+"-"+h2+"-"+h3;
@@ -232,6 +232,7 @@ $(document).ready(function() {
 									<p>${ordList.pdname}</p>
 									<p>${ordList.color} <span>구매수량 : ${ordList.order_qty}</span></p>
 									<p><fmt:formatNumber pattern="###,###" value="${ordList.saleprice}"/>&nbsp;원</p>
+									<input type="hidden" value="${ordList.pdno}"/>
 								</div>
 							</td>
 	                        <td id="deliverS" align="center" style="border: solid 1px red;">  
@@ -283,13 +284,13 @@ $(document).ready(function() {
                     		<hr class="lineS">
                     		<div class="heightC tableLineB">
                     			<div class="col-2">이름</div>
-                    			<div class="col-4 tableLineR">${sessionScope.loginuesr.username}</div>
+                    			<div class="col-4 tableLineR">${sessionScope.loginuser.username}</div>
                     			<div class="col-2 text-center">연락처</div>
-                    			<div class="col-4" id="userMobile">${sessionScope.loginuesr.mobile}</div>
+                    			<div class="col-4" id="userMobile">${sessionScope.loginuser.mobile}</div>
                     		</div>
                     		<div class="heightC tableLineB">
                     			<div class="col-2">이메일</div>
-                    			<div class="col">${sessionScope.loginuesr.email}</div>
+                    			<div class="col">${sessionScope.loginuser.email}</div>
                     		</div>
                     	</td>
                     </tr>
