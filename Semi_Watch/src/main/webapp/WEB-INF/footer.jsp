@@ -11,9 +11,9 @@
         <!-- 프로젝트 팀명 -->
         <div class="team_name">Project Team 2.</div>
         <ul class="team_members">
+          <li><a href="#">Lee Jeong Su</a></li>
           <li><a href="https://github.com/nime0110">Heo Seongsim</a></li>
           <li><a href="#">Kim Kyunghyun</a></li>
-          <li><a href="#">Lee Jeong Su</a></li>
           <li><a href="#">Yu seon woo</a></li>
           <li><a href="#">JIHOON</a></li>
         </ul>
