@@ -616,7 +616,7 @@ $(document).ready(function(){
 function imgUP(){
     const newImg = $("input:file[name='userimg']").val().trim();
 	
-    alert("확인용 img + "+newImg);
+    // alert("확인용 img + "+newImg);
 
     if(newImg == ""){
         alert("사진을 선택해주세요.");
@@ -626,7 +626,7 @@ function imgUP(){
 
     var formData = new FormData($("form[name='imgForm']").get(0)); 
 
-    alert("사진변경 ajax 험슈 들어옴");
+    // alert("사진변경 ajax 험슈 들어옴");
 
     $.ajax({
            url : "memberInfoChangeEnd.flex",
