@@ -202,7 +202,7 @@ public class js_5_OrderDAO_imple implements js_5_OrderDAO {
    				+ " on od2.fk_pd_detailno = d.pd_detailno "
    				+ " join tbl_product p "
    				+ " on d.fk_pdno = p.pdno "
-   				+ " where total_orderdate between ? and ? "
+   				+ " where total_orderdate between to_date(?, 'YYYY-MM-DD HH24:MI:SS') and to_date(?, 'YYYY-MM-DD HH24:MI:SS') "
    				+ " order by total_orderdate desc"
    				+ " ),"
    				+ " od4 as"
@@ -231,14 +231,11 @@ public class js_5_OrderDAO_imple implements js_5_OrderDAO {
 			// 한페이지당 보여줄 행 갯수
 			
 	        
-	        String start = paraMap.get("startDate");
-			String end = paraMap.get("endDate")+ " 23:59:59";
+	        String startDate = paraMap.get("startDate");
+			String endDate = paraMap.get("endDate")+ " 23:59:59";
 			
-			Timestamp startDate = Timestamp.valueOf(start + " 00:00:00");
-		    Timestamp endDate = Timestamp.valueOf(end);
-			
-			pstmt.setTimestamp(1, startDate);
-			pstmt.setTimestamp(2, endDate);
+			pstmt.setString(1, startDate);
+			pstmt.setString(2, endDate);
 	        
 	        pstmt.setInt(3, (currentShowPageNo * sizePerPage) - (sizePerPage - 1) ); // 공식
 			pstmt.setInt(4, (currentShowPageNo * sizePerPage) ); 
@@ -355,20 +352,17 @@ public class js_5_OrderDAO_imple implements js_5_OrderDAO {
 					   + " from tbl_order O join tbl_orderdetail D "
 					   + " on O.ordercode = D.fk_ordercode "
 					   + " where D.fk_userid != 'admin' "
-					   + " and total_orderdate between ? and ? ";
+					   + " and total_orderdate between to_date(?, 'YYYY-MM-DD HH24:MI:SS') and to_date(?, 'YYYY-MM-DD HH24:MI:SS') ";
 			
 			pstmt = conn.prepareStatement(sql); 
 			
 			pstmt.setInt(1, Integer.parseInt(paraMap.get("sizePerPage") ) );
 			
-			String start = paraMap.get("startDate");
-			String end = paraMap.get("endDate")+ " 23:59:59";
+			String startDate = paraMap.get("startDate");
+			String endDate = paraMap.get("endDate")+ " 23:59:59";
 			
-			Timestamp startDate = Timestamp.valueOf(start + " 00:00:00");
-		    Timestamp endDate = Timestamp.valueOf(end);
-			
-			pstmt.setTimestamp(2, startDate);
-			pstmt.setTimestamp(3, endDate);
+			pstmt.setString(2, startDate);
+			pstmt.setString(3, endDate);
 			
 			rs = pstmt.executeQuery();
          	
