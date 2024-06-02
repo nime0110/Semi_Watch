@@ -8,7 +8,6 @@
 %>
 
 <%-- 회원정보수정 관련 js --%>
-<script type="text/javascript" src="<%= ctxpath%>/js/member/memberInfoChange.js"></script>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <%-- 회원정보수정 관련 css --%>
