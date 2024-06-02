@@ -121,7 +121,7 @@
            <img src="<%= ctxPath%>/images/header/logout.svg"style="width:30px;" role="presentation">
           </a>
          <a class="user-container" aria-label="User section" id="userIcon" href="<%= ctxPath %>/member/memberInfoChange.flex">
-           <img src="<%= ctxPath%>/images/member/usernormal.jpg" alt="" class="user-container__img" role="presentation">
+           <img src="<%= ctxPath%>/images/member/${sessionScope.loginuser.userimg}" alt="" class="user-container__img" role="presentation">
          </a>
       </c:if>
     <%-- user end --%>

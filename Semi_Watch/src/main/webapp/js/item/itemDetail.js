@@ -3,7 +3,17 @@
    const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)); // 컨텍스트 패스 
 	 let productNo = $("input#productno").val(); //제품번호
 	 loadReviewPage(1); //리뷰 페이지 로드
-	 
+	  // 숫자만 입력되도록 제한
+	  
+        $('#product__quantity').on('input', function() {
+            if (/[^0-9]/.test(this.value)) {
+                this.value = 1;
+            }
+        }).on('blur', function() {
+            if (this.value === '' || isNaN(this.value)) {
+                this.value = 1;
+            }
+        });
 	 
   	 $('ul#choice li button img').on('click',function(){
 	    var i = $(this).attr('src');
