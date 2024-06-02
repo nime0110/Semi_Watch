@@ -149,12 +149,17 @@
                 } else {
  					//console.log("json.str_pdPriceArr:", json.str_pdPriceArr);
                     
+                    // ajax 요청 성공하고 나서 hidden에 들어감.. 
                     $("input#productpoint").val(json.productpoint);
                     $("input#str_pd_detailno").val(json.str_pd_detailno);
                     $("input#str_pdPriceArr").val(json.str_pdPriceArr);
                     $("input#str_pdPointArr").val(json.str_pdPointArr);
                     /// ---------------------------------
 				
+					if(!json.isPdQtyOk) {
+						alert("구매하신 수량만큼의 재고가 부족하여 구매하실 수 없습니다.");
+						return;
+					}
 					const frm = document.buyFrm;
 					frm.action =  contextPath + "/order/checkOut.flex";
 					frm.method = "post";

@@ -78,13 +78,17 @@ public class goCheckOutDetailJSON extends AbstractController {
 	        request.setAttribute("str_pdPriceArr", str_pdPriceArr);
 	        request.setAttribute("str_pdPointArr", str_pdPointArr);
 	        */
-	
+	        
+	        // 제품번호 and 색상 재고 확인 메소드
+	        boolean isPdQtyOk = false; //재고없는경우
+	        isPdQtyOk = pdao.itemDetailCheckPdQty(str_pdno, selectedColor, str_cart_qty);
 	
 	        JSONObject jsonObj = new JSONObject();
 	        jsonObj.put("str_cart_qty", str_cart_qty); //구매수량
 	        jsonObj.put("str_pd_detailno", str_pd_detailno); //상품상세번호
 	        jsonObj.put("str_pdPriceArr", str_pdPriceArr); //총가격
 	        jsonObj.put("str_pdPointArr", str_pdPointArr); //총포인트
+	        jsonObj.put("isPdQtyOk", isPdQtyOk); //재고괜찮은지여부
 	        
 	        String json = jsonObj.toString();
 		    request.setAttribute("json", json);
