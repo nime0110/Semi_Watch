@@ -1,9 +1,12 @@
 package order.controller;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Calendar;
 
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +26,17 @@ public class OrderList extends AbstractController {
 	public OrderList() {
 		odao = new js_5_OrderDAO_imple();
 	}
+	
+	public static Date addMonth(Date date, int months) {
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.MONTH, months);
+		
+		return cal.getTime();
+		
+	}
+	
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -73,7 +87,32 @@ public class OrderList extends AbstractController {
 				
 			}
 			
+			String startDate = request.getParameter("startDate");
+			String endDate = request.getParameter("endDate");
+			
 			Map<String, String> paraMap = new HashMap<>();
+
+			paraMap.put("startDate", startDate);
+			paraMap.put("endDate", endDate);
+			
+			if (startDate == null || startDate.trim().isEmpty() || endDate == null || endDate.trim().isEmpty()) {
+				
+				//현재 날짜를 가져와서 "yyyy-MM-dd" 형식으로 변환
+				Date today = new Date();
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				
+				Date before3Mon = addMonth(today,-3);
+				
+				String currentDate = sdf.format(today);
+				String monDate3 = sdf.format(before3Mon);
+				
+				paraMap.put("startDate", monDate3);
+				paraMap.put("endDate", currentDate);
+				
+			}
+			
+			
 			
 			paraMap.put("currentShowPageNo", currentShowPageNo); 
 			
@@ -81,7 +120,9 @@ public class OrderList extends AbstractController {
 			
 			paraMap.put("userid", userid);
 			
+			
 			int totalPage = 0;
+			
 			
 			if(!"admin".equals(userid)) {
 				
@@ -129,13 +170,13 @@ public class OrderList extends AbstractController {
 			
 			// 맨처음 버튼 구성하기
 			pageBar += "<li class='page-item'><a href='"+ request.getContextPath() +"/order/orderList.flex?sizePerPage=" + sizePerPage + 
-					"&currentShowPageNo=1'>처음</a></li>";
+					"&currentShowPageNo=1&startDate=" + startDate + "&endDate=" + endDate +"'>처음</a></li>";
 			
 			if(pageNo != 1) { // 가장 처음부분이 1이 아니라면 [이전] 페이지 버튼을 보여준다.
 				
 				// [이전] 구성하기
 				pageBar += "<li class='page-item'><a href='"+ request.getContextPath() +"/order/orderList.flex?sizePerPage=" + sizePerPage + 
-						"&currentShowPageNo=" + (pageNo - 1) + "'><<</a></li>";
+						"&currentShowPageNo=" + (pageNo - 1) + "&startDate=" + startDate + "&endDate=" + endDate + "'><<</a></li>";
 				
 			}
 			
@@ -154,7 +195,7 @@ public class OrderList extends AbstractController {
 				else {
 					
 					pageBar += "<li class='page-item'><a href='"+ request.getContextPath() +"/order/orderList.flex?sizePerPage=" + sizePerPage + 
-							"&currentShowPageNo=" + pageNo + "'>" + pageNo + "</a></li>";
+							"&currentShowPageNo=" + pageNo + "&startDate=" + startDate + "&endDate=" + endDate + "'>" + pageNo + "</a></li>";
 					//  1 + 2 + ... 10 , 11 + 12 ... 20
 					
 				}
@@ -174,14 +215,14 @@ public class OrderList extends AbstractController {
 				
 				// [다음] 구성하기
 				pageBar += "<li class='page-item'><a href='"+ request.getContextPath() +"/order/orderList.flex?sizePerPage=" + sizePerPage +
-						"&currentShowPageNo=" + pageNo + "'>>></a></li>";
+						"&currentShowPageNo=" + pageNo + "&startDate=" + startDate + "&endDate=" + endDate + "'>>></a></li>";
 				// pageNo가 되는이유는 while문을 다돌고 나오면 PageNO 는 11 , 21 이런식으로 된다!!!
 				
 			}
 			
 			// [마지막] 구성하기
 			pageBar += "<li class='page-item'><a href='"+ request.getContextPath() +"/order/orderList.flex?sizePerPage=" + sizePerPage + 
-					"&currentShowPageNo=" + totalPage + "'>마지막</a></li>";
+					"&currentShowPageNo=" + totalPage + "&startDate=" + startDate + "&endDate=" + endDate + "'>마지막</a></li>";
 			
 			
 			String currentURL = MyUtil.getCurrentURL(request);
@@ -197,7 +238,7 @@ public class OrderList extends AbstractController {
 			request.setAttribute("userid", userid);
 			
 			
-			if(!"admin".equals(userid)) {
+			if(!"admin".equals(userid) && super.checkLogin(request)) {
 			
 				List<Map<String, String>> order_map_List = odao.getOrderList(paraMap);
 				
@@ -205,11 +246,15 @@ public class OrderList extends AbstractController {
 			
 			}
 			
-			if("admin".equals(userid)) {
-			
+			if("admin".equals(userid) && super.checkLogin(request)) {
+				
+				
 				List<Map<String, String>> order_list_admin = odao.getOdrListAdmin(paraMap);
 				
 				request.setAttribute("order_list_admin", order_list_admin);
+				
+				request.setAttribute("startDate", paraMap.get("startDate"));
+				request.setAttribute("endDate", paraMap.get("endDate"));
 			
 			}
 			

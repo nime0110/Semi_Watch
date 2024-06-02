@@ -16,6 +16,7 @@
       width: 25%;
       font-weight: bold;
       text-align: right;
+      color: white;
   }
   
   
@@ -45,7 +46,7 @@ tr td:first-child {
     
 .sha{
 	font-size : 16px;
-	background-color:#c0c0c0
+	background-color:#003333;
 
 }    
 </style>
@@ -244,7 +245,7 @@ $(document).ready(function() {
 
            let is_infoData_OK = true;
                
-/*        $(".infoData").each(function(index, elmt) {
+        $(".infoData").each(function(index, elmt) {
             const val = $(elmt).val().trim();
             if (val == "") {
                 $(elmt).next().show();
@@ -253,7 +254,7 @@ $(document).ready(function() {
                 return false;
             }
         });
-*/
+
         if (is_infoData_OK) {
             console.log("Form data is valid");
 
@@ -322,7 +323,7 @@ $(document).ready(function() {
     // 상품 삭제 함수
     window.product_delete = function(pdno) {
         $.ajax({
-            url: "${pageContext.request.contextPath}/admin/itemDelete.flex",
+            url: "${pageContext.request.contextPath}/admin/itemAdminDelete.flex",
             type: "POST",
             data: { "pdno": pdno },
             dataType: "json",
@@ -350,7 +351,7 @@ $(document).ready(function() {
 	<c:if test="${not empty requestScope.pvo}">
 		<div class="pt-2"></div>
 		<div style="display: flex; justify-content: center; align-items: center; height: 100px;" class="sha">
-		    <p class="h3 text-center mt-2 mb-2" style="font-size: 30px;">${requestScope.pvo.pdno}번의 상품 상세정보</p>
+		    <p class="h3 text-center mt-2 mb-2" style="font-size: 30px; color:white;">${requestScope.pvo.pdno}번의 상품 상세정보</p>
 		</div>
 	 <form name="inputitem" enctype="multipart/form-data">
 		<table class="table table-bordered" style="margin: 0 auto;">
@@ -444,7 +445,7 @@ $(document).ready(function() {
          <tr id="inputDiv${status.count}" style="${status.count > 1 ? 'display:none;' : ''}">
          	<td class="sha">컬러명</td>
             <td>
-                <select name="color_select${status.count}" class="infoData form-control" style="width:70%;">
+                <select name="color_select${status.count}" class="form-control" style="width:70%;">
                  	<option value="">컬러를 선택하세요</option>
                     <option value="black">블랙</option>
                     <option value="white">화이트</option>

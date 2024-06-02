@@ -35,6 +35,56 @@
     }
 </style>
 <jsp:include page="../../header1.jsp" />
+
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+	
+	$("select[name='deliveryType']").change(function(e){
+		
+		const ordercode = $(e.target).closest('td').find("input:hidden[name='ordercode']").val();
+		// alert(ordercode);
+		// alert($(e.target).val());
+		func_choice($(e.target).val(),ordercode);
+		
+	}); // end of $("select[name='deliveryType']").change(function(e){
+	
+	
+	
+}); // end of $(document).ready(function(){
+
+
+
+function func_choice(deliveryType,ordercode){
+	
+	// alert(deliveryType);
+	// alert(ordercode);
+	<$.ajax({
+				
+		url:"<%= ctxPath%>/admin/deliveryUpdateJSON.flex",
+		data:{"deliveryType":deliveryType,
+			"ordercode":ordercode},
+		type:"post",
+		dataType:"json",
+		success:function(json){
+			
+			alert("주문번호" + ordercode+" 배송상태 변경 완료");
+			location.href="<%= ctxPath%>/order/orderList.flex";
+		},
+		error: function(request, status, error){
+           alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+        }
+		
+	});  // end of $.ajax({
+	
+} // end of function func_choice(deliveryType,ordercode){
+
+
+
+
+</script>
+
 <div class="container-fluid" style="margin-bottom:5%;">
     <div class="col-xl-9 mt-4 mx-auto">
         <div>
@@ -101,7 +151,7 @@
                 <tr class="py-2">
                     <td style="display:flex; align-items: center;">
                     	
-                        <a href="#">
+                        <a href="<%= ctxPath%>/item/itemDetail.flex?pdno=${list.pdno}">
                             <img class="pimg" src="<%= ctxPath%>/images/product/${list.pdimg1}" alt="상품 이미지" />
                         </a>
                         <div class="ml-4">
@@ -115,10 +165,17 @@
                         </div>
                     </td>
                     <td class="text-center align-middle">
-							${info.delivery_status}
+						현재 배송상태 : ${info.delivery_status}
+						<select name="deliveryType" class="form-control d-inline-block w-auto" style="margin-top: 10%;">
+                                    <option value="">선택하세요</option>
+                                    <option value="1">주문완료</option>
+                                    <option value="2">배송출발</option>
+                                    <option value="3">배송완료</option>
+                        </select>
+                        <input name="ordercode" type="hidden" value="${info.ordercode}" />	
                     </td>
                     <td class="text-center align-middle">
-                        <button class="btn btn-sm btn-outline-dark change_btn" type="button" id="change_btn">리뷰 작성</button>
+                        <button class="btn btn-sm btn-outline-dark" type="button" >리뷰 확인</button>
                     </td>
                 </tr>
                 </c:forEach>

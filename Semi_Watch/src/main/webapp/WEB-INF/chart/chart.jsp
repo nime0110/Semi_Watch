@@ -146,7 +146,7 @@ div#table_container table {width: 100%}
 				dataType:"json",
 				success:function(json){
 					
-					console.log(JSON.stringify(json));
+					// console.log(JSON.stringify(json));
 					
 					
 					let resultArr = [];
@@ -365,7 +365,7 @@ div#table_container table {width: 100%}
 	               dataType:"JSON",
 	               success:function(json){
 	            
-	                   console.log(JSON.stringify(json));
+	                   // console.log(JSON.stringify(json));
 	                   /*
 	                    [{"m_11":"0","m_01":"0","m_12":"0","m_10":"0","m_04":"0","sumpay_pct":"95.06","m_05":"0","m_02":"0","m_03":"1000000","cname":"전자제품","cnt":"1","m_08":"0","m_09":"0","m_06":"0","m_07":"0","sumpay":"1000000"}
 	                    ,{"m_11":"0","m_01":"52000","m_12":"0","m_10":"0","m_04":"0","sumpay_pct":"4.94","m_05":"0","m_02":"0","m_03":"0","cname":"의류","cnt":"1","m_08":"0","m_09":"0","m_06":"0","m_07":"0","sumpay":"52000"}]
@@ -404,7 +404,7 @@ div#table_container table {width: 100%}
 	                      },
 	                      
 	                      subtitle: {
-	                          text: 'Source: <a href="http://localhost:9090/board/emp/empList.action" target="_blank">HR.employees</a>'
+	                          text: ''
 	                      },
 
 	                      yAxis: {
@@ -549,12 +549,12 @@ div#table_container table {width: 100%}
 	                      },
 	                      
 	                      subtitle: {
-	                          text: 'Source: <a href="http://localhost:9090/board/emp/empList.action" target="_blank">HR.employees</a>'
+	                          text: ''
 	                      },
 
 	                      yAxis: {
 	                          title: {
-	                              text: '주문 금액'
+	                              text: '주문 수량'
 	                          }
 	                      },
 
@@ -691,7 +691,7 @@ div#table_container table {width: 100%}
 				                text: new Date().getFullYear() + '년 월별 방문 통계'
 				            },
 				            subtitle: {
-				                text: 'Source: <a href="http://localhost:9090/board/emp/empList.action" target="_blank">HR.employees</a>'
+				                text: ''
 				            },
 				            yAxis: {
 				                title: {

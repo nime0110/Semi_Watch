@@ -477,7 +477,7 @@ $(document).ready(function(){
 				<tr class="form-group" style="height: 300px;">
 					<td class="control-label">이미지파일 미리보기</td>
 					<td class="input-group">
-						<img id="previewImg" />
+						<img id="previewImg" src="<%= ctxPath%>/images/no-productimg.png" />
 					</td>
 				</tr>
 

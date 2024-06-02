@@ -3,9 +3,11 @@ package order.model;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -200,6 +202,7 @@ public class js_5_OrderDAO_imple implements js_5_OrderDAO {
    				+ " on od2.fk_pd_detailno = d.pd_detailno "
    				+ " join tbl_product p "
    				+ " on d.fk_pdno = p.pdno "
+   				+ " where total_orderdate between ? and ? "
    				+ " order by total_orderdate desc"
    				+ " ),"
    				+ " od4 as"
@@ -227,8 +230,18 @@ public class js_5_OrderDAO_imple implements js_5_OrderDAO {
 	        int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage") );
 			// 한페이지당 보여줄 행 갯수
 			
-	        pstmt.setInt(1, (currentShowPageNo * sizePerPage) - (sizePerPage - 1) ); // 공식
-			pstmt.setInt(2, (currentShowPageNo * sizePerPage) ); 
+	        
+	        String start = paraMap.get("startDate");
+			String end = paraMap.get("endDate")+ " 23:59:59";
+			
+			Timestamp startDate = Timestamp.valueOf(start + " 00:00:00");
+		    Timestamp endDate = Timestamp.valueOf(end);
+			
+			pstmt.setTimestamp(1, startDate);
+			pstmt.setTimestamp(2, endDate);
+	        
+	        pstmt.setInt(3, (currentShowPageNo * sizePerPage) - (sizePerPage - 1) ); // 공식
+			pstmt.setInt(4, (currentShowPageNo * sizePerPage) ); 
 		
 			rs = pstmt.executeQuery();
 			
@@ -341,11 +354,21 @@ public class js_5_OrderDAO_imple implements js_5_OrderDAO {
 			String sql = " select ceil(count(distinct ordercode)/?) as pagecnt "
 					   + " from tbl_order O join tbl_orderdetail D "
 					   + " on O.ordercode = D.fk_ordercode "
-					   + " where D.fk_userid != 'admin' ";
+					   + " where D.fk_userid != 'admin' "
+					   + " and total_orderdate between ? and ? ";
 			
 			pstmt = conn.prepareStatement(sql); 
 			
 			pstmt.setInt(1, Integer.parseInt(paraMap.get("sizePerPage") ) );
+			
+			String start = paraMap.get("startDate");
+			String end = paraMap.get("endDate")+ " 23:59:59";
+			
+			Timestamp startDate = Timestamp.valueOf(start + " 00:00:00");
+		    Timestamp endDate = Timestamp.valueOf(end);
+			
+			pstmt.setTimestamp(2, startDate);
+			pstmt.setTimestamp(3, endDate);
 			
 			rs = pstmt.executeQuery();
          	

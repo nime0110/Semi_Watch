@@ -674,3 +674,29 @@ join tbl_delivery D
 on V.ordercode = D.ordercode
 join tbl_orderdetail OD
 on V.ordercode = OD.fk_ordercode;
+
+
+
+
+UPDATE tbl_loginhistory
+SET logindate = add_months(sysdate, -2)
+WHERE logindate IN (
+  SELECT logindate
+  FROM (
+    SELECT logindate
+    FROM (
+      SELECT logindate, ROWNUM as rno
+      FROM tbl_loginhistory
+    )
+    WHERE rno between 351 and 450
+  )
+);
+rollback;
+
+select  * from tbl_product order by pdstatus desc;
+
+select * from tbl_order;
+
+select * from tbl_product where pdno = ;
+select decode(color, 'none' , '단일색상' , color) as color ,
+	         		pd_qty from tbl_pd_detail where fk_pdno = 178

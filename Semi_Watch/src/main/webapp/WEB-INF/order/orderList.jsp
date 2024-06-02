@@ -5,7 +5,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%
+
    String ctxPath = request.getContextPath();
+
 %>
     
 <jsp:include page="../header1.jsp"></jsp:include>
@@ -76,7 +78,7 @@ $(document).ready(function() {
 		
 	}); 
 	
-	$("td.detail_ordercode").click(function(e){
+	$("td.admin_detail_ordercode").click(function(e){
 	
 		//alert($(e.target).text());
 		
@@ -311,10 +313,24 @@ function deliveryComplete(ordercode){
         <fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" />
         <fmt:parseNumber var="sizePerPage" value="${requestScope.sizePerPage}" />
         <div class="col-md-8 mx-auto pt-4">
-            <p class="h4 text-center">&raquo;&nbsp;&nbsp;전 회원 주문내역보기&nbsp;&nbsp;&laquo;</p>
-            <p class="text-left py-3">상세정보를 보려면 주문코드를 클릭하세요</p>
+            <h2 class="text-center">전 회원 주문내역보기</h2>
+            
+            <form action="<%= ctxPath%>/order/orderList.flex" method="post">
+			    <p class="text-left py-3">상세정보를 보려면 주문코드를 클릭하세요</p>
+			    <p class="text-right form-group">
+		            <label for="startDate">검색 시작 날짜 :</label>
+		            <input type="date" id="startDate" name="startDate" class="px-4" value="${requestScope.startDate}">
+		        </p>
+		        <p class="text-right form-group">
+		            <label for="endDate">검색 종료 날짜 :</label>
+		            <input type="date" id="endDate" name="endDate" class="px-4" value="${requestScope.endDate}">
+		        </p>
+		        <p class="text-right">
+		            <button type="submit" class="btn-submit btn-light">조회</button>
+		        </p>
+			</form>
             <table class="table table-bordered">
-                <thead class="thead-light">
+                <thead class="table-light">
                     <tr>
                         <th scope="col" class="text-center">주문코드</th>
                         <th scope="col" class="text-center">아이디</th>
@@ -328,7 +344,7 @@ function deliveryComplete(ordercode){
                 <tbody>
                     <c:forEach var="odr" items="${requestScope.order_list_admin}">
                         <tr>
-                            <td class="cen text-center detail_ordercode" style="cursor: pointer;">${odr.ordercode}</td>
+                            <td class="cen text-center admin_detail_ordercode" style="cursor: pointer;">${odr.ordercode}</td>
                             <td class="cen text-center">${odr.fk_userid}</td>
                             <td class="cen text-center">${odr.pdname}
                                 <c:choose>
