@@ -8,7 +8,6 @@
 %>
 
 <%-- 회원정보수정 관련 js --%>
-<script type="text/javascript" src="<%= ctxpath%>/js/member/memberInfoChange.js"></script>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <%-- 회원정보수정 관련 css --%>
@@ -56,21 +55,18 @@
 	            <nav class="navbar sticky-top">
 	            	<div>
 				    	<ul class="navbar-nav mt-3" id="menu">
-				    		<li class="mb-1">
-				      			<span class="h5" id="menu_first">나의 쇼핑정보</span>
+				    		<li class="mb-2">
+				      			<span class="h4" id="menu_first">나의 쇼핑정보</span>
 				      		</li>
 				      		<li>
-				        		<a class="nav-link" href="<%=ctxpath %>/order/orderList.flex">주문배송조회</a>
-				      		</li>
-				      		<li class="mb-4">
-				        		<a class="nav-link" href="#">상품 리뷰</a>
+				        		<a class="nav-link h5 mb-5" href="<%=ctxpath %>/order/orderList.flex">주문배송조회</a>
 				      		</li>
 
-				      		<li>
-				      			<span class="h5" id="menu_first">나의 계정설정</span>
+				      		<li class="mb-2">
+				      			<span class="h4" id="menu_first">나의 계정설정</span>
 				      		</li>
 				      		<li>
-				        		<a class="nav-link" href="<%=ctxpath%>/member/memberInfoChange.flex">회원정보수정</a>
+				        		<a class="nav-link h5" href="<%=ctxpath%>/member/memberInfoChange.flex">회원정보수정</a>
 				      		</li>
 				    	</ul>
 				  	</div>

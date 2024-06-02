@@ -32,7 +32,7 @@ public class AddToCartDetailJSON extends AbstractController {
         // === 먼저 로그인 유무 검사하기
         if (!super.checkLogin(request)) {
             // 로그인을 하지 않은 상태라면
-            jsonObj.put("message", "장바구니에 담으려면 로그인이 필요합니다.");
+            jsonObj.put("message", "구매하시려면 로그인이 필요합니다.");
             jsonObj.put("loginRequired", true);
 
             out.print(jsonObj.toString()); //jsonObj에 담은 걸 문자열로바꿔서 출력한뒤에 

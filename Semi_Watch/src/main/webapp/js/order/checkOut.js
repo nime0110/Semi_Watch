@@ -8,7 +8,7 @@ $(document).ready(function(){
     const productCnt = $("div[name='pInfo']").length;
     	
     if(productCnt < 1){
-       history:back(-1);
+        location.href="javascript:history.back()";
     }
 	
 	$("textarea").hide();   // 배송메시지 직접 입력 누르면 나오는거
@@ -605,85 +605,5 @@ function checkOutUpdate(ctxPath, userid, paySuccess){
         return;
     }
 
-    
-    
-
-    
-    
-    
-    
-    /*   
-
-    
-    const str_pnum = pnumArr.join(","); // 배열을 하나의 문자열로 만들자. default가 join(",")임. 그냥 join()해도 콤마로 연결됨
-    const str_oqty = oqtyArr.join();
-    const str_cartno = cartnoArr.join();
-    const str_totalPrice = totalPriceArr.join();
-    const str_totalPoint = totalPointArr.join();
-    
-    let n_sum_totalPrice = 0;
-    for(let i=0; i<totalPriceArr.length; i++){
-        n_sum_totalPrice += Number(totalPriceArr[i]);
-    }// end of for---------------------------------
-    
-    let n_sum_totalPoint = 0;
-    for(let i=0; i<totalPointArr.length; i++){
-        n_sum_totalPoint += Number(totalPointArr[i]);
-    }// end of for---------------
-    /*	   
-    console.log("확인용 str_pnum : ", str_pnum);                 // 확인용 str_pnum :  5,4,61
-    console.log("확인용 str_oqty : ", str_oqty);                 // 확인용 str_oqty :  1,2,3
-    console.log("확인용 str_cartno : ", str_cartno);             // 확인용 str_cartno :  11,8,7
-    console.log("확인용 str_totalPrice : ", str_totalPrice);     // 확인용 str_totalPrice :  33000,26000,57000
-    console.log("확인용 str_totalPoint : ", str_totalPoint);     // 확인용 str_totalPoint :  20,20,300
-    console.log("확인용 n_sum_totalPrice : ", n_sum_totalPrice); // 확인용 n_sum_totalPrice :  116000
-    console.log("확인용 n_sum_totalPoint : ", n_sum_totalPoint); // 확인용 n_sum_totalPoint :  340
-    
-        
-    확인용 str_pnum :  62,3,35
-    확인용 str_oqty :  3,5,2
-    확인용 str_cartno :  6,4,2
-    확인용 str_totalPrice :  30000,50000,2000000
-    확인용 str_totalPoint :  30,25,120
-    확인용 n_sum_totalPrice :  2080000
-    확인용 n_sum_totalPoint :  175
-    -- 원래 여기 있
-    
-    // const current_coin = ${sessionScope.loginuser.coin};
-    
-    if(current_coin < n_sum_totalPrice){
-        $("p#order_error_msg").html("코인잔액이 부족하므로 주문이 불가합니다.<br>주문총액 : "+ n_sum_totalPrice.toLocaleString('en') +"원 / 코인잔액 : "+ current_coin.toLocaleString('en') +"원").css({'display':''}); 
-        // 숫자.toLocaleString('en') 이 자바스크립트에서 숫자 3자리마다 콤마 찍어주기 이다.   
-        return; // 종료
-    }
-    else{
-        $("p#order_error_msg").css({'display':'none'}); // 코인이 충분할 경우 에러메시지를 보이지 않는다.
-        
-        if( confirm("총주문액 "+ n_sum_totalPrice.toLocaleString('en') + "원을 주문하시겠습니까?") ) {
-            
-            alert("내일 합니다.");
-           	/*
-            $.ajax{(
-                url:"<%=ctxPath%>/shop/orderAdd.up",
-                type:"post",
-                data:{"n_sum_totalPrice" : n_sum_totalPrice,
-                      "n_sum_totalPoint" : n_sum_totalPoint,
-                      "str_pnum_join":str_pnum,
-                      "str_oqty_join":str_oqty,
-                      "str_totalPrice_join":str_totalPrice,
-                      "str_cartno_join":str_cartno}, // 비워야 할 장바구니 번호
-                dataType:"json",
-                success:function(json){
-                    
-                },
-                error: function(request, status, error){
-                       alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-                }
-            )}
-            ---원래 여기 있
-            
-        }
-    }
-    */
 
 }// end of function checkOutUpdate(ctxPath, userid, paySuccess)-----

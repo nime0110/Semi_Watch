@@ -314,7 +314,7 @@ $(document).ready(function(){
             <div class="row">
                <div class="col-sm-12">
                   <div class="input-group">
-                     <input type="text" name="searchWord" class="form-control"
+                     <input type="text" name="searchWord" class="form-control" style="z-index: 5px;"
                         placeholder="Search Product..." value="${requestScope.searchWord}">
                      <input type="text" style="display: none;" />
                      <button name="search" class="btn btn-light" type="button">

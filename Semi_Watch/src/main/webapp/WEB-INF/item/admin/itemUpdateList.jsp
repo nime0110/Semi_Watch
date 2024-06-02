@@ -221,7 +221,7 @@ ul.pagination li {
 	   </form>
 	   
 	   <table class="table table-bordered" id="productTbl">
-	      <thead>
+	      <thead class="thead-dark">
 	          <tr>
 	             <th class="col-sm-1 col-md-1">상품<br>번호</th>
 	             <th class="col-sm-2 col-md-2">상품명</th>
@@ -249,10 +249,10 @@ ul.pagination li {
 		          	
 		          <tr class="productInfo">
 		          	
-		          	<td class="pdno">${productvo.pdno}</td>
-		          	<td>${productvo.pdname}</td>
-		          	<td>${productvo.brand}</td>
-		          	<td>  
+		          	<td class="pdno text-center">${productvo.pdno}</td>
+		          	<td class="text-center">${productvo.pdname}</td>
+		          	<td class="text-center">${productvo.brand}</td>
+		          	<td class="text-center">  
 		          	<c:choose>
         					<c:when test="${productvo.pdstatus == '1'}">
         					인기상품
@@ -267,8 +267,8 @@ ul.pagination li {
 		          			   
 		          	
 		          	</td>
-		          	<td><fmt:formatNumber pattern="###,###"> ${productvo.price}</fmt:formatNumber>원</td>
-		          	<td><fmt:formatNumber pattern="###,###"> ${productvo.saleprice}</fmt:formatNumber>원</td>
+		          	<td class="text-right"><fmt:formatNumber pattern="###,###"> ${productvo.price}</fmt:formatNumber>원</td>
+		          	<td class="text-right"><fmt:formatNumber pattern="###,###"> ${productvo.saleprice}</fmt:formatNumber>원</td>
 		          	
 		          </tr>
 		          	          	

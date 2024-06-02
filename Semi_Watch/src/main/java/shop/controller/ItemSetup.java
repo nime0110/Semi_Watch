@@ -28,6 +28,15 @@ public class ItemSetup extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
+		
+		String referer = request.getHeader("referer");
+        if (referer == null) {
+            // URL을 통해 직접 접근한 경우 홈 페이지로 리디렉션
+            super.setRedirect(true);
+            super.setViewPage(request.getContextPath() + "/index.flex");
+            return;
+        }
+		
 		// == 관리자(admin)로 로그인 했을 때만 제품등록이 가능하도록 한다. == //
 		HttpSession session = request.getSession();
 		

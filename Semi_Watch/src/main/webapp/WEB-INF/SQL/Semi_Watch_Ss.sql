@@ -433,10 +433,12 @@ WHERE T.rno BETWEEN 1 AND 3;
 select reviewno from tbl_review
 where fk_pdno = 132 and fk_userid = 'nime0110';
 
-delete from tbl_review where fk_pdno = 132 and fk_userid = 'nime0110';
+delete from tbl_review where fk_userid = 'nime0110' and fk_pdno = 178;
 commit;
 
 select * from tbl_review;
+select review_content, starpoint from tbl_review
+WHERE fk_pdno = 178 and fk_userid = 'nime0110';
 
 --- 리뷰수정 쿼리 ---
 UPDATE tbl_review
@@ -444,4 +446,21 @@ UPDATE tbl_review
        starpoint = 1
  WHERE fk_pdno = 178 and fk_userid = 'nime0110';
  commit;
+ 
+ 
+ 
+SELECT userid, username, pwdchangegap, 
+NVL( lastlogingap, trunc(months_between(sysdate,registerday)) ) AS lastlogingap, 
+	                  idle, 
+	                      mobile, email, postcode, address, detail_address, extra_address,
+                          to_char(registerday, 'yyyy-mm-dd') AS registerday, userimg  
+                          FROM 
+ ( select userid, username,  
+            trunc( months_between(sysdate, lastpwdchangedate) ) AS pwdchangegap,
+            registerday, idle, 
+       mobile, email, postcode, address, detail_address, extra_address, userimg 
+ from tbl_member where status = 1 and userid = 'nime0110') M 
+CROSS JOIN 
+ ( select trunc( months_between(sysdate, max(logindate)) ) AS lastlogingap 
+ from tbl_loginhistory  where fk_userid = 'nime0110') H ;
                 

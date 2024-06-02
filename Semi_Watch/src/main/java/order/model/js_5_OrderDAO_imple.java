@@ -3,9 +3,11 @@ package order.model;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -200,6 +202,7 @@ public class js_5_OrderDAO_imple implements js_5_OrderDAO {
    				+ " on od2.fk_pd_detailno = d.pd_detailno "
    				+ " join tbl_product p "
    				+ " on d.fk_pdno = p.pdno "
+   				+ " where total_orderdate between to_date(?, 'YYYY-MM-DD HH24:MI:SS') and to_date(?, 'YYYY-MM-DD HH24:MI:SS') "
    				+ " order by total_orderdate desc"
    				+ " ),"
    				+ " od4 as"
@@ -227,8 +230,15 @@ public class js_5_OrderDAO_imple implements js_5_OrderDAO {
 	        int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage") );
 			// 한페이지당 보여줄 행 갯수
 			
-	        pstmt.setInt(1, (currentShowPageNo * sizePerPage) - (sizePerPage - 1) ); // 공식
-			pstmt.setInt(2, (currentShowPageNo * sizePerPage) ); 
+	        
+	        String startDate = paraMap.get("startDate");
+			String endDate = paraMap.get("endDate")+ " 23:59:59";
+			
+			pstmt.setString(1, startDate);
+			pstmt.setString(2, endDate);
+	        
+	        pstmt.setInt(3, (currentShowPageNo * sizePerPage) - (sizePerPage - 1) ); // 공식
+			pstmt.setInt(4, (currentShowPageNo * sizePerPage) ); 
 		
 			rs = pstmt.executeQuery();
 			
@@ -341,11 +351,18 @@ public class js_5_OrderDAO_imple implements js_5_OrderDAO {
 			String sql = " select ceil(count(distinct ordercode)/?) as pagecnt "
 					   + " from tbl_order O join tbl_orderdetail D "
 					   + " on O.ordercode = D.fk_ordercode "
-					   + " where D.fk_userid != 'admin' ";
+					   + " where D.fk_userid != 'admin' "
+					   + " and total_orderdate between to_date(?, 'YYYY-MM-DD HH24:MI:SS') and to_date(?, 'YYYY-MM-DD HH24:MI:SS') ";
 			
 			pstmt = conn.prepareStatement(sql); 
 			
 			pstmt.setInt(1, Integer.parseInt(paraMap.get("sizePerPage") ) );
+			
+			String startDate = paraMap.get("startDate");
+			String endDate = paraMap.get("endDate")+ " 23:59:59";
+			
+			pstmt.setString(2, startDate);
+			pstmt.setString(3, endDate);
 			
 			rs = pstmt.executeQuery();
          	
@@ -543,6 +560,65 @@ public class js_5_OrderDAO_imple implements js_5_OrderDAO {
 		return odrmap;
 		
 	} // end of public List<Map<String, String>> adminGetOrderInfo(String odrcode) throws SQLException {
+
+
+	// 관리자가 조회하는 주문상세 작성리뷰확인
+	@Override
+	public Map<String, String> AdminOneReview(Map<String, String> paraMap) throws SQLException {
+		
+		Map<String, String> rmap = null;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select reviewno, fk_userid, username , fk_pdno , review_content ,"
+					+ " starpoint , review_date , pdname "
+					+ " from tbl_review R join tbl_member M "
+					+ " on R.fk_userid = M.userid "
+					+ " join tbl_product P"
+					+ " on R.fk_pdno = P.pdno "
+					+ " where fk_userid = ? and fk_pdno = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			// System.out.println(paraMap.get("ruserid"));
+			// System.out.println(paraMap.get("rpdno"));
+		
+			String ruserid = paraMap.get("ruserid");
+			String rpdno = paraMap.get("rpdno");
+			
+			pstmt.setString(1, ruserid);
+			pstmt.setString(2, rpdno);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				
+				rmap = new HashMap<>();
+				
+				rmap.put("reviewno", rs.getString("reviewno"));
+				rmap.put("fk_pdno", rs.getString("fk_pdno"));
+				rmap.put("pdname", rs.getString("pdname"));
+				rmap.put("fk_userid", rs.getString("fk_userid"));
+				rmap.put("username", rs.getString("username"));
+				rmap.put("review_content", rs.getString("review_content"));
+				rmap.put("starpoint", rs.getString("starpoint"));
+				rmap.put("review_date", rs.getString("review_date"));
+				
+			}
+			
+		}finally {
+			
+			close();
+			
+		}
+		
+		
+		
+		return rmap;
+		
+	} // end of public List<Map<String, String>> AdminOneReview(Map<String, String> paraMap) throws SQLException {
 
 	
 

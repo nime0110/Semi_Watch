@@ -478,6 +478,36 @@ public int getTotalPage(Map<String, String> paraMap) throws SQLException {
 	
 	return totalPage;
 }
+
+// 사용자가 구매하는 상품(컬러) 재고가 남아있는지 확인하는 메소드
+@Override
+public boolean itemDetailCheckPdQty(String str_pdno, String selectedColor, String str_cart_qty) throws SQLException {
+	boolean isPdQtyOk = false;
+
+	
+    try {
+        conn = ds.getConnection();
+        
+        String sql = "  SELECT pdname, pdimg1, saleprice, pdno, color, pd_qty "
+        		+ " FROM tbl_product A JOIN tbl_pd_detail B ON A.pdno = B.fk_pdno "
+        		+ " WHERE pdno = ? AND color = ? AND pd_qty > ? ";
+       pstmt = conn.prepareStatement(sql);
+		
+	   pstmt.setString(1, str_pdno);
+	   pstmt.setString(2, selectedColor);      
+	   pstmt.setString(3, str_cart_qty);      
+       
+       rs = pstmt.executeQuery();
+                
+       if(rs.next()) {
+    	   isPdQtyOk = true;
+
+       }
+    } finally {
+       close();
+    }   
+	return isPdQtyOk;
+}
 	
 	
 

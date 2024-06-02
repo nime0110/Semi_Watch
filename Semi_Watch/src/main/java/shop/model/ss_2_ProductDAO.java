@@ -41,6 +41,9 @@ public interface ss_2_ProductDAO {
 	// 페이지 바 만들기 - 페이징 처리를 위한 리뷰에 대한 총페이지 수를 알아와야 한다.
 	int getTotalPage(Map<String, String> paraMap) throws SQLException;
 
+	// 사용자가 구매하는 상품(컬러) 재고가 남아있는지 확인하는 메소드
+	boolean itemDetailCheckPdQty(String str_pdno, String selectedColor, String str_cart_qty) throws SQLException;
+
 	
 	
 	

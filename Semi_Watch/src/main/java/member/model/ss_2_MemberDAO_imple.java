@@ -78,11 +78,11 @@ public class ss_2_MemberDAO_imple implements ss_2_MemberDAO {
 	      String sql = " SELECT userid, username, pwdchangegap, "
 	      		+ " NVL( lastlogingap, trunc(months_between(sysdate,registerday)) ) AS lastlogingap, "
 	      		+ "	idle, "
-	      		+ " mobile, email, postcode, address, detail_address, extra_address, to_char(registerday, 'yyyy-mm-dd') AS registerday   FROM "
+	      		+ " mobile, email, postcode, address, detail_address, extra_address, to_char(registerday, 'yyyy-mm-dd') AS registerday, userimg   FROM "
 	      		+ "	( select userid, username, "
 	      		+ "	trunc( months_between(sysdate, lastpwdchangedate) ) AS pwdchangegap, "
 	      		+ "	registerday, idle,  "
-	      		+ "	mobile, email, postcode, address, detail_address, extra_address  "
+	      		+ "	mobile, email, postcode, address, detail_address, extra_address, userimg  "
 	      		+ "	from tbl_member where status = 1 and userid = ? and pw = ?) M  "
 	      		+ "	CROSS JOIN "
 	      		+ "	( select trunc( months_between(sysdate, max(logindate)) ) AS lastlogingap  "
@@ -141,6 +141,7 @@ public class ss_2_MemberDAO_imple implements ss_2_MemberDAO {
 	        member.setDetail_address(rs.getString("detail_address"));
 	        member.setExtra_address(rs.getString("extra_address"));
 	        member.setRegisterday(rs.getString("registerday"));
+	        member.setUserimg(rs.getString("userimg"));
 	      } // end of if(rs.next()) ----------------------------
 
 	    } catch (UnsupportedEncodingException | GeneralSecurityException e) {
@@ -385,7 +386,7 @@ public class ss_2_MemberDAO_imple implements ss_2_MemberDAO {
 			conn = ds.getConnection();
 			
 			String sql = " select userid, username, email, mobile, postcode, address, detail_address, extra_address, gender "
-					+ " , birthday, to_char(registerday, 'yyyy-mm-dd') AS registerday, mileage"
+					+ " , birthday, to_char(registerday, 'yyyy-mm-dd') AS registerday, mileage, userimg"
 					+ " from tbl_member "
 					+ " where status = '1' and userid = ?";
 			 
@@ -410,6 +411,7 @@ public class ss_2_MemberDAO_imple implements ss_2_MemberDAO {
 		        member.setBirthday(rs.getString(10));
 		        member.setRegisterday(rs.getString(11));
 		        member.setMileage(rs.getInt(12));
+		        member.setUserimg(rs.getString(13));
 
 		    } // end of if(rs.next())-------------------
 		       

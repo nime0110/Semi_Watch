@@ -1,7 +1,7 @@
 
 $(document).ready(function(){
 
-    const ctxPath = document.getElementById("ctxPath").value;
+    const ctxPath = $("input#ctxPath").val();
 
     
 
@@ -40,6 +40,41 @@ $(document).ready(function(){
         }
     });
     
+
+    // ==== 프로필이미지 관련 내용  시작 === //
+
+    // ==>> 제품이미지 파일선택을 선택하면 화면에 이미지를 미리 보여주기 시작 <<== //
+    $(document).on("change", "input.previewImg", function(e){
+
+        const input_file = $(e.target).get(0);
+
+        // 자바스크립트에서 file 객체의 실제 데이터(내용물)에 접근하기 위해 FileReader 객체를 생성하여 사용한다.
+        const fileReader = new FileReader();
+
+        fileReader.readAsDataURL(input_file.files[0]); 
+        // FileReader.readAsDataURL() --> 파일을 읽고, result속성에 파일을 나타내는 URL을 저장 시켜준다.
+
+        fileReader.onload = function(){
+        // FileReader.onload --> 파일 읽기 완료 성공시에만 작동하도록 하는 것임.
+
+            // img태그 무조건쓰고 순수 자바스크립트로만 넣어야한다 미리보기는 이렇게!
+            document.getElementById("previewImg").src = fileReader.result;
+
+            console.log(fileReader.result);
+
+        };
+
+        alert("사진 변경하시려면 완료버튼을 눌러주세요.");
+
+    }); // end of $(document).on("change", "input.img_file", function(e){} 
+
+
+
+    // ==== 프로필이미지 관련 내용  끝 === //
+    
+
+
+    // ==== 비밀번호 관련 내용  시작 === //
 
     // 비밀번호 변경 버튼 누르면
     $("button#change_pwd").click(function(){
@@ -169,7 +204,7 @@ $(document).ready(function(){
 
     // 인증번호발송 버튼 누르면
     $("button#send_authentication_email").click(function(){
-        // alert("인증하기버튼 클릭!");
+        alert("인증하기버튼 클릭!");
         // sendCode(); // 인증코드 발송 함수
         const newEmail = $("input:text[name='newEmail']").val().trim();
 		
@@ -181,7 +216,7 @@ $(document).ready(function(){
         $.ajax({
             url:"sendEmailCode.flex",
             data:{"newEmail":$("input#newEmail").val()
-                 ,"userid":$("td#userid]").text()
+                 ,"userid":$("input:hidden[name='userid']").val()
                  ,"username":$("td#username").text()},
 
             type:"post",
@@ -211,7 +246,7 @@ $(document).ready(function(){
                     $("button#authTempKey_check").removeAttr("disabled");
                     $("span#authTempKey_checkMent").empty();
 
-                    alert($("input#newEmail").val());
+                    // alert($("input#newEmail").val());
 
                  }
                  else{
@@ -429,7 +464,7 @@ $(document).ready(function(){
                     $("span#mobileAuthTempKey_checkMent").html("인증이 완료되었습니다.").css("color", "blue");
                     $("button#submit_mobile").removeAttr("disabled");
 
-                    alert($("input#newMoblie").val());
+                    // alert($("input#newMoblie").val());
                     
                     // 입력한 이메일 값을 저장input에 넣는다.
                     $("input#newMoblieSave").val($("input#newMoblie").val());
@@ -576,6 +611,57 @@ $(document).ready(function(){
 // 다 안에 넣움
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// 사진 변경 완료 버튼 눌르면
+function imgUP(){
+    const newImg = $("input:file[name='userimg']").val().trim();
+	
+    // alert("확인용 img + "+newImg);
+
+    if(newImg == ""){
+        alert("사진을 선택해주세요.");
+        
+        return;	// 종료
+    }
+
+    var formData = new FormData($("form[name='imgForm']").get(0)); 
+
+    // alert("사진변경 ajax 험슈 들어옴");
+
+    $.ajax({
+           url : "memberInfoChangeEnd.flex",
+           type : "post",
+           data : formData,
+
+           // 파일 전송할때 필수로 입력해야함 (default true)
+           processData:false,  // 파일 전송시 설정 
+           contentType:false,  // 파일 전송시 설정
+     
+           dataType:"json",
+           success:function(json){
+              
+                     
+              console.log("~~~ 확인용 : " + JSON.stringify(json));
+               // ~~~ 확인용 : {"result":1}
+               if(json.result == 1) {
+                    alert("사진을 변경하였습니다.");
+                    location.href="javascript:location.reload(true)";
+               }
+               else{
+                    alert("사진 변경을 실패하였습니다.");
+               }
+               
+           },
+           error: function(request, status, error){
+                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+              
+            } 
+     
+     
+     }); // end of .ajax
+    
+}// end of function imglUP()----
+
 
 // 비밀번호 변경 완료 버튼 눌렀을 경우 호출되는 함수
 function pwdUP(){

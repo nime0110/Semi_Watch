@@ -22,8 +22,17 @@ public class MemberVO {
 	// SHA-256 은 단방향 암호화 ==> 즉, 복호화(암호화 해제)를 할수없다! 
 	// AES-256 은 양방향 암호화 ==> 즉, 암호화, 복호화(암호화 해제) 둘다 가능하다.
 	private int age;                    // 나이
+	private String userimg;				// 유저이미지
 	
 	
+	public String getUserimg() {
+		return userimg;
+	}
+
+	public void setUserimg(String userimg) {
+		this.userimg = userimg;
+	}
+
 	private int mileage;               // 마일리지
 	private String registerday;        // 가입일자 
 	private String lastpwdchangedate;  // 마지막으로 암호를 변경한 날짜  

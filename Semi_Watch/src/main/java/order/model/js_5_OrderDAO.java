@@ -31,6 +31,9 @@ public interface js_5_OrderDAO {
 
 	// 관리자가 조회하는 상세주문내역 구매자정보
 	Map<String, String> adminGetOrderInfo(String odrcode) throws SQLException;
+
+	// 관리자가 조회하는 주문상세 작성리뷰확인
+	Map<String, String> AdminOneReview(Map<String, String> paraMap) throws SQLException;
 	
 	
 	

@@ -3,7 +3,17 @@
    const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)); // 컨텍스트 패스 
 	 let productNo = $("input#productno").val(); //제품번호
 	 loadReviewPage(1); //리뷰 페이지 로드
-	 
+	  // 숫자만 입력되도록 제한
+	  
+        $('#product__quantity').on('input', function() {
+            if (/[^0-9]/.test(this.value)) {
+                this.value = 1;
+            }
+        }).on('blur', function() {
+            if (this.value === '' || isNaN(this.value)) {
+                this.value = 1;
+            }
+        });
 	 
   	 $('ul#choice li button img').on('click',function(){
 	    var i = $(this).attr('src');
@@ -149,12 +159,17 @@
                 } else {
  					//console.log("json.str_pdPriceArr:", json.str_pdPriceArr);
                     
+                    // ajax 요청 성공하고 나서 hidden에 들어감.. 
                     $("input#productpoint").val(json.productpoint);
                     $("input#str_pd_detailno").val(json.str_pd_detailno);
                     $("input#str_pdPriceArr").val(json.str_pdPriceArr);
                     $("input#str_pdPointArr").val(json.str_pdPointArr);
                     /// ---------------------------------
 				
+					if(!json.isPdQtyOk) {
+						alert("구매하신 수량만큼의 재고가 부족하여 구매하실 수 없습니다.");
+						return;
+					}
 					const frm = document.buyFrm;
 					frm.action =  contextPath + "/order/checkOut.flex";
 					frm.method = "post";
