@@ -79,9 +79,99 @@ div.heightP{
 	border-right: solid 2px #A9A9A9;
 }
 
+/* ---------------리뷰 팝업 스타일-------------------- */
+.popup {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s;
+    text-align: center; /* 텍스트 중앙 정렬 */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.popup-content > *:not(:last-child) {
+    margin-bottom: 20px; /* 요소들 사이에 간격 추가 */
+}
+
+.close {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+h2 {
+    margin: 0; /* 이미 margin-bottom이 추가됨 */
+}
+
+textarea {
+    box-sizing: border-box;
+}
+
+#rateYo {
+    display: flex;
+    justify-content: center;
+}
+
+
+/* 둥근 별 모양을 위한 추가 스타일 */
+.rateyo {
+    --rateyo-star-width: 30px; /* 별의 크기 조정 */
+}
+
+.rateyo .rateyo-path {
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    stroke: #ff9f00;
+    stroke-width: 2;
+}
+
+.rateyo .rateyo-path-background {
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    stroke: #ddd;
+    stroke-width: 2;
+}
 
 </style>
 
+<script type="text/javascript" src="<%= ctxPath%>/js/order/orderListDetail.js"></script>
 
 <script type="text/javascript">
 $(document).ready(function() {
@@ -159,21 +249,45 @@ $(document).ready(function() {
 	            				</c:choose>
 	                        </td>
 	                        <td class="text-center" style="border: solid 1px blue;">
-	                            <button class="btn btn-sm btn-outline-dark change_btn" type="button" id="change_btn">리뷰 작성</button>
+	                        
+<%---------------------------------------------성심 작업 시작 --------------------------------------------------------------------------------------------------------------------------------------%>
+					            
+					            <c:choose>
+					                <c:when test="${ordList.isReviewExists == 'false'}">
+					                    <button class="btn btn-sm btn-outline-dark" id="revieWrite" type="button" data-productno="${ordList.pdno}">리뷰 작성</button>
+					                </c:when>
+					                <c:otherwise>
+					                    <button class="btn btn-sm btn-outline-dark" id="reviewChange" type="button" data-productno="${ordList.pdno}">리뷰 수정</button>
+					                    <button class="btn btn-sm btn-outline-dark" id="reviewDelete" type="button" data-productno="${ordList.pdno}">리뷰 삭제</button>
+					                </c:otherwise>
+					            </c:choose>
 	                        </td>
 	                    </tr>
-	                    
-	                    <%-- 일단 숨김 성심님이 만든거 적용한다함
-	                    <tr id="writeReviewArr">
-	                    	<td scope="row" colspan="2">
-	                    		<textarea class="form-control text-left" maxlength="40" style="resize: none;"></textarea>
-	                    	</td>
-	                    	<td class="text-center">
-	                    		<button class="btn btn-sm btn-outline-secondary twobtn" type="reset" id="cancle">취소</button>
-								<button class="btn btn-sm btn-outline-dark twobtn" type="button" id="saveReview">저장</button>
-	                    	</td>
-	                    </tr>
-	                     --%>
+	      <%-- review popup start --%>
+        
+				        <div id="reviewPopup" class="popup" style="display:none;">
+						    <div class="popup-content">
+						        <span class="close">&times;</span>
+						        <h2>리뷰 작성하기</h2>
+						        <div id="rateYo"></div>
+						        <textarea id="reviewText" rows="4" cols="50" placeholder="리뷰는 20자 이상 작성 가능합니다."></textarea>
+						        <br>
+						        <button id="submitReviewBtn">리뷰 제출하기</button>
+						    </div>
+						</div>
+						
+				        <div id="reviewUpdatePopup" class="popup" style="display:none;">
+						    <div class="popup-content">
+						        <span class="close">&times;</span>
+						        <h2>리뷰 수정하기</h2>
+						        <div id="rateYoUpdate"  data-rating="${ordList.starpoint}"></div>
+						        <textarea id="reviewUpdateText" rows="4" cols="50" placeholder="리뷰는 20자 이상 작성 가능합니다.">${ordList.review_content}</textarea>
+						        <br>
+						        <button id="submitReviewUpdateBtn">리뷰 수정하기</button>
+						    </div>
+						</div>
+						<%---------------------------------------------성심 작업 끝 ------------------------------------------------------%>
+		 <%-- review popup end --%>
 	                     
 	                    <%-- 공백 --%>
                     	<tr>
