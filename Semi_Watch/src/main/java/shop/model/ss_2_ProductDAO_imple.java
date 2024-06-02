@@ -375,34 +375,6 @@ public List<ProductVO> wishAdd(Map<String, Object> paraMap) throws SQLException 
 }
 
 
-// 리뷰 테이블에 insert 하는 메소드
-@Override
-public int insertReview(String productNo, String reviewText, String rating, String userid) throws SQLException {
-	int result = 0;
-	
-	try {
-		conn = ds.getConnection();
-		
-		String sql = " INSERT INTO tbl_review "
-				+ " (reviewno, fk_userid, review_content, starpoint, fk_pdno)  "
-				+ " VALUES ( SEQ_REVIEWNO.nextval, ?, ?, ?, ?) ";
-		
-		pstmt = conn.prepareStatement(sql);
-		
-		pstmt.setString(1, userid);
-		pstmt.setString(2, reviewText);
-		pstmt.setString(3, rating);
-		pstmt.setString(4, productNo);
-		
-		result = pstmt.executeUpdate();
-		
-	} finally {
-		close();
-	}
-	
-	return result;
-}
-
 // 제품번호로 리뷰를 가져오는 메소드
 @Override
 public List<Map<String, String>> getReviewsBypnum(Map<String, String> paraMap) throws SQLException {
