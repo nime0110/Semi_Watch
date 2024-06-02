@@ -141,7 +141,7 @@ public class ss_2_MemberDAO_imple implements ss_2_MemberDAO {
 	        member.setDetail_address(rs.getString("detail_address"));
 	        member.setExtra_address(rs.getString("extra_address"));
 	        member.setRegisterday(rs.getString("registerday"));
-	        
+	        member.setUserimg(rs.getString("userimg"));
 	      } // end of if(rs.next()) ----------------------------
 
 	    } catch (UnsupportedEncodingException | GeneralSecurityException e) {
