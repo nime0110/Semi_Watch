@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.naming.Context;
@@ -202,6 +202,60 @@ public class jh_3_MemberDAO_imple implements jh_3_MemberDAO {
 		
 		return result;
 	}// end of public int updatePost -----
+
+	
+	
+	
+	// 개인정보 상단 장바구니, 리뷰 건수
+	@Override
+	public Map<String, String> get_cart_review_cnt(String userid) throws SQLException {
+		Map<String, String> cnt = new HashMap<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql  = " select nvl(sum(count(*)), 0) as cart_cnt "
+						+ " from tbl_cart "
+						+ " where fk_userid = ? "
+						+ " group by cartno ";
+			
+			pstmt = conn.prepareStatement(sql); 
+			pstmt.setString(1, userid);
+
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				String cart_cnt = String.valueOf(rs.getInt(1)); 
+				
+				cnt.put("cart_cnt", cart_cnt);
+			}
+			
+			sql = " select nvl(sum(count(*)), 0) as review_cnt "
+				+ " from tbl_review "
+				+ " where fk_userid = ? "
+				+ " group by reviewno ";
+		
+			pstmt = conn.prepareStatement(sql); 
+			pstmt.setString(1, userid);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				String review_cnt = String.valueOf(rs.getInt(1)); 
+				
+				cnt.put("review_cnt", review_cnt);
+				
+			}
+
+
+		} finally {
+			close();
+		}
+		
+		return cnt;
+		
+
+	}// end of public Map<String, String> get_cart_review_cnt(String userid)-----
 
 	
 	

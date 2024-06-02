@@ -630,8 +630,6 @@ function pwdUP(){
 
     if(isNewPwd && password != "" && newPassword != "" && confirmPassword != "") { 
         // 변경한 암호가 새로운 암호일 경우이고, 값이 모두 작성된 상태라면
-        alert("DB에 사용자 정보를 수정하러 간다.");
-        alert()
         
         const frm = document.pwdForm;
         frm.action = "memberInfoChangeEnd.flex";

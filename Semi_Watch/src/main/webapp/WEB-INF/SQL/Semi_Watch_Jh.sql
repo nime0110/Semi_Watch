@@ -251,9 +251,20 @@ ON O.ordercode = D.ordercode
 WHERE O.ordercode = 't20240530-43';
     
 
+-- 개인정보 상단 장바구니, 리뷰 수 구해오기
+select  nvl(sum(count(*)), 0) as cart_cnt
+from tbl_cart
+where fk_userid = 'jhkvng123'
+group by cartno;
 
 
+select nvl(sum(count(*)), 0) as review_cnt
+from tbl_review
+where fk_userid = 'jhkvng123'
+group by reviewno;
 
 
+select userid, userimg
+from tbl_member
 
 

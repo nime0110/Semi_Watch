@@ -110,7 +110,7 @@ div.font12{
 <%-- 결제페이지 시작 --%>
 
 <div class="container-flude mt-3 container-margin" >
-    <div class="h3 text-center mb-3">결제페이지</div>
+    <div class="h3 text-center mb-4">ORDER</div>
     <form class="flexcss">
         <div class="px-4" style="width: 55%;">
             <label class="h4">주문자정보</label>
@@ -172,7 +172,7 @@ div.font12{
 
 
             <%-- 배송 요청사항 부분 --%>
-            <div >
+            <div class="deliverArr">
                 <label class="h4 mt-4">배송요청사항</label>
                 <table class="table" style="width: 100%;">
                     <colgroup>
