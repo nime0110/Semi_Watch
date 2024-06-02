@@ -13,6 +13,12 @@
 
 <jsp:include page="../header2_user.jsp"></jsp:include>
 
+<%-- Latest compiled and minified CSS --%>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+<%-- Latest compiled and minified JavaScript --%>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+
+
 <style type="text/css">
 
 tr.subject{
@@ -238,7 +244,7 @@ $(document).ready(function() {
 									<p>${ordList.pdname}</p>
 									<p>${ordList.color} <span>구매수량 : ${ordList.order_qty}</span></p>
 									<p><fmt:formatNumber pattern="###,###" value="${ordList.saleprice}"/>&nbsp;원</p>
-									<input type="hidden" value="${ordList.pdno}"/>
+									<input type="hidden" id="productno" value="${ordList.pdno}"/>
 								</div>
 							</td>
 	                        <td id="deliverS" align="center" style="border: solid 1px red;">  
@@ -286,7 +292,7 @@ $(document).ready(function() {
 						        <button id="submitReviewUpdateBtn">리뷰 수정하기</button>
 						    </div>
 						</div>
-						<%---------------------------------------------성심 작업 끝 ------------------------------------------------------%>
+<%-------------------------------------------------------------성심 작업 끝 ------------------------------------------------------%>
 		 <%-- review popup end --%>
 	                     
 	                    <%-- 공백 --%>

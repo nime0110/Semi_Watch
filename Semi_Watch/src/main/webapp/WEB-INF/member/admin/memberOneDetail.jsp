@@ -12,11 +12,116 @@
 
 <style type="text/css">
 
-  table.table-bordered > tbody > tr > td:nth-child(1) {
-      width: 25%;
-      font-weight: bold;
-      text-align: right;
-  }
+<style type="text/css">
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+    }
+
+    .container {
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 2% 3%;
+    }
+
+    .h3, .h5 {
+        color: #343a40;
+        font-weight: 700;
+    }
+
+    table.table-bordered {
+        width: 60%;
+        margin: 0 auto;
+        border-collapse: collapse;
+    }
+
+    table.table-bordered th, 
+    table.table-bordered td {
+        text-align: left;
+        padding: 1rem;
+        border: 1px solid #dee2e6;
+    }
+
+    table.table-bordered th {
+        background-color: #343a40;
+        color: #fff;
+        font-size: 1rem;
+    }
+
+    table.table-bordered tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    table.table-bordered > tbody > tr > td:nth-child(1) {
+        width: 25%;
+        font-weight: bold;
+        text-align: right;
+        background-color: #e9ecef;
+    }
+
+    .border {
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        border-radius: 10px;
+        padding: 1.5rem;
+    }
+
+    .bg-info {
+        background-color: #17a2b8 !important;
+    }
+
+    .text-white {
+        color: #fff !important;
+    }
+
+    .bg-danger {
+        background-color: #dc3545 !important;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        border: none;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: #fff;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        color: #fff;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+
+    .mx-2 {
+        margin-left: 0.5rem !important;
+        margin-right: 0.5rem !important;
+    }
+
+    .mx-5 {
+        margin-left: 3rem !important;
+        margin-right: 3rem !important;
+    }
+
+    .my-5 {
+        margin-top: 3rem !important;
+        margin-bottom: 3rem !important;
+    }
+
+    .m
 
 </style>
 

@@ -5,45 +5,107 @@
 <jsp:include page="../../header1.jsp" />
 
 <style type="text/css">
-   
-   table#memberTbl {
-      width: 80%;
-      margin: 0 auto;
+   body {
+      font-family: Arial, sans-serif;
    }
-   
-   table#memberTbl th {
-      text-align: center;
-      font-size: 14pt;
-   }
-   
-   table#memberTbl tr.memberInfo:hover {
-      background-color: #e6ffe6;
-      cursor: pointer;
+
+   h2.text-center {
+      color: #343a40;
+      margin-bottom: 1.5rem;
    }
    
    form[name="member_search_frm"] {
-      border: solid 0px red;
-      width: 80%;
-      margin: 0 auto 3% auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+   }
+   
+   form[name="member_search_frm"] select,
+   form[name="member_search_frm"] input[type="text"],
+   form[name="member_search_frm"] button {
+      margin: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 5px;
+      border: 1px solid #ced4da;
+   }
+   
+   form[name="member_search_frm"] select {
+      width: 150px;
+   }
+   
+   form[name="member_search_frm"] input[type="text"] {
+      width: 200px;
    }
    
    form[name="member_search_frm"] button.btn-secondary {
-      margin-left: 2%;
-      margin-right: 32%;
+      background-color: #6c757d;
+      color: #fff;
+      border: none;
+   }
+   
+   form[name="member_search_frm"] button.btn-secondary:hover {
+      background-color: #5a6268;
+   }
+   
+   table#memberTbl {
+      width: 100%;
+      margin: 0 auto;
+      border-collapse: collapse;
+   }
+   
+   table#memberTbl th, 
+   table#memberTbl td {
+      text-align: center;
+      padding: 1rem;
+      border: 1px solid #dee2e6;
+   }
+   
+   table#memberTbl th {
+      background-color: #343a40;
+      color: #fff;
+      font-size: 1rem;
+   }
+   
+   table#memberTbl tr:nth-child(even) {
+      background-color: #f2f2f2;
+   }
+   
+   table#memberTbl tr.memberInfo:hover {
+      background-color: #e9f7ef;
+      cursor: pointer;
    }
    
    div#pageBar {
-      border: solid 0px red;
-      width: 80%;
-      margin: 3% auto 0 auto;
+      width: 100%;
+      margin: 2rem 0;
       display: flex;
+      justify-content: center;
    }
    
    div#pageBar > nav {
       margin: auto;
    }
    
+   .pagination > li > a,
+   .pagination > li > span {
+      color: #007bff;
+      text-decoration: none;
+      background-color: #fff;
+      border: 1px solid #dee2e6;
+      padding: 0.5rem 0.75rem;
+      margin: 0 0.25rem;
+      border-radius: 5px;
+   }
+   
+   .pagination > li > a:hover,
+   .pagination > li > span:hover {
+      background-color: #e9ecef;
+      border-color: #dee2e6;
+   }
 </style>
+	
 
 <script type="text/javascript">
 
@@ -103,7 +165,7 @@
 	
 </script>
 
-<div class="container" style="padding: 3% 0; border: solid 1px red;">
+<div class="container" style="padding: 3% 0;">
    <h2 class="text-center mb-5"> 회원전체 목록 </h2>
    
    <form name="member_search_frm">

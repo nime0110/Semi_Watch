@@ -3,6 +3,7 @@ package member.controller;
 import java.util.Map;
 
 import common.controller.AbstractController;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -29,6 +30,24 @@ public class MemberInfoChange extends AbstractController {
 			HttpSession session = request.getSession();
 			MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
 			String userid = (String) loginuser.getUserid();
+			
+			// 유저 이미지 관련 내용
+			// 1. 첨부되어진 파일을 디스크의 어느 경로에 업로드 할 것인지 경로를 설정
+			ServletContext svlCtx = session.getServletContext();
+            String uploadFileDir = svlCtx.getRealPath("/images");
+            
+            String userimg = null;
+            
+            // 시스템 파일 덮어쓰기 방지용
+            String userimg_systemFileName = null;
+            // 사용자가 올린 파일이름
+            String userimg_originFileName = null;
+            
+            // 추가이미지 파일의 개수
+            String attachCount = request.getParameter("attachCount");
+			
+			
+			
 			
 			// 가져와야할 데이터
 			// 장바구니 건수, 리뷰건수..
