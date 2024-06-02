@@ -61,7 +61,7 @@ $(document).ready(function(){
          // alert(rpdno);
          
          $.ajax({
-             url: 'adminOneReviewJSON.flex', // 서버 측 엔드포인트를 설정하세요
+             url: 'adminOneReviewJSON.flex',
              type: 'post',
              dataType: 'json',
              data: { "ruserid": ruserid ,
