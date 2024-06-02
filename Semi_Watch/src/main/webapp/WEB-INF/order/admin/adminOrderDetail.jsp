@@ -35,6 +35,131 @@
     }
 </style>
 <jsp:include page="../../header1.jsp" />
+
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+	
+	$("select[name='deliveryType']").change(function(e){
+		
+		const ordercode = $(e.target).closest('td').find("input:hidden[name='ordercode']").val();
+		// alert(ordercode);
+		// alert($(e.target).val());
+		func_choice($(e.target).val(),ordercode);
+		
+	}); // end of $("select[name='deliveryType']").change(function(e){
+		
+		
+	 $('.review-btn').on('click', function() {
+		 
+		
+		 const ruserid = $(this).siblings('input[name="ruserid"]').val();
+         const rpdno = $(this).siblings('input[name="rpdno"]').val();
+         
+         // alert(ruserid);
+         // alert(rpdno);
+         
+         $.ajax({
+             url: 'adminOneReviewJSON.flex', // 서버 측 엔드포인트를 설정하세요
+             type: 'post',
+             dataType: 'json',
+             data: { "ruserid": ruserid ,
+            	 	 "rpdno" : rpdno},
+            	 	 
+             success: function(json) {
+            	 
+            	 if( json.result == 0){
+            		 
+            	 	alert('작성된 리뷰가 없습니다.');
+            	 	
+            	 	return;
+            	 }
+            	 else{
+            	 
+            	 const reviewTableBody = $('#reviewTableBody');
+                 
+                 reviewTableBody.empty(); // 기존 내용 비우기
+
+                     // 테이블에 데이터 추가
+                     
+                 let html = `<tr>
+                     <td>리뷰번호</td><td>\${json.reviewno}</td>
+                 </tr>
+                 <tr>
+                     <td>상품번호</td><td>\${json.fk_pdno}</td>
+                 </tr>
+                 <tr>
+                     <td>상품명</td><td>\${json.pdname}</td>
+                 </tr>
+                 <tr>
+                     <td>아이디</td><td>\${json.fk_userid}</td>
+                 </tr>
+                 <tr>
+                     <td>성명</td><td>\${json.username}</td>
+                 </tr>
+                 <tr>
+                     <td>리뷰내용</td><td>\${json.review_content}</td>
+                 </tr>
+                 <tr>
+                     <td>리뷰별점</td><td>\${json.starpoint}</td>
+                 </tr>
+                 <tr>
+                     <td>리뷰작성일자</td><td>\${json.review_date}</td>
+                 </tr>`;
+			
+			     reviewTableBody.append(html);
+                  
+         		 $('#reviewModal').modal('show');
+            	 } 
+             },
+             error: function() {
+            	 const reviewTableBody = $('#reviewTableBody');
+                 
+                 reviewTableBody.empty();
+                 noReviewMessage.text('리뷰를 불러오는 중 오류가 발생했습니다.').show();
+                 $('#reviewModal').modal('show');
+             }
+             
+         }); // end of $.ajax
+         
+     });// end of $('.review-btn').on('click', function() {
+	
+	
+	
+}); // end of $(document).ready(function(){
+
+
+
+function func_choice(deliveryType,ordercode){
+	
+	// alert(deliveryType);
+	// alert(ordercode);
+	$.ajax({
+				
+		url:"<%= ctxPath%>/admin/deliveryUpdateJSON.flex",
+		data:{"deliveryType":deliveryType,
+			"ordercode":ordercode},
+		type:"post",
+		dataType:"json",
+		success:function(json){
+			
+			alert("주문번호" + ordercode+" 배송상태 변경 완료");
+			location.href="<%= ctxPath%>/order/orderList.flex";
+		},
+		error: function(request, status, error){
+           alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+        }
+		
+	});  // end of $.ajax({
+	
+} // end of function func_choice(deliveryType,ordercode){
+
+
+
+
+</script>
+
 <div class="container-fluid" style="margin-bottom:5%;">
     <div class="col-xl-9 mt-4 mx-auto">
         <div>
@@ -101,7 +226,7 @@
                 <tr class="py-2">
                     <td style="display:flex; align-items: center;">
                     	
-                        <a href="#">
+                        <a href="<%= ctxPath%>/item/itemDetail.flex?pdno=${list.pdno}">
                             <img class="pimg" src="<%= ctxPath%>/images/product/${list.pdimg1}" alt="상품 이미지" />
                         </a>
                         <div class="ml-4">
@@ -115,10 +240,19 @@
                         </div>
                     </td>
                     <td class="text-center align-middle">
-							${info.delivery_status}
+						현재 배송상태 : ${info.delivery_status}
+						<select name="deliveryType" class="form-control d-inline-block w-auto" style="margin-top: 10%;">
+                                    <option value="">선택하세요</option>
+                                    <option value="1">주문완료</option>
+                                    <option value="2">배송출발</option>
+                                    <option value="3">배송완료</option>
+                        </select>
+                        <input name="ordercode" type="hidden" value="${info.ordercode}" />	
                     </td>
                     <td class="text-center align-middle">
-                        <button class="btn btn-sm btn-outline-dark change_btn" type="button" id="change_btn">리뷰 작성</button>
+                        <button class="btn btn-sm btn-outline-dark review-btn" type="button" data-id="1">리뷰 확인</button>
+                        <input name="ruserid" type="hidden" value="${info.userid}" />
+                        <input name="rpdno" type="hidden" value="${list.pdno}" />	
                     </td>
                 </tr>
                 </c:forEach>
@@ -126,6 +260,29 @@
         </table>
     </div>
 </div>
+	
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reviewModalLabel">리뷰 상세</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <tbody id="reviewTableBody">
+                            
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>	
 	
 <jsp:include page="../../footer.jsp"/>	
 	

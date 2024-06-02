@@ -27,6 +27,14 @@ public class ItemAdminDelete extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
+		String referer = request.getHeader("referer");
+        if (referer == null) {
+            // URL을 통해 직접 접근한 경우 홈 페이지로 리디렉션
+            super.setRedirect(true);
+            super.setViewPage(request.getContextPath() + "/index.flex");
+            return;
+        }
+		
 		HttpSession session = request.getSession();
 		
 		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");

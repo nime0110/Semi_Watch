@@ -8,7 +8,7 @@ $(document).ready(function(){
     const productCnt = $("div[name='pInfo']").length;
     	
     if(productCnt < 1){
-       history:back(-1);
+        location.href="javascript:history.back()";
     }
 	
 	$("textarea").hide();   // 배송메시지 직접 입력 누르면 나오는거
