@@ -244,7 +244,7 @@ $(document).ready(function() {
 									<p>${ordList.pdname}</p>
 									<p>${ordList.color} <span>구매수량 : ${ordList.order_qty}</span></p>
 									<p><fmt:formatNumber pattern="###,###" value="${ordList.saleprice}"/>&nbsp;원</p>
-									<input type="hidden" value="${ordList.pdno}"/>
+									<input type="hidden" id="productno" value="${ordList.pdno}"/>
 								</div>
 							</td>
 	                        <td id="deliverS" align="center" style="border: solid 1px red;">  
