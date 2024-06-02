@@ -10,13 +10,17 @@ import jakarta.servlet.http.HttpSession;
 import member.domain.MemberVO;
 import order.model.jh_3_OrderDAO;
 import order.model.jh_3_OrderDAO_imple;
+import order.model.ss_2_OrderDAO;
+import order.model.ss_2_OrderDAO_imple;
 
 public class OrderListDetail extends AbstractController {
 	
 	private jh_3_OrderDAO odao = null;
+	private ss_2_OrderDAO odaosim = null;
 	
 	public OrderListDetail() {
 		odao = new jh_3_OrderDAO_imple();
+		odaosim = new ss_2_OrderDAO_imple();
 	}
 	
 	
@@ -81,19 +85,18 @@ public class OrderListDetail extends AbstractController {
 	        
             	Map<String, String> reviewDetail = odaosim.isReviewExists(productNo, userid);
 	        
-	        if (reviewDetail != null) {          
-	            orderDetail.put("isReviewExists", reviewDetail.get("isReviewExist"));
-	            orderDetail.put("review_content", reviewDetail.get("review_content"));
-	            orderDetail.put("starpoint", reviewDetail.get("starpoint"));
-	        } else {
-	            orderDetail.put("isReviewExists", "false");
-	            orderDetail.put("review_content", "");
-	            orderDetail.put("starpoint", "");
-	        }
-	        // 성심 - 리뷰 작성 ----------------------------------------------------------------------
-        	
-        	
-
+		        if (reviewDetail != null) {          
+		            orderDetail.put("isReviewExists", reviewDetail.get("isReviewExist"));
+		            orderDetail.put("review_content", reviewDetail.get("review_content"));
+		            orderDetail.put("starpoint", reviewDetail.get("starpoint"));
+		        } else {
+		            orderDetail.put("isReviewExists", "false");
+		            orderDetail.put("review_content", "");
+		            orderDetail.put("starpoint", "");
+		        }
+	        
+            }//end of for-----------------
+            // 성심 - 리뷰 작성 ----------------------------------------------------------------------
 			
 			// 구매 배송정보
 			Map<String, String> ordInfo = odao.getordInfo(ordcode);
