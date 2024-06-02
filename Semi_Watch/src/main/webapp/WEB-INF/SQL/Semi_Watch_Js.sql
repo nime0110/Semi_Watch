@@ -695,8 +695,18 @@ rollback;
 
 select  * from tbl_product order by pdstatus desc;
 
-select * from tbl_order;
+update tbl_pd_detail set pd_qty = 10 where fk_pdno = 182;
+commit;
 
-select * from tbl_product where pdno = ;
+
 select decode(color, 'none' , '단일색상' , color) as color ,
 	         		pd_qty from tbl_pd_detail where fk_pdno = 178
+                    
+                    
+                    select reviewno, fk_userid, username , fk_pdno , review_content ,
+					starpoint , review_date , pdname 
+					from tbl_review R join tbl_member M 
+					on R.fk_userid = M.userid 
+					join tbl_product P
+					on R.fk_pdno = P.pdno 
+					where fk_userid = 'kimkh2' and fk_pdno = 138;
