@@ -98,7 +98,7 @@ $('#wish_list').click(function() {
 
             // JSON 데이터가 배열이라고 가정하고 루프를 통해 각 항목을 처리
             json.forEach(item => { 
-                //let itemColor = item.color || 'none'; // 색상 없을 경우 none으로 처리 
+                let itemColor = item.color === 'none' ? '단일색상' : item.color;
                 console.log("foreach 속 item.pdname" + item.pdname);
 
                 html += `
@@ -111,7 +111,7 @@ $('#wish_list').click(function() {
                             <h4>${item.pdname}</h4>
                             <div class="price-calculation" style="display: flex; justify-content: space-between;">
                                 <input type="hidden" class="input_color" value="${item.color}">
-                                <span>색상: ${item.color}</span>
+                                <span>색상: ${itemColor}</span>
                                 <p class="price-calculation__value">
                                     <span class="value__span">${item.pdsaleprice.toLocaleString("ko-KR")}</span>
                                 </p>

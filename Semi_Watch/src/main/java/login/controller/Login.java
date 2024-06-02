@@ -139,8 +139,8 @@ public class Login extends AbstractController {
             super.setViewPage(request.getContextPath() + "/index.flex"); //로그인이 성공되어지면 시작페이지에 머뭄
          
       } else {
-         String message = "로그인 실패";
-           String loc = request.getContextPath()+"/index.flex";
+         String message = "로그인에 실패하였습니다. 아이디 또는 비밀번호를 확인하세요.";
+         String loc = request.getContextPath()+"/login/login.flex";
             
            request.setAttribute("message", message);
            request.setAttribute("loc", loc);
