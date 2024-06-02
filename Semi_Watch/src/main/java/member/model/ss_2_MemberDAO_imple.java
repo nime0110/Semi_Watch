@@ -386,7 +386,7 @@ public class ss_2_MemberDAO_imple implements ss_2_MemberDAO {
 			conn = ds.getConnection();
 			
 			String sql = " select userid, username, email, mobile, postcode, address, detail_address, extra_address, gender "
-					+ " , birthday, to_char(registerday, 'yyyy-mm-dd') AS registerday, mileage"
+					+ " , birthday, to_char(registerday, 'yyyy-mm-dd') AS registerday, mileage, userimg"
 					+ " from tbl_member "
 					+ " where status = '1' and userid = ?";
 			 
@@ -411,6 +411,7 @@ public class ss_2_MemberDAO_imple implements ss_2_MemberDAO {
 		        member.setBirthday(rs.getString(10));
 		        member.setRegisterday(rs.getString(11));
 		        member.setMileage(rs.getInt(12));
+		        member.setUserimg(rs.getString(13));
 
 		    } // end of if(rs.next())-------------------
 		       
