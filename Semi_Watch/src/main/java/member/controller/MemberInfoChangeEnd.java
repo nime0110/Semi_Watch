@@ -132,16 +132,27 @@ public class MemberInfoChangeEnd extends AbstractController {
 		            
 		            // 업데이트
 		            result = mdao.updateIMG(paraMap);
-		            		            
-		            JSONObject jsonObj = new JSONObject();
-	                
-	                jsonObj.put("result", result);
-	                
-	                String json = jsonObj.toString(); // 문자열로 변환 
-	                request.setAttribute("json", json);
-	                
-	                super.setRedirect(false);
-	                super.setViewPage("/WEB-INF/jsonview.jsp");
+		            
+		            // 정상작동할때만 json 업데이트로 간다.
+		            if(result == 1) {
+		            	
+		            	System.out.println("확인용 result: "+result);
+    		            
+			            JSONObject jsonObj = new JSONObject();
+		                
+		                jsonObj.put("result", result);
+		                
+		                String json = jsonObj.toString(); // 문자열로 변환 
+		                request.setAttribute("json", json);
+		                
+		                super.setRedirect(false);
+		                super.setViewPage("/WEB-INF/jsonview.jsp");
+		                
+		                
+		                return;
+		            }
+		            
+		            
 
 		            
 				}
