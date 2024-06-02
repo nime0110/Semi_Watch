@@ -13,6 +13,12 @@
 
 <jsp:include page="../header2_user.jsp"></jsp:include>
 
+<%-- Latest compiled and minified CSS --%>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+<%-- Latest compiled and minified JavaScript --%>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+
+
 <style type="text/css">
 
 tr.subject{
@@ -286,7 +292,7 @@ $(document).ready(function() {
 						        <button id="submitReviewUpdateBtn">리뷰 수정하기</button>
 						    </div>
 						</div>
-						<%---------------------------------------------성심 작업 끝 ------------------------------------------------------%>
+<%-------------------------------------------------------------성심 작업 끝 ------------------------------------------------------%>
 		 <%-- review popup end --%>
 	                     
 	                    <%-- 공백 --%>
