@@ -99,7 +99,7 @@
             <div class="pt-2">
               <h5 class="mt-4 font-weight-medium mb-0">강지훈</h5>
               <h6 class="subtitle">우리의 빛나는 팀원</h6>
-              <p>You can relay on our amazing features list and also our customer services will be great experience.</p>
+              <p>길지않은 시간이였지만, 배웠던 내용을 직접 사용해보고 생각한 로직과 기능들을 구현해볼 수 있는 시간이여서 많이 유익한 시간이였습니다. 최선을 다해준 팀원분들께 감사합니다.</p>
             </div>
           </div>
         </div>
@@ -117,7 +117,7 @@
             <div class="pt-2">
               <h5 class="mt-4 font-weight-medium mb-0">허성심</h5>
               <h6 class="subtitle">우리의 빛나는 팀원</h6>
-              <p>You can relay on our amazing features list and also our customer services will be great experience.</p>
+              <p>훌륭한 팀원들과 같이 할 수 있어서 영광이었습니닷!!</p>
             </div>
           </div>
         </div>
@@ -134,8 +134,8 @@
           <div class="col-md-12">
             <div class="pt-2">
               <h5 class="mt-4 font-weight-medium mb-0">이정수</h5>
-              <h6 class="subtitle">우리의 빛나는 팀원</h6>
-              <p>You can relay on our amazing features list and also our customer services will be great experience.</p>
+              <h6 class="subtitle">제 실력이 많이 부족했는데 팀원분들 덕분에 많이 배우고 좋은 경험이였습니다.</h6>
+              <p>보류</p>
             </div>
           </div>
         </div>
@@ -153,7 +153,7 @@
             <div class="pt-2">
               <h5 class="mt-4 font-weight-medium mb-0">김경현</h5>
               <h6 class="subtitle">우리의 빛나는 팀원</h6>
-              <p>You can relay on our amazing features list and also our customer services will be great experience.</p>
+              <p>잘하시는 분들이 많이 도와주셔서 저도 좀 더 발전할 수 있는 기회가 된 것 같습니다. 다들 고생하셨습니다.</p>
             </div>
           </div>
         </div>
@@ -171,7 +171,7 @@
             <div class="pt-2">
               <h5 class="mt-4 font-weight-medium mb-0">유선우</h5>
               <h6 class="subtitle">우리의 빛나는 팀원</h6>
-              <p>You can relay on our amazing features list and also our customer services will be great experience.</p>
+              <p></p>
             </div>
           </div>
         </div>

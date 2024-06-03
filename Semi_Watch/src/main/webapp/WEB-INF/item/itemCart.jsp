@@ -496,7 +496,7 @@ function allCheckBox(){
                                     <br>
                                     <c:choose>
                                         <c:when test="${cart.pdvo.color == 'none'}">
-                                            <span class="row text-color">단일컬러</span>
+                                            <span class="row text-color">단일색상</span>
                                         </c:when>
                                         <c:otherwise>
                                            <span class="row text-color"> ${cart.pdvo.color}</span>

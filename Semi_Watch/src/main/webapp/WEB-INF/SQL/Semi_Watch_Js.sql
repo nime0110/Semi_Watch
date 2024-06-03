@@ -693,11 +693,20 @@ WHERE logindate IN (
 );
 rollback;
 
-select  * from tbl_product order by pdstatus desc;
+select  * from tbl_product where pdno = 112;
 
-update tbl_pd_detail set pd_qty = 10 where fk_pdno = 182;
+select * from tbl_review;
+select * from tbl_pd_detail;
+update tbl_pd_detail set pd_qty = 15 where pd_detailno = 135;
 commit;
 
+select * from tbl_member;
+select * from tbl_review;
+select * from tbl_order order by total_orderdate desc ;
+
+delete from tbl_order where ordercode = 't20240603-117'; 
+
+delete from tbl_delivery where ordercode = 't20240603-117';
 
 select decode(color, 'none' , '단일색상' , color) as color ,
 	         		pd_qty from tbl_pd_detail where fk_pdno = 178
@@ -710,3 +719,34 @@ select decode(color, 'none' , '단일색상' , color) as color ,
 					join tbl_product P
 					on R.fk_pdno = P.pdno 
 					where fk_userid = 'kimkh2' and fk_pdno = 138;
+                    
+                    
+                    
+                    
+                    
+                    -- 회원테이블
+                    select * from tbl_member;
+                    
+                    -- 상품테이블
+                    select * from tbl_product;
+                    
+                    -- 리뷰테이블
+                    select * from tbl_review;
+                    
+                    -- 주문테이블
+                    select * from tbl_order;
+                    
+                    -- 주문상세 테이블
+                    select * from tbl_orderdetail;
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
