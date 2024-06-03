@@ -264,13 +264,16 @@ where fk_userid = 'jhkvng123'
 group by reviewno;
 
 
-select userid, userimg
+select userid, mileage
 from tbl_member
+where userid = 'jhkvng123';
 
 update tbl_member
-set userimg = 'usee.jpg'
+set mileage = 500000
 where userid = 'jhkvng123';
 
 rollback;
+
+commit;
 
 
