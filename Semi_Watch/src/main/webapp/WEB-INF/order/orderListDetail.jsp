@@ -32,7 +32,6 @@ img.pimg {
 	width: 100px;
 	height: 100px;
 	object-fit: cover;
-	border: solid 1px black;
 	
 }
 
@@ -181,29 +180,29 @@ textarea {
 
 <script type="text/javascript">
 $(document).ready(function() {
-	// 배송지 연락처
-	let mobile = $("div#mobile").text();
 	
-	const h1 = mobile.slice(0,3);   
-    const h2 = mobile.slice(3,8);   
-    const h3 = mobile.slice(8);
-    
-    mobile = h1+"-"+h2+"-"+h3;
-
-    $("div#mobile").text(mobile);
-    
-    
-    // 구매자 연락처
+	// 구매자 연락처
     let userMobile = $("div#userMobile").text();
     
-    const h1 = mobile.slice(0,3);   
-    const h2 = mobile.slice(3,8);   
-    const h3 = mobile.slice(8);
+    const h1 = userMobile.slice(0,3);   
+    const h2 = userMobile.slice(3,7);   
+    const h3 = userMobile.slice(7);
     
     userMobile = h1+"-"+h2+"-"+h3;
 
     $("div#userMobile").text(userMobile);
     
+    
+	// 배송지 연락처
+	let mobile = $("div#mobile").text();
+	
+	const h1_d = mobile.slice(0,3);   
+    const h2_d = mobile.slice(3,7);   
+    const h3_d = mobile.slice(7);
+    
+    mobile = h1_d+"-"+h2_d+"-"+h3_d;
+
+    $("div#mobile").text(mobile);
     
     
 });// end of $(document).ready(function() ----------
@@ -234,8 +233,8 @@ $(document).ready(function() {
                     
                     <%-- 상품정보 및 배송상태 리뷰 쓰는 버튼 생성 --%>
                     <c:forEach var="ordList" items="${requestScope.ordDetail_List}" varStatus="">
-                    	<tr>
-							<td style="border: solid 1px green; display:flex;">
+                    	<tr class="tableLineB">
+							<td class="py-3" style="display:flex;">
 								<a>
 									<img class="pimg" src="<%=ctxPath %>/images/product/${ordList.pdimg1}" />
 								</a>
@@ -247,14 +246,14 @@ $(document).ready(function() {
 									<input type="hidden" id="productno" value="${ordList.pdno}"/>
 								</div>
 							</td>
-	                        <td id="deliverS" align="center" style="border: solid 1px red;">  
+	                        <td id="deliverS" align="center">  
 								<c:choose>
 		            				<c:when test="${ordList.delivery_status == '1'}">주문완료</c:when>
 		            				<c:when test="${ordList.delivery_status == '2'}">배송중</c:when>
 		            				<c:otherwise>배송완료</c:otherwise>
 	            				</c:choose>
 	                        </td>
-	                        <td class="text-center" style="border: solid 1px blue;">
+	                        <td class="text-center">
 	                        
 <%---------------------------------------------성심 작업 시작 --------------------------------------------------------------------------------------------------------------------------------------%>
 					            

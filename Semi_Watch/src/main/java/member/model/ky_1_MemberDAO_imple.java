@@ -664,7 +664,7 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " SELECT R.reviewno AS reviewno, P.brand AS brand, P.pdname AS pdname, P.pdimg1 AS pdimg1, M.userid AS userid, M.username AS username, R.review_content AS review_content, R.starpoint AS starpoint, R.review_date AS review_date "
+			String sql = " SELECT R.reviewno AS reviewno, P.brand AS brand,  P.pdno AS pdno, P.pdname AS pdname, P.pdimg1 AS pdimg1, M.userid AS userid, M.username AS username, R.review_content AS review_content, R.starpoint AS starpoint, R.review_date AS review_date "
 					+ " FROM tbl_review R JOIN tbl_product P "
 					+ " ON R.fk_pdno = P.pdno JOIN tbl_member M "
 					+ " on R.fk_userid = M.userid "
@@ -687,6 +687,7 @@ public class ky_1_MemberDAO_imple implements ky_1_MemberDAO {
 				
 				review.setReviewno(rs.getString("reviewno"));
 				pvo.setBrand(rs.getString("brand"));
+				pvo.setPdno(rs.getString("pdno"));
 				pvo.setPdname(rs.getString("pdname"));
 				pvo.setPdimg1(rs.getString("pdimg1"));
 				mvo.setUserid(rs.getString("userid"));

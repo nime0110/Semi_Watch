@@ -65,7 +65,9 @@
         <header>
     	  <input type="hidden" id="productno" name="pdno" value="${pvo.pdno}">
           <input type="hidden" id="productpoint" name="point" value="${pvo.point}"> 
-          <h2 class="company-name" tabindex="0">${pvo.brand}</h2>
+          <h2 class="company-name" tabindex="0">
+          	<a href="<%= ctx_Path%>/item/itemList.flex?brand=${pvo.brand}">${pvo.brand}</a>
+          </h2>
           <p class="product__name" tabindex="0"></p>
           <h3 class="product__title" tabindex="0" id="productName">${pvo.pdname}</h3>
         </header>

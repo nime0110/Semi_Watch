@@ -78,7 +78,7 @@ public class MemberInfoChangeEnd extends AbstractController {
 					// 유저 이미지 관련 내용
 					// 1. 첨부되어진 파일을 디스크의 어느 경로에 업로드 할 것인지 경로를 설정
 					ServletContext svlCtx = session.getServletContext();
-		            String uploadFileDir = svlCtx.getRealPath("/images");
+		            String uploadFileDir = svlCtx.getRealPath("/images/member");
 		            
 		            String userimg = null;
 		            
@@ -137,6 +137,8 @@ public class MemberInfoChangeEnd extends AbstractController {
 		            if(result == 1) {
 		            	
 		            	// System.out.println("확인용 result: "+result);
+		            	
+		            	loginuser.setUserimg(userimg);
     		            
 			            JSONObject jsonObj = new JSONObject();
 		                
