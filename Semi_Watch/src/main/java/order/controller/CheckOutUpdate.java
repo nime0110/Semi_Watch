@@ -85,6 +85,8 @@ public class CheckOutUpdate extends AbstractController {
 			String paymentTotalPrice = request.getParameter("paymentTotalPrice");
 			String updatePoint = request.getParameter("updatePoint");
 			
+			System.out.println("updatePoint : "+updatePoint);
+			
 			
 			// System.out.println("확인용 str_pnum_join : " + str_pnum_join);
 			

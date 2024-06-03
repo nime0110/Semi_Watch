@@ -228,7 +228,7 @@ div.font12{
                                 <div style="font-size: 10pt;">사용가능&nbsp;<span id="userpoint"></span>&nbsp;P</div>
                                 <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
                                 <div style="font-size: 10pt;">보유&nbsp;<span id="restpoint"></span>&nbsp;P</div>
-                                <input name="userpoint" type="hidden" value="${sessionScope.loginuser.mileage}" style="border: solid 1px red;"/><%-- 보유한 마일리지 값 --%>
+                                <input name="userpoint" type="hidden" value="${sessionScope.loginuser.mileage}"/><%-- 보유한 마일리지 값 --%>
                             </div>
                             
                         </td>
