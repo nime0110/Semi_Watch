@@ -101,7 +101,7 @@ $(document).ready(function() {
 			    self.close();
 				
        		} else {
-	            	
+       			window.opener.checkOutUpdate('<%= ctxPath%>','${requestScope.userid}', isPaymentcheck);
 	            alert("결제에 실패하였습니다.");
 	            self.close();
 	       	}
@@ -114,6 +114,12 @@ $(document).ready(function() {
 		alert("비정상적인 이동경로 입니다.");
 		self.close();
 	}
+	
+	// 사용자가 임의로 팝업창을 닫은경우
+	$(window).bind("beforeunload", function (e){
+		window.opener.checkOutUpdate('<%= ctxPath%>','${requestScope.userid}', isPaymentcheck);
+
+	});// end of $(window).bind("beforeunload", function (e)----------
 
 	
 }); // end of $(document).ready()-----------------------------
