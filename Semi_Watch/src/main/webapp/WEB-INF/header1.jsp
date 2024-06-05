@@ -127,6 +127,7 @@
     <%-- user end --%>
     </div>
     </c:if>
+    <%-- wishList start  --%>
     <section class="cart-section" id="cart-section" aria-live="polite">
       <h3 class="cart-section__title">위시리스트</h3>
       <div class="cart-section__body">
@@ -139,6 +140,6 @@
        <button class="btn btn-dark" onclick="addCart()">장바구니로 이동하기</button>
       </div>
     </section>
-    <%-- cart end  --%>
+    <%-- wishList end  --%>
   </header>
   <%-- header end --%>

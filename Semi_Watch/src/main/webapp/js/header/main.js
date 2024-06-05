@@ -3,8 +3,8 @@ $(document).ready(function() {
     const mainNav = $('.top-header__left .main-nav'); // 메인 네비게이션
     const mainNavCloseBtn = $('.main-nav__close-btn'); // 네비게이션 닫기 버튼
     const mainNavContentContainer = $('.main-nav__content-container'); // 네비게이션 콘텐츠 컨테이너
-    const btnCart = $('.top-header__btn-cart'); // 장바구니 버튼
-    const cartSection = $('.cart-section'); // 장바구니 섹션
+    const btnCart = $('.top-header__btn-cart'); // 위시리스트 버튼
+    const cartSection = $('.cart-section'); // 위시리스트 섹션
     const inputProductQuantity = $('#product__quantity'); // 제품 수량 입력
     const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)); // 컨텍스트 패스 
     
@@ -32,74 +32,69 @@ $(document).ready(function() {
     });
 
 
-
-    // 선택한 색상 값 가져오기
+    // 사용자가 선택한 색상 값 가져오기
 	  let selectedColor;
 	  $('#color_select').on('change', function() {
 		selectedColor = $(this).val(); //선택한 색상의 값
 	  });
 
 
-
     // 찜하기 버튼 클릭시에 발생하는 중요 이벤트 start ----------------------------------------------
-$('#wish_list').click(function() {
-    let productno = $('#productno').val(); // 해당 제품의 제품번호 (input hidden)
-        const colorSelect = $('#color_select');
-        if (colorSelect.length > 0 && !selectedColor) {
-			alert("색상을 선택하세요!");
-			return;
-		}
-		if(colorSelect.length == 0) {
-			selectedColor = 'none'; //기본 컬러가 없을 경우 none 으로 설정.
-		}
-		  
+	$('#wish_list').click(function() {
+	    let productno = $('#productno').val(); // 해당 제품의 제품번호 (input hidden)
+	        const colorSelect = $('#color_select');
+	        if (colorSelect.length > 0 && !selectedColor) {
+				alert("색상을 선택하세요!");
+				return;
+			}
+			if(colorSelect.length == 0) {
+				selectedColor = 'none'; //기본 컬러가 없을 경우 none 으로 설정.
+			}
+			  
+	    if (localStorage.getItem('str_arr_jjim') == null) { // 첫 번째로 찜하는 경우
+	        // 위시리스트 배열 만들기
+	        arr_jjim.push({ jepumno: productno, color: selectedColor });
+	        let str_arr_jjim = JSON.stringify(arr_jjim); // 객체 -> JSON으로 바꾸기
+	        // local 스토리지에 담음
+	        localStorage.setItem('str_arr_jjim', str_arr_jjim);
+	        
+	    } else { // 첫 번째 이후로 찜하는 경우(이미 배열이 존재하는 경우)
 
-    if (localStorage.getItem('str_arr_jjim') == null) { // 첫 번째로 찜하는 경우
-        // 위시리스트 배열 만들기
-        arr_jjim.push({ jepumno: productno, color: selectedColor });
-        let str_arr_jjim = JSON.stringify(arr_jjim); // 객체 -> JSON으로 바꾸기
-        // local 스토리지에 담음
-        localStorage.setItem('str_arr_jjim', str_arr_jjim);
-    } else { // 첫 번째 이후로 찜하는 경우(이미 배열이 존재하는 경우)
-        // get을 먼저 해와서
-        arr_jjim = JSON.parse(localStorage.getItem('str_arr_jjim')); // 배열 - 원래 있던 값
-        // 중복 확인 후 추가
-        let exists = arr_jjim.some(item => item.jepumno === productno && item.color === selectedColor);
-
-        if (!exists) { // 그 상품이 존재하지 않는다면
-            arr_jjim.push({ jepumno: productno, color: selectedColor }); 
-            // 업데이트된 배열을 로컬스토리지에 다시 저장
-            let str_arr_jjim = JSON.stringify(arr_jjim);
-            localStorage.setItem('str_arr_jjim', str_arr_jjim);
-            alert("상품을 위시리스트에 추가하셨습니다.");
-        } else {
-            alert("이미 위시리스트에 존재하는 상품입니다.");
-            return;
-        }
+	        arr_jjim = JSON.parse(localStorage.getItem('str_arr_jjim')); // 배열 - 원래 있던 값
+	        // 중복 확인 후 추가
+	        let exists = arr_jjim.some(item => item.jepumno === productno && item.color === selectedColor);
+	
+	        if (!exists) { // 그 상품이 존재하지 않는다면
+	            arr_jjim.push({ jepumno: productno, color: selectedColor }); 
+	            // 업데이트된 배열을 로컬스토리지에 다시 저장
+	            let str_arr_jjim = JSON.stringify(arr_jjim);
+	            localStorage.setItem('str_arr_jjim', str_arr_jjim);
+	            alert("상품을 위시리스트에 추가하셨습니다.");
+	        } else {
+	            alert("이미 위시리스트에 존재하는 상품입니다.");
+	            return;
+	        }
     }
 
-    // 선택된 색상 정보를 "95:black,99:white" 형식으로 생성
-    let colorInfo = arr_jjim.map(item => `${item.jepumno}:${item.color || 'none'}`).join(",");
-    console.log("colorInfo:", colorInfo);
+    // 선택된 색상 정보를 "95:black,99:white" 형식으로 생성 - 넣어져있는 정보 - 만약 색상이 없을 경우 none. 
+    //let colorInfo = arr_jjim.map(item => `${item.jepumno}:${item.color || 'none'}`).join(",");
 
     // AJAX 요청
     $.ajax({
         type: "get",
-        url: "wishListAdd.flex", // 컨트롤러 만들고 
+        url: "wishListAdd.flex", 
         data: {
             "pdnos": arr_jjim.map(item => item.jepumno).join(","),
             "selectedColors": arr_jjim.map(item => item.color).join(",") // 선택된 색상을 함께 전송
         }, // "새우깡,양파링" --> 이거 컨트롤러에서 split 해서 in()으로 sql 조회, ? 위치홀더금지
         dataType: "json",
         success: function (json) {
-            console.log("AJAX 요청 성공");
-            console.log("응답 데이터:", json);
             let html = ''; // html 초기화
 
             // JSON 데이터가 배열이라고 가정하고 루프를 통해 각 항목을 처리
             json.forEach(item => { 
-                let itemColor = item.color === 'none' ? '단일색상' : item.color;
-                console.log("foreach 속 item.pdname" + item.pdname);
+                let itemColor = item.color === 'none' ? '단일색상' : item.color; 
+                //컬러가 없을 경우 db에서 none으로 되어있는 것을 '단일색상'으로 뷰단에서 표현되도록 함.
 
                 html += `
                 <li id="${item.pdno}-${item.color}" class="cart-section__li">
@@ -107,7 +102,7 @@ $('#wish_list').click(function() {
                         <input type="hidden" name="${item.pdno}">
                         <input class="form-check-input" style="left:0;" type="checkbox" value="${item.pdno}" id="flexCheckDefault">
                         <img src="${contextPath}/images/product/${item.pdimg}" alt="${item.pdname}" class="product__thumb">
-                        <div class="list-item__abstract"	>
+                        <div class="list-item__abstract">
                             <h4>${item.pdname}</h4>
                             <div class="price-calculation" style="display: flex; justify-content: space-between;">
                                 <input type="hidden" class="input_color" value="${item.color}">
@@ -125,9 +120,7 @@ $('#wish_list').click(function() {
                 </li>
                 `
             });
-            // 기존 HTML 가져오기 및 추가된 HTML 병합
-/*            let existingHTML = $("#cart-section > div.cart-section__body > ul").html();
-            html = existingHTML + html;*/
+
             // 위의 li 문 생성 후 ul 안에 li 코드를 넣어서 보여주는 코드
             $("#cart-section > div.cart-section__body > ul").html(html);
             console.log("html", html);
@@ -139,7 +132,6 @@ $('#wish_list').click(function() {
         }
     });
 });
-
     // 찜하기 버튼 클릭시에 발생하는 중요 이벤트 end ----------------------------------------------
 
    //위시리스트가 있는지 확인하고 정렬하는 함수 start, 위시리스트 위 동그라미에 숫자 표시하기!!!  -------------------------     
@@ -151,10 +143,7 @@ $('#wish_list').click(function() {
 		  
 		$('body > header > div.top-header__right > button > span').addClass('active'); //위시리스트에 담긴 숫자 표시하는 css 클래스 
 		$('body > header > div.top-header__right > button > span > span.value').html(wishlist.length);
-		  
-		  //console.log("localStorage.getItem('wishlistHTML')", localStorage.getItem('wishlistHTML'));
-		  //alert("위시리스트가 안비어있음");
-		  
+
         // --------------------- html 정렬 ---------------------
         // cart-section__body 클래스 div에 --with-items 클래스 추가(CSS)
         $('.cart-section__body').addClass('--with-items');
@@ -167,8 +156,8 @@ $('#wish_list').click(function() {
         // ----------------------------------------------------
       } else {
 		$('body > header > div.top-header__right > button > span').removeClass('active'); //비어있는 순간 동그라미 사라짐
-		  //alert("위시리스트가 비어있음");
-		          // --------------------- html 정렬 ---------------------
+		
+		// --------------------- html 정렬 ---------------------
         // cart-section__body 클래스 div에 --with-items 클래스 지우기(CSS)
         $('.cart-section__body').removeClass('--with-items');
         
@@ -202,8 +191,6 @@ $('#wish_list').click(function() {
       navBtn.attr('aria-expanded', mainNav.hasClass('active')); // 네비게이션 버튼의 ARIA 확장 속성 설정
     }
 
-
-      
     // 위시리스트 토글 함수
     function toggleCart() {
 
@@ -222,8 +209,6 @@ $('#wish_list').click(function() {
     }
 
     
-
-
     // 위시리스트 섹션 내의 삭제 버튼 클릭 이벤트 
     $(document).on('click', '.btn-del-product', function() {
 	  //alert("삭제 버튼 클릭");
@@ -257,7 +242,6 @@ $('#wish_list').click(function() {
     });
 	// ---------------------------------------------
 	
-
 	
     // 위시리스트 내에서 장바구니로 이동하기 버튼 클릭 이벤트 ---------------------------
     window.addCart = function() {
@@ -299,8 +283,7 @@ $('#wish_list').click(function() {
             data: {"cartItems":JSON.stringify(cartItems)},
             dataType: "json",
             success: function(json) {
-                console.log("AJAX 요청 성공:", json);
-             
+				             
                 if (json.loginRequired) { //로그인안을경우
                     alert(json.message);
                     location.href = contextPath + "/login/login.flex"; // 로그인 페이지로 이동
@@ -318,7 +301,6 @@ $('#wish_list').click(function() {
 	                    arr_jjim = arr_jjim.filter(item => item.jepumno !== productno || item.color !== color);
 	                    localStorage.setItem('str_arr_jjim', JSON.stringify(arr_jjim));
 				
-
                     });
                           // 업데이트된 HTML을 다시 로컬 스토리지에 저장
 		                const wishlistHTML = $("#cart-section > div.cart-section__body > ul").html();

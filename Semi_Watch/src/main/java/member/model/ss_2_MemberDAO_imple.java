@@ -78,18 +78,17 @@ public class ss_2_MemberDAO_imple implements ss_2_MemberDAO {
 	      String sql = " SELECT userid, username, pwdchangegap, "
 	      		+ " NVL( lastlogingap, trunc(months_between(sysdate,registerday)) ) AS lastlogingap, "
 	      		+ "	idle, "
-	      		+ " mobile, email, postcode, address, detail_address, extra_address, to_char(registerday, 'yyyy-mm-dd') AS registerday, userimg   FROM "
+	      		+ " mobile, email, postcode, address, detail_address, extra_address, to_char(registerday, 'yyyy-mm-dd') AS registerday,"
+	      		+ " mileage, userimg FROM "
 	      		+ "	( select userid, username, "
 	      		+ "	trunc( months_between(sysdate, lastpwdchangedate) ) AS pwdchangegap, "
 	      		+ "	registerday, idle,  "
-	      		+ "	mobile, email, postcode, address, detail_address, extra_address, userimg  "
+	      		+ "	mobile, email, postcode, address, detail_address, extra_address, mileage, userimg  "
 	      		+ "	from tbl_member where status = 1 and userid = ? and pw = ?) M  "
 	      		+ "	CROSS JOIN "
 	      		+ "	( select trunc( months_between(sysdate, max(logindate)) ) AS lastlogingap  "
 	      		+ "	from tbl_loginhistory  where fk_userid = ?) H ";
 	      pstmt = conn.prepareStatement(sql);
-	      System.out.println("userid"+paraMap.get("userid"));
-	      System.out.println("pwd"+ Sha256.encrypt(paraMap.get("pwd")));
 	      pstmt.setString(1, paraMap.get("userid"));
 	      pstmt.setString(2, Sha256.encrypt(paraMap.get("pwd")));
 	      pstmt.setString(3, paraMap.get("userid"));
@@ -98,13 +97,13 @@ public class ss_2_MemberDAO_imple implements ss_2_MemberDAO {
 	      // 있으면 1개밖에 안나옴 - userid가 PK 이기 때문
 	      if (rs.next()) {
 	        member = new MemberVO();
-	        member.setUserid(rs.getString("userid"));
+	        member.setUserid(rs.getString("userid")); 
 	        member.setUsername(rs.getString("username"));
 
 	        if (rs.getInt("lastlogingap") >= 12) {
 	          // 마지막으로 로그인 한 날짜 시간이 현재 시각으로부터 1년이 지났으면 휴면으로 지정
-	          member.setIdle(1); // defalut 0 인걸 1로 바꿔버림(객체에서)=> DB에서 1이라고 해도, 이 객체 상태는 1이 아니기 때문에 set
-	                             // 해줘야 함.
+	          member.setIdle(1); // defalut 0 인걸 1로 바꿔버림(객체에서)=> DB에서 1이라고 해도, 이 객체 상태는 1이 아니기 때문에 set 해줘야 함.
+	          
 	          if (rs.getInt("idle") == 0) {
 	            // === tbl_member 테이블의 idle 컬럼의 값을 1로 변경하기 === //
 	            sql = " update tbl_member set idle = 1 " + " where userid = ? ";
@@ -141,6 +140,7 @@ public class ss_2_MemberDAO_imple implements ss_2_MemberDAO {
 	        member.setDetail_address(rs.getString("detail_address"));
 	        member.setExtra_address(rs.getString("extra_address"));
 	        member.setRegisterday(rs.getString("registerday"));
+	        member.setMileage(rs.getInt("mileage"));
 	        member.setUserimg(rs.getString("userimg"));
 	      } // end of if(rs.next()) ----------------------------
 
@@ -399,19 +399,19 @@ public class ss_2_MemberDAO_imple implements ss_2_MemberDAO {
 			if(rs.next()) {
 				
 		        member = new MemberVO();
-		        member.setUserid(rs.getString(1));
-		        member.setUsername(rs.getString(2));
-		        member.setEmail( aes.decrypt(rs.getString(3)) );  // 복호화
-		        member.setMobile( aes.decrypt(rs.getString(4)) ); // 복호화
-		        member.setPostcode(rs.getString(5));
-		        member.setAddress(rs.getString(6));
-		        member.setDetail_address(rs.getString(7));
-		        member.setExtra_address(rs.getString(8));
-		        member.setGender(rs.getString(9));
-		        member.setBirthday(rs.getString(10));
-		        member.setRegisterday(rs.getString(11));
-		        member.setMileage(rs.getInt(12));
-		        member.setUserimg(rs.getString(13));
+		        member.setUserid(rs.getString("userid"));
+		        member.setUsername(rs.getString("username"));
+		        member.setEmail( aes.decrypt(rs.getString("email")) );  // 복호화
+		        member.setMobile( aes.decrypt(rs.getString("mobile")) ); // 복호화
+		        member.setPostcode(rs.getString("postcode"));
+		        member.setAddress(rs.getString("address"));
+		        member.setDetail_address(rs.getString("detail_address"));
+		        member.setExtra_address(rs.getString("extra_address"));
+		        member.setGender(rs.getString("gender"));
+		        member.setBirthday(rs.getString("birthday"));
+		        member.setRegisterday(rs.getString("registerday"));
+		        member.setMileage(rs.getInt("mileage"));
+		        member.setUserimg(rs.getString("userimg"));
 
 		    } // end of if(rs.next())-------------------
 		       
