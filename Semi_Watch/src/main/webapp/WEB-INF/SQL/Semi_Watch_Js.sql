@@ -1,3 +1,29 @@
+---- **** local 한 sys 로 연결하기 **** -----
+show user;
+-- USER이(가) "SYS"입니다.
+
+-- 이제 부터 오라클 계정생성시 계정명앞에 c## 붙이지 않고 생성하도록 하겠다.
+alter session set "_ORACLE_SCRIPT"=true;
+-- Session이(가) 변경되었습니다.
+
+drop user semi_orauser2 cascade;
+-- User SEMI_ORAUSER2이(가) 삭제되었습니다.
+
+create user semi_orauser2 identified by gclass default tablespace users;
+-- User SEMI_ORAUSER2이(가) 생성되었습니다.
+
+grant connect, resource, create view, unlimited tablespace to semi_orauser2;
+-- Grant을(를) 성공했습니다.
+
+-- 접속에다가 local생성하고 도구- 데이터베이스 복사
+-- **** 중요 소스가 원본, 대상이 결과
+-- 항상 조회가 선행되어야함!! 조회하고 >> 누르기 계속 다음 조회 >> 마지막에 완료
+-- 완료된 다음에도 톰캣 context.xml 가서도 DBCP 아이피주소를 바꾼다 127.0.0.1
+-- 그 다음으로 이클립스 server - context.xml 가서 DBCP 아이피 주소를 바꾼다
+
+
+
+
 -- 오라클 계정 생성을 위해서는 SYS 또는 SYSTEM 으로 연결하여 작업을 해야 합니다. [SYS 시작] --
 show user;
 -- USER이(가) "SYS"입니다.
