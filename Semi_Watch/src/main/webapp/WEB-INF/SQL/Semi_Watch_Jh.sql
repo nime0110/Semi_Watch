@@ -277,3 +277,42 @@ rollback;
 commit;
 
 
+-- 20240605
+-- local 한 sys 로 연결 백업
+show user;
+-- USER이(가) "SYS"입니다.
+
+-- 이제 부터 오라클 계정생성시 계정명앞에 c## 붙이지 않고 생성하도록 하겠다.
+alter session set "_ORACLE_SCRIPT"=true;
+-- Session이(가) 변경되었습니다.
+
+
+create user semi_orauser2 identified by gclass default tablespace users;
+-- User SEMI_ORAUSER2이(가) 생성되었습니다.
+
+
+grant connect, resource, create view, unlimited tablespace to semi_orauser2;
+-- Grant을(를) 성공했습니다.
+
+
+
+--- local 한 semi_orauser2 로 연결하기----
+show user;
+
+select * from tab;
+
+select *
+from tbl_order;
+
+------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
