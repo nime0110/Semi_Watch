@@ -54,6 +54,7 @@ public class WishListAdd extends AbstractController {
 	            jsonObj.put("color", pvo.getPdvo().getColor() );
 
 	            System.out.println("~~~~~ pdname: " + pvo.getPdname() + ", color: " + colorSplit[i]);
+	            //~~~~~ pdname: GMA-S2100BS-4ADR, color: none
 
 	            jsonArr.put(jsonObj);
 	        }
@@ -62,7 +63,8 @@ public class WishListAdd extends AbstractController {
 	    }
 
 	    String json = jsonArr.toString();
-	    System.out.println("json: " + json);
+	    System.out.println("json: " + json); //json: [{"pdno":"176","color":"none","pdimg":"new_2_thum_20240601183921524680952774800.png","pdsaleprice":135000,"pdname":"GMA-S2100BS-4ADR"},{"pdno":"174","color":"none","pdimg":"25_thum_202405261133238777773987000.png","pdsaleprice":16090000,"pdname":"DATEJUST 41"}]
+
 
 	    request.setAttribute("json", json);
 	    super.setViewPage("/WEB-INF/jsonview.jsp");

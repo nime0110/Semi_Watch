@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	
     const navBtn = $('.top-header__left .nav-btn'); // 네비게이션 버튼
     const mainNav = $('.top-header__left .main-nav'); // 메인 네비게이션
     const mainNavCloseBtn = $('.main-nav__close-btn'); // 네비게이션 닫기 버튼
@@ -26,9 +27,9 @@ $(document).ready(function() {
     }
     
     // 페이지가 다시 표시될 때 위시리스트 렌더링 => 뒤로가기/ 앞으로 가기시 위시리스트 상태 유지를 위한 함수
-    window.addEventListener('pageshow', function(e) { //history.back() 에서도 실행 됨 반대는 pagehide
+    window.addEventListener('pageshow', function() { //history.back() 에서도 실행 됨 반대는 pagehide
     	//pageshow - html로드시 반드시 실행
-        wishListRendering(); //렌더링 ㄱㄱ
+        wishListRendering(); //렌더링 
     });
 
 
@@ -76,8 +77,6 @@ $(document).ready(function() {
 	        }
     }
 
-    // 선택된 색상 정보를 "95:black,99:white" 형식으로 생성 - 넣어져있는 정보 - 만약 색상이 없을 경우 none. 
-    //let colorInfo = arr_jjim.map(item => `${item.jepumno}:${item.color || 'none'}`).join(",");
 
     // AJAX 요청
     $.ajax({
@@ -91,7 +90,7 @@ $(document).ready(function() {
         success: function (json) {
             let html = ''; // html 초기화
 
-            // JSON 데이터가 배열이라고 가정하고 루프를 통해 각 항목을 처리
+            // JSON 데이터 루프를 통해 각 항목을 처리
             json.forEach(item => { 
                 let itemColor = item.color === 'none' ? '단일색상' : item.color; 
                 //컬러가 없을 경우 db에서 none으로 되어있는 것을 '단일색상'으로 뷰단에서 표현되도록 함.
@@ -123,7 +122,6 @@ $(document).ready(function() {
 
             // 위의 li 문 생성 후 ul 안에 li 코드를 넣어서 보여주는 코드
             $("#cart-section > div.cart-section__body > ul").html(html);
-            console.log("html", html);
             localStorage.setItem('wishlistHTML', html); // 로컬스토리지에 html을 넣음
             checkWishlist(); // 위시리스트 상태 다시 확인
         },
@@ -170,8 +168,7 @@ $(document).ready(function() {
 		  
 	  }
 
-	}
-	//위시리스트가 있는지 확인하고 정렬하는 함수 end -------------------------   
+	} //위시리스트가 있는지 확인하고 정렬하는 함수 end -------------------------   
 
 	// 네비게이션 버튼 클릭 이벤트 
     navBtn.click(toggleMenu);
@@ -212,7 +209,7 @@ $(document).ready(function() {
     // 위시리스트 섹션 내의 삭제 버튼 클릭 이벤트 
     $(document).on('click', '.btn-del-product', function() {
 	  //alert("삭제 버튼 클릭");
-      const li = $(this).closest('li'); //해당 코드에서 가장 위에있는 li를 찾음
+      const li = $(this).closest('li'); //해당 코드에서 가장 위에있는 li를 찾음 =>  <li id="${item.pdno}-${item.color}">
    	  const idParts = li.attr('id').split('-'); // id를 '-'로 분리
       const productno = idParts[0]; // productno 부분만 추출
  	  const color = idParts[1]; // color 부분 추출
@@ -284,12 +281,11 @@ $(document).ready(function() {
             dataType: "json",
             success: function(json) {
 				             
-                if (json.loginRequired) { //로그인안을경우
+                if (json.loginRequired) { //로그인하지 않을경우
                     alert(json.message);
                     location.href = contextPath + "/login/login.flex"; // 로그인 페이지로 이동
                 } else {
                     alert(json.message);
-                    // 장바구니 페이지로 이동 (필요한 경우 고려)
                     selectedLis.forEach(function(selected) {
 	                  
 	                    let li = selected.li;
