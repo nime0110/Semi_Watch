@@ -213,7 +213,7 @@ $(document).ready(function(){
 		                <img class="d-block col-3 img-fluid" src="/Semi_Watch/images/product/${map.pdimg1}" onclick="javascript:location.href='/Semi_Watch/item/itemDetail.flex?pdno=${map.pdno}'" style="cursor: pointer;" />  
 			        </div>
 				</c:if>
-			</c:forEach>
+			</c:forEach> 
 	      	</div>		
 	        	<a class="carousel-control-prev" href="#recipeCarousel" role="button" data-slide="prev">
 	            	<span class="carousel-control-prev-icon" aria-hidden="true"></span>
