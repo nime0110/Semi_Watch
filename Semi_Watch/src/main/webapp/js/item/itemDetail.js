@@ -185,46 +185,28 @@
       
 
 	/* 리뷰 보여주기 ----------*/
-	      	      
 
 
-     
-   // ------------------ 리뷰가 있을때의 평균별점 --------------------------
-
-
-	// ------------------ 리뷰가 없을때의 평균 별점 --------------------------
+	//  리뷰가 없을때의 평균 별점 --------------------------
 	$("#rateYozero").rateYo({
 		    rating: 0,
 		    readOnly: true
 		  });
 	
+	$(".rateYoOne").each(function() {
+	var ratingOne = $(this).data("rating");
+	$(this).rateYo({
+	rating: ratingOne,
+	readOnly: true
+	});
+	});
 
-// -----------------------------------------------------------------------
-
-	
- 	$(".rateYoOne").each(function() {
-      var ratingOne = $(this).data("rating");
-      $(this).rateYo({
-        rating: ratingOne,
-        readOnly: true
-      });
-    });
-// ------------------ 리뷰 글 하나하나의 별점 --------------------------
-	
-	
+	//리뷰 글 하나하나의 별점
 	// Getter
 	var readOnly = $(".rateYoOne").rateYo("option", "readOnly"); //returns true
 	
 	// Setter
 	//$(".rateYoOne").rateYo("option", "readOnly", false); //returns a jQuery Element
-
-
-
-/*  ---------- 리뷰  sort 하기 ----------*/
-
-
-
-
 
 
 });
